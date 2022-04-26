@@ -1,0 +1,221 @@
+IDCATEGORY,CATEGORIA,DESCRIPCION,IDSERVICE,SERVICIOS,DESCRIPCION SERVICIO,URLINFO,IMAGENSERVICIO,IMAGENCATEGORY,IMAGENPORTRAIT,ALIAS_IMG_SERVICIO,ALIAS_IMG_CATEGORY,ALIAS_IMG_CATEGORY_PORT
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,56,BONO MENSUAL PHYSIOFIT 2 SESIONES SEMANALES,"Clases grupales de columna, miembros inferiores o miembros superiores. 
+Beneficios: 
+-      Mantenimiento de las capacidades físicas
+-      Prevención y tratamiento de patologías
+-      Expertos en fisioterapia ",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/phy-2.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,phy-2,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,57,BONO MENSUAL PHYSIOFIT 3 SESIONES SEMANALES,"Clases grupales de columna, miembros inferiores o miembros superiores. 
+Beneficios: 
+-      Mantenimiento de las capacidades físicas
+-      Prevención y tratamiento de patologías
+-      Expertos en fisioterapia ",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/phy-3.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,phy-3,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,58,BONO MENSUAL PHYSIOFIT PISCINA 2 SESIONES SEMANALES,"Clases grupales de columna, miembros inferiores o miembros superiores. 
+Beneficios: 
+-      Mantenimiento de las capacidades físicas
+-      Prevención y tratamiento de patologías
+-      Expertos en fisioterapia ",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/phy-pis-2.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,phy-pis-2,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,59,BONO MENSUAL PHYSIOFIT PISCINA 3 SESIONES SEMANALES,"Clases grupales de columna, miembros inferiores o miembros superiores. 
+Beneficios: 
+-      Mantenimiento de las capacidades físicas
+-      Prevención y tratamiento de patologías
+-      Expertos en fisioterapia ",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/phy-pis-3.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,phy-pis-3,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,54,BONO ONDAS DE CHOQUE 3 SESIONES,"Recomendado para pacientes que sufren fascitis plantar y espolón calcáneo. 
+Beneficios: 
+-      Alivio de dolor crónico 
+-      Recuperación de la movilidad
+-      Regeneración rápida de los tejidos lesionados
+-      Efectivo en fisioterapia en el 90% de los casos",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/odc-3.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,odc-3,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,55,BONO ONDAS DE CHOQUE 5 SESIONES,"Recomendado para pacientes que sufren fascitis plantar y espolón calcáneo. 
+Beneficios: 
+-      Alivio de dolor crónico 
+-      Recuperación de la movilidad
+-      Regeneración rápida de los tejidos lesionados
+-      Efectivo en fisioterapia en el 90% de los casos",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/odc-5.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,odc-5,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,15,BONO REHABILITACIÓN 5 SESIONES,"Los tratamientos son aplicados de manera individualizada. Las técnicas asistidas por equipamiento son prestadas con equipos de alta calidad y eficacia.
+Beneficios:
+-	Recuperar y/o mantener la capacidad funcional
+-	Prevenir posibles enfermedades secundarias
+-	Equipamiento de alta calidad y eficacia
+-	Ahorra 10€ con bono de 5 sesiones",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/rhb-5.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,rhb-5,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,6,BONO REHABILITACIÓN 10 SESIONES,"Los tratamientos son aplicados de manera individualizada. Las técnicas asistidas por equipamiento son prestadas con equipos de alta calidad y eficacia.
+Beneficios:
+-	Recuperar y/o mantener la capacidad funcional
+-	Prevenir posibles enfermedades secundarias
+-	Equipamiento de alta calidad y eficacia
+-	Ahorra 30€ con bono de 10 sesiones. ",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/rhb-10.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,rhb-10,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,52,BONO REHABILITACIÓN COMPLEJA 5 SESIONES,"Los tratamientos son aplicados de manera individualizada. Las técnicas asistidas por equipamiento son prestadas con equipos de alta calidad y eficacia.
+Beneficios:
+-    Recuperar y/o mantener la capacidad funcional
+-    Prevenir posibles enfermedades secundarias
+-    Equipamiento de alta calidad y eficacia
+-    Ahorra 8,75€ con bono de 5 sesiones",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/rhb-com-5.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,rhb-com-5,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,53,BONO REHABILITACIÓN COMPLEJA 10 SESIONES,"Los tratamientos son aplicados de manera individualizada. Las técnicas asistidas por equipamiento son prestadas con equipos de alta calidad y eficacia.
+Beneficios:
+-    Recuperar y/o mantener la capacidad funcional
+-    Prevenir posibles enfermedades secundarias
+-    Equipamiento de alta calidad y eficacia
+-    Ahorra 8,75€ con bono de 5 sesiones",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/rhb-com-10.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,rhb-com-10,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,33,REHABILITACIÓN SESIÓN,"Los tratamientos son aplicados de manera individualizada. Las técnicas asistidas por equipamiento son prestadas con equipos de alta calidad y eficacia.
+Beneficios:
+-	Recuperar y/o mantener la capacidad funcional
+-	Prevenir posibles enfermedades secundarias
+-	Equipamiento de alta calidad y eficacia
+-	Mejorar la calidad de vida",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/,/storage/img/services/rhb.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,rhb,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,51,REHABILITACIÓN COMPLEJA SESIÓN,"Los tratamientos son aplicados de manera individualizada. Las técnicas asistidas por equipamiento son prestadas con equipos de alta calidad y eficacia.
+Beneficios:
+-    Recuperar y/o mantener la capacidad funcional
+-    Prevenir posibles enfermedades secundarias
+-    Equipamiento de alta calidad y eficacia
+-    Mejorar la calidad de vida",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/rhb-com.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,rhb-com,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,35,REHABILLITACION SESIÓN INFANTIL,"Los tratamientos son aplicados de manera individualizada. Las técnicas asistidas por equipamiento son prestadas con equipos de alta calidad y eficacia.
+Beneficios:
+-	Recuperar y/o mantener la capacidad funcional
+-	Prevenir posibles enfermedades secundarias
+-	Equipamiento de alta calidad y eficacia
+-	Expertos en rehabilitación infantil",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/,/storage/img/services/rhb-inf.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,rhb-inf,rhb-land,rhb-port
+11,CONSULTAS MÉDICAS,"Especialistas médicos en rehabilitación, traumatología, medicina interna y neurología. ",41,CONSULTA MÉDICA REHABILITACIÓN," Te realizamos un examen físico completo y damos una solución integral a tu patología.
+             -	Valoración médica
+             -	Plan de tratamiento personalizado
+             -	Informe final detallado
+ Beneficios:
+             -	Atención personalizada
+             -	Fisioterapeutas cualificados
+             -	Equipamiento de alta calidad y eficacia
+             -	Seguimiento y evaluación del progreso",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/,/storage/img/services/con-rhb.jpg,/storage/img/serv_categories/con-med-land.jpg,/storage/img/serv_categories/con-med-port.jpg,con-rhb,con-med-land,con-med-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,44,FISIOTERAPIA EN PISCINA - SESIÓN INDIVIDUAL,"Recomendado para pacientes con problemas de movilidad porque las propiedades hidrodinámicas del agua facilitan el movimiento. Estar dentro del agua permite realizar actividades que en otro caso serían imposibles.
+Beneficios:
+-	Alivia el dolor
+-	Mejora de movimiento articular
+-	Aumenta resistencia muscular
+-	Beneficia a nivel cardiovascular
+-	Mejora la calidad de vida",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/fis-pis.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,fis-pis,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,45,FISIOTERAPIA EN PISCINA - CON AUXILIAR DE APOYO,"Recomendado para pacientes con problemas de movilidad porque las propiedades hidrodin-micas del agua facilitan el movimiento. Estar dentro del agua permite realizar actividades que en otro caso serían imposibles.
+Beneficios:
+-	Alivia el dolor
+-	Mejora de movimiento articular
+-	Aumenta resistencia muscular
+-	Beneficia a nivel cardiovascular
+-	Mejora la calidad de vida",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/fis-pis-apo.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,fis-pis-apo,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,69,MASAJE TERAPÉUTICO 30 MIN,"Los tratamientos son aplicados de manera individualizada. Recomendado para los pacientes que quieren reducir o eliminar el dolor muscular. 
+Beneficios:
+-	Aliviar el dolor
+-	Recuperar la movilidad
+-	Combatir la fatiga
+-	Mantenimiento y prevención de lesiones ",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/msj-30.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,msj-30,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,70,MASAJE TERAPÉUTICO 45 MIN,"Los tratamientos son aplicados de manera individualizada. Recomendado para los pacientes que quieren reducir o eliminar el dolor muscular. 
+Beneficios:
+-	Aliviar el dolor
+-	Recuperar la movilidad
+-	Combatir la fatiga
+-	Mantenimiento y prevención de lesiones ",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/msj-45.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,msj-45,rhb-land,rhb-port
+1,REHABILITACIÓN,Tratamiento personalizado con fisioterapeuta especialista en todas las técnicas de rehabilitación. ,38,ONDAS DE CHOQUE - SESIÓN,"Recomendado para pacientes que sufren fascitis plantar y espolón calcóneo. 
+Beneficios: 
+-	Alivio de dolor crónico 
+-	Recuperación de la movilidad
+-	Regeneración rápida de los tejidos lesionados
+-	Efectivo en fisioterapia en el 90% de los casos",https://www.grupoicot.es/servicios/rehabilitacion-y-fisioterapia/ ,/storage/img/services/odc.jpg,/storage/img/serv_categories/rhb-land.jpg,/storage/img/serv_categories/rhb-port.jpg,odc,rhb-land,rhb-port
+4,LOGOPEDIA,Diagnóstico y tratamiento para los trastornos de la voz.,42,LOGOPEDIA - SESIÓN INDIVIDUAL,"Diagnóstico y tratamiento de los trastornos del lenguaje, habla, voz, comunicación y deglución para adultos y niños. Entrenamiento vocal para personas que utilizan la voz como herramienta de trabajo. Tambión a través de becas de logopedia infantil que puedes solicitar en tu centro educativo. 
+Beneficios: 
+-	Logopedas expertos
+-	Atención personalizada 
+-	Sesión totalmente adaptada a tus necesidades
+-	Mejora la calidad de vida",https://www.grupoicot.es/servicios/logopedia/ ,/storage/img/services/log.jpg,/storage/img/serv_categories/lgp-land.jpg,/storage/img/serv_categories/lgp-port.jpg,log,lgp-land,lgp-port
+11,CONSULTAS MÉDICAS,"Especialistas médicos en rehabilitación, traumatología, medicina interna y neurología. ",39,CONSULTA MÉDICA - TRAUMATOLOGÍA,"Somos expertos en traumatología y cirugía ortopédica. Tratamos a pacientes con todo tipo de patologías del aparato locomotor: fracturas, prótesis de cadera, patología de rodilla, patología del raquis, etc.
+-	Valoración médica
+-	Plan de tratamiento personalizado
+-	Informe final detallado
+Beneficios:
+-	Atención personalizada
+-	Diagnóstico más  avanzado
+-	Cirugía ortopédica y rehabilitación 
+-	Seguimiento y evaluación del progreso",https://www.grupoicot.es/servicios/traumatologia-y-cirugia-ortopedica-2/ ,/storage/img/services/tra.jpg,/storage/img/serv_categories/con-med-land.jpg,/storage/img/serv_categories/con-med-port.jpg,tra,con-med-land,con-med-port
+11,CONSULTAS MÉDICAS,"Especialistas médicos en rehabilitación, traumatología, medicina interna y neurología. ",47,CONSULTA MÉDICA - NEUROLOGÍA,"Te realizamos un examen neurológico completo y damos una solución integral a tu patología.
+-	Valoración médica.
+-	Plan de tratamiento personalizado.
+-	Informe final detallado
+Beneficios:
+-	El ónico centro en Canarias especializado en enfermedades neurológicas
+-	Profesionales altamente cualificados
+-	Neurorrehabilitación mediante tecnología robótica
+-	Seguimiento y evaluación del progreso",https://www.grupoicot.es/servicios/neurologia/,/storage/img/services/neu.jpg,/storage/img/serv_categories/con-med-land.jpg,/storage/img/serv_categories/con-med-port.jpg,neu,con-med-land,con-med-port
+11,CONSULTAS MÉDICAS,"Especialistas médicos en rehabilitación, traumatología, medicina interna y neurología. ",60,CONSULTA MÉDICA – MEDICINA INTERNA,"Tratamiento no quirúrgico y la prevención de las enfermedades.
+Beneficios:
+-      Atención personalizada
+-      Diagnóstico más avanzado
+-      Seguimiento y evaluación del progreso",https://www.grupoicot.es/servicios/unidad-de-medicina-intervencionista/ ,/storage/img/services/med-int.jpg,/storage/img/serv_categories/con-med-land.jpg,/storage/img/serv_categories/con-med-port.jpg,med-int,con-med-land,con-med-port
+8,PODOLOGÍA,"Consulta de podología, quiropodia, más estudio de la pisada GRATIS. ",40,CONSULTA PODOLOGÍA,"La consulta de podología incluye el diagnóstico y el tratamiento general (quiropodia) de callosidades, alteraciones de las uñas de los pies u otras patologías de pie con el fin de evitar y prevenir posibles molestias.
+Beneficios:
+-     Atención personalizada
+-     Diagnóstico digital de la pisada y la marcha gratis
+-     Tratamiento de todas patologías de pie 
+-     Sin esperas ",https://www.grupoicot.es/servicios/podologia/,/storage/img/services/pod.jpg,/storage/img/serv_categories/pod-land.jpg,/storage/img/serv_categories/pod-port.jpg,pod,pod-land,pod-port
+9,PLANTILLAS 3D,Estudio de la pisada GRATIS  ,16,PLANTILLAS 3D,"Estudio biomecónico de la pisada y la marcha mediante un avanzado equipo tecnológico. Sistema digital de diseño y fabricación de las Plantillas 3D.  Materiales de alta calidad que garantizan una alta durabilidad y eficiencia energética.
+Beneficios: 
+     -	 Disminuyen dolores en pies, tobillos, rodillas, cadera y columna
+     -	 Mejoran las patologías en pie y extremidades inferiores
+      - Previenen lesiones
+      - Aportan sensación de comodidad",https://www.grupoicot.es/plantillas-3d/,/storage/img/services/pla.jpg,/storage/img/serv_categories/pla-land.jpg,/storage/img/serv_categories/pla-port.jpg,pla,pla-land,pla-port
+9,PLANTILLAS 3D,Estudio de la pisada GRATIS  ,49,PLANTILLAS 3D PRO,"Estudio biomecónico de la pisada y la marcha mediante un avanzado equipo tecnológico. Sistema digital de diseño y fabricación de las Plantillas 3D.  Materiales de alta calidad que garantizan una alta durabilidad y eficiencia energética.
+Beneficios: 
+       - Disminuyen dolores en pies, tobillos, rodillas, cadera y columna
+       - Mejoran las patologías en pie y extremidades inferiores
+       - Previenen lesiones
+       - Aportan sensación de comodidad",https://www.grupoicot.es/plantillas-3d/,/storage/img/services/pla-pro.jpg,/storage/img/serv_categories/pla-land.jpg,/storage/img/serv_categories/pla-port.jpg,pla-pro,pla-land,pla-port
+9,PLANTILLAS 3D,Estudio de la pisada GRATIS  ,65,PLANTILLAS 3D COMPAÑÍA,"Estudio biomecónico de la pisada y la marcha mediante un avanzado equipo tecnológico. Sistema digital de diseño y fabricación de las Plantillas 3D.  Materiales de alta calidad que garantizan una alta durabilidad y eficiencia energética.
+Beneficios: 
+     -	 Disminuyen dolores en pies, tobillos, rodillas, cadera y columna
+     -	 Mejoran las patologías en pie y extremidades inferiores
+      - Previenen lesiones
+      - Aportan sensación de comodidad",https://www.grupoicot.es/plantillas-3d/,/storage/img/services/pla.jpg,/storage/img/serv_categories/pla-land.jpg,/storage/img/serv_categories/pla-port.jpg,pla,pla-land,pla-port
+9,PLANTILLAS 3D,Estudio de la pisada GRATIS  ,66,PLANTILLAS 3D PRO COMPAÑÍA,"Estudio biomecónico de la pisada y la marcha mediante un avanzado equipo tecnológico. Sistema digital de diseño y fabricación de las Plantillas 3D.  Materiales de alta calidad que garantizan una alta durabilidad y eficiencia energética.
+Beneficios: 
+       - Disminuyen dolores en pies, tobillos, rodillas, cadera y columna
+       - Mejoran las patologías en pie y extremidades inferiores
+       - Previenen lesiones
+       - Aportan sensación de comodidad",https://www.grupoicot.es/plantillas-3d/,/storage/img/services/pla-pro.jpg,/storage/img/serv_categories/pla-land.jpg,/storage/img/serv_categories/pla-port.jpg,pla-pro,pla-land,pla-port
+13,DIAGNÓSTICO POR IMAGEN,"Diagnósticos más fiables, completos y rápidos: resonancia magnética, tac y ecografía. ",48,RESONANCIA MAGNÉTICA,"Resonancia Magnética de 1.5 teslas, con el tubo más  grande en el mercado, capacitada para realizar cualquier estudio que se solicite con la máxima precisión y produciendo mónima claustrofobia. 
+Beneficio: 
+-        Resonancia magnética más  avanzada 
+-        Máxima precisión
+-        Mónima claustrofobia 
+-        Sin esperas ",https://www.grupoicot.es/landing-diagimagen/,/storage/img/services/res.jpg,/storage/img/serv_categories/diag-img-land.jpg,/storage/img/serv_categories/diag-img-port.jpg,res,diag-img-land,diag-img-port.jpg
+13,DIAGNÓSTICO POR IMAGEN,"Diagnósticos más fiables, completos y rápidos: resonancia magnética, tac y ecografía. ",63,ECOGRAFÍA,"Obtenemos estudios especializados sin emplear radiación ionizante, así como los estudios vasculares, utilizando técnica Doppler.
+Beneficio: 
+-       Mejor precio 
+-       Médicos especialistas en radiología 
+-       Sin esperas ",https://www.grupoicot.es/landing-diagimagen/,/storage/img/services/eco.jpg,/storage/img/serv_categories/diag-img-land.jpg,/storage/img/serv_categories/diag-img-port.jpg,eco,diag-img-land,diag-img-port.jpg
+13,DIAGNÓSTICO POR IMAGEN,"Diagnósticos más fiables, completos y rápidos: resonancia magnética, tac y ecografía. ",64,TAC,"TAC de gran precisión y calidad de resolución, lo que asegura diagnósticos más precisos.
+Beneficio: 
+-       Mejor precio 
+-       Diagnósticos más precisos
+-       Baja radiación
+-       Sin esperas ",https://www.grupoicot.es/landing-diagimagen/,/storage/img/services/tac.jpg,/storage/img/serv_categories/diag-img-land.jpg,/storage/img/serv_categories/diag-img-port.jpg,tac,diag-img-land,diag-img-port.jpg
+11,CONSULTAS MÉDICAS,"Especialistas médicos en rehabilitación, traumatología, medicina interna y neurología. ",62,CONSULTA MÉDICA – NEURORREHABILITACIÓN,"Te realizamos un examen neurológico completo y damos una solución integral a tu patología.
+-       Valoración médica.
+-       Plan de tratamiento personalizado.
+-       Informe final detallado
+Beneficios:
+-       Valoración médica.
+-       Profesionales altamente cualificados
+-       Neurorrehabilitación mediante tecnología robótica
+-       Seguimiento y evaluación del progreso",https://www.grupoicot.es/servicios/neurorrehabilitacion/ ,/storage/img/services/con-neu-rhb.jpg,/storage/img/serv_categories/con-med-land.jpg,/storage/img/serv_categories/con-med-port.jpg,con-neu-rhb,con-med-land,con-med-port
+12,UNIDAD DE NEURORREABILITACIÓN,Centro de referencia en Canarias para la neurorrehabilitación del ictus,67,HOSPITALIZACIÓN,"Tratamientos ambulatorios basados en la ingeniería robótica y la realidad virtual.
+-       Tratamiento de la marcha
+-       Tratamiento de movimiento de brazo
+-       Tratamiento de problemas cognitivos 
+-       Tratamiento de disfagia 
+Beneficios:
+-       Concertado con el Servicio Canario de la Salud
+-       Profesionales altamente cualificados
+-       Neurorrehabilitación mediante tecnología robótica
+-       Seguimiento y evaluación del progreso",https://www.grupoicot.es/servicios/neurologia/ ,/storage/img/services/hosp.jpg,/storage/img/serv_categories/uni-neurhb-land.jpg,/storage/img/serv_categories/uni-neurhb-port.jpg,hosp,uni-neurhb-land,uni-neurhb-port
+12,UNIDAD DE NEURORREABILITACIÓN,Centro de referencia en Canarias para la neurorrehabilitación del ictus,68,NEURORREHABILITACIÓN,"Tratamientos ambulatorios basados en la ingeniería robótica y la realidad virtual.
+-       Tratamiento de la marcha
+-       Tratamiento de movimiento de brazo
+-       Tratamiento de problemas cognitivos 
+-       Tratamiento de disfagia 
+Beneficios:
+-       Concertado con el Servicio Canario de la Salud
+-       Profesionales altamente cualificados
+-       Neurorrehabilitación mediante tecnología robótica
+-       Seguimiento y evaluación del progreso",https://www.grupoicot.es/servicios/neurologia/ ,/storage/img/services/neu-rhb.jpg,/storage/img/serv_categories/uni-neurhb-land.jpg,/storage/img/serv_categories/uni-neurhb-port.jpg,neu-rhb,uni-neurhb-land,uni-neurhb-port

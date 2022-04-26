@@ -1,0 +1,16 @@
+
+node_modules/*
+vendor/*
+mysql/*
+.history/*
+storage/framework/laravel-excel/*
+storage/app/public/versiones/*
+build/php/Dockerfile_bk
+build/php/Dockerfile_old
+app/Http/Controllers/TargetController copy.php
+.vscode/*
+.env
+.env copy
+storage/framework
+tests/*
+xdebug.log
