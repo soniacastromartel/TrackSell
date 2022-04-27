@@ -174,7 +174,7 @@
       </ul> 
       <div>
         <hr>
-        <label class="lblVersion"> Versión {{ env('VERSION_WEB') }} </label>
+        <label class="lblVersion"> VERSIÓN {{ env('VERSION_WEB') }} </label>
       </div>
     </div> 
 <div class="sidebar-background" ></div></div> 
