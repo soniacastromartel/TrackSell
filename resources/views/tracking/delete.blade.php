@@ -54,6 +54,7 @@
         $('#pagesTracking').addClass('show');
 
         loadDeleteTable();
+
         function loadDeleteTable() {
             var url = "{{ route('tracking.searchDelete') }}";
             //var params = getParams();
@@ -66,7 +67,11 @@
                 ajax: {
                     url: url,
                     type: "POST",
-                    data: {"_token": "{{ csrf_token() }}"}
+                    data: function(d) {
+                        d._token = "{{ csrf_token() }}",
+                            d.search = $('input[type="search"]').val()
+
+                    }
                 },
                 columns: [ 
                     {data: 'centre', name: 'centre'},
@@ -82,7 +87,7 @@
                 ],
                 search: {
                     "regex": true,
-                    "smart":true
+                    "smart":true,
                 },
                 initComplete: function () {
                     this.api().columns().every(function () {

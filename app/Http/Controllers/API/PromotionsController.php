@@ -22,7 +22,7 @@ class PromotionsController extends BaseController{
         // Se recogen los id de los servicios en promo y el centro realizador
         $promosIds = explode(',', env('PROMOS_ID'));
         // TODO REVISAR QUE SEA EL CENTRO DONDE SE REALIZAN LAS PROMOS
-        $centroPromo = Centre::getIdCentre(28);
+        $centroPromo = Centre::getIdCentre(env('CENTRE_PROMO_ID')); //centreId
 
         foreach ($promosIds as $id) {
             $data =  Service::getService4Id($id); 
