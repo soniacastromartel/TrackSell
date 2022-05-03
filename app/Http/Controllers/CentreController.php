@@ -30,7 +30,7 @@ class CentreController extends Controller
                     ->addColumn('action', function($centre){
                         $btn = '';
                         if (empty($centre->cancellation_date)) {
-                            $btn = '<a href="centres/edit/'.$centre->id.'" class="btn btn-success a-btn-slide-text">Editar</a>';
+                            $btn = '<a href="centres/edit/'.$centre->id.'" class="btn btn-warning a-btn-slide-text">Editar</a>';
                             $btn .= '<a href="centres/destroy/'.$centre->id.'" class="btn btn-danger a-btn-slide-text">Borrar</a>';
                         }    
                         return $btn;

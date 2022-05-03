@@ -27,7 +27,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-success btn-lg" > Nuevo</a>
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-addition btn-lg" > Nuevo</a>
             </div>
         </div>    
         <table class="table table-bordered centres-datatable">

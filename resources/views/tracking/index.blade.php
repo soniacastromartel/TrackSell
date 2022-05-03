@@ -52,14 +52,14 @@
                 <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                     {{ __('Limpiar formulario') }}
                 </button>
-                <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Buscar') }}</button>
+                <button id="btnSubmit" type="submit" class="btn btn-fill btn-outline-corporate">{{ __('Buscar') }}</button>
                 <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Obteniendo datos...') }}
                 </button>
             </div>
             <div class="col-md-2 text-right" id="blockNewTracking">
-                <a href="{{ route('tracking.create') }}" id="btnNewCenter" class="btn btn-info btn-lg"> Nuevo Seguimiento</a>
+                <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-addition btn-lg"> Nuevo Seguimiento</a>
             </div>
         </div>
         <table class="table table-bordered tracking-datatable">
@@ -100,8 +100,7 @@
     });
     columnsFilled.push({
         data: 'patient_name',
-        name: 'patient_name',
-        searchable: true
+        name: 'patient_name'
     });
     columnsFilled.push({
         data: 'service',
@@ -245,8 +244,9 @@
                         d._token = "{{ csrf_token() }}",
                             d.centre_id = $('#centre_id option:selected').val(),
                             d.state = $('#state_id option:selected').val(),
-                            d.date = $('#monthYearPicker').val()
-                        // d.search = $('input[type="search"]').val()
+                            d.date = $('#monthYearPicker').val(),
+                            d.search = $('input[type="search"]').val()
+
                     },
                     dataSrc: function(json) {
                         $('#btnSubmit').show();
@@ -281,19 +281,11 @@
                 initComplete: function() {
                     this.api().columns().every(function() {
                         var column = this;
-                        var input = document.createElement("input");
-                        $(input).appendTo($(column.footer()).empty())
-                            .on('change', function() {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, true)
-                                    .draw();
-                            });
                     });
                 }
             });
         }
-        table.columns.adjust().draw(false);
+        table.columns.adjust().draw();
     }
 </script>
 

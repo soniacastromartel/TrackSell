@@ -16,7 +16,7 @@
             
             <div class="card text-white ml-4 mt-0" style="background-color: #999999 !important;max-width:70%; ">
                 <div class="card-header">
-                    <i class="material-icons" style="color: #b61836">info</i>
+                    <i class="material-icons" style="color: var(--red-color-icot);">info</i>
                     <span style="font-size:16px; vertical-align:super; font-weight:bold">Funcionamiento:</span>   
                 </div>
                 <div class="card-body py-0 mb-3">
@@ -67,7 +67,7 @@
                     <div class="col-md-12 input-group date px-1" >
                         <input id="monthYearPicker" class='form-control' type="text"  placeholder="yyyy/mm" style="width:80px"/>
                         <input type="hidden" name="monthYear" id="monthYear" />
-                        <button id="btnCalculate" type="button" class="btn btn-fill btn-success">{{ __('Calcular') }}</button>
+                        <button id="btnCalculate" type="button" class="btn btn-fill btn-addition">{{ __('Calcular') }}</button>
                         <button id="btnCalculateLoad" type="button" class="btn btn-success" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             {{ __('Calculando datos...') }}
@@ -80,7 +80,7 @@
             </div>
             <div class="row col-md-12">
                 <div class="col-md-12 input-group date px-3" style="padding-top: 15px;" >
-                    <button id="btnSubmit" type="submit" class="btn btn-info">{{ __('Buscar') }}</button>
+                    <button id="btnSubmit" type="submit" class="btn btn-outline-corporate">{{ __('Buscar') }}</button>
                     <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         {{ __('Obteniendo datos...') }}
@@ -90,7 +90,7 @@
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         {{ __('Validando datos...') }}
                     </button>
-                    <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-rose">{{ __('Exportar') }}</button>
+                    <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-blue">{{ __('Exportar') }}</button>
                     <button id="btnExportLoad" type="submit" class="btn btn-success" style="display: none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         {{ __('Exportando datos...') }}

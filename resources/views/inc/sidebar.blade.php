@@ -5,25 +5,20 @@
 
       Tip 2: you can also add an image using data-image tag
   -->
-  <div class="logo text-center" style="padding: 0px !important">
-    <img src="{{ asset('assets/img/background_pdi.png') }}" width="260px" height="120px">
-  </div>
-  <div class="sidebar-wrapper">
-    <div class="user">
-      <div class="photo">
-        <img src="{{ asset('assets/img/avatar.png') }}">
-      </div>
-      <div class="user-info">
-        <a data-toggle="collapse" href="#profileEmployee" class="username collapsed" aria-expanded="false">
-          <span id="userData">
-            {{ session()->get('user')->username }}
+  <div class="sidebar-wrapper d-flex flex-column">
+    <img src="{{ asset('assets/img/whiteLogoPDI.png') }}" style="background-color: var(--red-color-icot); padding: 13px;">
+
+    <ul class="nav">
+      <li id="userInfo" class="nav-item ">
+        <a class="nav-link collapsed" data-toggle="collapse" href="#profileEmployee" aria-expanded="false">
+          <i class="material-icons">person</i>
+          <p style="font-weight: bold"> {{ session()->get('user')->username }}
             <b class="caret"></b>
-          </span>
+          </p>
         </a>
-        <div class="collapse" id="profileEmployee" style="">
-          {{-- <ul class="nav navbar-nav nav-mobile-menu"> --}}
+        <div class="collapse" id="profileEmployee">
           <ul class="nav">
-            <li class="nav-item" id="menuProfile">
+            <li id="menuProfile" class="nav-item ">
               <a class="nav-link" href="{{route('profile')}}">
                 <i class="material-icons">account_box</i>
                 <span class="sidebar-normal"> Mis datos </span>
@@ -32,8 +27,8 @@
             <li class="nav-item">
               <a class="nav-link" href="{{route('logout')}}" onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
-                <i class="material-icons" style="color:#CC0000"> exit_to_app</i>
-                <span class="sidebar-normal" style="color:#CC0000"> Cerrar sesión </span>
+                <i class="material-icons"> exit_to_app</i>
+                <span class="sidebar-normal"> Cerrar sesión </span>
               </a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
@@ -41,9 +36,10 @@
             </li>
           </ul>
         </div>
-      </div>
-    </div>
-    <ul class="nav">
+      </li>
+
+      <hr>
+
       <li class="nav-item active" id="menuHome">
         <a class="nav-link" href="/home">
           <i class="material-icons">home</i>
@@ -142,7 +138,7 @@
             <b class="caret"></b>
           </p>
         </a>
-        <div class="collapse" id="pagesReport" style="">
+        <div class="collapse" id="pagesReport">
           <ul class="nav">
             <li id="exportRecommendation" class="nav-item">
               <a class="nav-link" href="{{route('tracking.exportForm')}}">
@@ -190,7 +186,7 @@
         </div>
       </li>
     </ul>
-    <div>
+    <div class="versionContainer">
       <hr>
       <label class="lblVersion"> Versión {{ env('VERSION_WEB') }} </label>
     </div>
@@ -209,13 +205,19 @@
   }
 
   .lblVersion {
-    position: absolute;
     bottom: 50px;
     width: 100%;
-    color: #CC0000;
+    color: var(--red-color-icot);
     text-align: center !important;
     font-weight: 900;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     vertical-align: bottom;
+  }
+
+  .versionContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
   }
 </style>

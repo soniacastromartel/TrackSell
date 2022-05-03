@@ -63,12 +63,11 @@ class TrackingController extends Controller
         return $title;
     }
 
-    public function index(Request $request)
-    {
-
-        try {
-            $state = '';
-            $title = 'Seguimiento - Listado';
+    public function index(Request $request){
+        
+        try{
+            $state = ''; 
+            $title = 'Listados';
             if ($request->ajax()) {
 
                 $params = $request->all();
@@ -1305,10 +1304,9 @@ class TrackingController extends Controller
         $employees = Employee::getEmployeesActive();
 
 
-        return view('tracking.request_change_centre', [
-            'title'     => 'Nueva solicitud',
-            'centres'   => $centres,
-            'employees' => $employees
+        return view('tracking.request_change_centre', ['title'     => 'Solicitudes de cambio',
+                                                       'centres'   => $centres,
+                                                       'employees' => $employees
         ]);
     }
 

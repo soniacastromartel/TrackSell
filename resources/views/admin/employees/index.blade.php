@@ -28,7 +28,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right" id="blockNewTracking">
-                <a id="btnSyncA3" class="btn btn-success btn-lg" > Sincronizar A3</a>
+                <a id="btnSyncA3" class="btn btn-addition btn-lg" > Sincronizar A3</a>
                 <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Realizando sincronización...') }}

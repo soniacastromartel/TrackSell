@@ -32,7 +32,7 @@
                 <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                     {{ __('Limpiar formulario') }}
                 </button>
-                <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Buscar') }}</button>
+                <button id="btnSubmit" type="submit" class="btn btn-fill btn-outline-corporate">{{ __('Buscar') }}</button>
                 <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Obteniendo datos...') }}
@@ -58,7 +58,7 @@
 
 <script type="text/javascript">
     var table;
-
+    btn - addition
     var columnsFilled = [];
     columnsFilled.push({
         data: 'id',

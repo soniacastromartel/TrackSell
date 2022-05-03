@@ -73,9 +73,9 @@ class EmployeeController extends DefaultLoginController //Controller
                     })
                     ->addColumn('action', function($employee){
                         $btn = '';
-                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-success a-btn-slide-text">Editar</a>';
+                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-warning a-btn-slide-text">Editar</a>';
                         $fnCall = 'resetAccessApp('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-warning a-btn-slide-text">Reestablecer Acceso</a>';
+                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text">Reestablecer Acceso</a>';
                         $fnCall = 'denyAccess('.$employee->id.' )'; 
                         $btn .= '<a onclick="'. $fnCall .'" class="btn btn-danger a-btn-slide-text">Denegar Acceso</a>';
                         $fnCall = 'syncA3('.$employee->id.' , \'only\')'; 
@@ -119,7 +119,7 @@ class EmployeeController extends DefaultLoginController //Controller
                 ->rawColumns(['action'])
                         ->make(true);
             }
-            return view('admin.employees.validated_employee',['title' => $this->title ]);
+            return view('admin.employees.validated_employee',['title' => 'Pendientes de validar']);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar empleados, contacte con el administrador');
         }

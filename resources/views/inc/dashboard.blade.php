@@ -5,7 +5,7 @@
       <div class="col-lg-10">
         <div id="employee-info" class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title">Busqueda</h4>
+            <h4 class="card-title">Búsqueda</h4>
           </div>
           <div class="card-body">
             <div class="row">
@@ -84,7 +84,7 @@
             <div id="chart_div_vc"></div>
           </div>
           <div id='vp_pending' class="card-header card-header-warning" style="margin-top: 10px">
-            <h4 class="card-title" style="color:red">Venta Privada Pendiente</h4>
+            <h4 class="card-title" style="color: var(--red-color-icot)">Venta Privada Pendiente</h4>
           </div> 
           <div id='vp_ok' class="card-header">
             <h4 class="card-title">Venta Privada</h4>
