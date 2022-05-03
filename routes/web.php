@@ -93,6 +93,9 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/centerLeague', 'LeagueController@index')->name('centerLeague');
     Route::post('/league/generateLeague', 'LeagueController@generateLeague')->name('league.generateLeague');
     Route::post('/league/details', 'LeagueController@detailsCentreLeague')->name('league.detailsCentreLeague');
+
+    Route::any('/notifications/index', 'NotificationController@index')->name('notifications.index');
+
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
