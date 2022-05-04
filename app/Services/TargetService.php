@@ -5,6 +5,7 @@ use DB;
 use App\Centre;
 use App\Target;
 use App\Employee;
+use Exception;
 
 class TargetService {
 
@@ -505,142 +506,150 @@ class TargetService {
 
     public function getSummarySales($tracking, $targetDefined, $monthYear, $centres, $vcTotal=0)
     {
-        $total = [];  
-        $totalCentre = [];
-        $centre = array_values($centres->toArray())[0]; 
-        if (is_object($centre)) {
-            $centre =  (array) $centre; 
-        }
-        $targets = []; 
-        $totalSupervisors = []; 
-        foreach ($tracking[$centre['name']] as $i =>$trackingRow) {
-                // Cogemos el grupo de supervisores por centro
-                if ($i == 0) {
-                    if (!empty($targetDefined)) {
-                        $targets = $this->stateTarget($targetDefined, $monthYear, $tracking, $centres);
-                    }
-                    $totalCentre[$centre['name']]['total_incentive']       = 0; 
-                    $totalCentre[$centre['name']]['total_super_incentive'] = 0; 
-                    $totalCentre[$centre['name']]['total_income']          = 0; 
-                }
-                if (!isset($total[$trackingRow->employee_id])) {
-                    $total[$trackingRow->employee_id]['name'] = $trackingRow->employee; 
-                    $total[$trackingRow->employee_id]['dni'] = $trackingRow->dni; 
-                    $total[$trackingRow->employee_id]['cod_business'] = $trackingRow->cod_business; 
-                    $total[$trackingRow->employee_id]['cod_employee'] = $trackingRow->cod_employee; 
-                    $total[$trackingRow->employee_id]['total_incentive'] =  0; 
-                    $total[$trackingRow->employee_id]['total_super_incentive'] =  0; 
-                    $total[$trackingRow->employee_id]['total_income'] =  0; 
-                    $total[$trackingRow->employee_id]['is_supervisor'] = 0; 
-                    $total[$trackingRow->employee_id]['tracking_ids']  = []; 
-                }
-    
-                $valueIncentiveObj1   = isset($trackingRow->service_price_incentive1) ? $trackingRow->service_price_incentive1 : $trackingRow->obj1_incentive; 
-                $valueIncentiveObj2   = isset($trackingRow->service_price_incentive2) ? $trackingRow->service_price_incentive2 : $trackingRow->obj2_incentive; 
-                $totalIncentive = 0;
-    
-                $result = $this->rules($trackingRow, $targets,null);
-                $totalIncentive = isset($trackingRow->service_price_direct_incentive) ? $trackingRow->service_price_direct_incentive : $trackingRow->direct_incentive; 
-                
-                $isActive = $this->employeeActive($trackingRow, $monthYear); 
-                if ($isActive === true) {
-                    if ($result['obj1'] === true){
-                        $totalIncentive = $valueIncentiveObj1;
-                        if ($result['obj2'] === true){
-                            $totalIncentive = $valueIncentiveObj2;
+        try {
+            $total = [];  
+            $totalCentre = [];
+            $centre = array_values($centres->toArray())[0]; 
+            if (is_object($centre)) {
+                $centre =  (array) $centre; 
+            }
+            $targets = []; 
+            $totalSupervisors = []; 
+            foreach ($tracking[$centre['name']] as $i =>$trackingRow) {
+                    // Cogemos el grupo de supervisores por centro
+                    if ($i == 0) {
+                        if (!empty($targetDefined)) {
+                            $targets = $this->stateTarget($targetDefined, $monthYear, $tracking, $centres);
                         }
+                        $totalCentre[$centre['name']]['total_incentive']       = 0; 
+                        $totalCentre[$centre['name']]['total_super_incentive'] = 0; 
+                        $totalCentre[$centre['name']]['total_income']          = 0; 
                     }
-                }
-                $total[$trackingRow->employee_id]['total_incentive'] += $totalIncentive * $trackingRow->quantity;
-                $total[$trackingRow->employee_id]['total_income']    += $totalIncentive * $trackingRow->quantity;
-                $total[$trackingRow->employee_id]['total_income']     = round($total[$trackingRow->employee_id]['total_income'],2);
-                $total[$trackingRow->employee_id]['tracking_ids'][]   = $trackingRow->tracking_id; 
-                $totalCentre[$centre['name']]['total_incentive']     += $totalIncentive * $trackingRow->quantity; 
-                
-                $supervisors = explode(",",$trackingRow->supervisor);
-                foreach ($supervisors as $supervisorId ) {
-                    $supervisorId = trim($supervisorId);
-                    if (!in_array($supervisorId, $totalSupervisors)) {
-                        $totalSupervisors = array_merge($totalSupervisors, [$supervisorId]); 
+                    if (!isset($total[$trackingRow->employee_id])) {
+                        $total[$trackingRow->employee_id]['name'] = $trackingRow->employee; 
+                        $total[$trackingRow->employee_id]['dni'] = $trackingRow->dni; 
+                        $total[$trackingRow->employee_id]['cod_business'] = $trackingRow->cod_business; 
+                        $total[$trackingRow->employee_id]['cod_employee'] = $trackingRow->cod_employee; 
+                        $total[$trackingRow->employee_id]['total_incentive'] =  0; 
+                        $total[$trackingRow->employee_id]['total_super_incentive'] =  0; 
+                        $total[$trackingRow->employee_id]['total_income'] =  0; 
+                        $total[$trackingRow->employee_id]['is_supervisor'] = 0; 
+                        $total[$trackingRow->employee_id]['tracking_ids']  = []; 
                     }
-
-                    if (!empty($supervisorId)){
-                        $supervisor = Employee::find($supervisorId); 
-                        $isSupervisorActive = $this->employeeActive($supervisor, $monthYear); 
-                        if (!isset($total[$supervisorId])) {
-                            $total[$supervisorId]['name'] = $supervisor->name;
-                            $total[$supervisorId]['dni'] =  $supervisor->dni; 
-                            $total[$supervisorId]['cod_business'] =  $supervisor->cod_business; 
-                            $total[$supervisorId]['cod_employee'] =  $supervisor->cod_employee; 
-                            $total[$supervisorId]['total_incentive'] =  0; 
-                            $total[$supervisorId]['total_super_incentive'] =  0; 
-                            $total[$supervisorId]['total_income'] =  0;
-                        }
         
-                        $valueSuperIncentive1 = isset($trackingRow->service_price_super_incentive1) ?  $trackingRow->service_price_super_incentive1 : $trackingRow->superv_obj1_incentive; 
-                        $valueSuperIncentive2 = isset($trackingRow->service_price_super_incentive2) ?  $trackingRow->service_price_super_incentive2 : $trackingRow->superv_obj2_incentive; 
-                        $result = $this->rules($trackingRow, $targets,array_values($supervisors));
-                        $auxIncentive = 0; 
-                        //Solo aplica bonus de venta, para empleados activos en fecha fin de corte
-                        if ($isActive === true) {
-                            if ($result['obj1'] === true){
-                                $auxIncentive  = $valueSuperIncentive1;
-                                if ($result['obj2'] === true){
-                                    $auxIncentive  = $valueSuperIncentive2;
+                    $valueIncentiveObj1   = isset($trackingRow->service_price_incentive1) ? $trackingRow->service_price_incentive1 : $trackingRow->obj1_incentive; 
+                    $valueIncentiveObj2   = isset($trackingRow->service_price_incentive2) ? $trackingRow->service_price_incentive2 : $trackingRow->obj2_incentive; 
+                    $totalIncentive = 0;
+        
+                    $result = $this->rules($trackingRow, $targets,null);
+                    $totalIncentive = isset($trackingRow->service_price_direct_incentive) ? $trackingRow->service_price_direct_incentive : $trackingRow->direct_incentive; 
+                    
+                    $isActive = $this->employeeActive($trackingRow, $monthYear); 
+                    if ($isActive === true) {
+                        if ($result['obj1'] === true){
+                            $totalIncentive = $valueIncentiveObj1;
+                            if ($result['obj2'] === true){
+                                $totalIncentive = $valueIncentiveObj2;
+                            }
+                        }
+                    }
+                    $total[$trackingRow->employee_id]['total_incentive'] += $totalIncentive * $trackingRow->quantity;
+                    $total[$trackingRow->employee_id]['total_income']    += $totalIncentive * $trackingRow->quantity;
+                    $total[$trackingRow->employee_id]['total_income']     = round($total[$trackingRow->employee_id]['total_income'],2);
+                    $total[$trackingRow->employee_id]['tracking_ids'][]   = $trackingRow->tracking_id; 
+                    $totalCentre[$centre['name']]['total_incentive']     += $totalIncentive * $trackingRow->quantity; 
+                    
+                    $supervisors = explode(",",$trackingRow->supervisor);
+                    foreach ($supervisors as $supervisorId ) {
+                        $supervisorId = trim($supervisorId);
+                        if (!in_array($supervisorId, $totalSupervisors)) {
+                            $totalSupervisors = array_merge($totalSupervisors, [$supervisorId]); 
+                        }
+
+                        if (!empty($supervisorId)){
+                            $supervisor = Employee::find($supervisorId); 
+                            $isSupervisorActive = $this->employeeActive($supervisor, $monthYear); 
+                            if (!isset($total[$supervisorId])) {
+                                $total[$supervisorId]['name'] = $supervisor->name;
+                                $total[$supervisorId]['dni'] =  $supervisor->dni; 
+                                $total[$supervisorId]['cod_business'] =  $supervisor->cod_business; 
+                                $total[$supervisorId]['cod_employee'] =  $supervisor->cod_employee; 
+                                $total[$supervisorId]['total_incentive'] =  0; 
+                                $total[$supervisorId]['total_super_incentive'] =  0; 
+                                $total[$supervisorId]['total_income'] =  0;
+                            }
+            
+                            $valueSuperIncentive1 = isset($trackingRow->service_price_super_incentive1) ?  $trackingRow->service_price_super_incentive1 : $trackingRow->superv_obj1_incentive; 
+                            $valueSuperIncentive2 = isset($trackingRow->service_price_super_incentive2) ?  $trackingRow->service_price_super_incentive2 : $trackingRow->superv_obj2_incentive; 
+                            $result = $this->rules($trackingRow, $targets,array_values($supervisors));
+                            $auxIncentive = 0; 
+                            //Solo aplica bonus de venta, para empleados activos en fecha fin de corte
+                            if ($isActive === true) {
+                                if ($result['obj1'] === true){
+                                    $auxIncentive  = $valueSuperIncentive1;
+                                    if ($result['obj2'] === true){
+                                        $auxIncentive  = $valueSuperIncentive2;
+                                    }
+                                }
+                                if ($auxIncentive == 0) {
+                                    $auxIncentive = 0;
                                 }
                             }
-                            if ($auxIncentive == 0) {
-                                $auxIncentive = 0;
+                            if (!in_array($trackingRow->employee_id, $supervisors)) {
+                                $total[$trackingRow->employee_id]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
+                            }
+                            //Solo aplica bonus de venta, para supervisores activos en fecha fin de corte
+                            if ($isSupervisorActive == false) {
+                                $total[$supervisorId]['total_super_incentive']  = 0; 
+                            } else {
+                                    $total[$supervisorId]['total_super_incentive']         += $auxIncentive * $trackingRow->quantity; 
+                                    $total[$supervisorId]['total_super_incentive']          = round($total[$supervisorId]['total_super_incentive'],2);
+                            }
+                            $total[$supervisorId]['total_income']                   = $total[$supervisorId]['total_incentive']; 
+                            if ($centre['id'] != env('ID_CENTRE_HCT')){ 
+                                $total[$supervisorId]['total_income'] += $total[$supervisorId]['total_super_incentive']; 
+                            }
+
+                            $total[$supervisorId]['total_income']                   = round($total[$supervisorId]['total_income'],2);
+                            $total[$supervisorId]['is_supervisor'] = 1;
+                        }
+                    }
+                    if (!isset($auxIncentive)) {
+                        $auxIncentive = 0;
+                    }
+
+                    // $auxIncentive == null ?  $auxIncentive = 0: $auxIncentive;
+                    $totalCentre[$centre['name']]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
+                    $totalCentre[$centre['name']]['total_super_incentive']  = round($totalCentre[$centre['name']]['total_super_incentive'], 2);
+
+                    $eIds = array_keys($total);
+                    if ($i == count($tracking[$centre['name']]) -1) {
+                        $employees = Employee::select('employees.id as employee_id','centres.id as centre_id','centres.name as centre_name', 'employees.cancellation_date')
+                        ->leftJoin('centres', 'centres.id', '=', 'employees.centre_id')
+                        ->whereIn('employees.id' , $eIds)
+                        ->get();
+                        foreach ($employees as $employee) {
+                            $total[$employee->employee_id]['centre']            = empty($employee->centre_name) ? '' : $employee->centre_name; 
+                            $total[$employee->employee_id]['cancellation_date'] = $employee->cancellation_date; 
+                        }
+                        if ($centre['id'] == env('ID_CENTRE_HCT')){ 
+                            foreach ($supervisors as $supervisorId ) {
+                                $supervisorId = trim($supervisorId);
+                                $total[$supervisorId]['total_super_incentive']         /= count($supervisors);
+                                $total[$supervisorId]['total_super_incentive']          = round($total[$supervisorId]['total_super_incentive'],2);
+                                $total[$supervisorId]['total_income']                   += $total[$supervisorId]['total_super_incentive']; 
                             }
                         }
-                        if (!in_array($trackingRow->employee_id, $supervisors)) {
-                            $total[$trackingRow->employee_id]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
-                        }
-                        //Solo aplica bonus de venta, para supervisores activos en fecha fin de corte
-                        if ($isSupervisorActive == false) {
-                            $total[$supervisorId]['total_super_incentive']  = 0; 
-                        } else {
-                                $total[$supervisorId]['total_super_incentive']         += $auxIncentive * $trackingRow->quantity; 
-                                $total[$supervisorId]['total_super_incentive']          = round($total[$supervisorId]['total_super_incentive'],2);
-                        }
-                        $total[$supervisorId]['total_income']                   = $total[$supervisorId]['total_incentive']; 
-                        if ($centre['id'] != env('ID_CENTRE_HCT')){ 
-                            $total[$supervisorId]['total_income'] += $total[$supervisorId]['total_super_incentive']; 
-                        }
-
-                        $total[$supervisorId]['total_income']                   = round($total[$supervisorId]['total_income'],2);
-                        $total[$supervisorId]['is_supervisor'] = 1;
+                        
+                        $totalCentre[$centre['name']]['details'] = $total;
+                        $totalCentre[$centre['name']]['total_income'] += $totalCentre[$centre['name']]['total_incentive'] + $totalCentre[$centre['name']]['total_super_incentive']; 
                     }
-                }
-                $auxIncentive == null ?  $auxIncentive = 0: $auxIncentive;
-                $totalCentre[$centre['name']]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
-                $totalCentre[$centre['name']]['total_super_incentive']  = round($totalCentre[$centre['name']]['total_super_incentive'], 2);
-
-                $eIds = array_keys($total);
-                if ($i == count($tracking[$centre['name']]) -1) {
-                    $employees = Employee::select('employees.id as employee_id','centres.id as centre_id','centres.name as centre_name', 'employees.cancellation_date')
-                    ->leftJoin('centres', 'centres.id', '=', 'employees.centre_id')
-                    ->whereIn('employees.id' , $eIds)
-                    ->get();
-                    foreach ($employees as $employee) {
-                        $total[$employee->employee_id]['centre']            = empty($employee->centre_name) ? '' : $employee->centre_name; 
-                        $total[$employee->employee_id]['cancellation_date'] = $employee->cancellation_date; 
-                    }
-                    if ($centre['id'] == env('ID_CENTRE_HCT')){ 
-                        foreach ($supervisors as $supervisorId ) {
-                            $supervisorId = trim($supervisorId);
-                            $total[$supervisorId]['total_super_incentive']         /= count($supervisors);
-                            $total[$supervisorId]['total_super_incentive']          = round($total[$supervisorId]['total_super_incentive'],2);
-                            $total[$supervisorId]['total_income']                   += $total[$supervisorId]['total_super_incentive']; 
-                        }
-                    }
-                    
-                    $totalCentre[$centre['name']]['details'] = $total;
-                    $totalCentre[$centre['name']]['total_income'] += $totalCentre[$centre['name']]['total_incentive'] + $totalCentre[$centre['name']]['total_super_incentive']; 
-                }
+            }
+            
+            return $totalCentre; 
+        } catch (Exception $e) {
+            \Log::debug($e);
         }
-        
-        return $totalCentre; 
     }
 
     //Tener en cuenta usuarios dados de baja antes de fecha de corte

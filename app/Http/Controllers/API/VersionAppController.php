@@ -71,7 +71,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
             $appVersion = $request['version'];
             chdir(env('DIR_GIT_VERSIONES'));
             exec('touch  git_log.txt   && chown www-data:www-data git_log.txt && chmod 777  git_log.txt 2>&1');
-            $lastChanges = exec('git log origin/master --oneline > git_log.txt');
+            // $lastChanges = exec('git log origin/master --oneline > git_log.txt');
             $content = fopen(\Storage::path("public/versiones/git_log.txt"),'r');
             $versionChanges = '';
                 while (!feof($content)) {

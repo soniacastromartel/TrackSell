@@ -246,7 +246,6 @@
                             d.state = $('#state_id option:selected').val(),
                             d.date = $('#monthYearPicker').val(),
                             d.search = $('input[type="search"]').val()
-
                     },
                     dataSrc: function(json) {
                         $('#btnSubmit').show();
