@@ -9,19 +9,19 @@ use Adldap\Laravel\Facades\Adldap;
 use App\A3Empleado;
 use App\Mail\RegisteredUser;
 use Illuminate\Support\Facades\Mail;
-use Validator; 
+use Validator;
 use Illuminate\Support\Facades\Hash;
-use Auth; 
+use Auth;
 
 //use Illuminate\Support\Facades\Log;
 
 class AuthController extends BaseController
-{   
-    private $cauEmail; 
+{
+    private $cauEmail;
 
     public function __construct()
     {
-        $this->cauEmail      =  env('MAIL_TO_CAU'); 
+        $this->cauEmail      =  env('MAIL_TO_CAU');
         $this->copycauEmail  =  explode(',', env('MAIL_CC_CAU'));
     }
 
@@ -31,7 +31,7 @@ class AuthController extends BaseController
     public function register(Request $request)
     {
         \Log::channel('api')->info("Inicio Solicitud Acceso!");
-        $params = $request -> all();
+        $params = $request->all();
         \Log::channel('api')->info("Datos recibidos");
         \Log::channel('api')->info($params);
 
@@ -43,7 +43,7 @@ class AuthController extends BaseController
         ]);
         if ($validator->fails()) {
             \Log::channel('api')->info("Error solicitud acceso, error de validación  " . $validator->errors());
-            return $this->sendError('Validation Error.', $validator->errors());      
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $userLdap = [];
@@ -52,28 +52,27 @@ class AuthController extends BaseController
         if (!empty($user)) {
             $userLdap = $user->toArray();
         }
-       
-        if(!empty($userLdap)){
+
+        if (!empty($userLdap)) {
             // EL USUARIO YA SE HA VALIDADO
             if ($userLdap['validated'] != -1) {
                 \Log::channel('api')->info("Error solicitud acceso, usuario ya validado");
                 return $this->sendError('User validated no es -1.');
             }
-            
+
             //Comprobación que usuario existe en A3
-            $pending_validate_employee = A3Empleado::where(['NIF' => $params['dni']]); 
+            $pending_validate_employee = A3Empleado::where(['NIF' => $params['dni']]);
 
             if (empty($pending_validate_employee->first())) {
-                $errormessage = "Error solicitud acceso, empleado no se encuentra en A3, se envía correo a " . $this->cauEmail ; 
+                $errormessage = "Error solicitud acceso, empleado no se encuentra en A3, se envía correo a " . $this->cauEmail;
                 foreach ($this->copycauEmail as $cc) {
-                   $errormessage = ';' . $cc; 
+                    $errormessage = ';' . $cc;
                 }
                 \Log::channel('api')->info($errormessage);
-                $this->sendEmailErrorRegister($params); 
-
+                $this->sendEmailErrorRegister($params);
             } else {
 
-                 // Se define una contraseña temporal para usarios nuevos, 
+                // Se define una contraseña temporal para usarios nuevos, 
                 // hasta que se proceda a su validación.
                 $userData['pending_password'] = env('CHANGING_PASS_WORD');
                 $userData['password'] = env('RESPONSE_PENDING_VALIDATION');
@@ -82,36 +81,59 @@ class AuthController extends BaseController
                 $userData['password'] = bcrypt($request->password);
 
                 $userExists->update($userData);
-                $message = "Ok procesada solicitud acceso, se envía correo a " . $this->cauEmail  ; 
+                $message = "Ok procesada solicitud acceso, se envía correo a " . $this->cauEmail;
                 foreach ($this->copycauEmail as $cc) {
-                    $message = ';' . $cc; 
+                    $message = ';' . $cc;
                 }
                 \Log::channel('api')->info($message);
-                $this->sendEmailOkRegister($params); 
-                return $this->sendResponse(['username'      =>$userLdap['username']
-                                            , 'name'        =>$userLdap['name']
-                                            , 'dni'         =>$userLdap['dni']
-                                            ]
-                                        , 'ok');
-
+                $this->sendEmailOkRegister($params);
+                return $this->sendResponse(
+                    [
+                        'username'      => $userLdap['username'], 'name'        => $userLdap['name'], 'dni'         => $userLdap['dni']
+                    ],
+                    'ok'
+                );
             }
-           
-        } else{  
-            $errormessage = "Error solicitud acceso, empleado no se encuentra en AD, se envía correo a " . $this->cauEmail ; 
+        } else {
+            $errormessage = "Error solicitud acceso, empleado no se encuentra en AD, se envía correo a " . $this->cauEmail;
             foreach ($this->copycauEmail as $cc) {
-                $errormessage = ';' . $cc; 
+                $errormessage = ';' . $cc;
             }
             \Log::channel('api')->info($errormessage);
-            $this->sendEmailErrorRegister($params); 
-        }   
+            $this->sendEmailErrorRegister($params);
+        }
         return $this->sendError('Ha ocurrido un error', 500);
         \Log::channel('api')->info("Fin Solicitud Acceso!");
+    }
+
+
+    /**
+     * Solicitud Desbloqueo
+     */
+    public function unlockRequest(Request $request)
+    {
+        \Log::channel('api')->info("Solicitud de Desbloqueo");
+        $params = $request->all();
+        \Log::channel('api')->info("Datos recibidos");
+        \Log::channel('api')->info($params);
+
+        // Validación que viene datos mínimos desde Front
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+        ]);
+        if ($validator->fails()) {
+            \Log::channel('api')->info("Error solicitud desbloqueo, error de validación  " . $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $this->sendEmailUnlockRequest($params);
+        $this->unlockRequestUpdate($params);
     }
 
     /** Metodo procesa correo de error en solicitud acceso ( no se encuentra en AD / A3 ) */
     public function sendEmailErrorRegister($params)
     {
-        
+
         $user = [];
         // EL USUARIO NO EXISTE EN LA BD
         $user['dni']        = $params['dni'];
@@ -119,7 +141,7 @@ class AuthController extends BaseController
         $user['infoDevice'] = $params['infoDevice'];
 
         $emailData = $user;
-        $emailData['subject'] = 'Error en solicitud accesso de empleado, no se encuentran datos '; 
+        $emailData['subject'] = 'Error en solicitud accesso de empleado, no se encuentran datos ';
         $emailData['view']    = 'emails.registered_employee';
 
         /**
@@ -127,10 +149,11 @@ class AuthController extends BaseController
          */
         Mail::to($this->cauEmail)
             ->cc($this->copycauEmail)
-            ->send(new RegisteredUser( $emailData));
-        return $this->sendResponse([],env('REQUESTED'));
+            ->send(new RegisteredUser($emailData));
+        return $this->sendResponse([], env('REQUESTED'));
     }
 
+    /** Metodo procesa correo de  solicitud acceso */
     public function sendEmailOkRegister($params)
     {
         $user = [];
@@ -139,18 +162,57 @@ class AuthController extends BaseController
         $user['name']       = $params['name'];
         $user['infoDevice'] = $params['infoDevice'];
 
-        $emailData = $user; 
-        $emailData['subject'] = 'Se ha recibido una nueva solicitud accesso de empleado'; 
-        $emailData['view']    = 'emails.registered_employee'; 
+        $emailData = $user;
+        $emailData['subject'] = 'Se ha recibido una nueva solicitud accesso de empleado';
+        $emailData['view']    = 'emails.registered_employee';
 
 
         /**
-         * ENVIAR CORREO ERROR SOLICITUD ACCESO
+         * ENVIAR CORREO  SOLICITUD ACCESO
          */
         Mail::to($this->cauEmail)
             ->cc($this->copycauEmail)
-            ->send(new RegisteredUser( $emailData));
-        return $this->sendResponse([],env('REQUESTED')); 
+            ->send(new RegisteredUser($emailData));
+        return $this->sendResponse([], env('REQUESTED'));
+    }
+
+
+    /** Metodo procesa correo de  solicitud desbloqueo */
+    public function sendEmailUnlockRequest($params)
+    {
+        $user = [];
+        $user['username']       = $params['username'];
+        $user['name']       = $params['name'];
+
+        $emailData = $user;
+        $emailData['subject'] = 'Se ha recibido una solicitud de desbloqueo de cuenta';
+        $emailData['view']    = 'emails.blocked_account';
+
+
+        /**
+         * ENVIAR CORREO  SOLICITUD DESBLOQUEO
+         */
+        Mail::to($this->cauEmail)
+            ->cc($this->copycauEmail)
+            ->send(new RegisteredUser($emailData));
+        return $this->sendResponse([], env('REQUESTED'));
+    }
+
+
+    /**
+     * Actualiza el unlockRequest en la base de datos 
+     * (solicitud de desbloqueo previa: false, true)
+     */
+    public function unlockRequestUpdate($params)
+    {
+        $user       = $params['username'];
+        if (!empty($user)) {
+            $employee = Employee::whereRaw("BINARY username = ?", [$user])->first();
+            if (!empty($employee)) {
+                $employee->update(['unlockRequest' => 1]);
+                return $this->sendResponse('', 200);
+            }
+        }
     }
 
     /**
@@ -159,79 +221,82 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         $initResult = $this->statusEmployee($request);
-        if($initResult == env('RESPONSE_OK')){
+        if ($initResult == env('RESPONSE_OK')) {
             return $this->accessToEmployee($request);
-        } else{
+        } else {
             return $this->sendError($initResult);
-        }    
+        }
     }
+
 
     /**
      * Method auxiliar, realiza la comprobación del estado actual del empleado
      */
-    protected function statusEmployee(Request $request){
-        $params = $request -> all();
-        $employee = Employee::whereRaw("BINARY username = ?", [$params['username']]) 
-        -> where(function($query) {
-            $query->where('cancellation_date','>',date('Y-m-d'))
-                  ->orWhereNull('cancellation_date');
-        })
-        -> get();
-        $employee = $employee -> toArray();
-        if(!empty($employee)){
+    protected function statusEmployee(Request $request)
+    {
+        $params = $request->all();
+        $employee = Employee::whereRaw("BINARY username = ?", [$params['username']])
+            ->where(function ($query) {
+                $query->where('cancellation_date', '>', date('Y-m-d'))
+                    ->orWhereNull('cancellation_date');
+            })
+            ->get();
+        $employee = $employee->toArray();
+        if (!empty($employee)) {
             // Usuario existe
             $param = $request->all();
             $employee = Employee::where('username', $param['username'])->get();
-            if($employee[0]['validated'] == 1){
+            if ($employee[0]['validated'] == 1) {
                 // Usuario existe y está validado
-                if($employee[0]['pending_password'] == null){
-                    if($employee[0]['count_access'] >= 3){
+                if ($employee[0]['pending_password'] == null) {
+                    if ($employee[0]['count_access'] >= 3) {
                         return env('ACCOUNT_BLOCK');
-                    } else{
+                    } else {
                         // Usuario existe, está validado y tiene su contraseña definida
                         Employee::updatingAccess($employee[0]['employee_idd'], 0);
                         return env('RESPONSE_OK');
-                    }                    
-                } else if($employee[0]['pending_password'] == env('RESPONSE_PENDING_VALIDATION')){
+                    }
+                } else if ($employee[0]['pending_password'] == env('RESPONSE_PENDING_VALIDATION')) {
                     // Pendiente de validación
                     return env('RESPONSE_PENDING_VALIDATION');
-                } else{
+                } else {
                     // Pendiente de regeneración de nueva contraseña
                     return env('RESPONSE_PENDING_CHANGE_PASS');
                 }
-            } else{
+            } else {
                 // Usuario existe pero no está validado
                 return env('RESPONSE_PENDING_VALIDATION');
             }
-        } else{
+        } else {
             // Usuario no existe en el sistema.
             return env('RESPONSE_NO_VALID');
-        }  
+        }
     }
 
     /**
      * METODO AUXILIAR ACCESO LOGIN
      */
-    public function accessToEmployee(Request $request){
+    public function accessToEmployee(Request $request)
+    {
         $loginData = $request->validate([
-        'username' => 'required',
-        'password' => 'required'
+            'username' => 'required',
+            'password' => 'required'
         ]);
-        
-        $ldapAccess = false; 
+
+        $ldapAccess = false;
         if (!Auth::guard('web_local')->attempt($request->only('username', 'password'))) {
-            $ldapAccess = true; 
+            $ldapAccess = true;
             if (!Auth::attempt($request->only('username', 'password'))) {
-                return $this->sendError('Invalid Credentials'); 
-            } 
+                return $this->sendError('Invalid Credentials');
+            }
         }
-    
-        $employeeData = [];    
+
+        $employeeData = [];
         if ($ldapAccess) {
-            $success['access_token'] =auth()->user()->createToken('authToken')->accessToken;
-            $employeeData = auth()->user(); 
+            $success['access_token'] = auth()->user()->createToken('authToken')->accessToken;
+            $employeeData = auth()->user();
         } else {
-            $success['access_token'] =Auth::guard('web_local')->user()->createToken('authToken')->accessToken;    
+            $success['access_token'] = Auth::guard('web_local')->user()->createToken('authToken')->accessToken;
             $employeeData = Auth::guard('web_local')->user();
         }
         $auxEmployeeData = $employeeData->toArray();
@@ -247,80 +312,84 @@ class AuthController extends BaseController
         $eData->phone            = $auxEmployeeData['phone'];
         $eData->category         = $auxEmployeeData['category'];
         $eData->count_access     = $auxEmployeeData['count_access'];
+        $eData->unlockRequest    = $auxEmployeeData['unlockRequest'];
         $success['user']         = $eData;
-    
+
         // Reseteo de contador de acceso tras inicio correcto
         $employee = Employee::where('username', $request['username']);
         $employeeArray = $employee->get()->toArray();
 
-         // Se guarda la version actual del dispositivo
-         Employee::updatingRegistryVersion($employeeArray[0]['username'], $request['version']);
-         // Control conteo de accesos
-        if(!empty($employee)){
-            Employee::updatingAccess($success['user']['id'], 0);
+        // Se guarda la version actual del dispositivo
+        Employee::updatingRegistryVersion($employeeArray[0]['username'], $request['version']);
+        // Control conteo de accesos
+        if (!empty($employee)) {
+            Employee::updatingAccess($success['user']['id'], 0); 
+            Employee::updatingUnlockRequest($request['username']);//TODO metodo para update unlockRequest añadir
         }
-            return $this->sendResponse($success, 'Usuario logueado!!');
+        return $this->sendResponse($success, 'Usuario logueado!!');
     }
 
     /**
      * Solicitud de recuperación de contraseña empleados.
      */
-    public function recoveryPass(Request $request){
-        $employee_exists = $this -> statusEmployee($request);
-        $params = $request -> all();
+    public function recoveryPass(Request $request)
+    {
+        $employee_exists = $this->statusEmployee($request);
+        $params = $request->all();
         $sct = $params['secret'];
-        if($employee_exists == env('RESPONSE_OK')){
-            if($sct != null){
-                if($sct == 'InformaticTeam'){
-                    if($params['name'] != null){
-                        $isValid = $this -> getName($request);
+        if ($employee_exists == env('RESPONSE_OK')) {
+            if ($sct != null) {
+                if ($sct == 'InformaticTeam') {
+                    if ($params['name'] != null) {
+                        $isValid = $this->getName($request);
                         $userName = $params['username'];
-                        if($userName != null){
-                            if($isValid){                        
-                                return $this->sendResponse([], env('RESPONSE_OK'));   
-                            } else{
+                        if ($userName != null) {
+                            if ($isValid) {
+                                return $this->sendResponse([], env('RESPONSE_OK'));
+                            } else {
                                 return $this->sendResponse([], env('HACK'));
-                            } 
-                        } else{
+                            }
+                        } else {
                             return $this->sendResponse([], env('REQUESTED'));
-                        } 
-                    } else{
+                        }
+                    } else {
                         return $this->sendResponse([], env('REQUESTED'));
-                    }                   
-                } else{
+                    }
+                } else {
                     // ACCESO DENEGADO
                     return $this->sendResponse([], env('INVALID_SECRET'));
-                }                
+                }
             } else {
                 return $this->sendResponse([], env('REQUESTED'));
-            }  
-        } else{
-            switch($employee_exists){
+            }
+        } else {
+            switch ($employee_exists) {
                 case 'pending_password':
-                    if($this -> getName(($request))){
-                        return $this->sendResponse([], env('RESPONSE_OK')); 
-                    } else{
+                    if ($this->getName(($request))) {
+                        return $this->sendResponse([], env('RESPONSE_OK'));
+                    } else {
                         return $this->sendResponse([], env('REQUESTED'));
                     }
                     break;
                 case 'pending_validation':
-                    return $this->sendResponse([],env('RESPONSE_PENDING_VALIDATION'));
+                    return $this->sendResponse([], env('RESPONSE_PENDING_VALIDATION'));
                 case 'no_valid':
                     return $this->sendResponse([], env('RESPONSE_NO_VALID'));
                 case 'block':
                     return $this->sendResponse([], env('ACCOUNT_BLOCK'));
-            }           
-        }        
+            }
+        }
     }
 
     /**
      * Comprueba que el nombre recibido es el mismo que el del 
      * empleado guardado en el sistema
      */
-    public function getName(Request $request){
+    public function getName(Request $request)
+    {
         $params = $request->all();
-        $username = $params['username']; 
-        $exists = Employee::where(['username' => $username, 'name' => $params['name']])-> first();
+        $username = $params['username'];
+        $exists = Employee::where(['username' => $username, 'name' => $params['name']])->first();
         return !empty($exists);
     }
 
@@ -328,27 +397,28 @@ class AuthController extends BaseController
     /**
      * Cambio automático de password por parte del usuario
      */
-    public function changingPass(Request $request){
+    public function changingPass(Request $request)
+    {
         $params = $request->all();
-        
-    
-        $user = Employee::where(function($query) use ($params){
+
+
+        $user = Employee::where(function ($query) use ($params) {
             if (isset($params['dni'])) {
-                $query->where('dni','=',$params['dni']);
+                $query->where('dni', '=', $params['dni']);
             }
             if (isset($params['name'])) {
-                $query->where('name','=',$params['name']);
+                $query->where('name', '=', $params['name']);
             }
             if (isset($params['username'])) {
-                $query->where('username','=',$params['username']);
+                $query->where('username', '=', $params['username']);
             }
         })->first();
-    
-        if(!empty([$user])){
+
+        if (!empty([$user])) {
             $pass = Hash::make($params['password']);
-            $user->update(['password'=>$pass, 'pending_password'=>null]);
+            $user->update(['password' => $pass, 'pending_password' => null]);
             return $this->sendResponse([], env('RESPONSE_OK'));
-        } else{
+        } else {
             return $this->sendResponse([], env('IDENTIFICATION_ERROR'));
         }
     }

@@ -39,6 +39,9 @@ Route::get('/getCenters', 'API\CentreController@getCenters');
 Route::get('/controlUser', 'API\EmployeeController@controlUser');
 
 Route::post('/register', 'API\AuthController@register');
+
+Route::post('/unlockRequest', 'API\AuthController@unlockRequest');
+
 Route::post('/login', 'API\AuthController@login');
 Route::post('/initCheck', 'API\AuthController@initCheck');
 Route::post('/recoveryPass', 'API\AuthController@recoveryPass');
