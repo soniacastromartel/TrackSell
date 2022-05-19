@@ -6,7 +6,7 @@
       Tip 2: you can also add an image using data-image tag
   -->
   <div class="sidebar-wrapper d-flex flex-column">
-    <img src="{{ asset('assets/img/whiteLogoPDI.png') }}" style="background-color: var(--red-color-icot); padding: 13px;">
+    <img src="{{ asset('assets/img/whiteLogoPDI.png') }}" style="background-color: var(--red-icot); padding: 13px;">
 
     <ul class="nav">
       <li id="userInfo" class="nav-item ">
@@ -142,7 +142,7 @@
           <ul class="nav">
             <li id="exportRecommendation" class="nav-item">
               <a class="nav-link" href="{{route('tracking.exportForm')}}">
-                <i class="material-icons">import_export</i>
+                <i class="material-icons">screen_share</i>
                 <span class="sidebar-normal"> Exportar recomendaciones </span>
               </a>
             </li>
@@ -154,7 +154,7 @@
             </li>
             <li id="calculateRanking" class="nav-item">
               <a class="nav-link" href="{{route('calculateRanking')}}">
-                <i class="material-icons">list</i>
+                <i class="material-icons">format_list_numbered</i>
                 <span class="sidebar-normal"> Rankings </span>
               </a>
             </li>
@@ -178,7 +178,7 @@
           <ul class="nav">
             <li id="supervisorNotificationsIndex" class="nav-item">
               <a class="nav-link" href="{{route('notifications.index')}}">
-                <i class="material-icons">import_export</i>
+                <i class="material-icons">mail</i>
                 <span class="sidebar-normal"> Avisos de supervisor</span>
               </a>
             </li>
@@ -207,7 +207,7 @@
   .lblVersion {
     bottom: 50px;
     width: 100%;
-    color: var(--red-color-icot);
+    color: var(--red-icot);
     text-align: center !important;
     font-weight: 900;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

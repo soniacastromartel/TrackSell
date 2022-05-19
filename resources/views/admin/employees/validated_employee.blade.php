@@ -93,7 +93,7 @@
             </div>
         </div>    
         <table class="table table-striped table-bordered employees-datatable col-md-12">
-            <thead>
+            <thead class="table-header">
                 <tr>
                 <th>Nombre</th>
                 <th>Usuario</th>

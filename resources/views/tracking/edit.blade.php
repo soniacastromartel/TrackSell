@@ -41,7 +41,13 @@
 
 <script type="text/javascript">
     $(function () {
+        $(".nav-item").each(function() {
+            $(this).removeClass("active");
+        });
+
         $('#pagesTracking').addClass('show');
+        $('#trackingStarted').addClass('active');
+
         
         $("#btnBack").on('click', function(){
             window.history.back();

@@ -1,14 +1,14 @@
 <div class="row">
   <div class="form-group col-md-4">
-    <label id="lbl" for="name">Nombre <span id="obligatory">*</span></label>
+    <label for="name">Nombre <span id="obligatory">*</span></label>
     <input type="text" class="form-control" name="name" id="name"  placeholder="" value="{{ isset($role) ? $role->name : ''}}">
   </div>
   <div class="form-group col-md-4">
-    <label id="lbl" for="name">Descripcion <span id="obligatory">*</span></label>
+    <label for="name">Descripción <span id="obligatory">*</span></label>
     <input type="text" class="form-control" name="description" id="description"  placeholder="" value="{{ isset($role) ? $role->description : ''}}">
   </div>
   <div class="form-group col-md-4 dropdown bootstrap-select">
-    <select class="selectpicker" name="level_id" id="level_id" data-size="7" data-style="btn btn-primary btn-round" 
+    <select class="selectpicker" name="level_id" id="level_id" data-size="7" data-style="btn btn-red-icot btn-round" 
       title="* Seleccione Nivel de Acceso" tabindex="-98">
       
       <option value="1" @if (isset($role) && $role->level_id == 1)  selected="selected" @endif>Admin</option>
@@ -34,15 +34,10 @@
 </div>
 <div class="row mb-0">
   <div class=" px-5 col-md-8">
-    <span id="lbl"><span id="obligatory">*</span> Estos campos son requeridos </span>
+    <label class="label"><span class="obligatory">*</span> Estos campos son requeridos </label>
   </div>
 </div>
 <style>
-  #lbl{
-    color: black;
-    font-weight: 800;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  }
 
   #obligatory{
     color: #CC0000;

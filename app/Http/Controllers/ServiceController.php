@@ -74,7 +74,7 @@ class ServiceController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            return view('admin.services.index', ['title' => $this->title ]);
+            return view('admin.services.index', ['title' => $this->title, 'user' => session()->get('user')]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar servicios, contacte con el administrador');
         }
@@ -360,7 +360,7 @@ class ServiceController extends Controller
             )
             ->distinct('services.name')
             ->orderBy('services.name')->get();
-            return view('admin.services.incentives', [ 'title'      => 'Servicios Incentivados' 
+            return view('admin.services.incentives', [ 'title'      => 'Incentivos - Servicios' 
                                                        , 'centres'  => $centres 
                                                        , 'services' => $services
                                                        , 'user'     => session()->get('user')

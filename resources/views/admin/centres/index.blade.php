@@ -23,15 +23,17 @@
 
 <div class="content">
     <div class="container-fluid">
+        @if ($user -> rol_id == 1)
         <div class="row col-md-12 mb-3 ">
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-addition btn-lg" > Nuevo</a>
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg" > Nuevo</a>
             </div>
         </div>    
+        @endif
         <table class="table table-bordered centres-datatable">
-            <thead>
+            <thead class="table-header">
                 <tr>
                 <th>Centro</th>
                 <th>Dirección</th>
@@ -39,7 +41,7 @@
                 <th>Email</th>
                 <th>Horario</th>
                 <th>Fecha baja</th>
-                <th></th>
+                <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>

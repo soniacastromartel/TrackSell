@@ -26,7 +26,7 @@
                 @endif
                 @if ($nDays != "")
                     <div class="alert alert-timeout alert-danger animacion" style="position:relative; left:10px;" role="alert">
-                            EN {{$nDays}} DÍAS LLEGA PROXIMO CORTE 20 de {{$currentMonth}}
+                            En {{$nDays}} días llega próximo corte, 20 de {{$currentMonth}}
                     </div>
                 @endif
                 <div id="formContent">

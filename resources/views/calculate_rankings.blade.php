@@ -34,48 +34,51 @@
                                 @csrf
                                 @method('POST')
 
-                                <div class="row px-5">
-                                    <div class="form-group col-md-2">
-                                        <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                                data-style="btn btn-primary btn-round" title=" Seleccione Centro"
-                                                tabindex="-98">
-
-                                                @foreach ($centres as $centre)
-                                                    <option value="{{ $centre->id }}">{{ $centre->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <input type="hidden" name="centre" id="centre" />
+                                <div class="row px-5" style="justify-content: space-between;" >
+                                    <div class="row col-md-8">
+                                        <div class="form-group col-md-4">
+                                            <div class="dropdown bootstrap-select">
+                                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                                    data-style="btn btn-red-icot btn-round" title=" Seleccione Centro"
+                                                    tabindex="-98">
+    
+                                                    @foreach ($centres as $centre)
+                                                        <option value="{{ $centre->id }}">{{ $centre->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <input type="hidden" name="centre" id="centre" />
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="form-group col-md-2">
-                                        <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="datepickerType" id="datepickerType"
-                                                data-size="7" data-style="btn btn-primary btn-round"
-                                                title=" Mensual / Anual" tabindex="-98">
-                                                <option value="1" selected>Mensual</option>
-                                                <option value="2">Anual</option>
-                                            </select>
+    
+                                        <div class="form-group col-md-4">
+                                            <div class="dropdown bootstrap-select">
+                                                <select class="selectpicker" name="datepickerType" id="datepickerType"
+                                                    data-size="7" data-style="btn btn-red-icot btn-round"
+                                                    title=" Mensual / Anual" tabindex="-98">
+                                                    <option value="1" selected>Mensual</option>
+                                                    <option value="2">Anual</option>
+                                                </select>
+                                            </div>
                                         </div>
+                                        <div id="monthYearPickerContainer" class="col-md-2">
+                                            <div class="input-group date mt-2">
+                                                <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm"/>
+                                                <input type="hidden" name="monthYear" id="monthYear" />
+                                            </div>
+                                        </div>
+                                        <div id="yearPickerContainer" class="form-group date col-md-1">
+                                            <input id="yearPicker" class='form-control' type="text" placeholder="yyyy"/>
+                                        </div>
+                                        
+
                                     </div>
-                                    <div class="form-group date px-2" style="padding-top: 15px;">
-                                        <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm"
-                                            style="width: 60px; display:inline; width: 60px" />
-                                    </div>
-                                    <div class="form-group date px-2" style="padding-top: 15px;">
-                                        <input id="yearPicker" class='form-control' type="text" placeholder="yyyy"
-                                            style="width: 60px; display:inline; width: 60px" />
-                                    </div>
-                                </div>
-                                <div class="row mt-2 px-5">
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                                             {{ __('Limpiar formulario') }}
                                         </button>
                                         <button id="btnSubmit" type="submit"
-                                            class="btn btn-fill btn-addition">{{ __('Calcular') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success"
+                                            class="btn btn-fill btn-dark-black">Exportar</button>
+                                        <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black"
                                             style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true"></span>
@@ -218,7 +221,7 @@
 
             var d = new Date();
             $("#yearPicker").datepicker("destroy");
-            $("#yearPicker").hide();
+            $("#yearPickerContainer").hide();
             showMonthYearPicker();
 
             $("#datepickerType").on('change', function(e) {
@@ -226,12 +229,12 @@
                 if (type == 1) {
                     showMonthYearPicker();
                     $("#yearPicker").datepicker("destroy");
-                    $("#yearPicker").hide();
-                    $('#monthYearPicker').show();
+                    $("#yearPickerContainer").hide();
+                    $('#monthYearPickerContainer').show();
                 } else {
                     showYearPicker();
-                    $('#yearPicker').show();
-                    $('#monthYearPicker').hide();
+                    $('#yearPickerContainer').show();
+                    $('#monthYearPickerContainer').hide();
                 }
             });
 
@@ -242,7 +245,7 @@
                 $('#monthYearPicker').MonthPicker();
                 $('#monthYearPicker').MonthPicker({
                     ShowIcon: true,
-                    Button: '<img src="assets/img/calendar.gif" title="Select date" />'
+                //     Button: '<img src="assets/img/calendar.gif" title="Select date" />'
                 });
             }
 
@@ -255,8 +258,8 @@
                 $.datepicker.setDefaults($.datepicker.regional['es']);
                 $('#yearPicker').val(textYear);
                 $('#yearPicker').datepicker({
-                    showOn: "button",
-                    buttonImage: "assets/img/calendar.gif",
+                    // showOn: "button",
+                    // buttonImage: "assets/img/calendar.gif",
                     selectedDate: true,
                     changeMonth: false,
                     changeYear: true,

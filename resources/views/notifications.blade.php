@@ -21,27 +21,37 @@
 
 <div class="content">
     <div class="container-fluid">
-        <div class="row col-md-12 mb-3 ">
-            <div class="col-md-1 form-group input-group date" style="padding-top: 15px;">
-                <label for="monthYearPicker">Fecha: </label>
-                <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
-                <input type="hidden" name="monthYear" id="monthYear" />
+        <div class="card ">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Notificaciones</h4>
             </div>
+            <div class="card-body">
+                <div class="row col-md-12 mb-3 justify-between">
+                    <div class="col-md-2">
+                        <div class="mt-2 input-group date">
+                            <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
+                            <input type="hidden" name="monthYear" id="monthYear" />
+                        </div>
+                    </div>
 
-            <div class="col-md-3  mt-2">
-                <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                    {{ __('Limpiar formulario') }}
-                </button>
-                <button id="btnSubmit" type="submit" class="btn btn-fill btn-outline-corporate">{{ __('Buscar') }}</button>
-                <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    {{ __('Obteniendo datos...') }}
-                </button>
+                    <div class="row align-content-end">
+                        <button id="btnClear" href="#" class="btn btn-fill btn-warning button-size">
+                            {{ __('Limpiar formulario') }}
+                        </button>
+                        <button id="btnSubmit" type="submit" class="btn btn-fill button-size">{{ __('Buscar') }}</button>
+                        <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            {{ __('Obteniendo datos...') }}
+                        </button>
+                    </div>
+
+                </div>
+
+
             </div>
-
         </div>
         <table class="table table-bordered notifications-datatable">
-            <thead>
+            <thead class="table-header">
                 <tr>
                     <th>ID</th>
                     <th>Empleado</th>
@@ -58,7 +68,6 @@
 
 <script type="text/javascript">
     var table;
-    btn - addition
     var columnsFilled = [];
     columnsFilled.push({
         data: 'id',
@@ -253,5 +262,10 @@
         table.columns.adjust().draw();
     }
 </script>
+<style>
+    .button-size {
+        height: 39px;
+    }
+</style>
 
 @endsection

@@ -29,6 +29,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
+        'check-admin-permission' =>[\App\Http\Middleware\CheckAdminPermission::class],
         'check-permission' => [\App\Http\Middleware\CheckPermision::class ],
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,

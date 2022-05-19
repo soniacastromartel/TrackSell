@@ -47,7 +47,7 @@ class CentreController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            return view('admin.centres.index', ['title' => $this->title]);
+            return view('admin.centres.index', ['title' => $this->title, 'user' => session()->get('user')]);
             
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar centros, contacte con el administrador');

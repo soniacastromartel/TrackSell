@@ -49,7 +49,7 @@
                     </div>
                     <div class="card-body ">
                         <table class="table table-bordered request-changes-datatable">
-                            <thead>
+                            <thead class="table-header">
                                 <tr>
                                     <th>Fecha inicio</th>
                                     <th>Fecha fin</th>

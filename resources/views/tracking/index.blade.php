@@ -22,15 +22,14 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row col-md-12 mb-3 ">
-            <div class="col-md-1 form-group input-group date" style="padding-top: 15px;">
-                <label for="monthYearPicker">Fecha: </label>
+            <div class="col-md-2 form-group input-group date" style="padding-top: 15px;">
                 <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
                 <input type="hidden" name="monthYear" id="monthYear" />
             </div>
 
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
                 <div class="dropdown bootstrap-select">
-                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-primary btn-round" title=" Seleccione Centro" tabindex="-98">
+                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
                         @foreach ($centres as $centre)
                         <option value="{{$centre->id}}">{{$centre->name}}</option>
                         @endforeach
@@ -40,7 +39,7 @@
 
             <div class="form-group col-md-2">
                 <div class="dropdown bootstrap-select">
-                    <select class="selectpicker" name="state_id" id="state_id" data-size="7" data-style="btn btn-primary btn-round" title=" Seleccione Estado" tabindex="-98">
+                    <select class="selectpicker" name="state_id" id="state_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Estado" tabindex="-98">
                         @foreach ($states as $state)
                         <option value="{{  $state  }}">{{$state}}</option>
                         @endforeach
@@ -52,18 +51,18 @@
                 <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                     {{ __('Limpiar formulario') }}
                 </button>
-                <button id="btnSubmit" type="submit" class="btn btn-fill btn-outline-corporate">{{ __('Buscar') }}</button>
-                <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                <button id="btnSubmit" type="submit" class="btn btn-fill">{{ __('Buscar') }}</button>
+                <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Obteniendo datos...') }}
                 </button>
             </div>
             <div class="col-md-2 text-right" id="blockNewTracking">
-                <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-addition btn-lg"> Nuevo Seguimiento</a>
+                <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"> Nuevo Seguimiento</a>
             </div>
         </div>
         <table class="table table-bordered tracking-datatable">
-            <thead>
+            <thead class="table-header">
                 <tr>
                     <th>Centro Prescriptor</th>
                     <th>Empleado</th>

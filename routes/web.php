@@ -21,12 +21,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['check-permission'])->group(function () {
-    Route::get('/admin/roles', 'RoleController@index')->name('roles.index');
-    Route::get('/admin/roles/create', 'RoleController@create')->name('roles.create');
-    Route::get('/admin/roles/edit/{id}', 'RoleController@edit')->name('roles.edit');
-    Route::put('/admin/roles/update/{id}', 'RoleController@update')->name('roles.update');
-    Route::post('/admin/roles', 'RoleController@store')->name('roles.store');
-
 
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
     Route::get('/admin/employees/validation', 'EmployeeController@indexPending')->name('employees.indexPending');
@@ -96,6 +90,14 @@ Route::middleware(['check-permission'])->group(function () {
 
     Route::any('/notifications/index', 'NotificationController@index')->name('notifications.index');
 
+});
+
+Route::middleware(['check-admin-permission'])->group(function () {
+    Route::get('/admin/roles', 'RoleController@index')->name('roles.index');
+    Route::get('/admin/roles/create', 'RoleController@create')->name('roles.create');
+    Route::get('/admin/roles/edit/{id}', 'RoleController@edit')->name('roles.edit');
+    Route::put('/admin/roles/update/{id}', 'RoleController@update')->name('roles.update');
+    Route::post('/admin/roles', 'RoleController@store')->name('roles.store');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <div class="row col-md-12">
                 <table class="table table-bordered  tracking-delete-datatable">
-                    <thead>
+                    <thead  class="table-header">
                         <th>Centro Prescriptor</th>
                         <th>Empleado </th>
                         <th>H.C.</th>
@@ -34,7 +34,7 @@
                         <th>Fecha Servicio</th>
                         <th>Fecha Facturación</th>
                         <th>Fecha Validación</th>
-                        <th></th>
+                        <th>Acciones</th>
                     </thead>
                     <tbody>
                     </tbody>
@@ -42,6 +42,15 @@
         </div>
     </div>
 </div>
+<style>
+    .col-md-12{
+        padding: 0;
+    }
+    .row{
+        justify-content: center;
+        margin: 0;
+    }
+</style>
 
 <script type="text/javascript">
     var table; 

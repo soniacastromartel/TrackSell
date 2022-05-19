@@ -49,89 +49,70 @@
 </style>
 <div class="content">
     <div class="container-fluid">
-        <div class="row col-md-12 mb-3 ">
-
-            <div class="form-group col-md-3">
-                <div class="dropdown bootstrap-select">
-                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-primary btn-round" title=" Seleccione Centro" tabindex="-98">
-
-                        @foreach ($centres as $centre)
-                        <option value="{{$centre->id}}">{{$centre->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Configuración</h4>
             </div>
-
-            <div class="form-group col-md-3">
-                <div class="dropdown bootstrap-select">
-                    <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-primary btn-round" title=" Seleccione Servicio" tabindex="-98">
-
-                        @foreach ($services as $service)
-                        <option value="{{  $service->id  }}">{{$service->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-md-3  mt-2">
-                <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                    {{ __('Limpiar formulario') }}
-                </button>
-                <button id="btnSubmit" type="submit" class="btn btn-fill btn-outline-corporate">{{ __('Buscar') }}</button>
-                <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    {{ __('Obteniendo datos...') }}
-                </button>
-            </div>
-        </div>
-        <div class="row col-md-12 mb-3">
-            <div class="col-md-3 mt-2">
-                @if ( $user->rol_id == 1)
-                <form id="importTargetForm" method="POST">
-                    @csrf
-                    <div class="form-group" style="margin-top:6px">
-                        <div id="btnImportIncentives" class="file-upload btn btn-rose">
-                            <input type="file" name="targetInputIncentiveFile" id="targetInputIncentiveFile" class="upload" />
-                            <span>{{ __('Importar Incentivos Exclusivos') }}</span>
+            <div class="card-body">
+                <div class="row col-md-12 mb-3 justify-between">
+                    <div class="row col-lg-8 col-md-5">
+                        <div class="form-group col-md-5">
+                            <div class="dropdown bootstrap-select">
+                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
+    
+                                    @foreach ($centres as $centre)
+                                    <option value="{{$centre->id}}">{{$centre->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <button id="targetInputFileLoad" type="submit" class="file-upload btn btn-success" style="display: none">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            {{ __('Importando datos...') }}
-                        </button>
-                        <input type="text" id="fileuploadurl" readonly placeholder="Tamaño máximo de fichero son 2MB">
+    
+                        <div class="form-group col-md-5">
+                            <div class="dropdown bootstrap-select">
+                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
+    
+                                    @foreach ($services as $service)
+                                    <option value="{{  $service->id  }}">{{$service->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
-            @endif
+                    <div class="mt-2">
+                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                            {{ __('Limpiar formulario') }}
+                        </button>
+                        <button id="btnSubmit" type="submit" class="btn btn-fill">{{ __('Buscar') }}</button>
+                        <button id="btnSubmitLoad" type="submit" class="btn btn-red-icot" style="display: none">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            {{ __('Obteniendo datos...') }}
+                        </button>
+                    </div>
 
-            <div class="col-md-3 mt-2">
-                <button id="btnExportIncentives" type="submit" class="btn btn-fill btn-blue">{{ __('Exportar servicios incentivados') }}</button>
-                <button id="targetExportFileLoad" type="submit" class="file-upload btn btn-blue" style="display: none">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    {{ __('Exportando datos...') }}
-                </button>
-            </div>
+                </div>
+
         </div>
-        <div class="col-md-12 mb-3 ">
-            <table class="table table-bordered services-datatable" style="width:100%;">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Centro</th>
-                        <th>Precio</th>
-                        <th>Incentivo Directo</th>
-                        <th>Incentivo Objetivo 1</th>
-                        <th>Incentivo Objetivo 2</th>
-                        <th>Bonus Objetivo 1</th>
-                        <th>Bonus Objetivo 2</th>
-                        <th>Fecha baja</th>
-                        <th>Acciones </th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+
+    </div>
+    <div class="col-md-12 mb-3 ">
+        <table class="table table-bordered services-datatable" style="width:100%;">
+            <thead class="table-header">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Centro</th>
+                    <th>Precio</th>
+                    <th>Incentivo Directo</th>
+                    <th>Incentivo Objetivo 1</th>
+                    <th>Incentivo Objetivo 2</th>
+                    <th>Bonus Objetivo 1</th>
+                    <th>Bonus Objetivo 2</th>
+                    <th>Fecha baja</th>
+                    <th>Acciones </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
 

@@ -3,45 +3,46 @@
 
 <div class="row px-5 mt-2">
   <div class="form-group col-lg-2">
-    <label id="lbl" for="name">Fecha <span id="obligatory">*</span></label>
+    <div class="form-group">
+      <label clafor="name">Fecha <span class="obligatory">*</span></label>
+    </div>
     <input type="date" id="tracking_date" name="tracking_date" max="3000-12-31" 
     min="1000-01-01" value="{{ isset($tracking_date) ? $tracking_date : ''}}" class="form-control"/>
   </div>
-</div>
-
-<div class="row px-5 mt-2">
-  <div class="form-group">
-    <label id="lbl" for="name">Tipo de identificación <span id="obligatory">*</span> (Introducir al menos uno) </label>
-  </div>
-</div>
-<div class="row px-5">
-  <div class="form-group col-lg-2 ml-4" id='fieldHC'>
-    <label id="subLbl" for="name">H.C </label>
-    <input type="text" class="form-control" name="hc" id="hc"  placeholder="" value="{{ isset($tracking) ? $tracking->hc : ''}}">
-  </div> 
-  <div class="form-group col-lg-2 ml-4" id='fieldDNI'>
-    <label id="subLbl" for="name">DNI </label>
-    <input type="text" class="form-control" name="dni" id="dni"  placeholder="" value="{{ isset($tracking) ? $tracking->dni : ''}}">
-  </div>
-  <div class="form-group col-lg-2 ml-4" id='fieldPhone'>
-    <label id="subLbl" for="name">TELÉFONO  </label>
-    <input type="text" class="form-control" name="phone" id="phone"  placeholder="" value="{{ isset($tracking) ? $tracking->phone : ''}}">
-  </div> 
-</div>
-
-<div class="row px-5 mt-5">
   <div class="form-group col-lg-4">
-    <label id="lbl" for="patient_name">Paciente <span id="obligatory">*</span></label>
+    <div class="form-group">
+      <label class="label" for="patient_name">Paciente <span class="obligatory">*</span></label>
+    </div>
     <input type="text" class="form-control" name="patient_name" id="patient_name"  placeholder="" value="{{ isset($tracking) ? $tracking->patient_name : ''}}">
   </div> 
+
+  <div class="col-lg-6">
+    <div class="form-group pb-1">
+      <label class="label m-0" for="name">Tipo de identificación <span class="obligatory">*</span> (Selecciona al menos uno) </label>
+    </div>
+    <div class="row justify-content-between">
+      <div class="form-group col-lg-3 m-0" id='fieldHC'>
+        <label class="m-0" id="subLabel" for="name">H.C </label>
+        <input type="text" class="form-control m-0" name="hc" id="hc"  placeholder="" value="{{ isset($tracking) ? $tracking->hc : ''}}">
+      </div> 
+    <div class="form-group col-lg-4 m-0" id='fieldDNI'>
+      <label class="m-0" id="subLabel" for="name">DNI </label>
+      <input type="text" class="form-control" name="dni" id="dni"  placeholder="" value="{{ isset($tracking) ? $tracking->dni : ''}}">
+    </div>
+    <div class="form-group col-lg-4 m-0" id='fieldPhone'>
+      <label class="m-0" id="subLabel" for="name">TELÉFONO  </label>
+      <input type="text" class="form-control" name="phone" id="phone"  placeholder="" value="{{ isset($tracking) ? $tracking->phone : ''}}">
+    </div>  
+    </div>
+  </div>
 </div>
 
-<div class="row px-5">
+<div class="row px-5 justify-content-between">
 
   <div class="form-group col-md-3">
     <div class="dropdown bootstrap-select">
-      <label id="lbl" for="centre_employee_id">Centro prescriptor <span id="obligatory">*</span></label>
-      <select class="selectpicker" name="centre_employee_id" id="centre_employee_id" data-size="7" data-style="btn btn-primary btn-round" title="* Seleccione Centro" tabindex="-98">
+      <label class="label" for="centre_employee_id">Centro prescriptor <span class="obligatory">*</span></label>
+      <select class="selectpicker" name="centre_employee_id" id="centre_employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title="* Seleccione Centro" tabindex="-98">
         
         @foreach ($centres as  $centre)
         <option value="{{$centre->id}}" 
@@ -54,10 +55,26 @@
     </div>
   </div>
 
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-3">
     <div class="dropdown bootstrap-select">
-        <label id="lbl" for="employee_id">Empleado <span id="obligatory">*</span></label>
-        <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-primary btn-round" title=" Seleccione Empleado" tabindex="-98">
+      <label class="label" for="centre_id">Centro realizador <span class="obligatory">*</span></label>
+      <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="* Seleccione Centro" tabindex="-98">
+        
+        @foreach ($centres as  $centre)
+        <option value="{{$centre->id}}" 
+          @if (isset($tracking) && $centre->id == $tracking->centre_id )
+                selected="selected"
+          @endif
+          >{{$centre->name}}</option>
+        @endforeach
+      </select>
+    </div>
+  </div> 
+
+  <div class="form-group col-md-3">
+    <div class="dropdown bootstrap-select">
+        <label class="label" for="employee_id">Empleado <span class="obligatory">*</span></label>
+        <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
             
             @foreach ($employees as  $employee)
             <option value="{{$employee->id}}"  data-tokens="{{$employee->name}}"  
@@ -73,28 +90,12 @@
   
   
 </div>
-<div class="row px-5">
+<div id ="serviceRow" class="row px-5 justify-content-between">
 
   <div class="form-group col-md-3">
     <div class="dropdown bootstrap-select">
-      <label id="lbl" for="centre_id">Centro realizador <span id="obligatory">*</span></label>
-      <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-primary btn-round" title="* Seleccione Centro" tabindex="-98">
-        
-        @foreach ($centres as  $centre)
-        <option value="{{$centre->id}}" 
-          @if (isset($tracking) && $centre->id == $tracking->centre_id )
-                selected="selected"
-          @endif
-          >{{$centre->name}}</option>
-        @endforeach
-      </select>
-    </div>
-  </div> 
-
-  <div class="form-group col-md-4">
-    <div class="dropdown bootstrap-select">
-      <label id="lbl" for="service_id">Servicio <span id="obligatory">*</span></label>
-      <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-primary btn-round"
+      <label class="label" for="service_id">Servicio <span class="obligatory">*</span></label>
+      <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round"
        title="* Seleccione Servicio" tabindex="-98" {{ $disabledService === true ? 'disabled' : ''}}>
         @foreach ($services as  $service)
          <option value="{{  $service->id  }}" 
@@ -108,18 +109,15 @@
     </div>
   </div>
 
-  <div class="form-group col-md-2 py-4">
-    <label id="lbl" for="quantity" class="px-4 py-3" style="font-size:14px">Cantidad <span id="obligatory">*</span></label>
-    <input type="number" class="form-control" name="quantity" id="quantity"  style="display: none" value="{{ isset($tracking) ? $tracking->quantity : 1}}"/>
+  <div id="quantityContainer" class="form-group col-md-2 py-3">
+    <label class="label" for="quantity" class="px-4 py-3" style="font-size:14px">Cantidad <span class="obligatory">*</span></label>
+    <input type="number" class="form-control" name="quantity" id="quantity" value="{{ isset($tracking) ? $tracking->quantity : 1}}"/>
   </div>
-  
-</div>
 
-<div class="row px-5">
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-3">
     <div class="dropdown bootstrap-select">
-      <label id="lbl" for="discount">Descuento <span id="obligatory">*</span></label>
-      <select class="selectpicker" name="discount" id="discount" data-size="7" data-style="btn btn-primary btn-round" title="SIN DESCUENTO" tabindex="-98">
+      <label class="label" for="discount">Descuento <span class="obligatory">*</span></label>
+      <select class="selectpicker" name="discount" id="discount" data-size="7" data-style="btn btn-red-icot btn-round" title="SIN DESCUENTO" tabindex="-98">
         <option value="-1">SIN DESCUENTO </option>
         @if (isset($tracking))
           
@@ -134,11 +132,12 @@
       </select>
     </div>
   </div>
+  
 </div>
 
 <div class="row px-5">
-  <div class="form-group col-md-4">
-    <label id="lbl" for="observations">Observaciones</label>
+  <div class="form-group col-md-12">
+    <label cclass="label" for="observations">Observaciones</label>
     <textarea class="form-control" id="observations"  name="observations"rows="3">{{ isset($tracking) ? $tracking->observations : ''}}</textarea>
   </div>
 </div>
@@ -157,24 +156,14 @@
 
 <div class="row mb-0 px-5">
   <div class="col-md-8">
-    <span id="lbl"> * Estos campos son requeridos </span>
+    <label class="label"><span class="obligatory">*</span> Estos campos son requeridos</label>
   </div>
 </div>
 <style>
-  #lbl{
-    color: black;
-    font-weight: 600;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  }
-
-  #subLbl {
-    color: black;
-    font-weight: 500;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, Tahoma, Geneva, Verdana, sans-serif;
-  }
-  #obligatory{
-    color: #CC0000;
-    font-weight: bold;
+  #subLabel{
+    color: var(--red-icot);
+    font-weight: 400;
+    font-size: 12px;
   }
 </style>
 
@@ -192,12 +181,9 @@
     var status = 'started_date';  
     var action = "{{ request()->segment(2)}}";
     if (action == 'create') {
-      $('#service_id').selectpicker('hide');
-      $('label[for="service_id"]').hide();
-      $('#quantity').hide();
-      $('label[for="quantity"]').hide();
+      $('#serviceRow').hide();
     } else {
-      $('#quantity').show();
+      $('#serviceRow').show();
       status = "{{ request()->segment(3)}}";
     }
 
@@ -213,7 +199,8 @@
                       $.each(data.data, function(index, value) {
                         $("#service_id").append('<option value="'+value.id+'">'+value.name+'</option>');
                       }); 
-                      $('#service_id').selectpicker('refresh');              
+                      $('#service_id').selectpicker('refresh');        
+
                     }
                 },
                 error: function(xhr, status, error) {
@@ -228,6 +215,13 @@
                  alert('Error cargando servicios');
                 
             });
+    }
+
+    function resetDiscounts(){
+      $("#discount").empty();
+      $("#discount").append('<option value="-1">SIN DESCUENTO </option>');
+      $('#discount').selectpicker('refresh');        
+
     }
 
     function recargarDescuentos(service_id) {
@@ -271,16 +265,13 @@
         $('#service_id option').hide();
         recargarServicios($(this).val()); 
 
+        resetDiscounts();
+        $('#serviceRow').show();
 
-        $('#service_id').selectpicker('refresh');
-        $('#service_id').selectpicker('show');
-        $('label[for="service_id"]').show();
     });
 
     $('#service_id').change(function(){
        var servicio = $('#service_id option:selected').text(); 
-       $('#quantity').show();
-       $('label[for="quantity"]').show();
 
        recargarDescuentos($(this).val()); 
     });

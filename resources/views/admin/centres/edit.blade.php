@@ -40,6 +40,12 @@
 
 <script type="text/javascript">
     $(function () {
+        $(".nav-item").each(function(){
+            $(this).removeClass("active");
+        });
+        $('#pagesConfig').addClass('show');
+        $('#adminCentre').addClass('active')
+
         $("#btnSubmit").on('click', function(){
             $('#btnSubmit').hide();
             $('#btnSubmitLoad').show();
