@@ -67,9 +67,9 @@
                     <h4 class="card-title">Seguimiento</h4>
                 </div>
                 <div class="card-body row justify-between">
-                    <div class="col-md-6">
-                        <div class="row m-0">
-                            <div class="col-md-6 dropdown bootstrap-select mb-2">
+                    <div class="col-md-6" style="margin-top:35px;">
+                        <div class="row m-0" >
+                            <div class="col-md-4 dropdown bootstrap-select mb-2" style="margin-right: 25px;">
                                 <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Cod Empresa" tabindex="-98">
                                     <option value="-1">SIN CODIGO </option>
                                     @foreach ($a3business as $a3business)
@@ -82,8 +82,8 @@
                                 <input type="hidden" name="monthYear" id="monthYear" />
                             </div>
                         </div>
-                            <div class="col-md-12 input-group px-3">
-                                <button id="btnCalculate" type="button" class="btn btn-fill btn-success">{{ __('Calcular') }}</button>
+                            <div class="col-md-12 input-group px-3" style="margin-top:35px;">
+                                <button id="btnCalculate" type="button" class="btn btn-fill btn-grey" >{{ __('Calcular') }}</button>
                                 <button id="btnCalculateLoad" type="button" class="btn btn-success" style="display: none">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     {{ __('Calculando datos...') }}
@@ -91,8 +91,8 @@
                                 <button id="btnClear" href="#" class="ml-2 btn btn-fill btn-warning">
                                     {{ __('Limpiar formulario') }}
                                 </button>
-                                <button id="btnSubmit" type="submit" class="btn">{{ __('Buscar') }}</button>
-                                <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
+                                <button id="btnSubmit" type="submit" class="btn btn-success">{{ __('Buscar') }}</button>
+                                <button id="btnSubmitLoad" type="submit" class="btn " style="display: none">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     {{ __('Obteniendo datos...') }}
                                 </button>
@@ -106,7 +106,7 @@
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Validando datos...') }}
                             </button>
-                            <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-dark-black">{{ __('Exportar') }}</button>
+                            <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-default">{{ __('Exportar') }}</button>
                             <button id="btnExportLoad" type="submit" class="btn btn-grey" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Exportando datos...') }}
@@ -117,7 +117,7 @@
                 </div>
             </div>
         </form>
-        <table class="table table-bordered tracking-validation-datatable">
+        <table class="table  table-striped table-bordered tracking-validation-datatable">
             <thead class="table-header">
                 <tr>
                     <th>C.Empresa</th>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Illuminate\Support\Facades\Log;
 
 class LogsAppController extends Controller
 {
@@ -21,7 +22,8 @@ class LogsAppController extends Controller
         $accion = $request['action'];
         $message = $request['message'];
         $screen = $request ['screen'];
-        \Log::channel('app')->info($type.' - '.$accion.' : '.$message.' => '.$screen); 
+        $channel = $request['channel'];
+        Log::channel($channel)->info($type.' - '.$accion.' : '.$message.' => '.$screen); 
         return response([], 200);
     }
 }

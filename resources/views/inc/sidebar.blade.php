@@ -164,10 +164,16 @@
                 <span class="sidebar-normal"> Liga de Centros </span>
               </a>
             </li>
+            <!-- <li id="discountStatistics" class="nav-item">
+              <a class="nav-link" href="{{route('centerLeague')}}"> //TODO - Ojo ruta! 
+                <i class="material-icons">monetization_on</i>
+                <span class="sidebar-normal"> Estadística de Descuentos </span>
+              </a>
+            </li> -->
           </ul>
         </div>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification" aria-expanded="false">
           <i class="material-icons">notifications</i>
           <p style="font-weight: bold"> Notificaciones
@@ -184,7 +190,7 @@
             </li>
           </ul>
         </div>
-      </li>
+      </li> -->
     </ul>
     <div class="versionContainer">
       <hr>

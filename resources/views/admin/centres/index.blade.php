@@ -3,20 +3,20 @@
 @section('content')
 @if ($message = Session::get('success'))
 
-    <div class="alert alert-success">
+<div class="alert alert-success">
 
-        <p>{{ $message }}</p>
+    <p>{{ $message }}</p>
 
-    </div>
+</div>
 
-@endif  
+@endif
 @if ($message = Session::get('error'))
 
-    <div class="alert alert-danger">
+<div class="alert alert-danger">
 
-        <p>{{ $message }}</p>
+    <p>{{ $message }}</p>
 
-    </div>
+</div>
 
 @endif
 @include('inc.navbar')
@@ -28,84 +28,144 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg" > Nuevo</a>
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg"> Nuevo</a>
             </div>
-        </div>    
+        </div>
         @endif
-        <table class="table table-bordered centres-datatable">
+        <table id="centres-datatable" class="table  table-striped table-bordered dataTable_width_auto centres-datatable">
             <thead class="table-header">
                 <tr>
-                <th>Centro</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Email</th>
-                <th>Horario</th>
-                <th>Fecha baja</th>
-                <th>Acciones</th>
+                    <th>Centro</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Horario</th>
+                    <th>Fecha baja</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
-        </table>    
+        </table>
     </div>
 </div>
 
+<style>
+    td {
+        font-weight: bold;
+    }
+
+    table.dataTable.dataTable_width_auto {
+        width: 100%;
+    }
+</style>
+
 <script type="text/javascript">
-    $(function () {
-        
-        $(".nav-item").each(function(){
+    $(function() {
+
+        $(".nav-item").each(function() {
             $(this).removeClass("active");
         });
         $('#pagesConfig').addClass('show');
         $('#adminCentre').addClass('active');
-        
+
         var table = $('.centres-datatable').DataTable({
             processing: true,
             serverSide: true,
-            language:{
+            language: {
                 "url": "{{ asset('dataTables/Spanish.json') }}"
             },
             ajax: {
                 url: "{{ route('centres.index') }}",
-                data: function (d) {
+                data: function(d) {
                     d.search = $('input[type="search"]').val()
                 }
             },
-            columns: [ 
-                {data: 'name', name: 'name'},
-                {data: 'address', name: 'address'},
-                {data: 'phone', name: 'phone'},
-                {data: 'email', name: 'email'},
-                {data: 'timetable', name: 'timetable'},
-                {data: 'cancellation_date', name: 'cancellation_date'},
+            columnDefs: [{
+                    targets: -1,
+                    visible: true,
+                    className: 'dt-body-center'
+                },
                 {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: true, 
+                    width: "10px",
+                    targets: 0
+                },
+                {
+                    width: "100px",
+                    targets: 1
+                },
+                {
+                    width: "40px",
+                    targets: 2
+                },
+                {
+                    width: "10px",
+                    targets: 3
+                },
+                {
+                    width: "70px",
+                    targets: 4
+                },
+                {
+                    width: "70px",
+                    targets: 5
+                },
+                {
+                    width: "70px",
+                    targets: 6
+                }
+            ],
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'address',
+                    name: 'address'
+                },
+                {
+                    data: 'phone',
+                    name: 'phone'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'timetable',
+                    name: 'timetable'
+                },
+                {
+                    data: 'cancellation_date',
+                    name: 'cancellation_date'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
                     searchable: true
                 },
             ],
             search: {
                 "regex": true,
-                "smart":true
+                "smart": true
             },
-            initComplete: function () {
-                this.api().columns().every(function () {
+            initComplete: function() {
+                this.api().columns().every(function() {
                     var column = this;
                     var input = document.createElement("input");
                     $(input).appendTo($(column.footer()).empty())
-                    .on('change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                        column
-                                .search( val ? '^'+val+'$' : '', true, false )
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
                                 .draw();
-                    });
-                    
+                        });
+
                 });
             }
         });
     });
-    
 </script>
 
 @endsection

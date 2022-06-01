@@ -73,6 +73,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/saveRequest', 'TrackingController@saveRequest')->name('tracking.saveRequest');
     Route::post('/tracking/getRequestChanges', 'TrackingController@getRequestChanges')->name('tracking.getRequestChanges');
     Route::post('/tracking/confirmRequest', 'TrackingController@confirmRequest')->name('tracking.confirmRequest');
+    // Route::post('/tracking/discountStatistics', 'TrackingController@discountStats')->name('tracking.discountStats');
 
     Route::get('/calculateIncentive', 'TargetController@index')->name('calculateIncentive');
     Route::post('/target/import', 'TargetController@import')->name('target.import');
@@ -88,6 +89,8 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/league/generateLeague', 'LeagueController@generateLeague')->name('league.generateLeague');
     Route::post('/league/details', 'LeagueController@detailsCentreLeague')->name('league.detailsCentreLeague');
 
+
+
     Route::any('/notifications/index', 'NotificationController@index')->name('notifications.index');
 
 });
@@ -97,7 +100,9 @@ Route::middleware(['check-admin-permission'])->group(function () {
     Route::get('/admin/roles/create', 'RoleController@create')->name('roles.create');
     Route::get('/admin/roles/edit/{id}', 'RoleController@edit')->name('roles.edit');
     Route::put('/admin/roles/update/{id}', 'RoleController@update')->name('roles.update');
+    Route::get('/admin/roles/destroy/{id}', 'RoleController@destroy')->name('roles.destroy');
     Route::post('/admin/roles', 'RoleController@store')->name('roles.store');
+    Route::get('/admin/employees/validation', 'EmployeeController@indexPending')->name('employees.indexPending');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

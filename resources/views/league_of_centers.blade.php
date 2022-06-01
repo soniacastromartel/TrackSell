@@ -78,7 +78,7 @@
                                         <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                                             {{ __('Limpiar formulario') }}
                                         </button>
-                                        <button id="btnSubmit" type="submit" class="btn btn-fill">{{ __('Buscar') }}</button>
+                                        <button id="btnSubmit" type="submit" class="btn btn-success">{{ __('Buscar') }}</button>
                                         <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Obteniendo datos...') }}
@@ -89,7 +89,9 @@
                         </form>
                     </div>
                 </div>
-                <label id="centreName"></label>
+                <div class="col-sm-3" style="margin-left: 560px;">
+                <label id="centreName" class=""></label>
+                </div>
                 <div class="card-header-table" style="display: none;">
                     <table id="league-month-datatable" class="table table-striped table-bordered league-month-datatable col-lg-12">
                         <thead class="table-header">
@@ -137,7 +139,9 @@
         font-weight: bold;
         font-size: xx-large;
         font-family: monospace;
-        color: black;
+        color: white;
+        border: 2px solid var(--red-icot);
+        background-color: var(--red-icot);
     }
 
     td {
@@ -193,6 +197,8 @@
             $('#centreName').hide();
             $('.centre_picker').show();
             $('#datepickerType').selectpicker('val', 2);
+            // $('#league-month-datatable').show();
+            //     drawLeague(null, '.league-month-datatable');
         }
 
         $("#btnClear").on('click', function(e) {

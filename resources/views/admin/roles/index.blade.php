@@ -23,7 +23,7 @@
                 <a href="{{ route('roles.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg" > Nuevo</a>
             </div>
         </div>     
-        <table class="table table-bordered roles-datatable">
+        <table class="table table-striped table-bordered roles-datatable">
             <thead class="table-header">
                 <tr>
                     <th>Nombre</th>
@@ -58,6 +58,12 @@
                     d.search = $('input[type="search"]').val()
                 }
             },
+            columnDefs: [{
+                    targets: -1,
+                     visible: true,
+                    className: 'dt-body-center'
+                }
+            ],
             columns: [ 
                 {data: 'name', name: 'name'},
                 {data: 'description', name: 'description'},

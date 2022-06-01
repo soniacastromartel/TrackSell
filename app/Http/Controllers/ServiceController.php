@@ -67,7 +67,7 @@ class ServiceController extends Controller
                         $btn = '';
                         if (empty($service->cancellation_date)) {
                             $btn = '<a href="services/edit/'.$service->id.'" class="btn btn-warning a-btn-slide-text">Editar</a>';
-                            $btn .= '<a href="services/destroy/'.$service->id.'" class="btn btn-danger a-btn-slide-text">Borrar</a>';
+                            $btn .= '<a href="services/destroy/'.$service->id.'" class="btn btn-red-icot a-btn-slide-text">Borrar</a>';
                         }
                         return $btn;
                     })
@@ -345,7 +345,7 @@ class ServiceController extends Controller
                     $user = session()->get('user');
                     if (empty($service->cancellation_date) && $user->rol_id == 1 ) {
                         $fnCall = 'destroyIncentive('.$service->serviceprice_id.' )';
-                        $btn .= '<a onclick="'. $fnCall .'"  class="btnDeleteServicePrice btn btn-danger a-btn-slide-text">Borrar</a>';
+                        $btn .= '<a onclick="'. $fnCall .'"  class="btnDeleteServicePrice btn btn-red-icot a-btn-slide-text">Borrar</a>';
                     }
                     return $btn;
                 })

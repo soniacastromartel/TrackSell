@@ -22,15 +22,15 @@
     </div>
     <div class="row justify-content-between">
       <div class="form-group col-lg-3 m-0" id='fieldHC'>
-        <label class="m-0" id="subLabel" for="name">H.C </label>
+        <label class="m-0" id="subLabel" for="name"><strong>H.C.</strong></label>
         <input type="text" class="form-control m-0" name="hc" id="hc"  placeholder="" value="{{ isset($tracking) ? $tracking->hc : ''}}">
       </div> 
     <div class="form-group col-lg-4 m-0" id='fieldDNI'>
-      <label class="m-0" id="subLabel" for="name">DNI </label>
+      <label class="m-0" id="subLabel" for="name"><strong>DNI</strong> </label>
       <input type="text" class="form-control" name="dni" id="dni"  placeholder="" value="{{ isset($tracking) ? $tracking->dni : ''}}">
     </div>
     <div class="form-group col-lg-4 m-0" id='fieldPhone'>
-      <label class="m-0" id="subLabel" for="name">TELÉFONO  </label>
+      <label class="m-0" id="subLabel" for="name"><strong>TELÉFONO</strong>  </label>
       <input type="text" class="form-control" name="phone" id="phone"  placeholder="" value="{{ isset($tracking) ? $tracking->phone : ''}}">
     </div>  
     </div>
@@ -148,7 +148,7 @@
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         {{ __('Guardando...') }}
       </button>
-      <button id="btnBack" href="/config" class="btn btn-fill btn-danger">
+      <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
         {{ __('Volver') }}
       </button> 
   </div>
@@ -162,8 +162,8 @@
 <style>
   #subLabel{
     color: var(--red-icot);
-    font-weight: 400;
-    font-size: 12px;
+    font-weight: bold !important;
+    font-size: 11px;
   }
 </style>
 

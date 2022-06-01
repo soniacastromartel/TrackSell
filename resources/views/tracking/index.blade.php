@@ -51,7 +51,7 @@
                 <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                     {{ __('Limpiar formulario') }}
                 </button>
-                <button id="btnSubmit" type="submit" class="btn btn-fill">{{ __('Buscar') }}</button>
+                <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Buscar') }}</button>
                 <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Obteniendo datos...') }}
@@ -61,7 +61,7 @@
                 <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"> Nuevo Seguimiento</a>
             </div>
         </div>
-        <table class="table table-bordered tracking-datatable">
+        <table class="table  table-striped table-bordered tracking-datatable">
             <thead class="table-header">
                 <tr>
                     <th>Centro Prescriptor</th>
@@ -79,6 +79,8 @@
         </table>
     </div>
 </div>
+
+
 
 <script type="text/javascript">
     var table;
@@ -179,11 +181,13 @@
             $('select').val('');
             $('select#centre_id').selectpicker("refresh");
             $('select#state_id').selectpicker("refresh");
+            $('.tracking-datatable').DataTable().ajax.reload();
             //$('select').selectpicker("refresh");
         }
 
 
         $("#btnClear").on('click', function(e) {
+            
             e.preventDefault();
             clearForms();
         });
@@ -229,7 +233,6 @@
             table = $('.tracking-datatable').DataTable();
         } else {
             table = $('.tracking-datatable').DataTable({
-
                 order: [6, "desc"],
                 processing: true,
                 serverSide: true,
@@ -253,11 +256,14 @@
                         return json.data;
                     }
                 },
+                // autoWidth:true,
                 columns: columnsFilled,
-                columnDefs: [{
+                columnDefs: [
+                    {
                         targets: 6,
                         data: "state_date",
                         type: "date",
+                        // className: 'dt-body-center',
                         render: function(data, type, row) {
 
                             var datetime = moment(data, 'YYYY-M-D');
@@ -269,7 +275,14 @@
                                 return datetime; // for sorting
                             }
                         }
-                    }
+                    },
+                    {
+                        targets: -1,
+                        className: 'dt-body-center',
+                    },
+                    { 
+                        targets: -1, 
+                        width: '30%' }
 
                 ],
                 search: {

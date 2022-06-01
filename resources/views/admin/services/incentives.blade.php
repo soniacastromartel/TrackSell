@@ -14,7 +14,7 @@
 @endif
 <div id="alertErrorServiceIncentive" class="alert alert-danger" role="alert" style="display: none">
 </div>
-<div id="alertServiceIncentive" class="alert alert-success" role="alert" style="display: none">
+<div id="alertServiceIncentive" class="alert alert-warning" role="alert" style="display: none">
 </div>
 
 
@@ -56,7 +56,7 @@
             <div class="card-body">
                 <div class="row col-md-12 mb-3 justify-between">
                     <div class="row col-lg-8 col-md-5">
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-4">
                             <div class="dropdown bootstrap-select">
                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
     
@@ -67,7 +67,7 @@
                             </div>
                         </div>
     
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-4">
                             <div class="dropdown bootstrap-select">
                                 <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
     
@@ -82,7 +82,7 @@
                         <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                             {{ __('Limpiar formulario') }}
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill">{{ __('Buscar') }}</button>
+                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Buscar') }}</button>
                         <button id="btnSubmitLoad" type="submit" class="btn btn-red-icot" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             {{ __('Obteniendo datos...') }}
@@ -95,7 +95,7 @@
 
     </div>
     <div class="col-md-12 mb-3 ">
-        <table class="table table-bordered services-datatable" style="width:100%;">
+        <table class="table  table-striped table-bordered services-datatable" style="width:100%;">
             <thead class="table-header">
                 <tr>
                     <th>Nombre</th>
@@ -115,6 +115,12 @@
         </table>
     </div>
 </div>
+
+<style>
+     td{
+    font-weight: bold;
+  }
+</style>
 
 <script type="text/javascript">
     var table;
@@ -174,6 +180,7 @@
             $('select#service_id').val('');
             $('select#centre_id').selectpicker("refresh");
             $('select#service_id').selectpicker("refresh");
+            $('.services-datatable').DataTable().ajax.reload();
         }
         $("#btnClear").on('click', function(e) {
             e.preventDefault();
@@ -290,6 +297,12 @@
                         return json.data;
                     }
                 },
+                columnDefs: [{
+                    targets: 9,
+                     visible: true,
+                    className: 'dt-body-center'
+                }
+            ],
                 columns: columnsFilled,
                 search: {
                     "regex": true,
@@ -322,7 +335,13 @@
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
                     $('#alertServiceIncentive').text(response.mensaje);
-                    $('#alertServiceIncentive').show();
+                    
+                    // $('#alertServiceIncentive').show();
+
+                    $("#alertServiceIncentive").fadeTo(2000, 500).slideUp(500, function(){
+    $("#alertServiceIncentive").alert('close');
+});
+
                     table.ajax.reload();
                 }
             },

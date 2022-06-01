@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 // use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 use App\Http\Controllers\Auth\LoginController as DefaultLoginController;
@@ -77,7 +78,7 @@ class EmployeeController extends DefaultLoginController //Controller
                         $fnCall = 'resetAccessApp('.$employee->id.' )'; 
                         $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text">Reestablecer Acceso</a>';
                         $fnCall = 'denyAccess('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-danger a-btn-slide-text">Denegar Acceso</a>';
+                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-red-icot a-btn-slide-text">Denegar Acceso</a>';
                         $fnCall = 'syncA3('.$employee->id.' , \'only\')'; 
                         $btn .= '<a id="btnSyncA3_'.  $employee->id. '" onclick="'. $fnCall .'" class="btn btn-info a-btn-slide-text">Sincronizar A3</a>';
                         $btn.= '<button id="btnSubmitLoad_'  .  $employee->id. '" type="submit" class="btn btn-success" style="display: none">
@@ -323,21 +324,21 @@ class EmployeeController extends DefaultLoginController //Controller
         $idEmployee = (int)$params['employee_id'];
         $this->user = session()->get('user');
 
-        \Log::channel('a3')->info("Inciiado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
+        Log::channel('a3')->info("Inciiado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
         if ($params['type'] == 'full') {
             Artisan::call('a3empleados:cron',[]);
         } else {
             $employee = Employee::find($idEmployee); 
 
             if (!empty($employee->dni)){
-                \Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con DNI: " . $employee->dni);
+                Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con DNI: " . $employee->dni);
                 Artisan::call('a3empleados:cron', ['dni' => $employee->dni]); 
             } else {
-                \Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con Nombre: " . $employee->name);
+                Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con Nombre: " . $employee->name);
                 Artisan::call('a3empleados:cron', ['name' => $employee->name]); 
             }
         }
-        \Log::channel('a3')->info("Finalizado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
+        Log::channel('a3')->info("Finalizado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
         return view('admin.employees.index', ['title' => $this->title ])->with('sucess', 'Se ha sincronizado usuarios');
     }
 

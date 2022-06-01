@@ -56,7 +56,7 @@
                                     <!--- Accion solo permitida para admin -->
                                     <div class="col-md-2">
                                         <select class="selectpicker" name="rol_id" id="rol_id" data-size="7"
-                                            data-style="btn btn-primary btn-round" title="* Seleccione Rol" tabindex="-98"
+                                            data-style="btn btn-red-icot btn-round" title="* Seleccione Rol" tabindex="-98"
                                             @if (isset($employee) && $employee->rol_id != 1) disabled="disabled" @endif>
                                             @foreach ($roles as $role)
                                                 <option value="{{ $role->id }}"
@@ -68,7 +68,7 @@
 
                                     <div class="col-md-2">
                                         <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                            data-style="btn btn-primary btn-round" title="* Seleccione Centro"
+                                            data-style="btn btn-red-icot btn-round" title="* Seleccione Centro"
                                             tabindex="-98">
                                             @foreach ($centres as $centre)
                                                 <option value="{{ $centre->id }}"
@@ -89,7 +89,7 @@
                                                 aria-hidden="true"></span>
                                             {{ __('Guardando...') }}
                                         </button>
-                                        <button id="btnBack" href="/config" class="btn btn-danger">
+                                        <button id="btnBack" href="/config" class="btn btn-red-icot">
                                             {{ __('Volver') }}
                                         </button>
                                     </div>

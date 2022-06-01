@@ -1,37 +1,46 @@
+
+  <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
+    </div>
+
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
 <div class="content">
   <div class="container-fluid mt-3">
     <div class="row">
       <div class="col-lg-4">
-      <div id="employe-info" class="card " style="margin: 0;">
-          <div class="card-header card-header-danger">
-            <h4 class="card-title">Datos de empleado</h4>
-          </div>
-          <div class="card-body employee-info">
-            <h5 class="label">Nombre:
-              <span>{{ $employee->name}}</span>
-            </h5>
-            <h5 class="label">Centro de trabajo:
-              <span id="employee-centre">{{ is_null($employee->centre) ? 'GRUPO ICOT':  $employee->centre }}</span>
-            </h5>
-          </div>
-        </div>
-        <div id="employee-info" class="card">
+        <div id="employee-info" class="card"  style= "min-height: 462px;">
           <div class="card-header card-header-danger">
             <h4 class="card-title">Búsqueda</h4>
           </div>
           <div class="card-body">
-            <div class="form-group row">
-              <div class="col-sm-12" style="padding-top: 15px;">
+
+          <form id="rankingForm" method="POST">
+
+@csrf
+@method('POST')
+
+            <div class="row">
+              <div class="col-sm-10" style="padding-top: 40px;">
                 <label class="label" for="monthYearPicker">Mes / Año </label>
                 <div class="mt-2 input-group date">
                   <input id="monthYearPicker" class='form-control' type="text"  placeholder="yyyy/mm" />
                   <input type="hidden" name="monthYear" id="monthYear"/>
                 </div>
               </div>
-              <div class="form-group col-sm-12">
+              <div class="form-group col-sm-10">
                 <div class="dropdown bootstrap-select">
-                  <label class="label" for="centre_employee_id" style="margin-top: 11px;">Centro prescriptor <span class="obligatory">*</span> </label>
-                  <select class="selectpicker" name="centre_employee_id" id="centre_employee_id" data-size="7" data-style="btn btn-red-icot btn-round" 
+                  <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor <span class="obligatory">*</span> </label>
+                  <select class="selectpicker"  name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" 
                   title="* Seleccione Centro" tabindex="-98"
                   @if (isset($employee) && $employee->rol_id != 1)
                   disabled="disabled"
@@ -45,23 +54,31 @@
                   >{{$centre->name}}</option>
                   @endforeach
                   </select>
-                  <input type="hidden" id="centre_selected"/>
+                  <input type="hidden" name="centre" id="centre"/>
                 </div>
               </div>
+              <div class="col-md-12">
+                <div class="row" style="margin-top:20px;">
+              
               @if (isset($employee) && $employee->rol_id == 1)
-                <div class="form-group col-lg-5 col-sm-12 btn-end" >
                   <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                   {{ __('Limpiar formulario') }}
                   </button> 
-                </div>
               @endif
+
+              
+
             </div>
+            </div>
+            </div>
+            </form>
+
           </div>
         </div>
-       
+
       </div>
       <div class="col-lg-7" >
-        <div class="card" style=" margin-top: 0;">
+        <div id="employee-info" class="card">
           <div class="card-header card-header-danger">
             <h4 class="card-title" id="title-target">Objetivos</h4>
           </div>
@@ -80,58 +97,91 @@
         </div>
       </div>
     </div>
+    <hr id="separator">
     <div class="row">
-      <div class="col-lg-11">
-        <div class="card">
-          <div class="card-header card-header-danger">
-            <h4 class="card-title" id="title-sales">Ranking Mensual</h4>
-          </div>
-          <div class="card-header-table">
-            <table class="table table-striped table-bordered sales-month-datatable col-lg-12">
-              <thead class="table-header">
-                <tr>
-                  <th>Posicion</th>
-                  <th>Empleado</th>
-                  <th>Total Venta</th>
-                  <th>Total Incentivo</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+    <div class="col-lg ml-5">
+      <h4 id="typeRanking">VER RANKING: </h4>
+      <div id="formRadio">
+      <form >
+      <div class="form-check" style="margin-right:1040px;">
+        <label class="form-check-label" id="selected-label">
+          <input id="monthly" class="form-check-input"  type="radio" name="optradio" checked>Mensual<span class="circle">
+                                                    <span class="check"></span>
+                                                </span>
+        </label>
+        <label class="form-check-label">
+          <input id="annual" class="form-check-input"  type="radio" name="optradio">Anual<span class="circle">
+                                                    <span class="check"></span>
+                                                </span>
+        </label>
+</div>
+    </form>
+      </div>
+    </div>
+    <div style="margin-right: 85px;margin-top: 15px;">
+    <button id="btnSubmit" type="submit" class="btn btn-fill btn-default" >Exportar</button>
+      <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{ __('Obteniendo datos...') }}
+      </button>
+
+    </div>
+    </div>
+    <div class="row" id="monthlyData">
+        <div class="col-lg-11">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title" id="title-sales">Ranking Mensual</h4>
+            </div>
+            <div class="card-header-table">
+              <table class="table table-striped table-bordered sales-month-datatable col-lg-12">
+                <thead class="table-header">
+                  <tr>
+                    <th>Posicion</th>
+                    <th>Empleado</th>
+                    <th>Total Venta</th>
+                    <th>Total Incentivo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-11">
-        <div class="card">
-          <div class="card-header card-header-danger">
-            <h4 class="card-title" id="title-ranking">Ranking Anual</h4>
-          </div>
-          <div class="card-header-table">
-            <table class="table table-striped table-bordered sales-year-datatable col-lg-12">
-              <thead class="table-header">
-                <tr>
-                  <th>Posicion</th>
-                  <th>Empleado</th>
-                  <th>Centro</th>
-                  <th>Total Venta</th>
-                  <th>Total Incentivo</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+      <div class="row" id="annualData">
+        <div class="col-lg-11">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title" id="title-ranking">Ranking Anual</h4>
+            </div>
+            <div class="card-header-table">
+              <table class="table table-striped table-bordered sales-year-datatable col-lg-12">
+                <thead class="table-header">
+                  <tr>
+                    <th>Posicion</th>
+                    <th>Empleado</th>
+                    <th>Centro</th>
+                    <th>Total Venta</th>
+                    <th>Total Incentivo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </div>
 
 
 <style>
+    table.dataTable.dataTable_width_auto {
+        width: 100%;
+    }
 svg.ct-chart-bar, svg.ct-chart-line{
 	overflow: visible;
 }
@@ -145,7 +195,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
 }
 
 .card-header-table{
-  width: 90%;
+  width: 100%;
   margin-top: 0px !important; 
 }
 .sales-datatable {
@@ -154,8 +204,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
 }
 .sales-datatable td,
 .sales-datatable th{
-  width: auto !important;
-  white-space: normal;
+  /* width: auto !important; */
+  /* white-space: normal; */
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -172,35 +222,157 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
 #DataTables_Table_0_paginate > ul.pagination{ margin: 16px 0 !important; }
 
-#btnClear{  align-self: end; }
+#btnClear{  
+  align-self: end; 
+  /* margin-top: 15px; */
+}
 
 .employee-info{
   padding-left: 15px;
+  margin-top: 50px;
+  /* min-height: 5000px; */
 }
 
 .employee-info span{
   color: var(--red-icot);
 }
 
+#typeRanking{
+  margin-bottom: 0px;
+  margin-right: 10px;
+  display: inline-block;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 700;
+}
 
+#formRadio{
+  display: inline-block;
+  color: red;
+}
+
+#monthly{
+  margin-right: 15px;
+  color: var(--red-icot);
+}
+
+#annual{
+  margin-right: 15px;
+  color: var(--red-icot);
+}
+
+#separator{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#selected-label{
+        color: var(--red-icot);
+        font-weight: bold;
+    }
 
 </style>
 <script type="text/javascript">
+  
 
   $(function () {
+   
+    @if (isset($employee) && $employee->rol_id != 1)
+      $("#btnClear").hide(); 
+    @else
+      $("#btnClear").show(); 
+    @endif
+
+    $(".form-check-input").change(function() {
+            $(".form-check-label").removeAttr('id');
+            $(this).parent().attr('id','selected-label');
+            // $("#radio_1").prop("checked", true);
+        });
+
+
+
+        $("#btnSubmit").on('click', function(e) {
+                $('#alertErrorCalculate').hide();
+                e.preventDefault();
+                $("#rankingForm").attr('action', '{{ route('ranking.calculateRankings')}}');
+                $('#btnSubmit').hide();
+                $('#btnSubmitLoad').show();
+                $('#btnSubmitLoad').prop('disabled', true);
+                $('#centre').val($("#centre_id option:selected").text());
+
+                params = {};
+                params["_token"] = "{{ csrf_token() }}";
+                params["centre"] = $('#centre').val();
+                params["monthYear"] = $("#monthYearPicker").val();
+
+                $.ajax({
+                    url: $("#rankingForm").attr('action'),
+                    type: 'post',
+                    data: params,
+                    dataType: 'binary',
+                    xhrFields: {
+                        'responseType': 'blob'
+                    },
+                    xhr: function() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState == 2) {
+                                if (xhr.status == 200) {
+                                    xhr.responseType = "blob";
+                                } else {
+                                    xhr.responseType = "text";
+                                }
+                            }
+                        };
+                        return xhr;
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        // if success, HTML response is expected, so replace current
+                        if (textStatus === 'success') {
+                            $('#btnSubmitLoad').hide();
+                            $('#btnSubmit').show();
+
+                            var link = document.createElement('a'),
+                                filename = 'ranking.xls';
+                            link.href = URL.createObjectURL(data);
+                            link.download = filename;
+                            link.click();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        var response = JSON.parse(xhr.responseText);
+                        $('#alertErrorCalculate').text(response.errors);
+                        $('#alertErrorCalculate').show();
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmit').show();
+                        timeOutAlert($('#alertErrorCalculate'));
+                    }
+
+                });
+            });
+
   
   var d = new Date();
   var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear()   ;  
   $('#monthYearPicker').val(textMonthYear);
 
+  $('#annualData').hide();
 
   google.charts.load('current', {
     packages:['corechart', 'bar']
   });
- 
+
+  $('#monthly').on('click', function(e){
+    $('#annualData').hide();
+    $('#monthlyData').show();
+  });
+
+  $('#annual').on('click', function(e){
+    $('#monthlyData').hide();
+    $('#annualData').show();
+  });
+
   const colors = [
-   
-    { color: '#B01C2E' },      //medium
+    { color: '#1a5e07' },      //medium
     { color: '#cccccc' },  //high
     { color: 'seagreen' },   //low
   ];
@@ -247,14 +419,14 @@ svg.ct-chart-bar, svg.ct-chart-line{
       $('.bootstrap-select .filter-option').text(centro);
       $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
     @else
-      var centro_id =  $('#centre_employee_id option:selected').val();
-      var centro    =  $('#centre_employee_id option:selected').text(); 
+      var centro_id =  $('#centre_id option:selected').val();
+      var centro    =  $('#centre_id option:selected').text(); 
     @endif
    
     if (centro_id != "") {
-      $('#centre_employee_id option:selected').val(centro_id); 
+      $('#centre_id option:selected').val(centro_id); 
       
-      <? /*$("#employee-centre").html(centro); */ ?>
+      $("#employee-centre").html(centro);
       $("#title-target").html("Objetivos " + centro);
       $("#title-sales").html("Ranking Mensual de  " + centro);
 
@@ -266,7 +438,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
     
     } else {
 
-      // $("#employee-centre").html(centro);
+      $("#employee-centre").html(centro);
       $("#title-target").html("Objetivos  del  GRUPO ICOT");
       $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
       $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
@@ -281,14 +453,33 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
   }
 
-  function drawGraph (val, titles, idDiv){
-    let x = [ titles,
-      ['', val['value'], val['target']]
+
+  function drawGraphVP(val) {
+    var aa = [
+      ['Objetivo VP', 'Venta Privada', 'Objetivo Venta Privada'],
+      ['', val['value'], val['target']],
     ];
+    var data = new google.visualization.arrayToDataTable(aa);
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div_vp'));
+    if (val['value'] == 0) {
+      $("#vp_pending").show();
+      $("#vp_ok").hide();
+    } else {
+      $("#vp_pending").hide();
+      $("#vp_ok").show();
+    }
+    //options.hAxis.title = getLabelMonth($("#monthYearPicker").val().substr(0,$("#monthYearPicker").val().indexOf('/'))); 
+    chart.draw(data, options);
+  }
 
-    let data = new google.visualization.arrayToDataTable(x);
-
-    var chart = new google.visualization.BarChart(document.getElementById(idDiv));
+  function drawGraphVC(val) {
+    bb = [
+      ['Objetivo VC', 'Venta Cruzada', 'Objetivo Venta Cruzada'],
+      ['', val['value'], val['target']],   
+    ];
+    var data =  new google.visualization.arrayToDataTable(bb);
+    
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div_vc'));
     chart.draw(data, options);
   }
 
@@ -311,9 +502,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
                     var target = JSON.parse(data); 
                     google.charts.setOnLoadCallback(function () {
                       options.hAxis.title = getLabelMonth($("#monthYearPicker").val().substr(0,$("#monthYearPicker").val().indexOf('/'))); 
-
-                      let VC = drawGraph(target.data.vc, ['Objetivo VC', 'Venta Cruzada', 'Objetivo Venta Cruzada'] , 'chart_div_vc');
-                      let VP = drawGraph(target.data.vp, ['Objetivo VP', 'Venta Privada', 'Objetivo Venta Privada'] , 'chart_div_vp');
+                      drawGraphVC(target.data.vc); 
+                      drawGraphVP(target.data.vp);
                     });
                     
                 }
@@ -346,7 +536,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
             processing: true,
             serverSide: true,
             searching:false,
-            autoWidth: true,
+            autoWidth: false,
             bDestory: true,
             bRetrieve: true,
             language:{
@@ -365,9 +555,9 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
                     /** Si es seleccionado HCT siempre pasar HCT
                         Si no es HCT si es anual (null centros) , mensual el centro */
-                    d.centre    = $('#centre_employee_id option:selected').val() == {{ env('ID_CENTRE_HCT')}}
-                                  ? $('#centre_employee_id option:selected').val() :
-                                  idDataTable != '.sales-month-datatable'  ? null : $('#centre_employee_id option:selected').val() , 
+                    d.centre    = $('#centre_id option:selected').val() == {{ env('ID_CENTRE_HCT')}}
+                                  ? $('#centre_id option:selected').val() :
+                                  idDataTable != '.sales-month-datatable'  ? null : $('#centre_id option:selected').val() , 
                     d.type      = idDataTable == '.sales-month-datatable' ? 'monthly' : 'anual'
                 }
             },
@@ -396,12 +586,13 @@ svg.ct-chart-bar, svg.ct-chart-line{
             }
       });
       if ($.fn.dataTable.isDataTable( idDataTable)) {
-         $(idDataTable).DataTable().ajax.reload();
+        $(idDataTable).DataTable().ajax.reload();
       }
   }
 
   function clearForms()
   {
+    
       $('select').val('');
       //$('select').selectpicker("refresh");
       $("#employee-centre").html("GRUPO ICOT");
@@ -412,8 +603,11 @@ svg.ct-chart-bar, svg.ct-chart-line{
   
   $("#btnClear").on('click', function(e){
       e.preventDefault();
+      var d = new Date();
+  var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear()   
+  $('#monthYearPicker').val(textMonthYear);
       clearForms();
-      $('#centre_employee_id').trigger("change");
+      $('#centre_id').trigger("change");
   });
 
   getValueCentre(); 
@@ -422,10 +616,10 @@ svg.ct-chart-bar, svg.ct-chart-line{
   getSales('.sales-year-datatable');
   //clearForms();
 
-  $("#centre_employee_id").on('change', function () {
+  $("#centre_id").on('change', function () {
     getValueCentre(); 
 
-    drawTarget($('#centre_employee_id option:selected').val()); 
+    drawTarget($('#centre_id option:selected').val()); 
     getSales('.sales-month-datatable');
     getSales('.sales-year-datatable');
 
@@ -433,7 +627,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
   
   $('#monthYearPicker').MonthPicker({
     OnAfterChooseMonth: function() { 
-        drawTarget($('#centre_employee_id option:selected').val()); 
+        drawTarget($('#centre_id option:selected').val()); 
         getSales('.sales-month-datatable');
         getSales('.sales-year-datatable');
       //}

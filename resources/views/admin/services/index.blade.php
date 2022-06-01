@@ -25,7 +25,7 @@
             </div>
         </div>   
         @endif
-        <table class="table table-bordered services-datatable">
+        <table class="table  table-striped table-bordered services-datatable">
         <div class="col-md-2">
         </div>
             <thead class="table-header">
@@ -64,6 +64,12 @@
                     d.search = $('input[type="search"]').val()
                 }
             },
+            columnDefs: [{
+                    targets: -1,
+                     visible: true,
+                    className: 'dt-body-center'
+                }
+            ],
             columns: [ 
                 {data: 'name', name: 'name'},
                 {data: 'category', name: 'category'},

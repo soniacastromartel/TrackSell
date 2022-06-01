@@ -35,16 +35,16 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Confirmación validación de empleado</h5>
+        <h5 class="modal-title">Confirmar validación empleado</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p id="message-validation" class="px-4">¿Confirma la validación con el nombre de usuario: GENEMP?</p>
+        <p id="message-validation" class="px-4 center text-center">¿Confirma la validación con el nombre de usuario: GENEMP?</p>
       </div>
-      <div class="modal-footer">
-        <button id="btnConfirmChangeIdEmployee" type="button" class="btn-change-username  btn btn-danger px-2" >CAMBIO DE DATOS DE USUARIO</button> <br><br>
+      <div class="modal-footer row">
+        <button id="btnConfirmChangeIdEmployee" type="button" class="btn-change-username  btn btn-red-icot px-2" >CAMBIO DE DATOS DE USUARIO</button> <br><br>
         <p> 
         <button id="btnConfirmIdEmployee" type="button" class="btn btn-success">SI</button>
         <button id="btnCancelConfirmIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
@@ -64,22 +64,24 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Cambio de datos de usuario</h5>
+        <h5 class="modal-title">Cambiar datos de usuario</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
           <input type="text" class="form-control" name="idConfirmEmployee" id="idConfirmEmployee"  placeholder="" value="">
-          <label for="name">Nombre de usuario</label>
+          <label for="username">Usuario</label>
           <input type="text" class="form-control" name="nameConfirmEmployee" id="nameConfirmEmployee"  placeholder="" value="">
-          <label for="name">Email</label>
+          <label for="name">Nombre</label>
           <input type="text" class="form-control" name="emailConfirmEmployee" id="emailConfirmEmployee"  placeholder="" value="">
+          <label for="email">Email</label>
+
 
       </div>
       <div class="modal-footer">
         
-        <button id="btnChangeIdEmployee" type="button" class="btn px-2" >CAMBIAR</button> <br>
+        <button id="btnChangeIdEmployee" type="button" class="btn btn-red-icot" data-dismiss="modal-validate">CAMBIAR</button> <br>
         <button id="btnCancelChangeIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">CANCELAR</button>
         
       </div>
@@ -97,6 +99,7 @@
                 <tr>
                 <th>Nombre</th>
                 <th>Usuario</th>
+                <th>Email</th>
                 <th>Acción</th>
                 </tr>
             </thead>
@@ -107,7 +110,7 @@
 </div>   
 <style>
 
-  .alertOkAction{
+.alertOkAction{
     width: 400px !important;
     min-width: 400px;
     top: 100px !important;
@@ -115,6 +118,10 @@
     left: 725px;
     height: 40px;
     padding: 10px;
+  }
+
+  td{
+    font-weight: bold;
   }
 </style>
 
@@ -141,9 +148,16 @@
                     d.search = $('input[type="search"]').val()
                 }
             },
+            columnDefs:[{
+              targets: -1,
+              className: 'dt-body-center'
+
+
+            }],
             columns: [ 
                 {data: 'name', name: 'name'},
                 {data: 'username', name: 'username'},
+                {data: 'email', name: 'email'},
                 {
                     data: 'action', 
                     name: 'action', 
@@ -184,7 +198,7 @@
         $("#emailEmployee").val(email);  
 
         //CONFIRMAR Nombre y NIF ( Nombre  y DNI asociados en PDI , comparando con Nombre de A3)
-        $("#message-validation").html( '¿Es correcto el nombre de usuario: ' + employeePDI + ' <br> el nombre en A3 es: <b> ' + employeeA3+ '</b>?');
+        $("#message-validation").html( '<strong>¿Es correcto el nombre de usuario: ' + employeePDI +'?</strong>'+ ' <br> <b>El nombre en A3 es: </b> ' + employeeA3);
 
         $("#modal-validate").modal('show');
 
@@ -199,6 +213,7 @@
     });
 
     $("#btnConfirmIdEmployee").on('click',function(event){
+      $("#modal-validate").modal('hide'); 
       url = "{{ route('employees.confirmUsername') }}"; 
       confirmValidateEmployee(url); 
     });
@@ -206,7 +221,9 @@
     $("#btnChangeIdEmployee").on('click',function(event){
       url = "{{ route('employees.changeUsername') }}"; 
       confirmValidateEmployee(url);
+      
     });
+
     
 
     function confirmValidateEmployee(url) {
@@ -235,7 +252,6 @@
               success: function(data, textStatus, jqXHR) {
                   // if success, HTML response is expected, so replace current
                   if(textStatus === 'success') {
-
                     if (url.indexOf('confirmUsername') != -1) {
                       $("#okConfirmIdEmployee").show();
                       setTimeout( function() {

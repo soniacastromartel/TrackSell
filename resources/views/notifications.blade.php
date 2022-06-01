@@ -38,7 +38,7 @@
                         <button id="btnClear" href="#" class="btn btn-fill btn-warning button-size">
                             {{ __('Limpiar formulario') }}
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill button-size">{{ __('Buscar') }}</button>
+                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success button-size">{{ __('Buscar') }}</button>
                         <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             {{ __('Obteniendo datos...') }}
@@ -213,7 +213,13 @@
                     }
                 },
                 columns: columnsFilled,
-                columnDefs: [{
+                columnDefs: [
+                    { width: "10%", targets: 0 },
+                    { width: "30%", targets: 1 },
+                    { width: "30%", targets: 2 },
+                    { width: "15%", targets: 3 },
+                    { width: "15%", targets: 4 },
+                    {
 
                         targets: 4,
                         data: "cancellation_date",
@@ -265,6 +271,10 @@
 <style>
     .button-size {
         height: 39px;
+    }
+    td{
+        font-weight: bold;
+ 
     }
 </style>
 

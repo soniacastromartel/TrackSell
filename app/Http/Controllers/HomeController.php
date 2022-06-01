@@ -312,7 +312,7 @@ class HomeController extends Controller
             if (!empty($centreId)) {
                 $centres = Centre::where('id', $centreId)->get();
             } else {
-                $centres = Centre::getCentresActive();
+                $centres = Centre::getCentersWithoutHCT();
             }
             $params['centre'] =  $centres;
 

@@ -82,9 +82,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p id="message-validation" class="px-4"></p>
+                <p id="message-validation" class="px-4 text-center"></p>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer center">
                 <button id="btnConfirmRequest" type="button" class="btn btn-success">SI</button>
                 <button id="btnCancelRequest" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
                 </p>
@@ -92,6 +92,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 <script type="text/javascript">
@@ -130,8 +132,6 @@
     var table;
 
     function validateRequest(state, requestId) {
-        console.log(state);
-        console.log(requestId);
         if (state == 1) {
             $("#message-validation").html('¿Confirma la validación de la solicitud?');
         } else {
@@ -208,7 +208,13 @@
 
             },
             columns: columnsFilled,
-            columnDefs: [{
+            columnDefs: [
+                {
+                    targets: -1,
+                    visible: true,
+                    className: 'dt-body-center'
+                },
+                {
                     targets: 0,
                     data: "state_date",
                     type: "date",
@@ -239,7 +245,7 @@
                             return datetime; // for sorting
                         }
                     }
-                },
+                }
             ],
             search: {
                 "regex": true,

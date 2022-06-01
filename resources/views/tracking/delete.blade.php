@@ -23,7 +23,7 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row col-md-12">
-                <table class="table table-bordered  tracking-delete-datatable">
+                <table class="table  table-striped table-bordered  tracking-delete-datatable">
                     <thead  class="table-header">
                         <th>Centro Prescriptor</th>
                         <th>Empleado </th>
@@ -50,6 +50,8 @@
         justify-content: center;
         margin: 0;
     }
+ 
+      
 </style>
 
 <script type="text/javascript">
@@ -82,6 +84,12 @@
 
                     }
                 },
+                columnDefs: [{
+                    targets: 9,
+                     visible: true,
+                    className: 'dt-body-center'
+                }
+            ],
                 columns: [ 
                     {data: 'centre', name: 'centre'},
                     {data: 'employee', name: 'employee'},

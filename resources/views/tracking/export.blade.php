@@ -22,7 +22,7 @@
                     <div class="card-header card-header-danger">
                         <h4 class="card-title">Informes</h4>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="margin-top: 30px;margin-bottom: 30px;">
 
                         <form id="exportTracking" action="{{ route('tracking.export') }}" method="POST">
 
@@ -31,16 +31,16 @@
                             <div class="row" style="justify-content: space-evenly;">
                                 <div class="col-md-3">
                                     <div>
-                                        <label class="form-label" for="name">Fecha desde </label>
+                                        <label class="label" for="name">Fecha desde </label>
                                         <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-control"></input>
-
-                                        <label class="form-label" for="name">Fecha hasta </label>
+<br />
+                                        <label class="label" for="name">Fecha hasta </label>
                                         <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
                                     </div>
                                 </div>
                                 <div class="md-3">
                                     <div class="form-group checkbox-radios pl-4">
-                                        <label class="col-form-label label-checkbox">Elija un estado:</label>
+                                        <label class="label">Elija un estado:</label>
                                         <div class="form-check">
                                             <label class="form-check-label" id="selected-label">
                                                 <input class="form-check-input" type="radio" name="trackingState" value="service" checked/> Realizados
@@ -103,6 +103,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <br/>
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <div class="dropdown bootstrap-select">
@@ -137,13 +138,14 @@
 
                             <div class="row mt-2 px-5">
                                 <div class="col-md-5">
-                                    <button id="btnSubmit" type="submit" class="btn btn-fill btn-dark-black">{{ __('Exportar') }}</button>
+                                   
+                                    <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                                        {{ __('Limpiar formulario') }}
+                                    </button>
+                                    <button id="btnSubmit" type="submit" class="btn btn-fill btn-default">{{ __('Exportar') }}</button>
                                     <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         {{ __('Exportando datos...') }}
-                                    </button>
-                                    <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                        {{ __('Limpiar formulario') }}
                                     </button>
                                 </div>
                             </div>
@@ -249,7 +251,7 @@
 
     .label-checkbox {
         font-weight: bold;
-        color: var(--dark-grey);
+        color: black;
         font-size: 14px;
     }
     #selected-label{

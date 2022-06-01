@@ -77,7 +77,7 @@
                                             {{ __('Limpiar formulario') }}
                                         </button>
                                         <button id="btnSubmit" type="submit"
-                                            class="btn btn-fill btn-dark-black">Exportar</button>
+                                            class="btn btn-fill btn-default">Exportar</button>
                                         <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black"
                                             style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status"
@@ -136,6 +136,7 @@
         }
 
     </style>
+    
     <script type="text/javascript">
         $(function() {
 
@@ -157,7 +158,7 @@
             $("#btnSubmit").on('click', function(e) {
                 $('#alertErrorCalculate').hide();
                 e.preventDefault();
-                $("#rankingForm").attr('action', '{{ route('ranking.calculateRankings') }}');
+                $("#rankingForm").attr('action', '{{ route('ranking.calculateRankings')}}');
                 $('#btnSubmit').hide();
                 $('#btnSubmitLoad').show();
                 $('#btnSubmitLoad').prop('disabled', true);

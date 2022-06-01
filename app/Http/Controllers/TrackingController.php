@@ -164,7 +164,7 @@ class TrackingController extends Controller
 
                             $state = Service::getStateService($tracking->state);
 
-                            $btn .= '<div class="row col-md-12">';
+                            $btn .= '<div class="col-md-12">';
                             $btn .= '<a href="edit/' . $state . '/' . $tracking->id . '" class="btn btn-warning a-btn-slide-text btn-sm">Editar</a>';
                             $btn .= '</div>';
 
@@ -188,13 +188,13 @@ class TrackingController extends Controller
                                 $btn .= '</div>';
                                 $btn .= '</div>';
                                 $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-4 px-2">';
+                                $btn .= '<div class="col-md-6 px-2">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Realizar</a>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="col-md-4">';
+                                $btn .= '<div class="col-md-6">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-danger a-btn-slide-text btn-sm">Iniciar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Reiniciar</a>';
                                 $btn .= '</div></div>';
                             }
                             if ($tracking->state == env('STATE_SERVICE')) {
@@ -205,13 +205,13 @@ class TrackingController extends Controller
                                 $btn .= '</div>';
                                 $btn .= '</div>';
                                 $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-4 px-3">';
+                                $btn .= '<div class="col-md-6 px-3">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Facturar</a>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="col-md-4">';
+                                $btn .= '<div class="col-md-6">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-danger a-btn-slide-text btn-sm">Citar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
                             }
                             if ($tracking->state == env('STATE_INVOICED')) {
@@ -222,13 +222,13 @@ class TrackingController extends Controller
                                 $btn .= '</div>';
                                 $btn .= '</div>';
                                 $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-4 px-2">';
+                                $btn .= '<div class="col-md-6 px-2">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Validar</a>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="col-md-4">';
+                                $btn .= '<div class="col-md-6">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-danger a-btn-slide-text btn-sm">Realizar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Realizar</a>';
                                 $btn .= '</div></div>';
                             }
                         }
@@ -867,7 +867,7 @@ class TrackingController extends Controller
                 ->addColumn('action', function ($track) {
                     $btn = '';
                     $fnCall = 'destroy(\'' . $track->id . '\')';
-                    $btn .= '<a onclick="' . $fnCall . '" class="btn btn-danger a-btn-slide-text" style="color:white">Borrar</a>';
+                    $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text" ">Borrar</a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -1111,7 +1111,7 @@ class TrackingController extends Controller
                             // $btn .= '</div>';
                             $btn .= '<div class="col-md-2" >';
                             $fnCall = 'updateValidation(' . $detailedSale->employee_id . ', \'' . $trackingIds . '\', ' . $detailedSale->total_super_incentive . ',' . $detailedSale->is_supervisor . ' , 1)';
-                            $btn .= '<a onclick="' . $fnCall . '" class="btn btn-danger a-btn-slide-text btn-sm">No Pagar</a>';
+                            $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">NO PAGAR</a>';
                             $btn .= '</div>';
                             $btn .= '</div>';
                         } else {
@@ -1373,13 +1373,14 @@ class TrackingController extends Controller
 
             return DataTables::of($requests)
                 ->addColumn('action', function ($request) {
-                    $btn  = '<div class="row col-md-12">';
+                    // $btn  = '<div class="row col-md-12">';
+                    $btn = '';
                     if ($request->validated == 0) {
-                        $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm">Validar</a>';
+                        $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm center" >Validar</a>';
                     } else {
                         $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-danger a-btn-slide-text btn-sm">Invalidar</a>';
                     }
-                    $btn .= '</div>';
+                    // $btn .= '</div>';
                     return $btn;
                 })
                 ->rawColumns(['action'])

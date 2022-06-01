@@ -138,15 +138,16 @@
                                     </div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-md-5">
+                                    <div class="col-md-5" style="margin-left: 55px;">
                                         <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Guardar') }}</button>
                                         <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Guardando...') }}
                                         </button>
-                                        <button id="btnBack" href="#" class="btn btn-fill btn-danger">
+                                        <button id="btnBack" href="#" class="btn btn-fill btn-red-icot">
                                             {{ __('Volver') }}
                                         </button>
+</br>                            <label id="lbl" class="label"><span class="obligatory">*</span> Estos campos son requeridos</label>
                                     </div>
                                 </div>
                             </form>
@@ -157,6 +158,21 @@
         </div>
     </div>
 </div>
+
+<style>
+  #lbl {
+        color: black;
+        font-weight: 600;
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        margin-top: 25px;
+        font-size:12px;
+      }
+
+      td {
+    font-weight: bold;
+    /* text-align: center; */
+  }
+</style>
 
 <script type="text/javascript">
     $(function() {
