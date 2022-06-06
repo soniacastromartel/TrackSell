@@ -2,23 +2,17 @@
 </div>
 
 <div class="row px-5 mt-2">
-  <div class="form-group col-lg-2">
-    <div class="form-group">
+  <div class="form-group col-lg-2 mx-auto">
+    <div class="form-group mb-3">
       <label clafor="name">Fecha <span class="obligatory">*</span></label>
     </div>
     <input type="date" id="tracking_date" name="tracking_date" max="3000-12-31" 
     min="1000-01-01" value="{{ isset($tracking_date) ? $tracking_date : ''}}" class="form-control"/>
   </div>
-  <div class="form-group col-lg-4">
-    <div class="form-group">
-      <label class="label" for="patient_name">Paciente <span class="obligatory">*</span></label>
-    </div>
-    <input type="text" class="form-control" name="patient_name" id="patient_name"  placeholder="" value="{{ isset($tracking) ? $tracking->patient_name : ''}}">
-  </div> 
-
-  <div class="col-lg-6">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-6 mx-auto">
     <div class="form-group pb-1">
-      <label class="label m-0" for="name">Tipo de identificación <span class="obligatory">*</span> (Selecciona al menos uno) </label>
+      <label class="label mb-3 text-center" style="width: 100%;" for="name">Tipo de identificación <span class="obligatory">*</span> (Selecciona al menos uno) </label>
     </div>
     <div class="row justify-content-between">
       <div class="form-group col-lg-3 m-0" id='fieldHC'>
@@ -36,6 +30,19 @@
     </div>
   </div>
 </div>
+
+
+<div class="row px-5 mt-2 mb-5">
+  <div class="form-group col-lg-4 mx-auto">
+    <label class="label" for="patient_name">Paciente <span class="obligatory">*</span></label>
+    <input type="text" class="form-control" name="patient_name" id="patient_name"  placeholder="" value="{{ isset($tracking) ? $tracking->patient_name : ''}}">
+  </div>
+  <div class="form-group col-lg-6 mx-auto">
+  <label class="label" for="observations">Observaciones</label>
+    <input type="text" class="form-control" name="observations" id="observations"  placeholder="" value="{{ isset($tracking) ? $tracking->observations : ''}}">
+  </div>
+</div>
+
 
 <div class="row px-5 justify-content-between">
 
@@ -132,33 +139,25 @@
       </select>
     </div>
   </div>
-  
 </div>
-
-<div class="row px-5">
-  <div class="form-group col-md-12">
-    <label cclass="label" for="observations">Observaciones</label>
-    <textarea class="form-control" id="observations"  name="observations"rows="3">{{ isset($tracking) ? $tracking->observations : ''}}</textarea>
+  <hr class="m-5">
+  <div class="row mt-2 px-5 text-right">
+    <div class="col">
+        <button id="btnSubmit" type="button" class="btn btn-fill btn-success">{{ __('Guardar') }}</button>
+        <button id="btnSubmitLoad" type="button" class="btn btn-success" style="display: none">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          {{ __('Guardando...') }}
+        </button>
+        <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
+          {{ __('Volver') }}
+        </button> 
+    </div>
   </div>
-</div>
-<div class="row mt-2 px-5">
-  <div class="col-md-5">
-      <button id="btnSubmit" type="button" class="btn btn-fill btn-success">{{ __('Guardar') }}</button>
-      <button id="btnSubmitLoad" type="button" class="btn btn-success" style="display: none">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        {{ __('Guardando...') }}
-      </button>
-      <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
-        {{ __('Volver') }}
-      </button> 
+  <div class="row mb-0 px-5 text-right">
+    <div class="col mr-3 mt-2">
+      <label class="label"><span class="obligatory">*</span> Estos campos son requeridos</label>
+    </div>
   </div>
-</div>
-
-<div class="row mb-0 px-5">
-  <div class="col-md-8">
-    <label class="label"><span class="obligatory">*</span> Estos campos son requeridos</label>
-  </div>
-</div>
 <style>
   #subLabel{
     color: var(--red-icot);

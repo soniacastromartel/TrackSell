@@ -34,11 +34,11 @@ class RoleController extends Controller
                     ->filter(function ($instance) use ($request) {
                         
                         if (!empty($request->get('search'))) {
-                             $instance->where(function($w) use($request){
-                                $search = $request->get('search');
-                                $w->orWhere('roles.description', 'LIKE', "%$search%")
-                                ->orWhere('roles.name', 'LIKE', "%$search%");
-                            });
+                                $instance-> where (function ($w) use ($request) {
+                                    $search = $request->get('search');
+                                    $w->orWhere('roles.description', 'LIKE', "%$search%")
+                                        ->orWhere('roles.name', 'LIKE', "%$search%");
+                                } );
                         }
                     })
                     ->addColumn('action', function($role){
@@ -54,8 +54,6 @@ class RoleController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar roles, contacte con el administrador');
         } 
-       
-        
     }
 
     /**
@@ -65,7 +63,6 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
         return view('admin.roles.create', ['title' => $this->title]);
     }
 
@@ -77,31 +74,15 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //
-        $request->validate([
+        $request-> validate([
             'name'       => 'required',
-            
         ]);
         try{
             $role_id = Role::create($request->all())->id; 
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al crear rol, contacte con el administrador');
         }
-        return redirect()->action('RoleController@index')
-    
-                            ->with('success','Role created successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->action('RoleController@index')->with('success', 'Role created successfully');
     }
 
     /**
@@ -112,7 +93,6 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
         try{
             $role = Role::find($id);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -163,6 +143,18 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $role = Role::findOrFail($id);
+
+            $role->delete();
+
+            return redirect()->action('RoleController@index')
+    
+                            ->with('success','Rol eliminado correctamente');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->to('home')->with('error', 'Ha ocurrido un error al eliminar rol, contacte con el administrador');
+        }
+
+
     }
 }

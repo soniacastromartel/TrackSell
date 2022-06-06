@@ -65,7 +65,7 @@
                 }
             },
             columnDefs: [{
-                    targets: -1,
+                    targets: [-1,0,1,2],
                      visible: true,
                     className: 'dt-body-center'
                 }

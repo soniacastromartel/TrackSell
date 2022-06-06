@@ -66,6 +66,11 @@
                         timeOutAlert(this); 
                     });
 
+                    $('.alert').each(function( ) {
+                        timeOutAlert(this); 
+                    });
+
+
                     $('.alert-danger').each(function( ) {
                         timeOutAlert(this); 
                     });

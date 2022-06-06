@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-// use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -24,8 +23,6 @@ use Artisan;
 
 class EmployeeController extends DefaultLoginController //Controller 
 {
-    //
-    //protected $redirectTo = '/employee/home';
 
     public function __construct()
     {
@@ -74,13 +71,13 @@ class EmployeeController extends DefaultLoginController //Controller
                     })
                     ->addColumn('action', function($employee){
                         $btn = '';
-                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-warning a-btn-slide-text">Editar</a>';
+                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-warning a-btn-slide-text"><bold>Editar</bold></a>';
                         $fnCall = 'resetAccessApp('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text">Reestablecer Acceso</a>';
+                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text"><bold>Reestablecer Acceso</bold></a>';
                         $fnCall = 'denyAccess('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-red-icot a-btn-slide-text">Denegar Acceso</a>';
+                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-red-icot a-btn-slide-text"><bold>Denegar Acceso</bold></a>';
                         $fnCall = 'syncA3('.$employee->id.' , \'only\')'; 
-                        $btn .= '<a id="btnSyncA3_'.  $employee->id. '" onclick="'. $fnCall .'" class="btn btn-info a-btn-slide-text">Sincronizar A3</a>';
+                        $btn .= '<a id="btnSyncA3_'.  $employee->id. '" onclick="'. $fnCall .'" class="btn a-btn-slide-text" style="background: #00838f;"><bold>Sincronizar A3</bold></a>';
                         $btn.= '<button id="btnSubmitLoad_'  .  $employee->id. '" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 Realizando sincronización...
@@ -162,7 +159,7 @@ class EmployeeController extends DefaultLoginController //Controller
                                                 , 'roles'    => $roles
                                                 , 'centres'  => $centres
                                                 , 'dayNow'   => $dayNow
-                                                , 'dayYesterday'   => $dayYesterday
+                                                , 'dayYesterday' => $dayYesterday
                                                 , 'motives' => $excludeMotives
 
             ]);
@@ -263,6 +260,7 @@ class EmployeeController extends DefaultLoginController //Controller
         try{
             $params = $request->all(); 
             $employee = Employee::where('id' , $params['employee_id'])->first();
+            Employee::updatingAccess($employee['id'], 3);
             $tokenRepository = app('Laravel\Passport\TokenRepository');
             $tokenId = DB::table('oauth_access_tokens')->where('user_id', $employee->id)->first();
             if (!empty($tokenId)) {

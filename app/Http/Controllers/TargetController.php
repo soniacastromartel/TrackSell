@@ -98,7 +98,7 @@ class TargetController extends Controller
             if($request->hasFile('targetInputSalesFile')) {
                 $this->importData($request,true); 
                 return redirect('calculateIncentive')->with(['title' => 'Calculadora de incentivos'
-                                                            ,'success' =>  'Importados objetivos!']
+                                                            ,'success' =>  'Importada Venta Privada!']
                     );
             } else {
                 return redirect('calculateIncentive')->with('error', 'Error!');

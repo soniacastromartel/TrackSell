@@ -18,135 +18,105 @@
 </div>
 @endif
 
-
-<div class="content">
-    <div class="container-fluid">
-        <!-- <div class="row p-0"> -->
-
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card card-info text-white mb-4 ml-4 p-0 mt-0">
-                    <div class="card-header">
-                        <i class="material-icons" style="color: var(--red-icot)">info</i>
-                        <span class="font-size-18" style="vertical-align:super; font-weight:bold; color: var(--red-icot);">Pasos a realizar</span>
+    <div class="content">
+        <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="card card-info text-white mb-4 ml-4 p-0 mt-0">
+                            <div class="card-header">
+                                <i class="material-icons" style="color: var(--red-icot)">info</i>
+                                <span class="font-size-18" style="vertical-align:super; font-weight:bold; color: var(--red-icot);">Instrucciones</span>
+                            </div>
+                            <div class="card-body" id="cardBody">
+                            @if ($user->rol_id == 1)
+                            <h5 class="card-title font-size-18">- <strong>Importar Objetivos</strong>, puede
+                                                    descargar la plantilla desde <a style="color:var(--red-icot)"
+                                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong></a>
+                                </h5>
+                                <hr>
+                            @endif
+                                <h5 class="card-title font-size-18">- <strong>Importar Venta Privada</strong>, puede
+                                                    descargar la plantilla desde <a style="color:var(--red-icot)"
+                                                        href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong></a>
+                                </h5>
+                                <h5 class="card-title font-size-18">- Indicar en formulario centro / empleado / fecha
+                                                    según se requiera y hacer click en botón Calcular</h5>
+                                <h5 class="card-title font-size-18">- Tenga en cuenta que el fichero a importar debe
+                                                    tener extensión .xls</h5>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title font-size-18">1.- Importar venta privada, plantilla puede
-                            descargarse <a style="color:var(--red-icot)" href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}">aquí</a>
-                        </h5>
-                        <h5 class="card-title font-size-18">2.- Indicar en formulario centro / empleado / fecha
-                            según se requiera y hacer click en botón Calcular</h5>
-                        <h5 class="card-title font-size-18">3.- Tenga en cuenta que el fichero a importar debe
-                            tener extensión .xls</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="card">
-
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title">Informes</h4>
                 </div>
 
                 <div class="card-body">
-
                     <form id="importTargetForm" method="POST">
-
                         @csrf
                         @method('POST')
                         @if ($user->rol_id == 1)
                         <div class="row">
-
-                            <div class="col-lg-4">
+                            <div class="col-lg-5 mt-2">
                                 <div class="card">
-                                    <div class="card-header card-header-primary">
+                                    <div class="card-header card-header-danger">
                                         <h5 class="card-title">Objetivos</h5>
                                     </div>
                                     
                                     <div class="card-body">
-
                                         <div class="row" style="margin-top: 30px;margin-left: 120px;margin-bottom: 30px;">
-
                                         <div class="col-sm-7" style="margin-left: 16px;">
-                                            <label class="label" >Mes<span class="obligatory">*</span> </label>
+                                            <label class="label" >Mes <span class="obligatory">*</span> </label>
                                             <div class="input-group date" >
                                                 <input id="yearTargetPicker" class='form-control' type="text" placeholder="yyyy" />
                                                 <input type="hidden" name="yearTarget" id="yearTarget" />
-
                                             </div>
+                                        </div>
+                                        <div class="form-group col-sm-7"  style="padding-top: 30px;">
+                                            <div id="btnImportTargets" class="file-upload btn btn-block btn-outline-corporate" style=" ">
+                                                <span>{{ __('Importar Objetivos') }}</span>
+                                                <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
                                             </div>
-
-                                                    <div class="form-group col-sm-7"  style="padding-top: 30px;">
-                                                        <div id="btnImportTargets" class="file-upload btn btn-block btn-red-icot" style=" ">
-                                                            <span>{{ __('Importar Objetivos') }}</span>
-                                                            <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
-                                                            <!-- <input type="text" id="fileuploadurl" readonly placeholder="Tamaño máximo de fichero son 2MB"> -->
-                                                        </div>
-                                                        <button id="targetInputFileLoad" type="submit" class="file-upload btn btn-success" style="display: none">
-                                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                            {{ __('Importando datos...') }}
-                                                        </button>
-                                                </div>
-
-                                                    <div class="form-group col-sm-7">
-                                                        <div id="btnImportSales" class="file-upload btn btn-block btn-red-icot">
-                                                            <span>{{ __('Importar Venta Privada') }}</span>
-                                                            <input type="file" name="targetInputSalesFile" id="targetInputSalesFile" class="upload" />
-                                                            <!-- <input type="text" id="fileuploadurl" readonly placeholder="Tamaño máximo de fichero son 2MB"> -->
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-sm-7" >
-                                                        <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
-                                                            {{ __('Seguimiento de objetivos') }}
-                                                        </button>
-                                                    </div>
-
+                                            <button id="targetInputFileLoad" type="submit" class="file-upload btn btn-success" style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                {{ __('Importando datos...') }}
+                                            </button>
+                                        </div>
+                                        <div class="form-group col-sm-7">
+                                            <div id="btnImportSales" class="file-upload btn btn-block btn-red-icot">
+                                                <span>{{ __('Importar Venta Privada') }}</span>
+                                                <input type="file" name="targetInputSalesFile" id="targetInputSalesFile" class="upload" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-7" >
+                                            <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
+                                                {{ __('Seguimiento de objetivos') }}
+                                            </button>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             @endif
-                            <!-- @if ( $user->rol_id == 1)
-                                <div class="row ml-2 px-5">
-                                    <div class="input-group date" style="padding-top: 15px;width:60px !important">
-                                        <input id="yearTargetPicker" class='form-control' type="text"  placeholder="yyyy" />
-                                        <input type="hidden" name="yearTarget" id="yearTarget"/>
-                                    </div>
-                                    <div class="form-group" style="flex:0 0 17% !important; padding-left:0px; padding-top: 6px;">
-                                        <div id="btnImportTargets"  class="file-upload btn btn-rose" style="margin-left: 16px">
-                                            <span>{{ __('Importar Objetivos') }}</span>
-                                            <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
-                                            <input type="text" id="fileuploadurl" readonly placeholder="Tamaño máximo de fichero son 2MB">
-                                        </div>
-                                    </div>
-                                @endif -->
 
-                            <div class="col-lg-8">
-
+                            <div class="col-lg-7">
                                 <div class="card" style="min-height:399px;">
-                                    <div class="card-header card-header-primary">
+                                    <div class="card-header card-header-danger">
                                         <h5 class="card-title">Incentivos</h5>
                                     </div>
                                     <div class="card-body" style="margin-top: 30px;">
 
-
-                                        <div class="row" style="margin-left: 60px;">
-
-                                            <div class="form-group col-md-2" style="margin-right: 80px;">
-                                                <label>Fecha<span class="obligatory">*</span> </label>
-                                                <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
-                                                <input type="hidden" name="monthYear" id="monthYear" />
+                                        <div class="row" style="margin-left: 60px; margin-right: 60px">
+                                            <div class="form-group col-4 mt-5">
+                                                <label class="label">Fecha <span class="obligatory">*</span> </label>
+                                                <div class="form-group input-group date">
+                                                    <input type="hidden" name="monthYear" id="monthYear" />
+                                                    <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
+                                                </div>                                                
                                             </div>
 
-                                            <div class="form-group col-md-3">
+                                            <div class="col-8">
+                                            <div class="form-group col-md-10 mx-auto">
                                                 <div class="dropdown bootstrap-select">
-                                                    <label class="label" for="centre_origin_id">Centro<span class="obligatory">*</span></label>
+                                                    <label class="label" for="centre_origin_id">Centro <span class="obligatory">*</span></label>
                                                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
-
                                                         @foreach ($centres as $centre)
                                                         <option value="{{ $centre->id }}">{{ $centre->name }}</option>
                                                         @endforeach
@@ -154,12 +124,11 @@
                                                     <input type="hidden" name="centre" id="centre" />
                                                 </div>
                                             </div>
-
-                                            <div class="form-group col-md-3" style="margin-left: 80px;">
+                                            <br>
+                                            <div class="form-group col-md-10 mx-auto">
                                                 <div class="dropdown bootstrap-select">
                                                     <label class="label">Empleado <span class="obligatory">*</span></label>
                                                     <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
-
                                                         @foreach ($employees as $employee)
                                                         <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                                         @endforeach
@@ -167,23 +136,23 @@
                                                     <input type="hidden" name="employee" id="employee" />
                                                 </div>
                                             </div>
-
-
-
-                                        </div>
-
-                                        <div class="row mt-2 px-5">
-                                            <div class="col-md-5" style="margin-top: 30px;">
-
-                                                <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
-                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                    {{ __('Obteniendo datos...') }}
-                                                </button>
-                                                <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                                    {{ __('Limpiar formulario') }}
-                                                </button>
-                                                <button id="btnSubmit" type="submit" class="btn btn-fill btn-default">{{ __('Exportar') }}</button>
                                             </div>
+                                            
+                                        </div>
+                                        <hr class="mt-4">
+                                        <div class="row">
+                                        <div class="col-md-7" style="margin-top: 16px;">
+                                            <button id="btnSubmit" type="submit" class="btn btn btn-dark-black">{{ __('Exportar') }}</button>
+                                            <button id="btnSubmitLoad" type="submit" class="btn btn-dark" style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                {{ __('Obteniendo datos...') }}
+                                            </button>
+                                        </div>
+                                        <div class="col-md-5" style="margin-top: 16px; text-align: right;">
+                                            <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                                                {{ __('Limpiar formulario') }}
+                                            </button>
+                                        </div>                                          
                                         </div>
                                     </div>
                                 </div>
@@ -193,9 +162,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
 <style>
     .ui-datepicker-calendar {
         display: none;

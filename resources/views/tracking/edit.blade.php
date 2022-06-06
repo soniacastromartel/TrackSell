@@ -22,9 +22,9 @@
             <div class="col-md-12">
                 <div class="card ">
                     <div class="card-header card-header-info card-header-text">
-                      <div class="card-text">
-                        <h4 class="card-title">Editar</h4>
-                      </div>
+                        <div class="card-text">
+                            <h4 class="card-title">Editar</h4>
+                        </div>
                     </div>
                     <div class="card-body ">
                         <form id="editTracking" action="{{ route('tracking.update', [$state, $tracking->id]) }}" method="POST">

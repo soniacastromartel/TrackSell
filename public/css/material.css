@@ -2449,6 +2449,14 @@ select.form-control-lg:not([size]):not([multiple]) {
     align-items: center !important;
     justify-content: center !important;
   }
+  .right {
+    align-items: right !important;
+    justify-content: right !important;
+  }
+  .left {
+    align-items: left !important;
+    justify-content: left !important;
+  }
 
   .form-inline .custom-control-label {
     margin-bottom: 0;

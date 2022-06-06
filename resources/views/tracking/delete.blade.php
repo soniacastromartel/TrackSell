@@ -22,7 +22,6 @@
 
 <div class="content">
     <div class="container-fluid">
-        <div class="row col-md-12">
                 <table class="table  table-striped table-bordered  tracking-delete-datatable">
                     <thead  class="table-header">
                         <th>Centro Prescriptor</th>
@@ -39,7 +38,7 @@
                     <tbody>
                     </tbody>
                 </table>  
-        </div>
+        
     </div>
 </div>
 <style>
@@ -49,6 +48,9 @@
     .row{
         justify-content: center;
         margin: 0;
+    }
+    table.dataTable.dataTable_width_auto {
+        width: 100%;
     }
  
       
@@ -85,8 +87,8 @@
                     }
                 },
                 columnDefs: [{
-                    targets: 9,
-                     visible: true,
+                    targets: [-1,0,1,2,3,4,5,6,7,8],
+                    visible: true,
                     className: 'dt-body-center'
                 }
             ],

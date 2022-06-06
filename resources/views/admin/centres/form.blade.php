@@ -12,7 +12,7 @@
       </div>
       <div>
         <div class="col-6"  style="margin-left: 115px;">
-          <details close>
+          <details open>
             <summary class="row label align-items-center" id="lbl">
               <i class="material-icons pr-2" id="icInfo" style="color: var(--red-icot)">info</i>
               Requisitos de imagen
@@ -42,7 +42,7 @@
     <div class="col-6">
       <label class="label" for="centre_id">Centro <span id="obligatory">*</span></label>
       @if(isset($centre))
-      <input type="text" class="form-control" name="name" id="name" value="{{ isset($centre) ? $centre->name : ''}}" readonly>
+      <input type="text" class="form-control text-center" name="name" id="name" value="{{ isset($centre) ? $centre->name : ''}}" readonly>
       @else
       <input type="text" class="form-control" name="name" id="name" value="{{ isset($centre) ? $centre->name : ''}}">
       @endif
@@ -101,7 +101,7 @@
 </div>
 <style>
   #centreImg {
-    border: 3px solid var(--red-icot);
+    border: 5px solid var(--red-icot);
     border-radius: 16px;
     margin-bottom: 16px;
   }

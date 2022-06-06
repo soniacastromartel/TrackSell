@@ -84,7 +84,7 @@
                         </div>
                             <div class="col-md-12 input-group px-3" style="margin-top:35px;">
                                 <button id="btnCalculate" type="button" class="btn btn-fill btn-grey" >{{ __('Calcular') }}</button>
-                                <button id="btnCalculateLoad" type="button" class="btn btn-success" style="display: none">
+                                <button id="btnCalculateLoad" type="button" class="btn btn-fill btn-grey" style="display: none">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     {{ __('Calculando datos...') }}
                                 </button>
@@ -92,7 +92,7 @@
                                     {{ __('Limpiar formulario') }}
                                 </button>
                                 <button id="btnSubmit" type="submit" class="btn btn-success">{{ __('Buscar') }}</button>
-                                <button id="btnSubmitLoad" type="submit" class="btn " style="display: none">
+                                <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     {{ __('Obteniendo datos...') }}
                                 </button>
@@ -106,7 +106,7 @@
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Validando datos...') }}
                             </button>
-                            <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-default">{{ __('Exportar') }}</button>
+                            <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-dark-black">{{ __('Exportar') }}</button>
                             <button id="btnExportLoad" type="submit" class="btn btn-grey" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Exportando datos...') }}

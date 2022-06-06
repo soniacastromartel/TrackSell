@@ -39,6 +39,14 @@
                             @method('POST')
                             <div class="row px-5" style="justify-content: space-between;">
                                 <div class="row col-lg-8">
+                                    <div class="form-group col-md-4">
+                                        <div class="dropdown bootstrap-select">
+                                            <select class="selectpicker" name="datepickerType" id="datepickerType" data-size="7" data-style="btn btn-red-icot btn-round" title=" Mensual / Anual" tabindex="-98">
+                                                <option value="1" selected>Mensual</option>
+                                                <option value="2">Anual</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="form-group col-md-4 centre_picker">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="centre_id" id="centre_id_picker" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
@@ -51,14 +59,6 @@
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="datepickerType" id="datepickerType" data-size="7" data-style="btn btn-red-icot btn-round" title=" Mensual / Anual" tabindex="-98">
-                                                <option value="1" selected>Mensual</option>
-                                                <option value="2">Anual</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div id="monthYearPickerContainer" class="col-md-2">
                                         <div class="input-group date mt-2">
                                             <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
@@ -68,10 +68,7 @@
                                     <div id="yearPickerContainer" class="form-group date col-md-1">
                                         <input id="yearPicker" class='form-control' type="text" placeholder="yyyy"/>
                                     </div>
-
-
                                 </div>
-
 
                                 <div class="mt-2">
                                     <div class="">
@@ -79,7 +76,7 @@
                                             {{ __('Limpiar formulario') }}
                                         </button>
                                         <button id="btnSubmit" type="submit" class="btn btn-success">{{ __('Buscar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
+                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Obteniendo datos...') }}
                                         </button>
@@ -190,15 +187,16 @@
         $('.centre_picker').hide();
 
         function clearForms() {
-            $('select').val('');
-            $('select').selectpicker("refresh");
-            $('.card-header-table').hide();
-            $('#yearPicker').val(d.getFullYear());
+            // $('.selectpicker').val('');
+            // $('select').selectpicker("refresh");
+            // $('.card-header-table').hide();
+            // $('#yearPicker').val(d.getFullYear());
             $('#centreName').hide();
-            $('.centre_picker').show();
-            $('#datepickerType').selectpicker('val', 2);
-            // $('#league-month-datatable').show();
-            //     drawLeague(null, '.league-month-datatable');
+            $('.centre_picker').hide();
+            $('#datepickerType').selectpicker('val', 1);
+            $('#league-centre-datatable').hide();
+            $('#league-month-datatable').show();
+            drawLeague(null, '.league-month-datatable');
         }
 
         $("#btnClear").on('click', function(e) {

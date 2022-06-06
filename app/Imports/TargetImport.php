@@ -4,20 +4,19 @@ namespace App\Imports;
 
 use App\Target;
 use DB;
-use Maatwebsite\Excel\Row;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Exception;
 
-use Maatwebsite\Excel\Validators\Failure;
-
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+// use Maatwebsite\Excel\Row;
+// use Illuminate\Validation\Rule;
+// use Maatwebsite\Excel\Concerns\OnEachRow;
+// use Exception;
+// use Maatwebsite\Excel\Validators\Failure;
+// use Illuminate\Support\Facades\Validator;
+// use Illuminate\Validation\ValidationException;
 
 class TargetImport implements WithStartRow, ToModel,WithHeadingRow, WithValidation //OnEachRow , 
 {
@@ -32,13 +31,7 @@ class TargetImport implements WithStartRow, ToModel,WithHeadingRow, WithValidati
 
         $centre = DB::table('centres')->select('id')
                                         ->where('name',$row['centro'])
-                                        ->first();
-        
-        // $exists = Target::where([
-        //         'year'      => date('Y'),
-        //         'month'     => $row[0],
-        //         'centre_id' => $centre->id]); 
-       
+                                        ->first(); 
          
         if (!is_integer($row['mes'])) {
             throw new \Exception("Error formato campo mes");

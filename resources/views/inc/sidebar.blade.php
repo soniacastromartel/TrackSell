@@ -152,12 +152,7 @@
                 <span class="sidebar-normal"> Calculadora de incentivos </span>
               </a>
             </li>
-            <li id="calculateRanking" class="nav-item">
-              <a class="nav-link" href="{{route('calculateRanking')}}">
-                <i class="material-icons">format_list_numbered</i>
-                <span class="sidebar-normal"> Rankings </span>
-              </a>
-            </li>
+            
             <li id="centerLeague" class="nav-item">
               <a class="nav-link" href="{{route('centerLeague')}}">
                 <i class="material-icons">dvr</i>

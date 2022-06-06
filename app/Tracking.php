@@ -124,6 +124,8 @@ class Tracking extends Model
         if ($currentMonth == 1) {
             $beforeMonth = 12;
             $beforeYear  -= 1;
+        } else {
+            $beforeMonth = $currentMonth-1;
         }
 
         // Request change can't alterate previous data 

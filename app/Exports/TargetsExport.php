@@ -250,7 +250,7 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
                                 if ($result['obj2'] === true){
                                     $auxIncentive  = $valueSuperIncentive2;
                                 }
-                            }
+                            } 
                         }
                         //Solo aplica bonus de venta, para supervisores activos en fecha fin de corte
                         //REPARTO BONUS HCT
@@ -341,6 +341,7 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
         }
     } 
     
+    // Fill second page objetivos/seguimiento
     private function generateContentSecondSheet($target,$event){
 
         $tracking = $this->normalizeData($target); 

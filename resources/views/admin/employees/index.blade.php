@@ -28,7 +28,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right" id="blockNewTracking">
-                <a id="btnSyncA3" class="btn btn-red-icot btn-lg"> Sincronizar A3</a>
+                <a id="btnSyncA3" class="btn btn-outline"> Sincronizar A3</a>
                 <button id="btnSubmitLoad" type="submit" class="btn btn-red-icot" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Realizando sincronización...') }}
@@ -55,7 +55,12 @@
 <style>
     td {
         font-weight: bold;
-        /* text-align: center; */
+    }
+    #btnSyncA3{
+        font-weight: 900;
+        font-size: large;
+        background-color: #eeeeee;
+        color: var(--red-icot);
     }
 </style>
 
@@ -86,7 +91,7 @@
                 }
             },
             columnDefs: [{
-                targets: -1,
+                targets: [-1,0,1,2,3,4],
                 visible: true,
                 className: 'dt-body-center'
             }],

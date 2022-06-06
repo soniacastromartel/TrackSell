@@ -210,7 +210,7 @@
             columns: columnsFilled,
             columnDefs: [
                 {
-                    targets: -1,
+                    targets: [-1,0,1,2,3,4,5],
                     visible: true,
                     className: 'dt-body-center'
                 },

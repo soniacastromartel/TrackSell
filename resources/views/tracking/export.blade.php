@@ -128,22 +128,18 @@
                                                     </option>
                                                     @endforeach
                                                 </select>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
-                            <div class="row mt-2 px-5">
-                                <div class="col-md-5">
-                                   
+                            <div class="row mt-5 px-5">
+                                <div class="col">
                                     <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                                         {{ __('Limpiar formulario') }}
                                     </button>
-                                    <button id="btnSubmit" type="submit" class="btn btn-fill btn-default">{{ __('Exportar') }}</button>
-                                    <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                                    <button id="btnSubmit" type="submit" class="btn btn-fill btn-dark-black" style="float: right;">{{ __('Exportar') }}</button>
+                                    <button id="btnSubmitLoad" type="submit" class="btn btn-fill btn-dark-black text-right" style="display: none; float: right;">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         {{ __('Exportando datos...') }}
                                     </button>
@@ -180,6 +176,7 @@
 
         function clearForms() {
             $('select').val('');
+            $('input').val('');
             $('select').selectpicker("refresh");
             $("input[name=trackingState][value='service']").prop("checked", true);
         }

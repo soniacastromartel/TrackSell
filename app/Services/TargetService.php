@@ -5,6 +5,7 @@ use DB;
 use App\Centre;
 use App\Target;
 use App\Employee;
+use App\Exports\TargetsExport;
 use Exception;
 
 class TargetService {
@@ -260,7 +261,7 @@ class TargetService {
             $i = 0;
             foreach ($target as $t) {
                 if (!empty($t->calc_month)) {
-                    $lastCalcMonth = $t->calc_month;
+                    // $lastCalcMonth = $t->calc_month;
                     if ($t->obj1_done == 1) {
                         $arrMonthYear = explode("/",$t->calc_month);
                         $calcMonth = "";  
@@ -279,9 +280,6 @@ class TargetService {
                 }
                 $arrMonthCalc = explode("/",$monthYear);
                 $i++;
-                // if ($t->month > $arrMonthCalc[0]){
-                //     break; 
-                // }
             }
 
             foreach ($target as $t) {
@@ -326,17 +324,14 @@ class TargetService {
      * 
      * */
     public function rules($targetRow, $targets, $supervisors){
-        $result = true;
         $obj1 = true;  
         $obj2 = true;  
 
         if ( (!empty($targets) && $targets['vc'] == 0) || (empty($targets))) {
-            $result = false; 
             $obj1 = false;
         }
 
         if ( (!empty($targets) && $targets['vp'] == 0) || (empty($targets))) {
-            $result = false; 
             $obj2 = false;
         }
         
@@ -504,6 +499,20 @@ class TargetService {
         return $tracking; 
     }
 
+    private function getDiscount ($targetRow, $field) {
+        $result = $targetRow->$field; 
+        if (!empty($targetRow->discount) && $targetRow->is_calculate === 1) {
+
+            if (strpos($field, 'service_price_') !== false) {
+                $field = substr($field, strlen('service_price_')); 
+            }
+
+            $fieldDiscount = 'discount_'.$field;
+            $result = $targetRow->$fieldDiscount; 
+        }
+        return $result; 
+    }
+
     public function getSummarySales($tracking, $targetDefined, $monthYear, $centres, $vcTotal=0)
     {
         try {
@@ -537,8 +546,8 @@ class TargetService {
                         $total[$trackingRow->employee_id]['tracking_ids']  = []; 
                     }
         
-                    $valueIncentiveObj1   = isset($trackingRow->service_price_incentive1) ? $trackingRow->service_price_incentive1 : $trackingRow->obj1_incentive; 
-                    $valueIncentiveObj2   = isset($trackingRow->service_price_incentive2) ? $trackingRow->service_price_incentive2 : $trackingRow->obj2_incentive; 
+                    $valueIncentiveObj1   = $this->getDiscount ($trackingRow, 'service_price_incentive1');
+                    $valueIncentiveObj2   = $this->getDiscount ($trackingRow, 'service_price_incentive2');
                     $totalIncentive = 0;
         
                     $result = $this->rules($trackingRow, $targets,null);
@@ -553,11 +562,20 @@ class TargetService {
                             }
                         }
                     }
-                    $total[$trackingRow->employee_id]['total_incentive'] += $totalIncentive * $trackingRow->quantity;
-                    $total[$trackingRow->employee_id]['total_income']    += $totalIncentive * $trackingRow->quantity;
-                    $total[$trackingRow->employee_id]['total_income']     = round($total[$trackingRow->employee_id]['total_income'],2);
-                    $total[$trackingRow->employee_id]['tracking_ids'][]   = $trackingRow->tracking_id; 
-                    $totalCentre[$centre['name']]['total_incentive']     += $totalIncentive * $trackingRow->quantity; 
+                    // Si la recomendacion lleva descuento y es el familiar, no aplica incentivo
+                    if ($trackingRow->discount !== null && $trackingRow->discount === 'DESCUENTO1') {
+                        $total[$trackingRow->employee_id]['total_incentive'] += 0;
+                        $total[$trackingRow->employee_id]['total_income']    += 0;
+                        $total[$trackingRow->employee_id]['total_income']     = 0;
+                        $total[$trackingRow->employee_id]['tracking_ids'][]   = 0; 
+                        $totalCentre[$centre['name']]['total_incentive']     += 0;
+                    } else {
+                        $total[$trackingRow->employee_id]['total_incentive'] += $totalIncentive * $trackingRow->quantity;
+                        $total[$trackingRow->employee_id]['total_income']    += $totalIncentive * $trackingRow->quantity;
+                        $total[$trackingRow->employee_id]['total_income']     = round($total[$trackingRow->employee_id]['total_income'],2);
+                        $total[$trackingRow->employee_id]['tracking_ids'][]   = $trackingRow->tracking_id; 
+                        $totalCentre[$centre['name']]['total_incentive']     += $totalIncentive * $trackingRow->quantity;  
+                    }  
                     
                     $supervisors = explode(",",$trackingRow->supervisor);
                     foreach ($supervisors as $supervisorId ) {
@@ -579,8 +597,9 @@ class TargetService {
                                 $total[$supervisorId]['total_income'] =  0;
                             }
             
-                            $valueSuperIncentive1 = isset($trackingRow->service_price_super_incentive1) ?  $trackingRow->service_price_super_incentive1 : $trackingRow->superv_obj1_incentive; 
-                            $valueSuperIncentive2 = isset($trackingRow->service_price_super_incentive2) ?  $trackingRow->service_price_super_incentive2 : $trackingRow->superv_obj2_incentive; 
+                            $valueSuperIncentive1 = $this->getDiscount ($trackingRow, 'service_price_super_incentive1'); 
+                            $valueSuperIncentive2 = $this->getDiscount ($trackingRow, 'service_price_super_incentive2');
+
                             $result = $this->rules($trackingRow, $targets,array_values($supervisors));
                             $auxIncentive = 0; 
                             //Solo aplica bonus de venta, para empleados activos en fecha fin de corte
@@ -595,22 +614,32 @@ class TargetService {
                                     $auxIncentive = 0;
                                 }
                             }
+                            //SUPERINCENTIVE SUPERV
                             if (!in_array($trackingRow->employee_id, $supervisors)) {
-                                $total[$trackingRow->employee_id]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
+                                // Si la recomendacion lleva descuento y es el familiar, no aplica incentivo
+                                if ($trackingRow->discount !== null && $trackingRow->discount === 'DESCUENTO1') {
+                                    $total[$trackingRow->employee_id]['total_super_incentive'] = 0;
+                                } else {
+                                    $total[$trackingRow->employee_id]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
+                                }   
                             }
                             //Solo aplica bonus de venta, para supervisores activos en fecha fin de corte
                             if ($isSupervisorActive == false) {
                                 $total[$supervisorId]['total_super_incentive']  = 0; 
-                            } else {
-                                    $total[$supervisorId]['total_super_incentive']         += $auxIncentive * $trackingRow->quantity; 
-                                    $total[$supervisorId]['total_super_incentive']          = round($total[$supervisorId]['total_super_incentive'],2);
-                            }
-                            $total[$supervisorId]['total_income']                   = $total[$supervisorId]['total_incentive']; 
-                            if ($centre['id'] != env('ID_CENTRE_HCT')){ 
-                                $total[$supervisorId]['total_income'] += $total[$supervisorId]['total_super_incentive']; 
-                            }
+                            } 
 
-                            $total[$supervisorId]['total_income']                   = round($total[$supervisorId]['total_income'],2);
+                            // Segunda comprobacion antes de asignacion por si no procede aplicar incentivo
+                            if ($trackingRow->discount === null || $trackingRow->discount !== 'DESCUENTO1') {
+                                $total[$supervisorId]['total_super_incentive']         += $auxIncentive * $trackingRow->quantity; 
+                                $total[$supervisorId]['total_super_incentive']          = round($total[$supervisorId]['total_super_incentive'],2);
+
+                                $total[$supervisorId]['total_income']                   = $total[$supervisorId]['total_incentive']; 
+                                if ($centre['id'] != env('ID_CENTRE_HCT')){ 
+                                    $total[$supervisorId]['total_income'] += $total[$supervisorId]['total_super_incentive']; 
+                                }
+                                $total[$supervisorId]['total_income']                   = round($total[$supervisorId]['total_income'],2);
+                            }
+                            
                             $total[$supervisorId]['is_supervisor'] = 1;
                         }
                     }
@@ -618,9 +647,11 @@ class TargetService {
                         $auxIncentive = 0;
                     }
 
-                    // $auxIncentive == null ?  $auxIncentive = 0: $auxIncentive;
-                    $totalCentre[$centre['name']]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
-                    $totalCentre[$centre['name']]['total_super_incentive']  = round($totalCentre[$centre['name']]['total_super_incentive'], 2);
+                    if ($trackingRow->discount === null || $trackingRow->discount !== 'DESCUENTO1') {
+                        // $auxIncentive == null ?  $auxIncentive = 0: $auxIncentive;
+                        $totalCentre[$centre['name']]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity; 
+                        $totalCentre[$centre['name']]['total_super_incentive']  = round($totalCentre[$centre['name']]['total_super_incentive'], 2);
+                    }
 
                     $eIds = array_keys($total);
                     if ($i == count($tracking[$centre['name']]) -1) {
@@ -640,12 +671,10 @@ class TargetService {
                                 $total[$supervisorId]['total_income']                   += $total[$supervisorId]['total_super_incentive']; 
                             }
                         }
-                        
                         $totalCentre[$centre['name']]['details'] = $total;
                         $totalCentre[$centre['name']]['total_income'] += $totalCentre[$centre['name']]['total_incentive'] + $totalCentre[$centre['name']]['total_super_incentive']; 
                     }
-            }
-            
+            }  
             return $totalCentre; 
         } catch (Exception $e) {
             \Log::debug($e);

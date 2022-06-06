@@ -82,36 +82,36 @@
                 }
             },
             columnDefs: [{
-                    targets: -1,
+                    targets: [-1,0,1,2,3,4],
                     visible: true,
                     className: 'dt-body-center'
                 },
                 {
-                    width: "10px",
+                    width: "5%",
                     targets: 0
                 },
                 {
-                    width: "100px",
+                    width: "30%",
                     targets: 1
                 },
                 {
-                    width: "40px",
+                    width: "10%",
                     targets: 2
                 },
                 {
-                    width: "10px",
+                    width: "10%",
                     targets: 3
                 },
                 {
-                    width: "70px",
+                    width: "15%",
                     targets: 4
                 },
                 {
-                    width: "70px",
+                    width: "5%",
                     targets: 5
                 },
                 {
-                    width: "70px",
+                    width: "25%",
                     targets: 6
                 }
             ],

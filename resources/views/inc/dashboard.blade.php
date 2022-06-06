@@ -39,7 +39,7 @@
               </div>
               <div class="form-group col-sm-10">
                 <div class="dropdown bootstrap-select">
-                  <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor <span class="obligatory">*</span> </label>
+                  <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor<span class="obligatory">*</span> </label>
                   <select class="selectpicker"  name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" 
                   title="* Seleccione Centro" tabindex="-98"
                   @if (isset($employee) && $employee->rol_id != 1)
@@ -65,9 +65,6 @@
                   {{ __('Limpiar formulario') }}
                   </button> 
               @endif
-
-              
-
             </div>
             </div>
             </div>
@@ -99,27 +96,28 @@
     </div>
     <hr id="separator">
     <div class="row">
-    <div class="col-lg ml-5">
-      <h4 id="typeRanking">VER RANKING: </h4>
+    <div class="col-lg">
+      
       <div id="formRadio">
-      <form >
-      <div class="form-check" style="margin-right:1040px;">
-        <label class="form-check-label" id="selected-label">
-          <input id="monthly" class="form-check-input"  type="radio" name="optradio" checked>Mensual<span class="circle">
-                                                    <span class="check"></span>
-                                                </span>
-        </label>
-        <label class="form-check-label">
-          <input id="annual" class="form-check-input"  type="radio" name="optradio">Anual<span class="circle">
-                                                    <span class="check"></span>
-                                                </span>
-        </label>
-</div>
-    </form>
+        <form >
+          <div class="form-check">
+          <h4 id="typeRanking">VER RANKING: </h4>
+            <label class="form-check-label" id="selected-label">
+              <input id="monthly" class="form-check-input"  type="radio" name="optradio" checked>Mensual<span class="circle">
+                                                        <span class="check"></span>
+                                                    </span>
+            </label>
+            <label class="form-check-label">
+              <input id="annual" class="form-check-input"  type="radio" name="optradio">Anual<span class="circle">
+                                                        <span class="check"></span>
+                                                    </span>
+            </label>
+          </div>
+        </form>
       </div>
     </div>
     <div style="margin-right: 85px;margin-top: 15px;">
-    <button id="btnSubmit" type="submit" class="btn btn-fill btn-default" >Exportar</button>
+    <button id="btnSubmit" type="submit" class="btn btn-fill btn-dark-black" >Exportar</button>
       <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         {{ __('Obteniendo datos...') }}
@@ -240,9 +238,11 @@ svg.ct-chart-bar, svg.ct-chart-line{
 #typeRanking{
   margin-bottom: 0px;
   margin-right: 10px;
+  margin-left: 100px;
   display: inline-block;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: 700;
+  color: black;
 }
 
 #formRadio{
@@ -275,7 +275,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
   
 
   $(function () {
-   
+
     @if (isset($employee) && $employee->rol_id != 1)
       $("#btnClear").hide(); 
     @else
@@ -372,7 +372,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
   });
 
   const colors = [
-    { color: '#1a5e07' },      //medium
+    // { color: '#1a5e07' },      //medium
+    { color: '#b01c2e'},
     { color: '#cccccc' },  //high
     { color: 'seagreen' },   //low
   ];
@@ -422,7 +423,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
       var centro_id =  $('#centre_id option:selected').val();
       var centro    =  $('#centre_id option:selected').text(); 
     @endif
-   
+
     if (centro_id != "") {
       $('#centre_id option:selected').val(centro_id); 
       
@@ -437,7 +438,6 @@ svg.ct-chart-bar, svg.ct-chart-line{
       }
     
     } else {
-
       $("#employee-centre").html(centro);
       $("#title-target").html("Objetivos  del  GRUPO ICOT");
       $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
@@ -450,7 +450,6 @@ svg.ct-chart-bar, svg.ct-chart-line{
     var  months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     var monthName=months[month-1];
     return monthName; 
-
   }
 
 
