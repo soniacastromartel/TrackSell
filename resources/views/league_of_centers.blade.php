@@ -2,22 +2,10 @@
 
 @section('content')
 @include('inc.navbar')
-
+@include('common.alert')
 
 <div id="alertErrorLeague" class="alert alert-danger" role="alert" style="display: none">
 </div>
-
-@if (session('success'))
-<div class="alert alert-success" role="alert">
-    {{ session('success') }}
-</div>
-@endif
-
-@if (session('error'))
-<div class="alert alert-danger" role="alert">
-    {{ session('error') }}
-</div>
-@endif
 
 <div class="content">
     <div class="container-fluid">
@@ -73,10 +61,13 @@
                                 <div class="mt-2">
                                     <div class="">
                                         <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                            {{ __('Limpiar formulario') }}
+                                        <span class="material-icons">
+                            clear_all
+                            </span>    {{ __('Limpiar formulario') }}
                                         </button>
-                                        <button id="btnSubmit" type="submit" class="btn btn-success">{{ __('Buscar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                                        <button id="btnSubmit" type="submit" class="btn btn-success"><span class="material-icons">
+                            search</span> {{ __('Buscar') }}</button>
+                                        <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Obteniendo datos...') }}
                                         </button>
@@ -402,10 +393,9 @@
                     } else {
                         var response = JSON.parse(xhr.responseText);
                         $('#alertErrorLeague').text(response.errors);
-                        $('#alertErrorLeague').show();
+                        $('#alertErrorLeague').show().delay(2000).slideUp(300);
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
-                        timeOutAlert($('#alertErrorLeague'));
                     }
                     this.api().columns().every(function() {
                         var column = this;

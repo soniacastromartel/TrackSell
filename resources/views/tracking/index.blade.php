@@ -2,19 +2,8 @@
 
 @section('content')
 @include('inc.navbar')
+@include('common.alert')
 
-
-@if (session('success'))
-<div class="alert alert-success" role="alert">
-    {{ session('success') }}
-</div>
-@endif
-
-@if (session('error'))
-<div class="alert alert-danger" role="alert">
-    {{ session('error') }}
-</div>
-@endif
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
@@ -54,13 +43,18 @@
             <div class="col-6 text-right p-5" style="margin-top:auto; margin-bottom: auto;">
                 <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"> Nuevo Seguimiento</a>
                 <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                    {{ __('Limpiar formulario') }}
+                <span class="material-icons"> clear_all</span>     {{ __('Limpiar formulario') }}
                 </button>
-                    <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Buscar') }}</button>
-                    <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        {{ __('Obteniendo datos...') }}
+                <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"><span class="material-icons">
+                            search</span> {{ __('Buscar') }}</button>
+                <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    {{ __('Obteniendo datos...') }}
                 </button>
+            </div>
+            <div class="col-md-2 text-right" id="blockNewTracking">
+                <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"><span class="material-icons">
+                            add_circle</span> Nuevo Seguimiento</a>
             </div>
         </div>
         <table class="table  table-striped table-bordered tracking-datatable">
@@ -214,7 +208,7 @@
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
                 $('#alertErrorTrackingDate').text(response.mensaje);
-                $('#alertErrorTrackingDate').show();
+                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                 $('#btnSubmitLoad').hide();
                 $('#btnSubmit').show();
             }

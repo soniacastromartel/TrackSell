@@ -1,24 +1,16 @@
 @extends('layouts.logged')
 
 @section('content')
-@if (session('success'))
-<div class="alert alert-success" role="alert">
-    {{ session('success') }}
-</div>
-@endif
+@include('inc.navbar')
+@include('common.alert')
 
-@if (session('error'))
-<div class="alert alert-danger" role="alert">
-    {{ session('error') }}
-</div>
-@endif
+
 <div id="alertErrorServiceIncentive" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertServiceIncentive" class="alert alert-warning" role="alert" style="display: none">
 </div>
 
 
-@include('inc.navbar')
 
 <style>
     .file-upload {
@@ -80,9 +72,12 @@
                     </div>
                     <div class="mt-2">
                         <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                            {{ __('Limpiar formulario') }}
+                        <span class="material-icons">
+                            clear_all
+                            </span>    {{ __('Limpiar formulario') }}
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Buscar') }}</button>
+                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"><span class="material-icons">
+                            search</span> {{ __('Buscar') }}</button>
                         <button id="btnSubmitLoad" type="submit" class="btn btn-red-icot" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             {{ __('Obteniendo datos...') }}
@@ -257,7 +252,7 @@
                 var response = JSON.parse(xhr.responseText);
 
                 $('#alertErrorServiceIncentive').text('Ha ocurrido un error al exportar los servicios, contacte con el administrador');
-                $('#alertErrorServiceIncentive').show();
+                $('#alertErrorServiceIncentive').show().delay(2000).slideUp(300);
                 $("#btnExportIncentives").show();
                 $('#targetExportFileLoad').hide();
             }

@@ -1,25 +1,15 @@
+@include('common.alert')
 
-  <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
+ 
+<div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
     </div>
-
-    @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('error') }}
-        </div>
-    @endif
 
 <div class="content">
   <div class="container-fluid mt-3">
     <div class="row">
       <div class="col-lg-4">
         <div id="employee-info" class="card"  style= "min-height: 462px;">
-          <div class="card-header card-header-danger">
+          <div class="card-header card-header-primary">
             <h4 class="card-title">Búsqueda</h4>
           </div>
           <div class="card-body">
@@ -31,28 +21,36 @@
 
             <div class="row">
               <div class="col-sm-10" style="padding-top: 40px;">
-                <label class="label" for="monthYearPicker">Mes / Año </label>
-                <div class="mt-2 input-group date">
-                  <input id="monthYearPicker" class='form-control' type="text"  placeholder="yyyy/mm" />
-                  <input type="hidden" name="monthYear" id="monthYear"/>
+                <label class="label" for="monthYearPicker">Fecha </label>
+                <div id="monthYearPickerContainer">
+                  <div class="input-group date mt-2">
+                      <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm"/>
+                      <input type="hidden" name="monthYear" id="monthYear" />
+                   </div>
+                </div>
+                <div id="yearPickerContainer" class="form-group date">
+                    <input id="yearPicker" class='form-control' type="text" placeholder="yyyy"/>
                 </div>
               </div>
               <div class="form-group col-sm-10">
                 <div class="dropdown bootstrap-select">
                   <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor<span class="obligatory">*</span> </label>
                   <select class="selectpicker"  name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" 
-                  title="* Seleccione Centro" tabindex="-98"
-                  @if (isset($employee) && $employee->rol_id != 1)
-                  disabled="disabled"
-                  @endif
-                  >
+                  title="* Seleccione Centro" tabindex="-98">
+
+                  @if (isset($employee) && $employee->rol_id != 1) 
+                  <option value="{{$employee->centre_id}}" selected>{{$employee->centre}}</option>
+                  @endif 
+
+                  @if (isset($employee) && $employee->rol_id == 1)
                   @foreach ($centres as  $centre)
                   <option value="{{$centre->id}}" 
-                  @if (isset($employee) && $centre->id == $employee->centre_id )
-                  selected="selected"
-                  @endif
                   >{{$centre->name}}</option>
                   @endforeach
+                  @endif
+
+                 
+
                   </select>
                   <input type="hidden" name="centre" id="centre"/>
                 </div>
@@ -60,15 +58,17 @@
               <div class="col-md-12">
                 <div class="row" style="margin-top:20px;">
               
-              @if (isset($employee) && $employee->rol_id == 1)
                   <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                  {{ __('Limpiar formulario') }}
+                  <span class="material-icons">
+                            clear_all
+                            </span>  {{ __('Limpiar formulario') }}
                   </button> 
-              @endif
+
+              
+
             </div>
             </div>
             </div>
-            </form>
 
           </div>
         </div>
@@ -99,29 +99,29 @@
     <div class="col-lg">
       
       <div id="formRadio">
+<<<<<<< Updated upstream
         <form >
           <div class="form-check">
           <h4 id="typeRanking">VER RANKING: </h4>
-            <label class="form-check-label" id="selected-label">
-              <input id="monthly" class="form-check-input"  type="radio" name="optradio" checked>Mensual<span class="circle">
-                                                        <span class="check"></span>
-                                                    </span>
-            </label>
-            <label class="form-check-label">
-              <input id="annual" class="form-check-input"  type="radio" name="optradio">Anual<span class="circle">
-                                                        <span class="check"></span>
-                                                    </span>
-            </label>
-          </div>
-        </form>
+                                                    <span class="check"></span>
+                                                </span>
+        </label>
+        <label class="form-check-label">
+          <input id="annual" class="form-check-input"  type="radio" name="optradio" value="2">Anual<span class="circle"><span class="check"></span></span>
+        </label>
+</div>
+    </form>
       </div>
     </div>
     <div style="margin-right: 85px;margin-top: 15px;">
-    <button id="btnSubmit" type="submit" class="btn btn-fill btn-dark-black" >Exportar</button>
+    <button id="btnSubmit" type="submit" class="btn btn-fill btn-default"><span class="material-icons">
+                            file_download
+                            </span> Exportar</button>
+>>>>>>> Stashed changes
       <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         {{ __('Obteniendo datos...') }}
-      </button>
+
 
     </div>
     </div>
@@ -276,11 +276,12 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
   $(function () {
 
-    @if (isset($employee) && $employee->rol_id != 1)
+    @if (isset($employee) && $employee->rol_id == 2)
       $("#btnClear").hide(); 
     @else
       $("#btnClear").show(); 
     @endif
+    
 
     $(".form-check-input").change(function() {
             $(".form-check-label").removeAttr('id');
@@ -302,7 +303,14 @@ svg.ct-chart-bar, svg.ct-chart-line{
                 params = {};
                 params["_token"] = "{{ csrf_token() }}";
                 params["centre"] = $('#centre').val();
-                params["monthYear"] = $("#monthYearPicker").val();
+
+                if ($('input[name="optradio"]:checked').val()=="1") { //MENSUAL
+                    params["monthYear"] = $("#monthYearPicker").val();
+                }
+                if ($('input[name="optradio"]:checked').val()=="2") { //ANUAL
+                    params["year"] = $("#yearPicker").val();
+                    
+                }
 
                 $.ajax({
                     url: $("#rankingForm").attr('action'),
@@ -341,7 +349,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
                         $('#alertErrorCalculate').text(response.errors);
-                        $('#alertErrorCalculate').show();
+                        $('#alertErrorCalculate').show().delay(2000).slideUp(300);
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
                         timeOutAlert($('#alertErrorCalculate'));
@@ -352,8 +360,45 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
   
   var d = new Date();
-  var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear()   ;  
-  $('#monthYearPicker').val(textMonthYear);
+  $("#yearPicker").datepicker("destroy");
+  $("#yearPickerContainer").hide();
+  showMonthYearPicker();
+
+  function showMonthYearPicker() {
+    var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
+    $('#monthYearPicker').val(textMonthYear);
+    // Default functionality.
+    $('#monthYearPicker').MonthPicker();
+    $('#monthYearPicker').MonthPicker({
+    ShowIcon: true,
+      //     Button: '<img src="assets/img/calendar.gif" title="Select date" />'
+    });
+  }
+
+  function showYearPicker() {
+    $('#monthYearPicker').MonthPicker({
+      ShowIcon: false
+    });
+
+    var textYear = d.getFullYear();
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+    $('#yearPicker').val(textYear);
+    $('#yearPicker').datepicker({
+              // showOn: "button",
+                    // buttonImage: "assets/img/calendar.gif",
+                    selectedDate: true,
+                    changeMonth: false,
+                    changeYear: true,
+                    showButtonPanel: true,
+                    closeText: 'Seleccionar',
+                    currentText: 'Año actual',
+                    onClose: function(dateText, inst) {
+                        $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0,
+                        1)));
+                    },
+                });
+            }
+
 
   $('#annualData').hide();
 
@@ -362,11 +407,24 @@ svg.ct-chart-bar, svg.ct-chart-line{
   });
 
   $('#monthly').on('click', function(e){
+    showMonthYearPicker();
+    var d = new Date();
+    var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear()   
+    drawTarget($('#centre_id option:selected').val()); 
+    getSales('.sales-month-datatable');
+    getSales('.sales-year-datatable');
+    $('#monthYearPicker').val(textMonthYear);
+    $("#yearPicker").datepicker("destroy");
+    $("#yearPickerContainer").hide();
+    $('#monthYearPickerContainer').show();
     $('#annualData').hide();
     $('#monthlyData').show();
   });
 
   $('#annual').on('click', function(e){
+    showYearPicker();
+    $('#yearPickerContainer').show();
+    $('#monthYearPickerContainer').hide();
     $('#monthlyData').hide();
     $('#annualData').show();
   });
@@ -414,16 +472,19 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
   function getValueCentre() {
 
-    @if (isset($employee) && $employee->rol_id != 1)
-      var centro_id =  '{!! $employee->centre_id !!}';
-      var centro    =  '{!! $employee->centre !!}'; 
-      $('.bootstrap-select .filter-option').text(centro);
-      $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
-    @else
-      var centro_id =  $('#centre_id option:selected').val();
-      var centro    =  $('#centre_id option:selected').text(); 
-    @endif
+    var centro_id =  $('#centre_id option:selected').val();
+    var centro    =  $('#centre_id option:selected').text(); 
 
+    // @if (isset($employee) && $employee->rol_id != 1)
+    //   var centro_id =  '{!! $employee->centre_id !!}';
+    //   var centro    =  '{!! $employee->centre !!}'; 
+    //   $('.bootstrap-select .filter-option').text(centro);
+    //   $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
+    // @else
+    //   var centro_id =  $('#centre_id option:selected').val();
+    //   var centro    =  $('#centre_id option:selected').text(); 
+    // @endif
+   
     if (centro_id != "") {
       $('#centre_id option:selected').val(centro_id); 
       
@@ -434,7 +495,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
       if ( centro_id == {{ env('ID_CENTRE_HCT') }} ) {
         $("#title-ranking").html("Ranking Anual de  " + centro);
       } else {
-        $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
+        $("#title-ranking").html("Ranking Anual  de  " + centro);
       }
     
     } else {
@@ -554,9 +615,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
                     /** Si es seleccionado HCT siempre pasar HCT
                         Si no es HCT si es anual (null centros) , mensual el centro */
-                    d.centre    = $('#centre_id option:selected').val() == {{ env('ID_CENTRE_HCT')}}
-                                  ? $('#centre_id option:selected').val() :
-                                  idDataTable != '.sales-month-datatable'  ? null : $('#centre_id option:selected').val() , 
+                    d.centre    = $('#centre_id option:selected').val() , 
                     d.type      = idDataTable == '.sales-month-datatable' ? 'monthly' : 'anual'
                 }
             },
@@ -591,9 +650,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
   function clearForms()
   {
-    
-      $('select').val('');
-      //$('select').selectpicker("refresh");
+      $('select#centre_id').val('');
+      $('select#centre_id').selectpicker("refresh");
       $("#employee-centre").html("GRUPO ICOT");
       $("#title-target").html("Objetivos  del  GRUPO ICOT");
       $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");

@@ -2,17 +2,7 @@
 
 @section('content')
 @include('inc.navbar')
-@if (session('success'))
-    <div class="alert alert-success" role="alert">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if (session('error'))
-    <div class="alert alert-danger" role="alert">
-        {{ session('error') }}
-    </div>
-@endif
+@include('common.alert')
 
 <div class="content">
     <div class="container-fluid">
@@ -20,7 +10,8 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('roles.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg" > Nuevo</a>
+                <a href="{{ route('roles.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg" ><span class="material-icons">
+                            add_circle</span> Nuevo</a>
             </div>
         </div>     
         <table class="table table-striped table-bordered roles-datatable">

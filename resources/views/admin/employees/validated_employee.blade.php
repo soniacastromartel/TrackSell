@@ -2,25 +2,7 @@
 
 @section('content')
 @include('inc.navbar')
-
-
-@if (session('success'))
-    <div class="alert alert-success" role="alert">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if (session('validated'))
-    <div class="alert alert-secondary" role="alert">
-        {{ sesion('validated')}}
-  </div>
-@endif
-
-@if (session('error'))
-    <div class="alert alert-danger" role="alert">
-        {{ session('error') }}
-    </div>
-@endif
+@include('common.alert')
 
 
 <div class="modal" tabindex="-1" role="dialog" id="modal-validate">

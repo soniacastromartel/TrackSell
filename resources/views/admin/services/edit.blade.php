@@ -2,13 +2,8 @@
 
 @section('content')
 
-@if (session('error'))
-    <div class="alert alert-danger" role="alert">
-        {{ session('error') }}
-    </div>
-@endif
 @include('inc.navbar')
-
+@include('common.alert')
 
 <div class="content">
     <div class="container-fluid">

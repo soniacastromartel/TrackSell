@@ -71,13 +71,21 @@ class EmployeeController extends DefaultLoginController //Controller
                     })
                     ->addColumn('action', function($employee){
                         $btn = '';
-                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-warning a-btn-slide-text"><bold>Editar</bold></a>';
+                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
+                        edit
+                        </span> Editar</a>';
                         $fnCall = 'resetAccessApp('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text"><bold>Reestablecer Acceso</bold></a>';
+                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text"><span class="material-icons">
+                        refresh
+                        </span> Reestablecer Acceso</a>';
                         $fnCall = 'denyAccess('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-red-icot a-btn-slide-text"><bold>Denegar Acceso</bold></a>';
+                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                        block
+                        </span> Denegar Acceso</a>';
                         $fnCall = 'syncA3('.$employee->id.' , \'only\')'; 
-                        $btn .= '<a id="btnSyncA3_'.  $employee->id. '" onclick="'. $fnCall .'" class="btn a-btn-slide-text" style="background: #00838f;"><bold>Sincronizar A3</bold></a>';
+                        $btn .= '<a id="btnSyncA3_'.  $employee->id. '" onclick="'. $fnCall .'" class="btn btn-info a-btn-slide-text"><span class="material-icons">
+                        sync
+                        </span> Sincronizar A3</a>';
                         $btn.= '<button id="btnSubmitLoad_'  .  $employee->id. '" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 Realizando sincronización...
@@ -272,7 +280,7 @@ class EmployeeController extends DefaultLoginController //Controller
             } else {
                 return response()->json(['success' => false
                                         , 'url'    => '/admin/employees'
-                                        , 'mensaje'=> 'No encontrado access token'], 200);
+                                        , 'mensaje'=> 'No encontrado access token'], 404);
             }
             
             
@@ -322,7 +330,7 @@ class EmployeeController extends DefaultLoginController //Controller
         $idEmployee = (int)$params['employee_id'];
         $this->user = session()->get('user');
 
-        Log::channel('a3')->info("Inciiado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
+        Log::channel('a3')->info("Iniciado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
         if ($params['type'] == 'full') {
             Artisan::call('a3empleados:cron',[]);
         } else {

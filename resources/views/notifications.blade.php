@@ -2,19 +2,8 @@
 
 @section('content')
 @include('inc.navbar')
+@include('common.alert')
 
-
-@if (session('success'))
-<div class="alert alert-success" role="alert">
-    {{ session('success') }}
-</div>
-@endif
-
-@if (session('error'))
-<div class="alert alert-danger" role="alert">
-    {{ session('error') }}
-</div>
-@endif
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
@@ -36,9 +25,12 @@
 
                     <div class="row align-content-end">
                         <button id="btnClear" href="#" class="btn btn-fill btn-warning button-size">
-                            {{ __('Limpiar formulario') }}
+                        <span class="material-icons">
+                            clear_all
+                            </span>   {{ __('Limpiar formulario') }}
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success button-size">{{ __('Buscar') }}</button>
+                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success button-size"><span class="material-icons">
+                            search</span> {{ __('Buscar') }}</button>
                         <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             {{ __('Obteniendo datos...') }}
@@ -172,7 +164,7 @@
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
                 $('#alertErrorTrackingDate').text(response.mensaje);
-                $('#alertErrorTrackingDate').show();
+                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                 $('#btnSubmitLoad').hide();
                 $('#btnSubmit').show();
             }

@@ -1,17 +1,17 @@
   <div class="row justify-content-end">
 
-    <div class="col-xl-6 col-lg-12">
+    <div class="col-xl-6 col-lg-12 column-center">
       <div id="containerImg" class="text-center">
         <label class="label" for="image">Imagen de Servicio <span class="obligatory">*</span></label>
         <br>
         <div>
           <img id="serviceImg" src="{{ isset($service) && $service->image != '' ? $service->image : asset('storage/img/default.png') }}" name="image" id="image" width="600px" height="342px">
           <br>
-          <input type="file" class="button upload-box mt-3" name="changeImg" id="changeImg" style="width:71%;" />
+          <input type="file" class="button upload-box" name="changeImg" id="changeImg" style="width:71%;" />
           <br><br>
           <div class="row">
             <div class="col-6" style= "margin-left: 140px;">
-              <details open>
+              <details close>
                 <summary class="row label align-items-center" id="lbl">
                   <i class="material-icons pr-2" id="icInfo" style="color: var(--red-icot)">info</i>
                   Requisitos de imagen
@@ -20,8 +20,11 @@
                   <li>Tamaño máximo de fichero son 2MB</li>
                   <li>Resolución 2320x1547 px</li>
                 </ul>
-              </details></div>
-            <div class="col-6 mt-3 ml-5">
+              </details>
+              <!-- <input type="text" id="msg-imag1" readonly="" placeholder="Tamaño máximo de fichero: 2MB" style="width:100%;border:none;font-weight:900;">
+              <input type="text" id="msg-imag2" readonly="" placeholder="Resolución 600x342px" style="width:100%;border:none;font-weight:900;"> -->
+            </div>
+            <div class="col-6">
               <div class="float-right mt-2">
                 @if(!isset($service))
                 <label class="label" for="alias_img">Alias de imagen <span class="obligatory">*</span></label>
@@ -35,10 +38,10 @@
     </div>
 
     <div class="row col-xl-6 col-lg-12">
-      <div class="col-6 acordion">
+      <div class="col-6">
         <label class="label" for="centre_id">Centro <span class="obligatory">*</span></label>
         <br>
-        <textarea class="text-center" rows="3" cols="135" name="name" id="name" style="padding: 10px; max-width:95%;margin-left:5px; font-weight:900;" disabled>{{!empty($centres) ? $centres : '¡AVISO!, NO HAY CENTROS ASOCIADOS'}}</textarea>
+        <textarea class="text-left" rows="3" cols="135" name="name" id="name" style="padding: 10px; max-width:95%;margin-left:5px; font-weight:900;" disabled>{{!empty($centres) ? $centres : '¡AVISO!, NO HAY CENTROS ASOCIADOS'}}</textarea>
         <br>
       </div>
 
@@ -71,20 +74,24 @@
       </div>
     </div>
 
-    <div class="text-right" style="margin-right: 60px;">
+    <div style="margin-right: 60px;">
       <div class="row mr-4">
         <div class="row">
-          <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Guardar') }}</button>
+          <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons">
+                            save
+                            </span> {{ __('Guardar') }}</button>
           <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             {{ __('Guardando...') }}
           </button>
           <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
-            {{ __('Volver') }}
+          <span class="material-icons">
+                            arrow_back
+                            </span> {{ __('Volver') }}
           </button>
         </div>
       </div>
-      <label id="lbl" for="image" class="mr-3"><span id="obligatory">* </span>Estos campos son requeridos</label>
+      <label id="lbl" for="image"><span id="obligatory" class="mr-1">*</span>Estos campos son requeridos</label>
     </div>
   </div>
 
@@ -141,7 +148,7 @@
     }
 
     #serviceImg {
-      border: 5px solid var(--red-icot);
+      border: 3px solid var(--red-icot);
       border-radius: 16px;
       margin-bottom: 16px;
     }

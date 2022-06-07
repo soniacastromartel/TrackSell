@@ -1,23 +1,11 @@
 @extends('layouts.logged')
 
 @section('content')
-    @include('inc.navbar')
+@include('inc.navbar')
+@include('common.alert')
 
     <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
     </div>
-
-    @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('error') }}
-        </div>
-    @endif
-
 
     <div class="content">
         <div class="container-fluid">
@@ -73,11 +61,15 @@
 
                                     </div>
                                     <div class="col-md-3">
-                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning"><span class="material-icons">
+                            clear_all
+                            </span>
                                             {{ __('Limpiar formulario') }}
                                         </button>
                                         <button id="btnSubmit" type="submit"
-                                            class="btn btn-fill btn-default">Exportar</button>
+                                            class="btn btn-fill btn-default"><span class="material-icons">
+                            file_download
+                            </span>  Exportar</button>
                                         <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black"
                                             style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status"
@@ -211,7 +203,7 @@
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
                         $('#alertErrorCalculate').text(response.errors);
-                        $('#alertErrorCalculate').show();
+                        $('#alertErrorCalculate').show().delay(2000).slideUp(300);
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
                         timeOutAlert($('#alertErrorCalculate'));

@@ -87,13 +87,17 @@
 
 <div class="row mr-4 text-right">
   <div class="col-lg-12 ml-4">
-    <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">{{ __('Guardar') }}</button>
+    <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons">
+                            save
+                            </span> {{ __('Guardar') }}</button>
     <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       {{ __('Guardando...') }}
     </button>
     <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
-      {{ __('Volver') }}
+    <span class="material-icons">
+                            arrow_back
+                            </span> {{ __('Volver') }}
     </button>
     <br>
     <label id="lbl" for="image"><span id="obligatory" class="mr-1">*</span>Estos campos son requeridos</label>

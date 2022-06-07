@@ -3,18 +3,8 @@
 @section('content')
 
 @include('inc.navbar')
+@include('common.alert')
 
-@if (session('success'))
-    <div class="alert alert-success" role="alert">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if (session('error'))
-    <div class="alert alert-danger" role="alert">
-        {{ session('error') }}
-    </div>
-@endif
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertTrackingDate" class="alert alert-success" role="alert" style="display: none">
@@ -135,14 +125,14 @@
                         // if success, HTML response is expected, so replace current
                         if(textStatus === 'success') {
                             $('#alertTrackingDate').text(response.mensaje); 
-                            $('#alertTrackingDate').show();
+                            $('#alertTrackingDate').show().delay(2000).slideUp(300);
                             table.ajax.reload();
                         }
                     },
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
                         $('#alertErrorTrackingDate').text(response.mensaje); 
-                        $('#alertErrorTrackingDate').show(); 
+                        $('#alertErrorTrackingDate').show().delay(2000).slideUp(300); 
                     }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {

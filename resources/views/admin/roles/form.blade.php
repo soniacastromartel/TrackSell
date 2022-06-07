@@ -19,26 +19,22 @@
   </div>
 </div>
 
-  <br>
-  <div class="text-right mr-3">
-    <div class="row mt-2 text-end">
-      <div class="col">
-          <button id="btnSubmit" type="submit" class="btn btn-success">
-              {{ __('Guardar') }}
-          </button>
-          <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            {{ __('Guardando...') }}
-          </button>
-          <button id="btnBack" href="/config" class="btn btn-red-icot">
-              {{ __('Volver') }}
-          </button>
-      </div>
-    </div>
-    <div class="row mb-0 mt-2 mr-3">
-      <div class="col">
-        <label class="label"><span class="obligatory">*</span> Estos campos son requeridos </label>
-      </div>
+<div class="row mt-2" style="margin-left: 30px;">
+    <div class="col-md-5">
+        <button id="btnSubmit" type="submit" class="btn btn-success">
+        <span class="material-icons">
+                            save
+                            </span>    {{ __('Guardar') }}
+        </button>
+        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          {{ __('Guardando...') }}
+        </button>
+        <button id="btnBack" href="/config" class="btn btn-red-icot">
+        <span class="material-icons">
+                            arrow_back
+                            </span> {{ __('Volver') }}
+        </button>
     </div>
   </div>
 

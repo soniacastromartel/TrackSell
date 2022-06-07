@@ -1,25 +1,9 @@
 @extends('layouts.logged')
 
 @section('content')
-@if ($message = Session::get('success'))
 
-<div class="alert alert-success">
-
-    <p>{{ $message }}</p>
-
-</div>
-
-@endif
-@if ($message = Session::get('error'))
-
-<div class="alert alert-danger">
-
-    <p>{{ $message }}</p>
-
-</div>
-
-@endif
 @include('inc.navbar')
+@include('common.alert')
 
 <div class="content">
     <div class="container-fluid">
@@ -28,7 +12,8 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg"> Nuevo</a>
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg"><span class="material-icons">
+                            add_circle</span> Nuevo</a>
             </div>
         </div>
         @endif

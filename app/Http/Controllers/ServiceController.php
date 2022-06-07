@@ -66,8 +66,12 @@ class ServiceController extends Controller
                     ->addColumn('action', function($service){
                         $btn = '';
                         if (empty($service->cancellation_date)) {
-                            $btn = '<a href="services/edit/'.$service->id.'" class="btn btn-warning a-btn-slide-text">Editar</a>';
-                            $btn .= '<a href="services/destroy/'.$service->id.'" class="btn btn-red-icot a-btn-slide-text">Borrar</a>';
+                            $btn = '<a href="services/edit/'.$service->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
+                            edit
+                            </span> Editar</a>';
+                            $btn .= '<a href="services/destroy/'.$service->id.'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                            delete
+                            </span> Borrar</a>';
                         }
                         return $btn;
                     })
@@ -281,7 +285,7 @@ class ServiceController extends Controller
 
             return redirect()->action('ServiceController@index')
         
-                            ->with('success','Service cancellation successfully');
+                            ->with('success','Servicio cancelado con éxito');
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al eliminar servicio, contacte con el administrador');
         }

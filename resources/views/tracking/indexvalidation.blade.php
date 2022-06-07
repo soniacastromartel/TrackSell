@@ -83,30 +83,41 @@
                             </div>
                         </div>
                             <div class="col-md-12 input-group px-3" style="margin-top:35px;">
-                                <button id="btnCalculate" type="button" class="btn btn-fill btn-grey" >{{ __('Calcular') }}</button>
-                                <button id="btnCalculateLoad" type="button" class="btn btn-fill btn-grey" style="display: none">
+                                <button id="btnCalculate" type="button" class="btn btn-fill btn-grey" ><span class="material-icons">
+                            calculate</span> {{ __('Calcular') }}</button>
+                                <button id="btnCalculateLoad" type="button" class="btn btn-success" style="display: none">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     {{ __('Calculando datos...') }}
                                 </button>
                                 <button id="btnClear" href="#" class="ml-2 btn btn-fill btn-warning">
-                                    {{ __('Limpiar formulario') }}
+                                <span class="material-icons">
+                            clear_all
+                            </span>    {{ __('Limpiar formulario') }}
                                 </button>
+<<<<<<< Updated upstream
                                 <button id="btnSubmit" type="submit" class="btn btn-success">{{ __('Buscar') }}</button>
                                 <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+=======
+                                <button id="btnSubmit" type="submit" class="btn btn-success"><span class="material-icons">
                                     {{ __('Obteniendo datos...') }}
                                 </button>
                             </div>
-    
                     </div>
                     <div class="col-lg-3">
                         <div class="col-md-12 input-group date px-3 actions-container" style="padding-top: 15px;">
-                            <button id="btnValidate" type="button" class="ml-2 btn btn-fill btn-red-icot">{{ __('Pagar todos') }}</button>
+                            <button id="btnValidate" type="button" class="ml-2 btn btn-fill btn-red-icot"><span class="material-icons">
+                            paid</span> {{ __('Pagar todos') }}</button>
                             <button id="btnValidateLoad" type="submit" class="btn btn-red-icot" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Validando datos...') }}
                             </button>
+<<<<<<< Updated upstream
                             <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-dark-black">{{ __('Exportar') }}</button>
+=======
+                            <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-default"><span class="material-icons">
+                            file_download
+                            </span> {{ __('Exportar') }}</button>
+>>>>>>> Stashed changes
                             <button id="btnExportLoad" type="submit" class="btn btn-grey" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Exportando datos...') }}
@@ -257,13 +268,13 @@
 
             if (table == undefined) {
                 $('#alertErrorTrackingDate').text("No hay datos seleccionados");
-                $('#alertErrorTrackingDate').show();
+                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                 return;
             }
             var validateData = table.ajax.json();
             if (validateData['recordsTotal'] == 0) {
                 $('#alertErrorTrackingDate').text("No hay datos seleccionados");
-                $('#alertErrorTrackingDate').show();
+                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                 return;
             }
             $('#btnValidateLoad').show();
@@ -281,7 +292,7 @@
                         $('#btnValidateLoad').hide();
                         $('#btnValidate').show();
                         $('#alertTrackingDate').text("Recomendaciones validadas correctamente");
-                        $('#alertTrackingDate').show();
+                        $('#alertTrackingDate').show().delay(2000).slideUp(300);
                         $('.tracking-validation-datatable').DataTable().ajax.reload();
                     }
                 },
@@ -289,7 +300,7 @@
                     //alert('OK calculados incentivos');
                     //$('#btnCalculate').show();
                     $('#alertErrorTrackingDate').text("Error al validar");
-                    $('#alertErrorTrackingDate').show();
+                    $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                     $('#btnValidateLoad').hide();
                 }
 
@@ -348,7 +359,7 @@
             var codBusiness = $("#business_id option:selected").val();
             if (codBusiness == "") {
                 $('#alertErrorTrackingDate').text("Indique una empresa");
-                $('#alertErrorTrackingDate').show();
+                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                 return false;
             }
             $('#btnSubmit').hide();
@@ -393,7 +404,7 @@
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
                     $('#alertTrackingDate').text(response.mensaje);
-                    $('#alertTrackingDate').show();
+                    $('#alertTrackingDate').show().delay(2000).slideUp(300);
                     //table.ajax.reload();
                     $('.tracking-validation-datatable').DataTable().ajax.reload();
                 }
@@ -403,7 +414,7 @@
                 //alert(response.errors); 
                 window.location = response.url;
                 $('#alertErrorTrackingDate').text(response.mensaje);
-                $('#alertErrorTrackingDate').show();
+                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                 $('#btnSubmitLoad').hide();
                 $('#btnSubmit').show();
             }

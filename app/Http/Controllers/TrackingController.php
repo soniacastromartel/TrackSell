@@ -867,7 +867,9 @@ class TrackingController extends Controller
                 ->addColumn('action', function ($track) {
                     $btn = '';
                     $fnCall = 'destroy(\'' . $track->id . '\')';
-                    $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text" ">Borrar</a>';
+                    $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text" "><span class="material-icons">
+                    delete
+                    </span> Borrar</a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -1378,7 +1380,7 @@ class TrackingController extends Controller
                     if ($request->validated == 0) {
                         $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm center" >Validar</a>';
                     } else {
-                        $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-danger a-btn-slide-text btn-sm">Invalidar</a>';
+                        $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm">Invalidar</a>';
                     }
                     // $btn .= '</div>';
                     return $btn;

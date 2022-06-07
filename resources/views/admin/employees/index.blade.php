@@ -2,23 +2,12 @@
 
 @section('content')
 @include('inc.navbar')
+@include('common.alert')
 
 
-@if (session('success'))
-<div class="alert alert-success" role="alert">
-    {{ session('success') }}
+<div class="alert alert-danger" id="alertErrorChangeEmployee"  role="alert" style="display: none">
 </div>
-@endif
-
-@if (session('error'))
-<div class="alert alert-danger" role="alert">
-    {{ session('error') }}
-</div>
-@endif
-
-<div id="alertErrorChangeEmployee" class="alert alert-danger" role="alert" style="display: none">
-</div>
-<div id="alertChangeEmployee" class="alert alert-success" role="alert" style="display: none">
+<div class="alert alert-success" id="alertChangeEmployee"  role="alert" style="display: none">
 </div>
 
 
@@ -28,7 +17,9 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right" id="blockNewTracking">
-                <a id="btnSyncA3" class="btn btn-outline"> Sincronizar A3</a>
+                <a id="btnSyncA3" class="btn btn-red-icot btn-lg"><span class="material-icons">
+                        sync
+                        </span> Sincronizar A3</a>
                 <button id="btnSubmitLoad" type="submit" class="btn btn-red-icot" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Realizando sincronización...') }}
@@ -163,14 +154,14 @@
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
                     $('#alertChangeEmployee').text(response.mensaje);
-                    $('#alertChangeEmployee').show();
+                    $('#alertChangeEmployee').show().delay(2000).slideUp(300);
                     table.ajax.reload();
                 }
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
                 $('#alertErrorChangeEmployee').text(response.mensaje);
-                $('#alertErrorChangeEmployee').show();
+                $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300)();
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -192,14 +183,14 @@
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
                     $('#alertChangeEmployee').text(response.mensaje);
-                    $('#alertChangeEmployee').show();
+                    $('#alertChangeEmployee').show().delay(2000).slideUp(300);
                     table.ajax.reload();
                 }
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
                 $('#alertErrorChangeEmployee').text(response.mensaje);
-                $('#alertErrorChangeEmployee').show();
+                $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {

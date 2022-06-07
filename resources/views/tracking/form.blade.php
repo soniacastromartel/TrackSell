@@ -140,23 +140,34 @@
     </div>
   </div>
 </div>
-  <hr class="m-5">
-  <div class="row mt-2 px-5 text-right">
-    <div class="col">
-        <button id="btnSubmit" type="button" class="btn btn-fill btn-success">{{ __('Guardar') }}</button>
-        <button id="btnSubmitLoad" type="button" class="btn btn-success" style="display: none">
-          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          {{ __('Guardando...') }}
-        </button>
-        <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
-          {{ __('Volver') }}
-        </button> 
-    </div>
+<div class="row mt-2 px-5">
+  <div class="col-md-5">
+      <button id="btnSubmit" type="button" class="btn btn-fill btn-success"> <span class="material-icons">
+                            save
+                            </span> {{ __('Guardar') }}</button>
+      <button id="btnSubmitLoad" type="button" class="btn btn-success" style="display: none">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{ __('Guardando...') }}
+      </button>
+      <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
+      <span class="material-icons">
+                            arrow_back
+                            </span> {{ __('Volver') }}
+      </button> 
+     
   </div>
-  <div class="row mb-0 px-5 text-right">
-    <div class="col mr-3 mt-2">
-      <label class="label"><span class="obligatory">*</span> Estos campos son requeridos</label>
-    </div>
+  <div class="col-md-7" style="padding-left:775px;">
+  <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+  <span class="material-icons">
+                            clear_all
+                            </span>                                                 {{ __('Limpiar formulario') }}
+                                                </button>
+</div>
+</div>
+
+<div class="row mb-0 px-5">
+  <div class="col-md-8">
+    <label id="lbl"><span class="obligatory">*</span> Estos campos son requeridos</label>
   </div>
 <style>
   #subLabel{
@@ -164,6 +175,13 @@
     font-weight: bold !important;
     font-size: 11px;
   }
+  #lbl {
+        color: black;
+        font-weight: 800;
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        margin-top: 25px;
+        font-size:12px;
+      }
 </style>
 
 <script type="text/javascript">
@@ -185,6 +203,19 @@
       $('#serviceRow').show();
       status = "{{ request()->segment(3)}}";
     }
+
+
+    function clearForms() {
+            $('select').val('');
+            $('input').val('');
+            $('select').selectpicker("refresh");
+
+        }
+        
+        $("#btnClear").on('click', function(e) {
+            e.preventDefault();
+            clearForms();
+        });
 
     function recargarServicios(centre_id) {
         $.ajax({
@@ -298,7 +329,7 @@
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
                         $('#alertErrorTrackingDate').text(data.message); 
-                        $('#alertErrorTrackingDate').show(); 
+                        $('#alertErrorTrackingDate').show().delay(2000).slideUp(300); 
                       }
                     
                     // if success, HTML response is expected, so replace current

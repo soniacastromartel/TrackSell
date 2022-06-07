@@ -85,8 +85,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
             $success = ['changes' => $versionChanges]; 
             return $this->sendResponse($success, '');
         }   
-        
-        /**
+        /** 
          * Comprueba la omision de actualizacion de la app
          * de manera continuada (max 3 intentos)
          * 
@@ -110,6 +109,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
                 }
             } 
         }
+
 
         /**
          * Se resetea el contador de las solicitudes de actualizacion de app

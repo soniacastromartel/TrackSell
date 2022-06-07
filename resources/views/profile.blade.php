@@ -1,19 +1,9 @@
 @extends('layouts.logged')
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    @include('inc.navbar')
+@include('inc.navbar')
+@include('common.alert')
 
     <div class="content">
         <div>
@@ -78,22 +68,25 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row mt-2 text-right">
-                                <div class="col-md-12">
-                                    <button id="btnSubmit" type="submit" class="btn btn-success">
-                                        {{ __('Guardar') }}
-                                    </button>
-                                    <button id="btnSubmitLoad" type="submit" class="btn btn-success"
-                                        style="display: none">
-                                        <span class="spinner-border spinner-border-sm" role="status"
-                                            aria-hidden="true"></span>
-                                        {{ __('Guardando...') }}
-                                    </button>
-                                    <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
-                                        {{ __('Volver') }}
-                                    </button>
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <button id="btnSubmit" type="submit" class="btn btn-success">
+                                        <span class="material-icons">
+                            save
+                            </span>     {{ __('Guardar') }}
+                                        </button>
+                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success"
+                                            style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            {{ __('Guardando...') }}
+                                        </button>
+                                        <button id="btnBack" href="/config" class="btn btn-red-icot">
+                                        <span class="material-icons">
+                            arrow_back
+                            </span> {{ __('Volver') }}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>

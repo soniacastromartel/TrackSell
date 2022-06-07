@@ -43,8 +43,13 @@ class RoleController extends Controller
                     })
                     ->addColumn('action', function($role){
                         $btn = '';
-                        $btn = '<a href="roles/edit/'.$role->id.'"class="btn btn-warning a-btn-slide-text">Editar</a>';
-                        $btn .= '<a href="roles/destroy/'.$role->id.'" class="btn btn-red-icot a-btn-slide-text">Borrar</a>';
+                        $fnCall = 'destroy(\'' . $role->id . '\')';
+                        $btn .= '<a href="roles/edit/'.$role->id.'"class="btn btn-warning a-btn-slide-text" style=""><span class="material-icons">
+                        edit
+                        </span>  Editar</a>';
+                        $btn .= '<a href="roles/destroy/'.$role->id.'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                        delete
+                        </span>  Borrar</a>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -82,7 +87,20 @@ class RoleController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al crear rol, contacte con el administrador');
         }
-        return redirect()->action('RoleController@index')->with('success', 'Role created successfully');
+        return redirect()->action('RoleController@index')
+    
+                            ->with('success','Role creado con éxito');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
     }
 
     /**

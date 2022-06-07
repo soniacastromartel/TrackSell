@@ -51,31 +51,8 @@
             
             
             <script type="text/javascript">
-                function ocultarAlert(e) {
-                    $(e).fadeOut('fast'); 
-                }
-                function timeOutAlert(e){
-                    if (!$(e).hasClass('alert-timeout')) {
-                        setTimeout( 
-                            ocultarAlert.bind(null, e )
-                        , 3000);
-                    }
-                }
-                $(function () {
-                    $('.alert-success').each(function( ) {
-                        timeOutAlert(this); 
-                    });
+                $('div.alert').delay(2000).slideUp(300);
 
-                    $('.alert').each(function( ) {
-                        timeOutAlert(this); 
-                    });
-
-
-                    $('.alert-danger').each(function( ) {
-                        timeOutAlert(this); 
-                    });
-                });
-                
                 $.MonthPicker = {
                     VERSION: '3.0.4', // Added in version 2.4;
                     i18n: {
