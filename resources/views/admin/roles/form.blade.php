@@ -20,9 +20,9 @@
 </div>
 
 <div class="row mt-2" style="margin-left: 30px;">
-    <div class="col-md-5">
+    <div class="col text-right">
         <button id="btnSubmit" type="submit" class="btn btn-success">
-        <span class="material-icons">
+        <span class="material-icons mr-1">
                             save
                             </span>    {{ __('Guardar') }}
         </button>

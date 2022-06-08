@@ -76,9 +76,9 @@
                             clear_all
                             </span>    {{ __('Limpiar formulario') }}
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"><span class="material-icons">
+                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"><span class="material-icons mr-1">
                             search</span> {{ __('Buscar') }}</button>
-                        <button id="btnSubmitLoad" type="submit" class="btn btn-red-icot" style="display: none">
+                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             {{ __('Obteniendo datos...') }}
                         </button>

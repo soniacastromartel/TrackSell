@@ -71,22 +71,22 @@ class EmployeeController extends DefaultLoginController //Controller
                     })
                     ->addColumn('action', function($employee){
                         $btn = '';
-                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
+                        $btn = '<a href="employees/edit/'.$employee->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons mr-1">
                         edit
                         </span> Editar</a>';
                         $fnCall = 'resetAccessApp('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text"><span class="material-icons">
+                        $btn .= '<a onclick="'. $fnCall .'"  class="btn btn-success a-btn-slide-text"><span class="material-icons mr-1">
                         refresh
                         </span> Reestablecer Acceso</a>';
                         $fnCall = 'denyAccess('.$employee->id.' )'; 
-                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                        $btn .= '<a onclick="'. $fnCall .'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons mr-1">
                         block
                         </span> Denegar Acceso</a>';
                         $fnCall = 'syncA3('.$employee->id.' , \'only\')'; 
-                        $btn .= '<a id="btnSyncA3_'.  $employee->id. '" onclick="'. $fnCall .'" class="btn btn-info a-btn-slide-text"><span class="material-icons">
+                        $btn .= '<a id="btnSyncA3_'.  $employee->id. '" onclick="'. $fnCall .'" class="btn btn-info a-btn-slide-text"><span class="material-icons mr-1">
                         sync
                         </span> Sincronizar A3</a>';
-                        $btn.= '<button id="btnSubmitLoad_'  .  $employee->id. '" type="submit" class="btn btn-success" style="display: none">
+                        $btn.= '<button id="btnSubmitLoad_'  .  $employee->id. '" type="submit" class="btn btn-info" style="display: none; background: #00796b !important;">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 Realizando sincronización...
                                </button>';
@@ -119,7 +119,7 @@ class EmployeeController extends DefaultLoginController //Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($pending){
                     $btn = '';
-                    $btn = '<a data-toggle="modal" data-email="'. $pending->email. '" data-username="'. $pending->username. '" data-a3_nombre="' . $pending->Nombre_Completo . '"  data-pdi_nombre="' .$pending->name. '" title="Validar empleado" class="btn btn-success btnConfirmValidate" href="#modal-validate">Validar</a>'; 
+                    $btn = '<a data-toggle="modal" data-email="'. $pending->email. '" data-username="'. $pending->username. '" data-a3_nombre="' . $pending->Nombre_Completo . '"  data-pdi_nombre="' .$pending->name. '" title="Validar empleado" class="btn btn-success btnConfirmValidate" href="#modal-validate"> <span class="material-icons mr-1">check</span>Validar</a>'; 
                     return $btn;
                 })
                 ->rawColumns(['action'])

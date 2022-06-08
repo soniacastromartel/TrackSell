@@ -23,14 +23,17 @@
         </button>
       </div>
       <div class="modal-body">
-        <p id="message-validation" class="px-4 center text-center">¿Confirma la validación con el nombre de usuario: GENEMP?</p>
+        <p id="message-validation" class="px-4 center text-center">¿Confirma la validación con el nombre de usuario: <bold>GENEMP</bold>?</p>
       </div>
       <div class="modal-footer row">
-        <button id="btnConfirmChangeIdEmployee" type="button" class="btn-change-username  btn btn-red-icot px-2" >CAMBIO DE DATOS DE USUARIO</button> <br><br>
-        <p> 
-        <button id="btnConfirmIdEmployee" type="button" class="btn btn-success">SI</button>
-        <button id="btnCancelConfirmIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
-        </p>
+        <div class="col-12 text-center">
+          <button id="btnConfirmIdEmployee" type="button" class="btn btn-success">SI</button>        
+          <button id="btnCancelConfirmIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
+          <br><br>
+          <button id="btnConfirmChangeIdEmployee" type="button" class="btn-change-username  btn btn-red-icot">
+            <span class="material-icons mr-1">update</span>CAMBIAR DATOS DE USUARIO
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -63,9 +66,13 @@
       </div>
       <div class="modal-footer">
         
-        <button id="btnChangeIdEmployee" type="button" class="btn btn-red-icot" data-dismiss="modal-validate">CAMBIAR</button> <br>
-        <button id="btnCancelChangeIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">CANCELAR</button>
-        
+      <button id="btnChangeIdEmployee" type="button" class="btn btn-red-icot" data-dismiss="modal-validate">
+        <span class="material-icons mr-1">update</span>CAMBIAR
+      </button> <br>
+        <button id="btnCancelChangeIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">
+          <span class="material-icons mr-1">cancel</span>  
+          CANCELAR
+        </button>        
       </div>
     </div>
   </div>
@@ -102,6 +109,12 @@
     padding: 10px;
   }
 
+  #modal-title{
+    font-weight: 900;
+    color: black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+
   td{
     font-weight: bold;
   }
@@ -131,7 +144,7 @@
                 }
             },
             columnDefs:[{
-              targets: -1,
+              targets: [-1,0,1,2],
               className: 'dt-body-center'
 
 
@@ -166,7 +179,7 @@
                 });
             }
         });
-   
+
     $("table").on('click',"a.btnConfirmValidate",function(event){
         event.stopPropagation();
         event.stopImmediatePropagation();
@@ -180,7 +193,7 @@
         $("#emailEmployee").val(email);  
 
         //CONFIRMAR Nombre y NIF ( Nombre  y DNI asociados en PDI , comparando con Nombre de A3)
-        $("#message-validation").html( '<strong>¿Es correcto el nombre de usuario: ' + employeePDI +'?</strong>'+ ' <br> <b>El nombre en A3 es: </b> ' + employeeA3);
+        $("#message-validation").html( '<strong>¿Es correcto el nombre de usuario: ' + employeePDI +'?</strong>'+ ' <br> <b>El nombre en A3 es: </b> <bold>' + employeeA3 + '</bold>');
 
         $("#modal-validate").modal('show');
 
@@ -210,14 +223,12 @@
 
     function confirmValidateEmployee(url) {
         var params = { 'username'     :  $("#idEmployee").val() ,
-                       '_token'       : "{{ csrf_token() }}"
+                      '_token'       : "{{ csrf_token() }}"
         }; 
-
         if (url.indexOf('changeUsername') != -1) {
           params['username'] = $("#idConfirmEmployee").val();
           params['name']     = $("#nameConfirmEmployee").val();
           params['email']    = $("#emailConfirmEmployee").val();
-
           $("btnChangeIdEmployee").attr("disabled",true);
           $("btnCancelChangeIdEmployee").attr("disabled",true);
         } else {
@@ -225,7 +236,6 @@
           $("#btnCancelConfirmIdEmployee").attr("disabled",true);
           $("#btnConfirmChangeIdEmployee").attr("disabled",true);
         }
-       
         $.ajax({
               url: url,
               type: 'post',
@@ -239,8 +249,6 @@
                       setTimeout( function() {
                         $("#modal-validate").modal('hide'); 
                       }, 3000);
-                     
-                     
                     } else {
                       $("#okConfirmChangeIdEmployee").show();
                       setTimeout( function() {
@@ -259,17 +267,10 @@
               complete: function(){
                 table.ajax.reload(); 
               }
-
         }).fail(function(jqXHR, textStatus, errorThrown) {
-        
         });
-
-
     } 
   });
-  
-
-
 </script>
 
 @endsection

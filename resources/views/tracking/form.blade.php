@@ -140,9 +140,14 @@
     </div>
   </div>
 </div>
-<div class="row mt-2 px-5">
-  <div class="col-md-5">
-      <button id="btnSubmit" type="button" class="btn btn-fill btn-success"> <span class="material-icons">
+<div id="containerBtns">
+  <div class="float-left">
+  <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+    <span class="material-icons">clear_all</span>{{ __('Limpiar formulario') }}
+  </button>
+</div>
+  <div class="float-right">
+      <button id="btnSubmit" type="button" class="btn btn-fill btn-success"> <span class="material-icons mr-1">
                             save
                             </span> {{ __('Guardar') }}</button>
       <button id="btnSubmitLoad" type="button" class="btn btn-success" style="display: none">
@@ -154,21 +159,11 @@
                             arrow_back
                             </span> {{ __('Volver') }}
       </button> 
-     
+      <br>
+      <label id="lbl" class="float-right mr-4"><span class="obligatory">*</span> Estos campos son requeridos</label>
   </div>
-  <div class="col-md-7" style="padding-left:775px;">
-  <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-  <span class="material-icons">
-                            clear_all
-                            </span>                                                 {{ __('Limpiar formulario') }}
-                                                </button>
-</div>
 </div>
 
-<div class="row mb-0 px-5">
-  <div class="col-md-8">
-    <label id="lbl"><span class="obligatory">*</span> Estos campos son requeridos</label>
-  </div>
 <style>
   #subLabel{
     color: var(--red-icot);
@@ -182,6 +177,10 @@
         margin-top: 25px;
         font-size:12px;
       }
+
+    #containerBtns{
+      margin-top: 40px;
+    }
 </style>
 
 <script type="text/javascript">

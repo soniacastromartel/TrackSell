@@ -11,10 +11,10 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row col-12 mb-3">
-            <div class="col-6">
+            <div class="col-5">
             <label class="label ml-5">Fecha <span class="obligatory">*</span></label>
             <div class="col-md-6 mx-auto" style="display: inline-block;">
-               <div class="col-md-6 form-group input-group date mx-auto">
+                <div class="col-md-6 form-group input-group date mx-auto">
                     <input id="monthYearPicker" class='form-control text-center' type="text" placeholder="yyyy/mm" />
                     <input type="hidden" name="monthYear" id="monthYear" />
                 </div>  
@@ -40,21 +40,18 @@
                     </div>
                 </div> 
             </div>      
-            <div class="col-6 text-right p-5" style="margin-top:auto; margin-bottom: auto;">
-                <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"> Nuevo Seguimiento</a>
+            <div class="col-7 text-right p-5" style="margin-top:auto; margin-bottom: auto;">
+                <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"><span class="material-icons">
+                            add_circle</span> Nuevo Seguimiento</a>
                 <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                 <span class="material-icons"> clear_all</span>     {{ __('Limpiar formulario') }}
                 </button>
                 <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"><span class="material-icons">
                             search</span> {{ __('Buscar') }}</button>
-                <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
+                <button id="btnSubmitLoad" type="submit" class="btn btn-success">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Obteniendo datos...') }}
                 </button>
-            </div>
-            <div class="col-md-2 text-right" id="blockNewTracking">
-                <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"><span class="material-icons">
-                            add_circle</span> Nuevo Seguimiento</a>
             </div>
         </div>
         <table class="table  table-striped table-bordered tracking-datatable">

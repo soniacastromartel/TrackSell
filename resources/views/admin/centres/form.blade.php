@@ -11,7 +11,16 @@
         <input type="file" class="button upload-box" name="image" id="image" style="margin-left:100px;" />
       </div>
       <div>
-        <div class="col-6"  style="margin-left: 115px;">
+      @if(!isset($centre))
+        <div class="col-6 col-md-12">
+          <div class="float-right" style="margin-right: 95px;">
+            <label class="label" for="alias_img">Alias de imagen <span id="obligatory">*</span></label>
+            <br>
+            <input type="text" class="text-center" name="alias_img" id="alias_img" placeholder="¿Alias?" value="{{isset($centre) ? $centre->alias_img : ''}}">
+          </div>
+        </div>
+        @endif
+        <div class="col-6"  style="margin-left: 115px; margin-top: 69px;">
           <details open>
             <summary class="row label align-items-center" id="lbl">
               <i class="material-icons pr-2" id="icInfo" style="color: var(--red-icot)">info</i>
@@ -23,15 +32,6 @@
             </ul>
           </details>
         </div>
-        @if(!isset($centre))
-        <div class="col-6 col-md-12">
-          <div class="float-right mt-2">
-            <label class="label" for="alias_img">Alias de imagen <span id="obligatory">*</span></label>
-            <br>
-            <input type="text" class="text-center" name="alias_img" id="alias_img" placeholder="¿Alias?" value="{{isset($centre) ? $centre->alias_img : ''}}">
-          </div>
-        </div>
-        @endif
       </div>
     </div>
   </div>
@@ -87,7 +87,7 @@
 
 <div class="row mr-4 text-right">
   <div class="col-lg-12 ml-4">
-    <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons">
+    <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons mr-1">
                             save
                             </span> {{ __('Guardar') }}</button>
     <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
@@ -100,7 +100,7 @@
                             </span> {{ __('Volver') }}
     </button>
     <br>
-    <label id="lbl" for="image"><span id="obligatory" class="mr-1">*</span>Estos campos son requeridos</label>
+    <label id="lbl" for="image"><span id="obligatory">*</span>Estos campos son requeridos</label>
   </div>
 </div>
 <style>

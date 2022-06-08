@@ -17,10 +17,10 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right" id="blockNewTracking">
-                <a id="btnSyncA3" class="btn btn-red-icot btn-lg"><span class="material-icons">
+                <a id="btnSyncA3" class="btn btn-raised"><span class="material-icons mr-1">
                         sync
                         </span> Sincronizar A3</a>
-                <button id="btnSubmitLoad" type="submit" class="btn btn-red-icot" style="display: none">
+                <button id="btnSubmitLoad" type="submit" class="btn btn-raised" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Realizando sincronización...') }}
                 </button>

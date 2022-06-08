@@ -61,13 +61,12 @@
                                 <div class="mt-2">
                                     <div class="">
                                         <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                        <span class="material-icons">
-                            clear_all
-                            </span>    {{ __('Limpiar formulario') }}
+                                        <span class="material-icons">clear_all
+                                                </span>    {{ __('Limpiar formulario') }}
                                         </button>
                                         <button id="btnSubmit" type="submit" class="btn btn-success"><span class="material-icons">
-                            search</span> {{ __('Buscar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
+                                            search</span> {{ __('Buscar') }}</button>
+                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Obteniendo datos...') }}
                                         </button>

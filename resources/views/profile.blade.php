@@ -68,27 +68,23 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="row mt-2">
+                                
+                            </div>
+                            <div class="row mt-2 text-right">
                                     <div class="col-md-12">
                                         <button id="btnSubmit" type="submit" class="btn btn-success">
-                                        <span class="material-icons">
-                            save
-                            </span>     {{ __('Guardar') }}
+                                        <span class="material-icons mr-2">save</span>{{ __('Guardar') }}
                                         </button>
                                         <button id="btnSubmitLoad" type="submit" class="btn btn-success"
                                             style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                            {{ __('Guardando...') }}
+                                                aria-hidden="true"></span>{{ __('Guardando...') }}
                                         </button>
                                         <button id="btnBack" href="/config" class="btn btn-red-icot">
-                                        <span class="material-icons">
-                            arrow_back
-                            </span> {{ __('Volver') }}
+                                        <span class="material-icons">arrow_back</span> {{ __('Volver') }}
                                         </button>
                                     </div>
                                 </div>
-                            </div>
                         </form>
                         </div>
                     </div>

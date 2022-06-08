@@ -9,16 +9,13 @@
     <div class="row">
       <div class="col-lg-4">
         <div id="employee-info" class="card"  style= "min-height: 462px;">
-          <div class="card-header card-header-primary">
+          <div class="card-header card-header-red-icot">
             <h4 class="card-title">Búsqueda</h4>
           </div>
           <div class="card-body">
-
           <form id="rankingForm" method="POST">
-
-@csrf
-@method('POST')
-
+              @csrf
+              @method('POST')
             <div class="row">
               <div class="col-sm-10" style="padding-top: 40px;">
                 <label class="label" for="monthYearPicker">Fecha </label>
@@ -26,7 +23,7 @@
                   <div class="input-group date mt-2">
                       <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm"/>
                       <input type="hidden" name="monthYear" id="monthYear" />
-                   </div>
+                  </div>
                 </div>
                 <div id="yearPickerContainer" class="form-group date">
                     <input id="yearPicker" class='form-control' type="text" placeholder="yyyy"/>
@@ -48,28 +45,20 @@
                   >{{$centre->name}}</option>
                   @endforeach
                   @endif
-
-                 
-
                   </select>
                   <input type="hidden" name="centre" id="centre"/>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="row" style="margin-top:20px;">
-              
                   <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                   <span class="material-icons">
                             clear_all
                             </span>  {{ __('Limpiar formulario') }}
                   </button> 
-
-              
-
             </div>
             </div>
             </div>
-
           </div>
         </div>
 
@@ -99,29 +88,28 @@
     <div class="col-lg">
       
       <div id="formRadio">
-<<<<<<< Updated upstream
         <form >
           <div class="form-check">
           <h4 id="typeRanking">VER RANKING: </h4>
-                                                    <span class="check"></span>
-                                                </span>
-        </label>
-        <label class="form-check-label">
-          <input id="annual" class="form-check-input"  type="radio" name="optradio" value="2">Anual<span class="circle"><span class="check"></span></span>
-        </label>
+          <label class="form-check-label" id="selected-label">
+              <input id="monthly" class="form-check-input"  type="radio" name="optradio" value="1" checked>Mensual
+              <span class="circle"><span class="check"></span></span>
+          </label>
+          <label class="form-check-label">
+            <input id="annual" class="form-check-input"  type="radio" name="optradio" value="2">Anual
+            <span class="circle"><span class="check"></span></span>
+          </label>
 </div>
     </form>
       </div>
     </div>
     <div style="margin-right: 85px;margin-top: 15px;">
-    <button id="btnSubmit" type="submit" class="btn btn-fill btn-default"><span class="material-icons">
+    <button id="btnSubmit" type="submit" class="btn btn-fill btn-dark-black"><span class="material-icons">
                             file_download
                             </span> Exportar</button>
->>>>>>> Stashed changes
       <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         {{ __('Obteniendo datos...') }}
-
 
     </div>
     </div>
@@ -174,8 +162,6 @@
       </div>
   </div>
 </div>
-
-
 <style>
     table.dataTable.dataTable_width_auto {
         width: 100%;
@@ -281,15 +267,12 @@ svg.ct-chart-bar, svg.ct-chart-line{
     @else
       $("#btnClear").show(); 
     @endif
-    
 
     $(".form-check-input").change(function() {
             $(".form-check-label").removeAttr('id');
             $(this).parent().attr('id','selected-label');
             // $("#radio_1").prop("checked", true);
         });
-
-
 
         $("#btnSubmit").on('click', function(e) {
                 $('#alertErrorCalculate').hide();
@@ -308,10 +291,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
                     params["monthYear"] = $("#monthYearPicker").val();
                 }
                 if ($('input[name="optradio"]:checked').val()=="2") { //ANUAL
-                    params["year"] = $("#yearPicker").val();
-                    
+                    params["year"] = $("#yearPicker").val();    
                 }
-
                 $.ajax({
                     url: $("#rankingForm").attr('action'),
                     type: 'post',

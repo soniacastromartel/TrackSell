@@ -28,21 +28,20 @@ class CentreController extends Controller
                 return DataTables::of($centres)
                     ->addIndexColumn()
                     ->addColumn('action', function($centre){
-                        $btn = '';
+                        $buttons = '';
                         if (empty($centre->cancellation_date)) {
-                            $btn = '<a href="centres/edit/'.$centre->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
+                            $buttons = '<div><div class="col-6"><a href="centres/edit/'.$centre->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons mr-2">
                             edit
-                            </span> Editar</a>';
-                            $btn .= '<a href="centres/destroy/'.$centre->id.'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                            </span> Editar</a></div><div class="col-6"><a href="centres/destroy/'.$centre->id.'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
                             delete
-                            </span> Borrar</a>';
+                            </span> Borrar</a></div></div>';
                         }    
-                        return $btn;
+                        return $buttons;
                     })
                     ->filter(function ($instance) use ($request) {
                         
                         if (!empty($request->get('search'))) {
-                             $instance->where(function($w) use($request){
+                            $instance->where(function($w) use($request){
                                 $search = $request->get('search');
                                 $w->orWhere('centres.name', 'LIKE', "%$search%");
                             });

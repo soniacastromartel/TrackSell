@@ -9,30 +9,26 @@
           <br>
           <input type="file" class="button upload-box" name="changeImg" id="changeImg" style="width:71%;" />
           <br><br>
-          <div class="row">
-            <div class="col-6" style= "margin-left: 140px;">
-              <details close>
-                <summary class="row label align-items-center" id="lbl">
-                  <i class="material-icons pr-2" id="icInfo" style="color: var(--red-icot)">info</i>
-                  Requisitos de imagen
-                </summary>
-                <ul class="demo">
-                  <li>Tamaño máximo de fichero son 2MB</li>
-                  <li>Resolución 2320x1547 px</li>
-                </ul>
-              </details>
-              <!-- <input type="text" id="msg-imag1" readonly="" placeholder="Tamaño máximo de fichero: 2MB" style="width:100%;border:none;font-weight:900;">
-              <input type="text" id="msg-imag2" readonly="" placeholder="Resolución 600x342px" style="width:100%;border:none;font-weight:900;"> -->
-            </div>
-            <div class="col-6">
-              <div class="float-right mt-2">
+          <div class="float-right">
+              <div class="float-right mt-2" style="margin-right: 115px; margin-bottom: 48px;">
                 @if(!isset($service))
-                <label class="label" for="alias_img">Alias de imagen <span class="obligatory">*</span></label>
+                <label class="label" for="alias_img">Alias de imagen <span class="obligatory">*</span></label><br>
                 <input type="text" class="text-center" name="alias_img" id="alias_img" placeholder="¿Alias?" value="{{isset($service) ? $service->alias_img : ''}}">
                 @endif
               </div>
             </div>
-          </div>
+            <div style= "margin-left: 140px; margin-top: 98px;">
+              <details open>
+                <summary class="row label align-items-center" id="lbl">
+                  <i class="material-icons pr-2" id="icInfo" style="color: var(--red-icot)">info</i>
+                  Requisitos de imagen
+                </summary>
+                <ul class="demo mt-2">
+                  <li>Tamaño máximo de fichero son 2MB</li>
+                  <li>Resolución 2320x1547 px</li>
+                </ul>
+              </details>
+            </div>
         </div>
       </div>
     </div>
@@ -77,7 +73,7 @@
     <div style="margin-right: 60px;">
       <div class="row mr-4">
         <div class="row">
-          <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons">
+          <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons mr-1">
                             save
                             </span> {{ __('Guardar') }}</button>
           <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
@@ -91,7 +87,7 @@
           </button>
         </div>
       </div>
-      <label id="lbl" for="image"><span id="obligatory" class="mr-1">*</span>Estos campos son requeridos</label>
+      <label id="lbl" for="image" class="float-right mr-3 font-font-weight-bolder"><span id="obligatory">* </span>Estos campos son requeridos</label>
     </div>
   </div>
 
@@ -148,7 +144,7 @@
     }
 
     #serviceImg {
-      border: 3px solid var(--red-icot);
+      border: 5px solid var(--red-icot);
       border-radius: 16px;
       margin-bottom: 16px;
     }

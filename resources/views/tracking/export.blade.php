@@ -136,14 +136,14 @@
                             <div class="row mt-5 px-5">
                                 <div class="col">
                                     <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                    <span class="material-icons">
+                                    <span class="material-icons mr-1">
                             clear_all
                             </span>     {{ __('Limpiar formulario') }}
                                     </button>
-                                    <button id="btnSubmit" type="submit" class="btn btn-fill btn-default"><span class="material-icons">
+                                    <button id="btnSubmit" type="submit" class="btn btn-dark-black"><span class="material-icons">
                             file_download
                             </span> {{ __('Exportar') }}</button>
-                                    <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                                    <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         {{ __('Exportando datos...') }}
                                     </button>

@@ -121,19 +121,16 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-5" style="margin-left: 55px;">
-                                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons">
-                            save
-                            </span> {{ __('Guardar') }}</button>
+                                <div class="row mt-3 mr-3 text-right">
+                                    <div class="col" style="margin-left: 55px;">
+                                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">
+                                            <span class="material-icons mr-1">save</span> {{ __('Guardar') }}</button>
                                         <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Guardando...') }}
                                         </button>
                                         <button id="btnBack" href="#" class="btn btn-fill btn-red-icot">
-                                        <span class="material-icons">
-                            arrow_back
-                            </span> {{ __('Volver') }}
+                                        <span class="material-icons">arrow_back</span> {{ __('Volver') }}
                                         </button>
                                         <div class="mt-2 mr-3">
                                             <label id="lbl" class="label"><span class="obligatory">*</span> Estos campos son requeridos</label>

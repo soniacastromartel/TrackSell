@@ -12,7 +12,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg"><span class="material-icons">
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg"><span class="material-icons mr-1">
                             add_circle</span> Nuevo</a>
             </div>
         </div>
@@ -76,7 +76,7 @@
                     targets: 0
                 },
                 {
-                    width: "30%",
+                    width: "40%",
                     targets: 1
                 },
                 {
@@ -88,7 +88,7 @@
                     targets: 3
                 },
                 {
-                    width: "15%",
+                    width: "25%",
                     targets: 4
                 },
                 {
@@ -96,7 +96,7 @@
                     targets: 5
                 },
                 {
-                    width: "25%",
+                    width: "15%",
                     targets: 6
                 }
             ],

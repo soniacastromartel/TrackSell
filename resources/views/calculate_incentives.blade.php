@@ -8,7 +8,6 @@
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
-
     <div class="content">
         <div class="container-fluid">
                 <div class="row">
@@ -54,50 +53,33 @@
                                     <div class="card-body">
                                         <div class="row" style="margin-top: 30px;margin-left: 120px;margin-bottom: 30px;">
                                         <div class="col-sm-7" style="margin-left: 16px;">
-                                            <label class="label" >Mes <span class="obligatory">*</span> </label>
+                                            <label class="label" >Año <span class="obligatory">*</span> </label>
                                             <div class="input-group date" >
                                                 <input id="yearTargetPicker" class='form-control' type="text" placeholder="yyyy" />
                                                 <input type="hidden" name="yearTarget" id="yearTarget" />
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-7"  style="padding-top: 30px;">
-                                            <div id="btnImportTargets" class="file-upload btn btn-block btn-outline-corporate" style=" ">
-                                                <span>{{ __('Importar Objetivos') }}</span>
+                                            <div id="btnImportTargets" class="file-upload btn btn-block btn-outline-corporate">
+                                            <span class="material-icons mr-1">price_change</span>{{ __('Importar Objetivos') }}
                                                 <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
                                             </div>
-
-                                                    <div class="form-group col-sm-7"  style="padding-top: 30px;">
-                                                        <div id="btnImportTargets" class="file-upload btn btn-block btn-red-icot" style=" ">
-                                                            <span class="material-icons">
-upload
-</span> {{ __('Importar Objetivos') }}</span>
-                                                            <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
-                                                            <!-- <input type="text" id="fileuploadurl" readonly placeholder="Tamaño máximo de fichero son 2MB"> -->
-                                                        </div>
-                                                        <button id="targetInputFileLoad" type="submit" class="file-upload btn btn-success" style="display: none">
-                                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                            {{ __('Importando datos...') }}
-                                                        </button>
-                                                </div>
-
-                                                    <div class="form-group col-sm-7">
-                                                        <div id="btnImportSales" class="file-upload btn btn-block btn-red-icot">
-                                                            <span><span class="material-icons">
-upload
-</span> {{ __('Importar Venta Privada') }}</span>
-                                                            <input type="file" name="targetInputSalesFile" id="targetInputSalesFile" class="upload" />
-                                                            <!-- <input type="text" id="fileuploadurl" readonly placeholder="Tamaño máximo de fichero son 2MB"> -->
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-sm-7" >
-                                                        <button id="btnTracingTargets" class="file-upload btn btn-block btn-success"><span class="material-icons">
-zoom_in
-</span>
-                                                            {{ __('Seguimiento de objetivos') }}
-                                                        </button>
-                                                    </div>
-
+                                            <button id="targetInputFileLoad" type="submit" class="file-upload btn btn-success" style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                {{ __('Importando datos...') }}
+                                            </button>
+                                        </div>
+                                        <div class="form-group col-sm-7">
+                                            <div id="btnImportSales" class="file-upload btn btn-block btn-red-icot">
+                                            <span class="material-icons mr-1">upload</span>{{ __('Importar Venta Privada') }}
+                                                <input type="file" name="targetInputSalesFile" id="targetInputSalesFile" class="upload" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-7" >
+                                            <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
+                                                <span class="material-icons mr-1">stacked_line_chart</span>{{ __('Seguimiento de objetivos') }}
+                                            </button>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -144,41 +126,23 @@ zoom_in
                                                     <input type="hidden" name="employee" id="employee" />
                                                 </div>
                                             </div>
-
-
-
-                                        </div>
-
-                                        <div class="row mt-2 px-5">
-                                            <div class="col-md-5" style="margin-top: 30px;">
-
-                                                <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
-                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                    {{ __('Obteniendo datos...') }}
-                                                </button>
-                                                <button id="btnClear" href="#" class="btn btn-fill btn-warning"><span class="material-icons">
-                            clear_all
-                            </span>
-                                                    {{ __('Limpiar formulario') }}
-                                                </button>
-                                                <button id="btnSubmit" type="submit" class="btn btn-fill btn-default"> <span class="material-icons">
-                            file_download
-                            </span> {{ __('Exportar') }}</button>
                                             </div>
                                             
                                         </div>
                                         <hr class="mt-4">
                                         <div class="row">
                                         <div class="col-md-7" style="margin-top: 16px;">
-                                            <button id="btnSubmit" type="submit" class="btn btn btn-dark-black">{{ __('Exportar') }}</button>
-                                            <button id="btnSubmitLoad" type="submit" class="btn btn-dark" style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                {{ __('Obteniendo datos...') }}
-                                            </button>
+                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                                                <span class="material-icons">clear_all</span>{{ __('Limpiar formulario') }}
+                                            </button>                                            
                                         </div>
                                         <div class="col-md-5" style="margin-top: 16px; text-align: right;">
-                                            <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                                {{ __('Limpiar formulario') }}
+                                        <button id="btnSubmit" type="submit" class="btn btn-dark-black">
+                                                <span class="material-icons">file_download</span>    
+                                            {{ __('Exportar') }}</button>
+                                            <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                {{ __('Obteniendo datos...') }}
                                             </button>
                                         </div>                                          
                                         </div>
@@ -299,7 +263,7 @@ zoom_in
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
                     $('#alertErrorCalculate').text(response.errors);
-                    $('#alertErrorCalculate').show().delay(2000).slideUp(300);
+                    $('#alertErrorCalculate').show();
                     $('#btnSubmitLoad').hide();
                     $('#btnSubmit').show();
                     timeOutAlert($('#alertErrorCalculate'));

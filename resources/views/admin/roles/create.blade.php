@@ -19,7 +19,6 @@
                         <form id="createRole" action="{{ route('roles.store') }}" method="POST">
                         
                             @csrf
-
                             @method('POST')
                             @include('admin.roles.form')
                         
