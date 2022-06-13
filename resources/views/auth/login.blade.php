@@ -44,7 +44,7 @@
                     </span>
                     @enderror
 
-                    <input type="submit" class="fadeIn fourth" id="btnSubmit" value="Entrar">
+                    <input type="submit" class="fadeIn fourth btn btn-red-icot" id="btnSubmit" value="Entrar">
                 </form>
 
             </div>

@@ -171,6 +171,9 @@
         });
 
         function clearForms() {
+            var d = new Date();
+            var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear();
+            $('#monthYearPicker').val(textMonthYear);
             $('select').val('');
             $('select#centre_id').selectpicker("refresh");
             $('select#state_id').selectpicker("refresh");
@@ -180,7 +183,6 @@
 
 
         $("#btnClear").on('click', function(e) {
-            
             e.preventDefault();
             clearForms();
         });

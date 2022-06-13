@@ -17,15 +17,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-
                 <div class="card ">
                     <div class="card-header card-header-danger">
                         <h4 class="card-title">Informes</h4>
                     </div>
                     <div class="card-body" style="margin-top: 30px;margin-bottom: 30px;">
-
                         <form id="exportTracking" action="{{ route('tracking.export') }}" method="POST">
-
                             @csrf
                             @method('PUT')
                             <div class="row" style="justify-content: space-evenly;">
@@ -33,7 +30,7 @@
                                     <div>
                                         <label class="label" for="name">Fecha desde </label>
                                         <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-control"></input>
-<br />
+                                        <br />
                                         <label class="label" for="name">Fecha hasta </label>
                                         <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
                                     </div>
@@ -80,7 +77,6 @@
                                         <div class="form-group col-md-6">
                                             <div class="dropdown bootstrap-select">
                                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
-
                                                     @foreach ($centres as $centre)
                                                     <option value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
                                                         {{ $centre->name }}
@@ -93,7 +89,6 @@
                                         <div class="form-group col-md-6">
                                             <div class="dropdown bootstrap-select">
                                                 <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
-
                                                     @foreach ($employees as $employee)
                                                     <option value="{{ $employee->id }}">{{ $employee->name }}
                                                     </option>
@@ -108,7 +103,6 @@
                                         <div class="form-group col-md-6">
                                             <div class="dropdown bootstrap-select">
                                                 <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
-
                                                     @foreach ($services as $service)
                                                     <option value="{{ $service->id }}" @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
                                                         {{ $service->name }}
@@ -121,7 +115,6 @@
                                         <div class="form-group col-md-6">
                                             <div class="dropdown bootstrap-select">
                                                 <select class="selectpicker" name="patient_name" id="patient_name" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Paciente" tabindex="-98">
-
                                                     @foreach ($patients as $patient)
                                                     <option value="{{ $patient->patient_name }}">
                                                         {{ $patient->patient_name }}
@@ -157,7 +150,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
     $(function() {
 
@@ -166,12 +158,9 @@
         });
         $('#pagesReport').addClass('show');
         $('#exportRecommendation').addClass('active');
-        // $('.form-check-label:has(.form-check-input:has(checked))').addClass('selected-label');
-
         $(".form-check-input").change(function() {
             $(".form-check-label").removeAttr('id');
             $(this).parent().attr('id','selected-label');
-            // $("#radio_1").prop("checked", true);
         });
 
         // Default functionality datePicker.
@@ -186,7 +175,6 @@
         }
 
         $("#btnSubmit").on('click', function(e) {
-
             e.preventDefault();
             $('#btnSubmit').hide();
             $('#btnSubmitLoad').show();
@@ -215,11 +203,8 @@
                 success: function(data, textStatus, jqXHR) {
                     // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
-
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
-
-
                         var link = document.createElement('a'),
                             filename = 'tracking.xls';
                         link.href = URL.createObjectURL(data);
@@ -229,7 +214,6 @@
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 //console.log('fail submit');
-
             });
         });
 
@@ -238,9 +222,9 @@
             clearForms();
         });
 
-        $('trackingState').on('click', function(e){
+        // $('trackingState').on('click', function(e){
 
-        });
+        // });
     });
 </script>
 

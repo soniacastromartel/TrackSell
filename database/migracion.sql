@@ -1538,3 +1538,5 @@ group by
     round(`spd`.`super_incentive1`, 2),
     round(`spd`.`super_incentive2`, 2);
 
+    ALTER TABLE pdi2.employees ADD unlockRequest int default 0;
+

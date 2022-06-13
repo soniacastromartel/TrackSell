@@ -62,8 +62,8 @@ class AuthController extends BaseController
 
             //Comprobación que usuario existe en A3
             $pending_validate_employee = A3Empleado::where(['NIF' => $params['dni']]);
-
-            if (empty($pending_validate_employee->first())) {
+            $userA3 = $pending_validate_employee->first();
+            if (empty($userA3)) {
                 $errormessage = "Error solicitud acceso, empleado no se encuentra en A3, se envía correo a " . $this->cauEmail;
                 foreach ($this->copycauEmail as $cc) {
                     $errormessage = ';' . $cc;
@@ -71,7 +71,6 @@ class AuthController extends BaseController
                 \Log::channel('api')->info($errormessage);
                 $this->sendEmailErrorRegister($params);
             } else {
-
                 // Se define una contraseña temporal para usarios nuevos, 
                 // hasta que se proceda a su validación.
                 $userData['pending_password'] = env('CHANGING_PASS_WORD');
@@ -102,7 +101,6 @@ class AuthController extends BaseController
             \Log::channel('api')->info($errormessage);
             $this->sendEmailErrorRegister($params);
         }
-        return $this->sendError('Ha ocurrido un error', 500);
         \Log::channel('api')->info("Fin Solicitud Acceso!");
     }
 
@@ -197,7 +195,6 @@ class AuthController extends BaseController
             ->send(new RegisteredUser($emailData));
         return $this->sendResponse([], env('REQUESTED'));
     }
-
 
     /**
      * Actualiza el unlockRequest en la base de datos 

@@ -1,6 +1,5 @@
 @include('common.alert')
 
- 
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
     </div>
 
@@ -9,7 +8,7 @@
     <div class="row">
       <div class="col-lg-4">
         <div id="employee-info" class="card"  style= "min-height: 462px;">
-          <div class="card-header card-header-red-icot">
+          <div class="card-header card-header-danger">
             <h4 class="card-title">Búsqueda</h4>
           </div>
           <div class="card-body">
@@ -99,7 +98,7 @@
             <input id="annual" class="form-check-input"  type="radio" name="optradio" value="2">Anual
             <span class="circle"><span class="check"></span></span>
           </label>
-</div>
+      </div>
     </form>
       </div>
     </div>
@@ -110,7 +109,6 @@
       <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         {{ __('Obteniendo datos...') }}
-
     </div>
     </div>
     <div class="row" id="monthlyData">
@@ -257,10 +255,20 @@ svg.ct-chart-bar, svg.ct-chart-line{
     }
 
 </style>
-<script type="text/javascript">
-  
+  <script type="text/javascript">
 
   $(function () {
+
+  function filterSearch(){
+    if ($('input[name="optradio"]:checked').val()=="1") { //MENSUAL
+          params["monthYear"] = $("#monthYearPicker").val();
+          return 1;
+    }
+    if ($('input[name="optradio"]:checked').val()=="2") { //ANUAL
+          params["year"] = $("#yearPicker").val();  
+          return 2;  
+    } 
+  }
 
     @if (isset($employee) && $employee->rol_id == 2)
       $("#btnClear").hide(); 
@@ -271,74 +279,67 @@ svg.ct-chart-bar, svg.ct-chart-line{
     $(".form-check-input").change(function() {
             $(".form-check-label").removeAttr('id');
             $(this).parent().attr('id','selected-label');
-            // $("#radio_1").prop("checked", true);
         });
 
-        $("#btnSubmit").on('click', function(e) {
-                $('#alertErrorCalculate').hide();
-                e.preventDefault();
-                $("#rankingForm").attr('action', '{{ route('ranking.calculateRankings')}}');
-                $('#btnSubmit').hide();
-                $('#btnSubmitLoad').show();
-                $('#btnSubmitLoad').prop('disabled', true);
-                $('#centre').val($("#centre_id option:selected").text());
+    $("#btnSubmit").on('click', function(e) {
+      $('#alertErrorCalculate').hide();
+      e.preventDefault();
+      $("#rankingForm").attr('action', '{{ route('ranking.calculateRankings')}}');
+      $('#btnSubmit').hide();
+      $('#btnSubmitLoad').show();
+      $('#btnSubmitLoad').prop('disabled', true);
+      $('#centre').val($("#centre_id option:selected").text());
 
-                params = {};
-                params["_token"] = "{{ csrf_token() }}";
-                params["centre"] = $('#centre').val();
+      params = {};
+      params["_token"] = "{{ csrf_token() }}";
+      params["centre"] = $('#centre').val();
 
-                if ($('input[name="optradio"]:checked').val()=="1") { //MENSUAL
-                    params["monthYear"] = $("#monthYearPicker").val();
-                }
-                if ($('input[name="optradio"]:checked').val()=="2") { //ANUAL
-                    params["year"] = $("#yearPicker").val();    
-                }
-                $.ajax({
-                    url: $("#rankingForm").attr('action'),
-                    type: 'post',
-                    data: params,
-                    dataType: 'binary',
-                    xhrFields: {
-                        'responseType': 'blob'
-                    },
-                    xhr: function() {
-                        var xhr = new XMLHttpRequest();
-                        xhr.onreadystatechange = function() {
-                            if (xhr.readyState == 2) {
-                                if (xhr.status == 200) {
-                                    xhr.responseType = "blob";
-                                } else {
-                                    xhr.responseType = "text";
-                                }
-                            }
-                        };
-                        return xhr;
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        // if success, HTML response is expected, so replace current
-                        if (textStatus === 'success') {
-                            $('#btnSubmitLoad').hide();
-                            $('#btnSubmit').show();
+      filterSearch();
 
-                            var link = document.createElement('a'),
-                                filename = 'ranking.xls';
-                            link.href = URL.createObjectURL(data);
-                            link.download = filename;
-                            link.click();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        var response = JSON.parse(xhr.responseText);
-                        $('#alertErrorCalculate').text(response.errors);
-                        $('#alertErrorCalculate').show().delay(2000).slideUp(300);
-                        $('#btnSubmitLoad').hide();
-                        $('#btnSubmit').show();
-                        timeOutAlert($('#alertErrorCalculate'));
-                    }
+      $.ajax({
+          url: $("#rankingForm").attr('action'),
+          type: 'post',
+          data: params,
+          dataType: 'binary',
+          xhrFields: {
+              'responseType': 'blob'
+          },
+          xhr: function() {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function() {
+                  if (xhr.readyState == 2) {
+                      if (xhr.status == 200) {
+                          xhr.responseType = "blob";
+                      } else {
+                          xhr.responseType = "text";
+                      }
+                  }
+              };
+              return xhr;
+          },
+          success: function(data, textStatus, jqXHR) {
+              // if success, HTML response is expected, so replace current
+              if (textStatus === 'success') {
+                  $('#btnSubmitLoad').hide();
+                  $('#btnSubmit').show();
 
-                });
-            });
-
+                  var link = document.createElement('a'),
+                      filename = 'ranking.xls';
+                  link.href = URL.createObjectURL(data);
+                  link.download = filename;
+                  link.click();
+              }
+          },
+          error: function(xhr, status, error) {
+              var response = JSON.parse(xhr.responseText);
+              $('#alertErrorCalculate').text(response.errors);
+              $('#alertErrorCalculate').show().delay(2000).slideUp(300);
+              $('#btnSubmitLoad').hide();
+              $('#btnSubmit').show();
+              timeOutAlert($('#alertErrorCalculate'));
+            }
+          });
+        });
   
   var d = new Date();
   $("#yearPicker").datepicker("destroy");
@@ -348,11 +349,10 @@ svg.ct-chart-bar, svg.ct-chart-line{
   function showMonthYearPicker() {
     var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
     $('#monthYearPicker').val(textMonthYear);
-    // Default functionality.
+    console.log(textMonthYear);
     $('#monthYearPicker').MonthPicker();
     $('#monthYearPicker').MonthPicker({
     ShowIcon: true,
-      //     Button: '<img src="assets/img/calendar.gif" title="Select date" />'
     });
   }
 
@@ -364,22 +364,19 @@ svg.ct-chart-bar, svg.ct-chart-line{
     var textYear = d.getFullYear();
     $.datepicker.setDefaults($.datepicker.regional['es']);
     $('#yearPicker').val(textYear);
-    $('#yearPicker').datepicker({
-              // showOn: "button",
-                    // buttonImage: "assets/img/calendar.gif",
-                    selectedDate: true,
-                    changeMonth: false,
-                    changeYear: true,
-                    showButtonPanel: true,
-                    closeText: 'Seleccionar',
-                    currentText: 'Año actual',
-                    onClose: function(dateText, inst) {
-                        $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0,
-                        1)));
-                    },
-                });
-            }
-
+      $('#yearPicker').datepicker({
+        selectedDate: true,
+        changeMonth: false,
+        changeYear: true,
+        showButtonPanel: true,
+        closeText: 'Seleccionar',
+        currentText: 'Año actual',
+        onClose: function(dateText, inst) {
+            $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0,
+            1)));
+        },
+    });
+  }
 
   $('#annualData').hide();
 
@@ -390,10 +387,11 @@ svg.ct-chart-bar, svg.ct-chart-line{
   $('#monthly').on('click', function(e){
     showMonthYearPicker();
     var d = new Date();
-    var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear()   
+    var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear(); 
+    console.log('Centro seleccionado: ' + $('#centre_id option:selected').val());
     drawTarget($('#centre_id option:selected').val()); 
     getSales('.sales-month-datatable');
-    getSales('.sales-year-datatable');
+    // getSales('.sales-year-datatable');
     $('#monthYearPicker').val(textMonthYear);
     $("#yearPicker").datepicker("destroy");
     $("#yearPickerContainer").hide();
@@ -404,6 +402,9 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
   $('#annual').on('click', function(e){
     showYearPicker();
+    drawTarget($('#centre_id option:selected').val()); 
+    // getSales('.sales-month-datatable');
+    getSales('.sales-year-datatable');
     $('#yearPickerContainer').show();
     $('#monthYearPickerContainer').hide();
     $('#monthlyData').hide();
@@ -411,7 +412,6 @@ svg.ct-chart-bar, svg.ct-chart-line{
   });
 
   const colors = [
-    // { color: '#1a5e07' },      //medium
     { color: '#b01c2e'},
     { color: '#cccccc' },  //high
     { color: 'seagreen' },   //low
@@ -446,46 +446,29 @@ svg.ct-chart-bar, svg.ct-chart-line{
       vAxis: {
         title: ''
       },
-      //isStacked: true,
       series: colors
-
   };
 
   function getValueCentre() {
 
     var centro_id =  $('#centre_id option:selected').val();
     var centro    =  $('#centre_id option:selected').text(); 
-
-    // @if (isset($employee) && $employee->rol_id != 1)
-    //   var centro_id =  '{!! $employee->centre_id !!}';
-    //   var centro    =  '{!! $employee->centre !!}'; 
-    //   $('.bootstrap-select .filter-option').text(centro);
-    //   $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
-    // @else
-    //   var centro_id =  $('#centre_id option:selected').val();
-    //   var centro    =  $('#centre_id option:selected').text(); 
-    // @endif
    
     if (centro_id != "") {
-      $('#centre_id option:selected').val(centro_id); 
-      
+      $('#centre_id option:selected').val(centro_id);   
       $("#employee-centre").html(centro);
       $("#title-target").html("Objetivos " + centro);
       $("#title-sales").html("Ranking Mensual de  " + centro);
 
       if ( centro_id == {{ env('ID_CENTRE_HCT') }} ) {
         $("#title-ranking").html("Ranking Anual de  " + centro);
-      } else {
-        $("#title-ranking").html("Ranking Anual  de  " + centro);
       }
-    
     } else {
       $("#employee-centre").html(centro);
       $("#title-target").html("Objetivos  del  GRUPO ICOT");
       $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
       $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
     }
-
   }
 
   function getLabelMonth(month){
@@ -494,8 +477,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
     return monthName; 
   }
 
-
   function drawGraphVP(val) {
+    console.log(val);
     var aa = [
       ['Objetivo VP', 'Venta Privada', 'Objetivo Venta Privada'],
       ['', val['value'], val['target']],
@@ -509,22 +492,22 @@ svg.ct-chart-bar, svg.ct-chart-line{
       $("#vp_pending").hide();
       $("#vp_ok").show();
     }
-    //options.hAxis.title = getLabelMonth($("#monthYearPicker").val().substr(0,$("#monthYearPicker").val().indexOf('/'))); 
     chart.draw(data, options);
   }
 
   function drawGraphVC(val) {
+    console.log(val);
     bb = [
       ['Objetivo VC', 'Venta Cruzada', 'Objetivo Venta Cruzada'],
       ['', val['value'], val['target']],   
     ];
     var data =  new google.visualization.arrayToDataTable(bb);
-    
     var chart = new google.visualization.BarChart(document.getElementById('chart_div_vc'));
     chart.draw(data, options);
   }
 
   function drawTarget(centre_id) {
+    console.log('drawTarget');
         var params = {};
         if (centre_id != undefined) {
           params["centre_id"] = centre_id;
@@ -540,18 +523,16 @@ svg.ct-chart-bar, svg.ct-chart-line{
             success: function(data, textStatus, jqXHR) {
                 // if success, HTML response is expected, so replace current
                 if(textStatus === 'success') {
-                    var target = JSON.parse(data); 
+                    var target = JSON.parse(data);
                     google.charts.setOnLoadCallback(function () {
                       options.hAxis.title = getLabelMonth($("#monthYearPicker").val().substr(0,$("#monthYearPicker").val().indexOf('/'))); 
                       drawGraphVC(target.data.vc); 
                       drawGraphVP(target.data.vp);
-                    });
-                    
+                    });         
                 }
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
             //console.log('fail submit');
-            
         });
   }
   
@@ -586,12 +567,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
             ajax: {
                 url: "{{ route('home.getSales') }}",
                 data: function (d) {
-                    //d.status = $('#status').val(),
-                    //d.start     = 0,
                     d.search    = $('input[type="search"]').val(),
                     d.monthYear = $('#monthYearPicker').val(),
-
-
                     /** Opciones Ranking **/ 
 
                     /** Si es seleccionado HCT siempre pasar HCT
@@ -605,7 +582,6 @@ svg.ct-chart-bar, svg.ct-chart-line{
                 "regex": false,
                 "smart":false
             },
-            // order:[1,'desc'],
             responsive: true,
             initComplete: function (data) {
                 this.api().columns().every(function () {
@@ -614,14 +590,11 @@ svg.ct-chart-bar, svg.ct-chart-line{
                     $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
                         var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                        //column.search(val ? val : '', true, false).draw();
                         column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
-                    });
-                    
-                });
-                
+                    });                    
+                });             
             }
       });
       if ($.fn.dataTable.isDataTable( idDataTable)) {
@@ -631,36 +604,38 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
   function clearForms()
   {
-      $('select#centre_id').val('');
-      $('select#centre_id').selectpicker("refresh");
-      $("#employee-centre").html("GRUPO ICOT");
-      $("#title-target").html("Objetivos  del  GRUPO ICOT");
-      $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
-      $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
+    var d = new Date();
+    var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear();
+    $('#monthYearPicker').val(textMonthYear);
+    $('select#centre_id').val('');
+    $('select#centre_id').selectpicker("refresh");
+    $("#employee-centre").html("GRUPO ICOT");
+    $("#title-target").html("Objetivos  del  GRUPO ICOT");
+    $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
+    $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
   }
   
   $("#btnClear").on('click', function(e){
       e.preventDefault();
-      var d = new Date();
-  var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear()   
-  $('#monthYearPicker').val(textMonthYear);
       clearForms();
       $('#centre_id').trigger("change");
   });
 
   getValueCentre(); 
-  drawTarget({{$user->centre_id}}); 
+  drawTarget({{ $user -> centre_id }}); 
   getSales('.sales-month-datatable');
-  getSales('.sales-year-datatable');
-  //clearForms();
+  // getSales('.sales-year-datatable');
 
   $("#centre_id").on('change', function () {
     getValueCentre(); 
 
-    drawTarget($('#centre_id option:selected').val()); 
-    getSales('.sales-month-datatable');
-    getSales('.sales-year-datatable');
+    drawTarget($('#centre_id option:selected').val());
 
+    if (filterSearch() == 1) {
+      getSales('.sales-month-datatable');
+    } else {
+      getSales('.sales-year-datatable');
+    }
   });
   
   $('#monthYearPicker').MonthPicker({
@@ -668,10 +643,8 @@ svg.ct-chart-bar, svg.ct-chart-line{
         drawTarget($('#centre_id option:selected').val()); 
         getSales('.sales-month-datatable');
         getSales('.sales-year-datatable');
-      //}
-    } 
-  });
-  //$('#monthPicker').datepicker( $.datepicker.regional[ "es" ] );
+      } 
+    });
   $('#monthPicker').datepicker({
     changeMonth: true,
     changeYear: true,
@@ -679,9 +652,7 @@ svg.ct-chart-bar, svg.ct-chart-line{
     dateFormat: 'MM yy',
     onClose: function(dateText, inst) { 
             $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-        }
-  });
-
-});
-    
+      }
+    });
+  });  
 </script> 

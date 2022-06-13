@@ -36,6 +36,10 @@ class TargetSheetImport implements WithStartRow, ToModel,WithHeadingRow, WithVal
             throw new \Exception("Error formato campo mes");
         }
 
+        if ($this->onlySales && count($row) > 3) {
+            throw new \Exception("Formato de archivo incorrecto");
+        }
+
         if (!$this->onlySales) {
             $row['objetivo_venta_cruzada'] = str_replace(',','',$row['objetivo_venta_cruzada']);
             $row['objetivo_venta_privada'] = str_replace(',','',$row['objetivo_venta_privada']);
@@ -59,14 +63,12 @@ class TargetSheetImport implements WithStartRow, ToModel,WithHeadingRow, WithVal
                 ->where('month', $row['mes'])
                 ->where('centre_id', $centre->id);
             
-       
         if (!empty($target->get()->toArray())) {
 
             $updateFields['vd']   = floatval($row['venta_privada']); 
             if ($this->onlySales === false ) {
                 $updateFields['obj1'] = floatval($row['objetivo_venta_cruzada']);
                 $updateFields['obj2'] = floatval($row['objetivo_venta_privada']);
-
             }
 
             $target->update($updateFields);

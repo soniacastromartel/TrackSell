@@ -104,7 +104,9 @@ html {
   }
   
   input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-    background-color: #911726;
+    background-color: #fff;
+    color: var(--red-icot);
+    border: 3px solid var(--red-icot);
   }
   
   input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {

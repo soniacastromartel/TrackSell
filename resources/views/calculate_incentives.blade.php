@@ -42,7 +42,6 @@
                     <form id="importTargetForm" method="POST">
                         @csrf
                         @method('POST')
-                        @if ($user->rol_id == 1)
                         <div class="row">
                             <div class="col-lg-5 mt-2">
                                 <div class="card">
@@ -59,6 +58,10 @@
                                                 <input type="hidden" name="yearTarget" id="yearTarget" />
                                             </div>
                                         </div>
+                                        @if ($user->rol_id != 1)
+                                        <span class="m-5"></span>
+                                        @endif
+                                        @if ($user->rol_id == 1)
                                         <div class="form-group col-sm-7"  style="padding-top: 30px;">
                                             <div id="btnImportTargets" class="file-upload btn btn-block btn-outline-corporate">
                                             <span class="material-icons mr-1">price_change</span>{{ __('Importar Objetivos') }}
@@ -69,12 +72,16 @@
                                                 {{ __('Importando datos...') }}
                                             </button>
                                         </div>
+                                        @endif
                                         <div class="form-group col-sm-7">
                                             <div id="btnImportSales" class="file-upload btn btn-block btn-red-icot">
                                             <span class="material-icons mr-1">upload</span>{{ __('Importar Venta Privada') }}
                                                 <input type="file" name="targetInputSalesFile" id="targetInputSalesFile" class="upload" />
                                             </div>
                                         </div>
+                                        @if ($user->rol_id != 1)
+                                        <span class="m-3"></span>
+                                        @endif
                                         <div class="form-group col-sm-7" >
                                             <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
                                                 <span class="material-icons mr-1">stacked_line_chart</span>{{ __('Seguimiento de objetivos') }}
@@ -83,8 +90,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            @endif
+                            </div>                            
 
                             <div class="col-lg-7">
                                 <div class="card" style="min-height:399px;">
@@ -192,14 +198,18 @@
 </style>
 <script type="text/javascript">
     $(function() {
-
         $(".nav-item").each(function() {
             $(this).removeClass("active");
         });
         $('#pagesReport').addClass('show');
-        $('#calculateIncentive').addClass('active');
+        // $('#calculateIncentive').addClass('active');
 
         function clearForms() {
+            var d = new Date();
+            var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear();
+            $('#monthYearPicker').val(textMonthYear);
+            var textYear = d.getFullYear();
+            $('#yearTargetPicker').val(textYear);
             $('select').val('');
             $('select').selectpicker("refresh");
             $("input[name=trackingState][value='service']").prop("checked", true);
@@ -252,7 +262,6 @@
                     if (textStatus === 'success') {
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
-
                         var link = document.createElement('a'),
                             filename = 'target.xls';
                         link.href = URL.createObjectURL(data);
@@ -268,9 +277,7 @@
                     $('#btnSubmit').show();
                     timeOutAlert($('#alertErrorCalculate'));
                 }
-
             });
-
         });
 
         var d = new Date();
@@ -293,10 +300,9 @@
         });
 
         $("#targetInputFile").on('change', function() {
-            document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
+            // document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
             $("#importTargetForm").attr('action', '{{ route('target.import')}}');
             $("#importTargetForm").attr('enctype', "multipart/form-data");
-
             $('#btnImportTargets').hide();
             $('#targetInputFileLoad').show();
 
@@ -305,10 +311,9 @@
         });
 
         $("#targetInputSalesFile").on('change', function() {
-            document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
+            // document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
             $("#importTargetForm").attr('action', '{{ route('target.importSales')}}');
             $("#importTargetForm").attr('enctype', "multipart/form-data");
-
             $('#btnImportSales').hide();
             $('#targetInputFileLoad').show();
             $("#importTargetForm").submit();

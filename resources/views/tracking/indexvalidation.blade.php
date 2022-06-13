@@ -370,6 +370,9 @@
         });
 
         function clearForms() {
+            var d = new Date();
+            var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear();
+            $('#monthYearPicker').val(textMonthYear);
             $('select').val('');
             $('select#business_id').selectpicker("refresh");
             $('.tracking-validation-datatable').DataTable().ajax.reload();

@@ -177,10 +177,8 @@
         $('.centre_picker').hide();
 
         function clearForms() {
-            // $('.selectpicker').val('');
-            // $('select').selectpicker("refresh");
-            // $('.card-header-table').hide();
-            // $('#yearPicker').val(d.getFullYear());
+            $('.selectpicker').val('');
+            $('select').selectpicker("refresh");
             $('#centreName').hide();
             $('.centre_picker').hide();
             $('#datepickerType').selectpicker('val', 1);

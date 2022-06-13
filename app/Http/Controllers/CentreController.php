@@ -24,7 +24,9 @@ class CentreController extends Controller
     {
         try{
             if ($request->ajax()) {
-                $centres = Centre::all();
+                $centres = DB::table('centres')->orderBy('name');
+
+                // $centres = Centre::all();
                 return DataTables::of($centres)
                     ->addIndexColumn()
                     ->addColumn('action', function($centre){

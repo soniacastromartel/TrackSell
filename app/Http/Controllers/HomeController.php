@@ -104,8 +104,6 @@ class HomeController extends Controller
             if (isset($target[0])) {
                 $vc = ['value' => $vcTotal, 'target' => $target[0]->obj1]; 
             }
-            
-            
         }
         //FIXME--- Usuario de varios centros, coger ultimo
         return view('home', ['title'       => 'Inicio'
@@ -211,10 +209,10 @@ class HomeController extends Controller
                 ]);
             }
             $updateParams = ['centre_id'         => isset($params['centre_id']) ? $params['centre_id'] : $employee->centre_id
-                             ,'rol_id'           => $rolId
-                             ,'force_centre_id'  => $manualCentre
-                             ,'excludeRanking'=> $params['excludingR']
-                             ,'updated_at'       => $newDate
+                                ,'rol_id'           => $rolId
+                                ,'force_centre_id'  => $manualCentre
+                                ,'excludeRanking'=> $params['excludingR']
+                                ,'updated_at'       => $newDate
             ];
             if (!empty($codBusiness)) {
                 $updateParams = array_merge($updateParams, ['cod_business' => $codBusiness]); 
@@ -289,13 +287,12 @@ class HomeController extends Controller
                 "data" => [],
                 'length' => count($ranking),
                 "error" => $e->getMessage()
-            ]);
-            
+            ]);            
         } 
     }
 
     public function getTargets(Request $request) {
-       
+
         try {
             $params = $request->all();
             if (empty($params['monthYear'])) {
@@ -357,7 +354,6 @@ class HomeController extends Controller
             foreach ($targetDefined as $td) {
                 $vc['target'] += $td->obj1; 
             }
-            
             return json_encode(['data' =>  ['vp'  => $vp, 'vc'  => $vc]]); 
 
         } catch (\Exception $e) {
