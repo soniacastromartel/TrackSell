@@ -222,8 +222,6 @@
 
     function getTrackingData() {
 
-        //var fecha = $('#monthYearPicker').val(); 
-
         if ($.fn.dataTable.isDataTable('.tracking-datatable')) {
             table = $('.tracking-datatable').DataTable();
         } else {

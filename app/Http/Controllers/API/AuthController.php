@@ -148,7 +148,7 @@ class AuthController extends BaseController
         Mail::to($this->cauEmail)
             ->cc($this->copycauEmail)
             ->send(new RegisteredUser($emailData));
-        return $this->sendResponse([], env('REQUESTED'));
+        return $this->sendResponse([], env('ERROR_A3_VALIDATION'));
     }
 
     /** Metodo procesa correo de  solicitud acceso */

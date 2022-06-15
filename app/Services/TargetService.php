@@ -180,7 +180,7 @@ class TargetService {
             }
             
             $targetsByCentre = []; 
-            foreach($targetsDefined as $m => $target) {
+            foreach($targetsDefined as $target) {
                 
                 $mDefined = $target->month; 
                 /**
