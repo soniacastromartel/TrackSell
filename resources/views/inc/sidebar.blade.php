@@ -106,7 +106,7 @@
           <ul class="nav">
             <li id="trackingStarted" class="nav-item ">
               <a class="nav-link" href="{{route('tracking.index')}}">
-                <i class="material-icons">play_arrow</i>
+                <i class="material-icons">playlist_add_check</i>
                 <span class="sidebar-normal"> Recomendaciones </span>
               </a>
             </li>
@@ -140,12 +140,12 @@
         </a>
         <div class="collapse" id="pagesReport">
           <ul class="nav">
-            <li id="exportRecommendation" class="nav-item">
+            <!-- <li id="exportRecommendation" class="nav-item">
               <a class="nav-link" href="{{route('tracking.exportForm')}}">
                 <i class="material-icons">screen_share</i>
                 <span class="sidebar-normal"> Exportar recomendaciones </span>
               </a>
-            </li>
+            </li> -->
             <li id="calculateIncentive" class="nav-item">
               <a class="nav-link" href="{{route('calculateIncentive')}}">
                 <i class="material-icons">calculate</i>

@@ -206,14 +206,15 @@
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
                         var link = document.createElement('a'),
-                            filename = 'tracking.xls';
+                        filename = 'tracking.xls';
                         link.href = URL.createObjectURL(data);
                         link.download = filename;
                         link.click();
                     }
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                //console.log('fail submit');
+                console.log('fail submit');
+
             });
         });
 

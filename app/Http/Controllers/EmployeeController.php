@@ -45,6 +45,7 @@ class EmployeeController extends DefaultLoginController //Controller
                                               ,'employees.username'
                                               ,'employees.name'
                                               ,'employees.cancellation_date'
+                                              ,'employees.category'
                                               ,'roles.name as role'
                                               ,'centres.name as centre')
                     ->where(function($query) {
@@ -65,7 +66,9 @@ class EmployeeController extends DefaultLoginController //Controller
                                 $w->orWhere('employees.username', 'LIKE', "%$search%")
                                 ->orWhere('employees.name', 'LIKE', "%$search%")
                                 ->orWhere('centres.name', 'LIKE', "%$search%")
-                                ->orWhere('employees.dni', 'LIKE', "%$search%");
+                                ->orWhere('employees.dni', 'LIKE', "%$search%")
+                                ->orWhere('employees.category', 'LIKE', "%$search%")
+                                ;
                             });
                         }
                     })

@@ -150,7 +150,8 @@ left join (select user_id from pdi2.employees) eca on eca.user_id  = t.Cancelado
 
 
 create or replace view pdi2.export_tracking as 
-select distinct t.patient_name
+select distinct 
+          t.patient_name
 		, t.hc
 		, e.name as employee
 		, t.employee_id
@@ -160,8 +161,10 @@ select distinct t.patient_name
 		, e.centre_id as employee_centre_id
 		, s.name as service
 		, t.service_id
+        , t.state as state
 		, t.cancellation_reason
 		, sp.price
+        , t.state_date 
 		, t.service_date
 		, t.invoiced_date
 		, t.cancellation_date
@@ -175,7 +178,8 @@ join pdi2.employees e  on e.id  = t.employee_id
 join pdi2.centres   c  on c.id  = t.centre_id
 join pdi2.centres   c2  on c2.id = t.centre_employee_id
 join pdi2.services  s  on s.id = t.service_id 
-join pdi2.service_prices sp   on sp.service_id = t.service_id 
+join pdi2.service_prices sp   on sp.service_id = t.service_id
+and sp.centre_id = t.centre_id
 
 
 create or replace view pdi2.ranking as
@@ -1538,5 +1542,6 @@ group by
     round(`spd`.`super_incentive1`, 2),
     round(`spd`.`super_incentive2`, 2);
 
-    ALTER TABLE pdi2.employees ADD unlockRequest int default 0;
+ALTER TABLE pdi2.employees ADD unlockRequest int default 0;
+
 

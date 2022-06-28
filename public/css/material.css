@@ -27045,6 +27045,8 @@ select.selectpicker {
 }
 
 .bootstrap-select .dropdown-menu {
+  text-transform: uppercase !important;
+
   min-width: 100%;
   box-sizing: border-box;
 }
@@ -27076,6 +27078,7 @@ select.selectpicker {
 }
 
 .bootstrap-select .dropdown-menu li a {
+  text-transform: uppercase !important;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;

@@ -50,6 +50,7 @@
                     <th>Servicio</th>
                     <th>Fecha</th>
                     <th>Fecha de cancelación</th>
+                    <th>Motivo de cancelación</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,6 +83,10 @@
     columnsFilled.push({
         data: 'cancellation_date',
         name: 'cancellation_date'
+    });
+    columnsFilled.push({
+        data: 'cancellation_reason',
+        name: 'cancellation_reason'
     });
 
     var d = new Date();
@@ -195,7 +200,7 @@
                     type: "POST",
                     data: function(d) {
                         d._token = "{{ csrf_token() }}",
-                            d.date = $('#monthYearPicker').val()
+                        d.date = $('#monthYearPicker').val()
                     },
                     dataSrc: function(json) {
                         $('#btnSubmit').show();
@@ -206,11 +211,12 @@
                 },
                 columns: columnsFilled,
                 columnDefs: [
-                    { width: "10%", targets: 0 },
-                    { width: "30%", targets: 1 },
-                    { width: "30%", targets: 2 },
-                    { width: "15%", targets: 3 },
-                    { width: "15%", targets: 4 },
+                    { width: "5%", targets: 0 },
+                    { width: "15%", targets: 1 },
+                    { width: "15%", targets: 2 },
+                    { width: "10%", targets: 3 },
+                    { width: "10%", targets: 4 },
+                    { width: "15%", targets: 5 },
                     {
 
                         targets: 4,

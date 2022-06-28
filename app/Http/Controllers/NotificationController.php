@@ -28,6 +28,7 @@ class NotificationController extends Controller {
                     'trackings.state',
                     'trackings.state_date',
                     'trackings.cancellation_date',
+                    'trackings.cancellation_reason',
                     'services.name as service',
                     'started_date',
                     'service_date',
@@ -64,7 +65,7 @@ class NotificationController extends Controller {
                 }
 
                 $canceledTrackings = $query
-                    ->where('state', 'Pendiente')
+                    ->where('state', 'Cancelado')
                     ->whereNotNull('trackings.cancellation_date')
                     ->where(function ($q) use ($params, $initPeriod, $endPeriod) {
 

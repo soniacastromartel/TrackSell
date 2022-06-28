@@ -5,9 +5,9 @@
 @include('common.alert')
 
 
-<div class="alert alert-danger" id="alertErrorChangeEmployee"  role="alert" style="display: none">
+<div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
 </div>
-<div class="alert alert-success" id="alertChangeEmployee"  role="alert" style="display: none">
+<div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
 </div>
 
 
@@ -19,7 +19,7 @@
             <div class="col-md-4 text-right" id="blockNewTracking">
                 <a id="btnSyncA3" class="btn btn-raised"><span class="material-icons mr-1">
                         sync
-                        </span> Sincronizar A3</a>
+                    </span> Sincronizar A3</a>
                 <button id="btnSubmitLoad" type="submit" class="btn btn-raised" style="display: none">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{ __('Realizando sincronización...') }}
@@ -33,7 +33,8 @@
                     <th>Nombre</th>
                     <th>Login</th>
                     <th>Centro</th>
-                    <th>Permisos</th>
+                    <th>Categoría</th>
+                    <!-- <th>Permisos</th> -->
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -44,14 +45,19 @@
 </div>
 
 <style>
-    td {
-        font-weight: bold;
+    #category {
+        text-transform: lowercase;
     }
-    #btnSyncA3{
+
+    #btnSyncA3 {
         font-weight: 900;
         font-size: large;
         background-color: #eeeeee;
         color: var(--red-icot);
+    }
+    td.upper {
+        text-transform: lowercase;
+
     }
 </style>
 
@@ -66,26 +72,48 @@
         $('#adminUser').addClass('active');
 
         table = $('.employees-datatable').DataTable({
-            order: [
-                [1, "asc"]
-            ],
-            processing: true,
-            serverSide: true,
-            language: {
-                "url": "{{ asset('dataTables/Spanish.json') }}"
-            },
-            ajax: {
-                url: "{{ route('employees.index') }}",
-                data: function(d) {
-                    //d.status = $('#status').val(),
-                    d.search = $('input[type="search"]').val()
+                order: [
+                    [1, "asc"]
+                ],
+                processing: true,
+                serverSide: true,
+                language: {
+                    "url": "{{ asset('dataTables/Spanish.json') }}"
+                },
+                ajax: {
+                    url: "{{ route('employees.index') }}",
+                    data: function(d) {
+                        //d.status = $('#status').val(),
+                        d.search = $('input[type="search"]').val()
+                    }
+                },
+                columnDefs: [
+                    {
+                        targets: '_all',
+                        visible: true,
+                        className: 'dt-body-center'
+                    },
+                    {
+                        targets: 4,
+                        className: 'upper'
+                    },
+                    {
+                    targets: 4,
+                    data: "category",
+                    render: function(data, type, row) {
+                        if(data != null) {
+                           
+                                return data.toUpperCase();
+
+                                // return data.split(' ')[1];
+                        } else {
+                            return data;
+                        }
+                     // TODO ARREGLAR AQUÍ LA CAPITALIZAION DE CATEGORÍAS
+                        
+                    }
                 }
-            },
-            columnDefs: [{
-                targets: [-1,0,1,2,3,4],
-                visible: true,
-                className: 'dt-body-center'
-            }],
+            ],
             columns: [{
                     data: 'dni',
                     name: 'dni'
@@ -103,9 +131,13 @@
                     name: 'centre'
                 },
                 {
-                    data: 'role',
-                    name: 'role'
+                    data: 'category',
+                    name: 'category'
                 },
+                // {
+                //     data: 'role',
+                //     name: 'role'
+                // },
                 {
                     data: 'action',
                     name: 'action',
@@ -134,9 +166,9 @@
             }
         });
 
-        $("#btnSyncA3").on('click', function() {
-            syncA3(null, 'full');
-        });
+    $("#btnSyncA3").on('click', function() {
+        syncA3(null, 'full');
+    });
     });
 
 

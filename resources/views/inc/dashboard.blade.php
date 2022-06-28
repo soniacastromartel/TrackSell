@@ -453,16 +453,14 @@ svg.ct-chart-bar, svg.ct-chart-line{
 
     var centro_id =  $('#centre_id option:selected').val();
     var centro    =  $('#centre_id option:selected').text(); 
-   
+
+ 
     if (centro_id != "") {
-      $('#centre_id option:selected').val(centro_id);   
+      $('#centre_id option:selected').val(centro_id); 
       $("#employee-centre").html(centro);
       $("#title-target").html("Objetivos " + centro);
       $("#title-sales").html("Ranking Mensual de  " + centro);
-
-      if ( centro_id == {{ env('ID_CENTRE_HCT') }} ) {
-        $("#title-ranking").html("Ranking Anual de  " + centro);
-      }
+      $("#title-ranking").html("Ranking Anual de  " + centro);  
     } else {
       $("#employee-centre").html(centro);
       $("#title-target").html("Objetivos  del  GRUPO ICOT");

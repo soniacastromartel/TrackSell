@@ -111,11 +111,7 @@
     </div>
 </div>
 
-<style>
-     td{
-    font-weight: bold;
-  }
-</style>
+
 
 <script type="text/javascript">
     var table;
@@ -275,6 +271,8 @@
                 processing: true,
                 serverSide: true,
                 language: {
+                    decimal: ',',
+                    thousands: '.',
                     "url": "{{ asset('dataTables/Spanish.json') }}"
                 },
                 ajax: {
@@ -293,10 +291,15 @@
                     }
                 },
                 columnDefs: [{
-                    targets: [-1,0,1,2,3,4,5,6,7,8],
+                targets: [1,2,3,4,5,6,7,8],
                     visible: true,
                     className: 'dt-body-center'
-                }
+                },
+                {
+                targets:  [2,3,4,5,6,7],
+                render: $.fn.dataTable.render.number( '.', ',', 2) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
+                },
+                
             ],
                 columns: columnsFilled,
                 search: {

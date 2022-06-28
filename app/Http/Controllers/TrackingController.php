@@ -63,11 +63,12 @@ class TrackingController extends Controller
         return $title;
     }
 
-    public function index(Request $request){
-        
-        try{
-            $state = ''; 
-            $title = 'Listados';
+    public function index(Request $request)
+    {
+
+        try {
+            $state = '';
+            $title = 'Recomendaciones';
             if ($request->ajax()) {
 
                 $params = $request->all();
@@ -85,64 +86,76 @@ class TrackingController extends Controller
                     'apointment_date',
                     'service_date',
                     'invoiced_date',
-                    'validation_date'
+                    'validation_date',
+                    'trackings.cancellation_date'
                 )
                     ->join('services', 'services.id', '=', 'service_id')
                     ->join('employees', 'employees.id', '=', 'employee_id')
                     ->join('centres', 'centres.id', '=', 'centre_employee_id');
 
-                $currentDay   = date('d');
-                $currentMonth = substr($params['date'], 0, strpos($params['date'], '/'));
-                $year         = substr($params['date'], strpos($params['date'], '/') + 1);
+                $currentDay   = substr($params['dateTo'], -2, strpos($params['dateTo'], '/'));
+                $beforeDay = substr($params['dateFrom'], -2, strpos($params['dateFrom'], '/'));
+                $currentMonth = substr($params['dateFrom'], -5,  2);
+                $nextMonth = substr($params['dateTo'],  strpos($params['dateTo'], '/') + 1);
+                $year         = substr($params['dateFrom'], 0, strpos($params['dateFrom'], '/'));
+                $nextYear  = substr($params['dateTo'], 0, strpos($params['dateTo'], '/'));
 
-                $beforeMonth = $currentMonth - 1;
-                $nextMonth = $currentMonth + 1;
-                $beforeYear  = $year;
-                $nextYear  = $year;
-
-                if ($currentMonth == 1) {
-                    $beforeMonth = 12;
-                    $beforeYear  = $year - 1;
-                }
-                if ($currentMonth >= 12) {
-                    $currentMonth = 12;
-                    $nextMonth = 1;
-                    $nextYear  = $year + 1;
-                }
-
-
-
-
-                $initPeriod = $beforeYear . '-' . str_pad($beforeMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-                $endPeriod  = $nextYear . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
+                $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . $beforeDay;
+                $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
 
                 $trackings = $query
                     //->orderByRaw($orderBy)
-                    ->whereNull('trackings.cancellation_date')
+                    // ->whereNull('trackings.cancellation_date')
                     ->where(function ($q) use ($params, $initPeriod, $endPeriod) {
                         if (!empty($params['centre_id'])) {
-                            $q->where('centres.id', $params['centre_id']);
+                            if ($params['centre_id'] == 'SIN SELECCION') {
+                                $params['centre_id'] = null;
+                            } else {
+                                $q->where('centres.id', $params['centre_id']);
+                            }
+                        }
+                        if (!empty($params['employee'])) {
+                            if ($params['employee'] == 'SIN SELECCION') {
+                                $params['employee'] = null;
+                            } else {
+                                $q->where('employees.name', $params['employee']);
+                            }
+                        }
+                        if (!empty($params['patient'])) {
+                            if ($params['patient'] == 'SIN SELECCION') {
+                                $params['patient'] = null;
+                            } else {
+                                $q->where('trackings.patient_name', $params['patient']);
+                            }
+                        }
+                        if (!empty($params['service'])) {
+                            if ($params['service'] == 'SIN SELECCION') {
+                                $params['service'] = null;
+                            } else {
+                                $q->where('services.name', $params['service']);
+                            }
                         }
                         if (!empty($params['state'])) {
-                            $q->where('trackings.state', $params['state']);
+                            if ($params['state'] == 'Cancelado') {
+                                $q->whereNotNull('trackings.cancellation_date')
+                                    ->whereBetween('trackings.cancellation_date', [$initPeriod, $endPeriod]);
+                            } else  if ($params['state'] == 'SIN SELECCION') {
+                                $params['state'] = null;
+                            } else {
+                                $q->where('trackings.state', $params['state'])
+                                    ->whereNull('trackings.cancellation_date');
+                            }
                         }
                         $q->where(function ($q2) use ($params, $initPeriod, $endPeriod) {
-                            $q2->whereBetween('started_date', [$initPeriod, $endPeriod])
-                                ->orWhereBetween('apointment_date', [$initPeriod, $endPeriod])
-                                ->orWhereBetween('service_date', [$initPeriod, $endPeriod])
-                                ->orWhereBetween('invoiced_date', [$initPeriod, $endPeriod])
-                                ->orWhereBetween('validation_date', [$initPeriod, $endPeriod])
-                                ->orWhereBetween('paid_date', [$initPeriod, $endPeriod]);
+                            $q2
+                                ->whereBetween('state_date', [$initPeriod, $endPeriod])
+                            ;
                         });
                     });
                 //  ->get();
 
-
                 return DataTables::of($trackings)
-
                     ->addIndexColumn()
-
-
                     ->filter(function ($instance) use ($request) {
                         if (!empty($request->get('search'))) {
                             $instance->where(function ($w) use ($request) {
@@ -151,16 +164,15 @@ class TrackingController extends Controller
                                     ->orWhere('employees.name', 'LIKE', "%$search%")
                                     ->orWhere('services.name', 'LIKE', "%$search%")
                                     ->orWhere('trackings.patient_name', 'LIKE', "%$search%")
-                                    ->orWhere('trackings.state', 'LIKE', "%$search%");
-
-
+                                    ->orWhere('trackings.state', 'LIKE', "%$search%")
+                                    ->orWhere('trackings.hc', 'LIKE', "%$search%");
                             });
                         }
                     })
 
                     ->addColumn('action', function ($tracking) {
                         $btn = '';
-                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID')) {
+                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) {
 
                             $state = Service::getStateService($tracking->state);
 
@@ -238,14 +250,53 @@ class TrackingController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            $centres = Centre::getCentresActive();
 
-            $states = [
-                env('STATE_PENDING'), env('STATE_APOINTMENT'), env('STATE_SERVICE'), env('STATE_INVOICED'), env('STATE_VALIDATE'), env('STATE_PAID')
-            ];
+            $centres = Centre::getCentresActive();
+            $services = Service::orderBy('name')->get();
+            $patients = Tracking::getPatients();
+            $employees = Employee::getEmployeesActive();
+            $states = array(
+                (object)
+                [
+                    'nombre' => env('STATE_PENDING'),
+                    'texto' => 'pending'
+                ],
+                (object)
+                [
+                    'nombre' => env('STATE_APOINTMENT'),
+                    'texto' => 'apointment'
+                ],
+                (object)
+                [
+                    'nombre' => env('STATE_SERVICE'),
+                    'texto' => 'service'
+                ],
+                (object)
+                [
+                    'nombre' => env('STATE_INVOICED'),
+                    'texto' => 'invoiced'
+                ],
+                (object)
+                [
+                    'nombre' => env('STATE_VALIDATE'),
+                    'texto' => 'validation'
+                ],
+                (object)
+                [
+                    'nombre' => env('STATE_PAID'),
+                    'texto' => 'paid'
+                ],
+                (object)
+                [
+                    'nombre' => env('STATE_CANCELLED'),
+                    'texto' => 'cancellation'
+                ]
+
+            );
+
 
             return view('tracking.index', [
-                'title' => $title, 'mensaje' => '',  'centres'  => $centres,  'states'   => $states
+                'title' => $title, 'mensaje' => '',  'centres'  => $centres,  'states'   => $states, 'employees'  => $employees, 'services'  => $services, 'patients'  => $patients
 
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -716,6 +767,8 @@ class TrackingController extends Controller
     {
         try {
             $params = $request->all();
+
+
             $fields = [];
             $nullfields = [];
             $notNullfields = [];
@@ -723,51 +776,98 @@ class TrackingController extends Controller
             $orderByField = 'id';
 
             if (!empty($params['centre'])) {
-                $fields['centre_employee'] = $params['centre'];
+                if ($params['centre'] == 'SIN SELECCION') {
+                    $params['centre'] = null;
+                } else {
+                    $fields['centre_employee'] = $params['centre'];
+                }
             }
             if (!empty($params['service'])) {
-                $fields['service'] = $params['service'];
+                if ($params['service'] == 'SIN SELECCION') {
+                    $params['service'] = null;
+                } else {
+                    $fields['service'] = $params['service'];
+                }
             }
             if (!empty($params['employee'])) {
-                $fields['employee'] = $params['employee'];
+                if ($params['employee'] == 'SIN SELECCION') {
+                    $params['employee'] = null;
+                } else {
+                    $fields['employee'] = $params['employee'];
+                }
             }
             if (!empty($params['trackingState'])) {
-                $fieldNameDate = $params['trackingState'] . '_date';
+                // $fieldNameDate = $params['trackingState'] . '_date';
+                switch ($params['trackingState']) {
+                    case 'pending':
+                        $fields['state'] = 'Pendiente';
+                        break;
+                    case 'apointment':
+                        $fields['state'] = 'Citado';
+                        break;
+                    case 'service':
+                        $fields['state'] = 'Realizado';
+                        break;
+                    case 'invoiced':
+                        $fields['state'] = 'Facturado';
+                        break;
+                    case 'validation':
+                        $fields['state'] = 'Validado';
+                        break;
+                    case 'paid':
+                        $fields['state'] = 'Pagado';
+                        break;
+                    case 'cancellation':
+                        $fields['state'] = 'Cancelado';
+                        break;
+                    default:
+                        // $fields['state'] = '';
+                        break;
+                }
+
+                // $orderByField = $fieldNameDate;
+
                 if ($params['trackingState'] != 'cancellation') {
-                    $fieldNameDone = $params['trackingState'] . '_done';
                     $nullfields[] = 'cancellation_date';
                 }
 
-                $whereDates[$fieldNameDate] = [$params['date_from'], $params['date_to']];
-                $orderByField = $fieldNameDate;
-
-                if ($params['trackingState'] == 'removed') {
+                if ($params['trackingState'] == 'cancellation') {
                     $notNullfields[] = 'cancellation_date';
-                } else {
-                    if (!empty($fieldNameDone)) {
-                        $fields[$fieldNameDone] = 1;
-                    }
+                }
+                if ($params['trackingState'] == 'SIN SELECCION') {
+                    $params['trackingState'] = null;
                 }
             }
+
             if (!empty($params['patient_name'])) {
-                $fields['patient_name'] = $params['patient_name'];
+                if ($params['patient_name'] == 'SIN SELECCION') {
+                    $params['patient_name'] = null;
+                } else {
+                    $fields['patient_name'] = $params['patient_name'];
+                }
             }
             $exportData[$params['trackingState']] = DB::table('export_tracking')
                 ->where($fields)
                 ->whereNull($nullfields)
                 ->whereNotNull($notNullfields)
-                ->whereBetween(array_keys($whereDates)[0], array_values($whereDates)[0])
-                ->orderBy($orderByField)
+                ->whereBetween('state_date', [$params['date_from'], $params['date_to']])
+                // ->orWhereBetween('service_date', [$params['date_from'], $params['date_to']])
+                // ->orWhereBetween('invoiced_date', [$params['date_from'], $params['date_to']])
+                // ->orWhereBetween('validation_date', [$params['date_from'], $params['date_to']])
+                // ->orWhereBetween('paid_date', [$params['date_from'], $params['date_to']])
+                // ->orWhereBetween('cancellation_date', [$params['date_from'], $params['date_to']])
+                // ->whereBetween(array_keys($whereDates)[0], array_values($whereDates)[0])
+                // ->orderBy($orderByField)
                 ->get();
 
-
             $filters = [
-                'centre'       => isset($params['centre'])       ?  $params['centre']       : 'TODOS',
-                'service'      => isset($params['service'])      ?  $params['service']      : 'TODOS',
-                'employee'     => isset($params['employee'])     ?  $params['employee']     : 'TODOS',
-                'patient_name' => isset($params['patient_name']) ?  $params['patient_name'] : 'TODOS',
-                'date_from'    => isset($params['date_from'])    ?  date('d/m/Y', strtotime($params['date_from'])) : 'TODOS',
-                'date_to'      => isset($params['date_to'])      ?  date('d/m/Y', strtotime($params['date_to']))   : 'TODOS'
+                'centre'        => isset($params['centre'])       ?  $params['centre']       : 'TODOS',
+                'service'       => isset($params['service'])      ?  $params['service']      : 'TODOS',
+                'trackingState' => isset($params['trackingState'])      ?  $params['trackingState']      : 'TODOS',
+                'employee'      => isset($params['employee'])     ?  $params['employee']     : 'TODOS',
+                'patient_name'  => isset($params['patient_name']) ?  $params['patient_name'] : 'TODOS',
+                'date_from'     => isset($params['date_from'])    ?  date('d/m/Y', strtotime($params['date_from'])) : 'TODOS',
+                'date_to'       => isset($params['date_to'])      ?  date('d/m/Y', strtotime($params['date_to']))   : 'TODOS'
             ];
             ob_end_clean();
             ob_start();
@@ -799,6 +899,8 @@ class TrackingController extends Controller
 
             $tracking = Tracking::find($id);
             $fields['cancellation_date'] = date("Y-m-d H:i:s");
+            $fields['state_date'] = date("Y-m-d H:i:s"); //actualizamos fecha de cambio de estado
+            $fields['state'] = 'Cancelado'; //actualizamos estado
             $fields['cancellation_user_id'] = session()->get('user')->id;
 
             /** Validar que las fechas, son las que están dentro del corte actual */
@@ -845,7 +947,7 @@ class TrackingController extends Controller
                 ->join('services', 'services.id', '=', 'service_id')
                 ->join('employees', 'employees.id', '=', 'employee_id')
                 ->whereNull('trackings.cancellation_date');
-                // ->get();
+            // ->get();
 
             return DataTables::of($tracking)
                 ->addIndexColumn()
@@ -857,9 +959,8 @@ class TrackingController extends Controller
                             $w->orWhere('centres.name', 'LIKE', "%$search%")
                                 ->orWhere('employees.name', 'LIKE', "%$search%")
                                 ->orWhere('services.name', 'LIKE', "%$search%")
-                                ->orWhere('patient_name', 'LIKE', "%$search%");
-
-
+                                ->orWhere('patient_name', 'LIKE', "%$search%")
+                                ->orWhere('hc', 'LIKE', "%$search%");
                         });
                     }
                 })
@@ -1306,9 +1407,10 @@ class TrackingController extends Controller
         $employees = Employee::getEmployeesActive();
 
 
-        return view('tracking.request_change_centre', ['title'     => 'Solicitudes de cambio',
-                                                       'centres'   => $centres,
-                                                       'employees' => $employees
+        return view('tracking.request_change_centre', [
+            'title'     => 'Solicitudes de cambio',
+            'centres'   => $centres,
+            'employees' => $employees
         ]);
     }
 
@@ -1379,6 +1481,7 @@ class TrackingController extends Controller
                     $btn = '';
                     if ($request->validated == 0) {
                         $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm center" >Validar</a>';
+                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm center" >Borrar</a>';
                     } else {
                         $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm">Invalidar</a>';
                     }
@@ -1392,6 +1495,7 @@ class TrackingController extends Controller
         }
     }
 
+    //Se confirma el borrado o la actualización del registro
     public function confirmRequest(Request $request)
     {
         try {
@@ -1401,14 +1505,23 @@ class TrackingController extends Controller
             $requestChange =  RequestChange::where(['id' => $params['idrequest']]);
             $user = session()->get('user');
 
-            $requestChange->update([
-                'validated'         => $params['state'],
-                'validate_user_id'  => $user->id
-            ]);
+            switch ($params['state']) {
+                case '-1':
+                    $requestChange->delete();
+                    break;
+                case '0':
+                case '1':
+                    $requestChange->update([
+                        'validated'         => $params['state'],
+                        'validate_user_id'  => $user->id
+                    ]);
+                    break;
+            }
 
             return json_encode(['data' =>  ['requestId'  => $params['idrequest']]]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }
     }
+
 }

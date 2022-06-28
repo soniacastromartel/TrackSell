@@ -29,7 +29,7 @@ class TrackingsExport implements FromCollection, WithStyles, WithEvents
     public function __construct($tracking = null, $filters)
     {
         
-        $this->trackingState = array_keys($tracking)[0]; 
+        $this->trackingState = $filters['trackingState']; 
         $this->tracking = reset($tracking);
         $this->filters = $filters;
         $this->spreadSheet = null; 
@@ -74,17 +74,29 @@ class TrackingsExport implements FromCollection, WithStyles, WithEvents
             BeforeExport::class => function(BeforeExport $event){
                
                switch ($this->trackingState) {
+                   case 'pending':
+                       $trackingState = 'PENDIENTES';
+                       break;
+                    case 'apointment':
+                        $trackingState = 'CITADOS';
+                        break;
                    case 'service':
                        $trackingState = 'REALIZADOS';
                        break;
                    case 'invoiced':
                        $trackingState = 'FACTURADOS';
                        break;
+                   case 'validation':
+                       $trackingState = 'VALIDADOS';
+                       break;
+                   case 'paid':
+                       $trackingState = 'PAGADOS';
+                       break;
                    case 'cancellation':
-                       $trackingState = 'ELIMINADOS';
+                       $trackingState = 'CANCELADOS';
                        break;
                    default:
-                        $trackingState = 'VALIDADOS';
+                        $trackingState = 'TODOS';
                        break;
                }
 
@@ -107,6 +119,7 @@ class TrackingsExport implements FromCollection, WithStyles, WithEvents
                $event->writer->getSheetByIndex(0)->setCellValue('H4',$this->filters['date_to']);
 
                $row = 9; 
+              
                foreach ($this->tracking as $trackingRow) {
                     $event->writer->getSheetByIndex(0)->setCellValue('A'.$row,$trackingRow->centre_employee);
                     $event->writer->getSheetByIndex(0)->setCellValue('B'.$row,$trackingRow->centre);
@@ -114,13 +127,14 @@ class TrackingsExport implements FromCollection, WithStyles, WithEvents
                     $event->writer->getSheetByIndex(0)->setCellValue('D'.$row,"[".$trackingRow->hc."]" . $trackingRow->patient_name);
                     $event->writer->getSheetByIndex(0)->setCellValue('E'.$row,$trackingRow->service);
                     $event->writer->getSheetByIndex(0)->setCellValue('F'.$row,$trackingRow->quantity);
-                    $event->writer->getSheetByIndex(0)->setCellValue('G'.$row,$trackingRow->invoiced_date);
+                    $event->writer->getSheetByIndex(0)->setCellValue('G'.$row,$trackingRow->state_date);
                     $event->writer->getSheetByIndex(0)->setCellValue('H'.$row,$trackingRow->cancellation_date);
                     $event->writer->getSheetByIndex(0)->setCellValue('I'.$row,$trackingRow->cancellation_reason);
                     $event->writer->getSheetByIndex(0)->setCellValue('J'.$row,$trackingRow->price * $trackingRow->quantity);
-
+                  
                     $row++; 
                }
+            
                $this->spreadSheet = $event->writer->getDelegate(); 
                return $event->getWriter()->getSheetByIndex(0);
             },
@@ -227,4 +241,3 @@ class TrackingsExport implements FromCollection, WithStyles, WithEvents
         //return $this->tracking ? : Tracking::all();
     }*/
 }
-?>

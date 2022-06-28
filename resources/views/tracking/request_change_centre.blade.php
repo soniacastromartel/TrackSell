@@ -64,7 +64,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Confirmación</h5>
+                <h5 class="modal-title" id="modal-title"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -80,6 +80,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 
@@ -120,10 +122,15 @@
     var table;
 
     function validateRequest(state, requestId) {
-        if (state == 1) {
-            $("#message-validation").html('¿Confirma la validación de la solicitud?');
-        } else {
+        if (state == -1) {
+            $("#message-validation").html('¿Confirma la eliminación de la solicitud?');
+            $("#modal-title").html('ELIMINACIÓN');
+        } else if (state == 0) {
             $("#message-validation").html('¿Confirma la invalidación de la solicitud?');
+            $("#modal-title").html('CONFIRMACIÓN');
+        } else {
+            $("#message-validation").html('¿Confirma la validación de la solicitud?');
+            $("#modal-title").html('CONFIRMACIÓN');
         }
 
         $("#validateVal").val(state);
@@ -132,7 +139,6 @@
     }
 
     function confirmRequest() {
-
         var params = {
             'idrequest': $("#idRequest").val(),
             'state': $("#validateVal").val(),
@@ -147,7 +153,6 @@
 
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
-
 
                 }
             },
@@ -165,6 +170,7 @@
     }
 
 
+
     $(function() {
         $(".nav-item").each(function() {
             $(this).removeClass("active");
@@ -173,13 +179,15 @@
         $('#requestChange').addClass('active');
 
         $("#btnConfirmRequest").on('click', function(event) {
-
             confirmRequest();
+        });
+
+        $("#btnConfirmDelete").on('click', function(event) {
+            confirmDelete();
         });
 
 
         table = $('.request-changes-datatable').DataTable({
-
             order: [0, "desc"],
             processing: true,
             serverSide: true,
@@ -196,9 +204,36 @@
 
             },
             columns: columnsFilled,
-            columnDefs: [
+            columnDefs: [{
+                    width: "10%",
+                    targets: 0
+                },
                 {
-                    targets: [-1,0,1,2,3,4,5],
+                    width: "10%",
+                    targets: 1
+                },
+                {
+                    width: "15%",
+                    targets: 2
+                },
+                {
+                    width: "10%",
+                    targets: 3
+                },
+                {
+                    width: "10%",
+                    targets: 4
+                },
+                {
+                    width: "25%",
+                    targets: 5
+                },
+                {
+                    width: "15%",
+                    targets: 5
+                },
+                {
+                    targets: '_all',
                     visible: true,
                     className: 'dt-body-center'
                 },
