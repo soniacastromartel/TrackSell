@@ -64,7 +64,7 @@
                                         @if ($user->rol_id == 1)
                                         <div class="form-group col-sm-7"  style="padding-top: 30px;">
                                             <div id="btnImportTargets" class="file-upload btn btn-block btn-outline-corporate">
-                                            <span class="material-icons mr-1">price_change</span>{{ __('Importar Objetivos') }}
+                                            <span class="material-icons mr-1">upload</span>{{ __('Importar Objetivos') }}
                                                 <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
                                             </div>
                                             <button id="targetInputFileLoad" type="submit" class="file-upload btn btn-success" style="display: none">
@@ -84,7 +84,7 @@
                                         @endif
                                         <div class="form-group col-sm-7" >
                                             <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
-                                                <span class="material-icons mr-1">stacked_line_chart</span>{{ __('Seguimiento de objetivos') }}
+                                                <span class="material-icons mr-1">download</span>{{ __('Seguimiento de objetivos') }}
                                             </button>
                                         </div>
                                         </div>
