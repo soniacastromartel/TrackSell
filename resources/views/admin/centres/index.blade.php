@@ -41,7 +41,7 @@
     }
 
     table.dataTable.dataTable_width_auto {
-        width: 100%;
+        /* width: 100%; */
     }
 </style>
 
@@ -66,17 +66,28 @@
                     d.search = $('input[type="search"]').val()
                 }
             },
-            columnDefs: [{
+            columnDefs: [
+                {
                     targets: [-1,0,1,2,3,4],
                     visible: true,
                     className: 'dt-body-center'
+                },
+                {
+                    targets: 3,
+                   render: function(data, type, row) {
+                    if (data!=null ){
+                        return data.split(';', 1);
+
+                    }
+                     return ' ';
+                   }
                 },
                 {
                     width: "5%",
                     targets: 0
                 },
                 {
-                    width: "40%",
+                    width: "30%",
                     targets: 1
                 },
                 {
@@ -88,15 +99,15 @@
                     targets: 3
                 },
                 {
-                    width: "25%",
+                    width: "10%",
                     targets: 4
                 },
                 {
-                    width: "5%",
+                    width: "10%",
                     targets: 5
                 },
                 {
-                    width: "15%",
+                    width: "20%",
                     targets: 6
                 }
             ],

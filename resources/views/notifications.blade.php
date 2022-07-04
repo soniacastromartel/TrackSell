@@ -48,7 +48,7 @@
                     <th>ID</th>
                     <th>Empleado</th>
                     <th>Servicio</th>
-                    <th>Fecha</th>
+                    <th>Fecha de Inicio</th>
                     <th>Fecha de cancelación</th>
                     <th>Motivo de cancelación</th>
                 </tr>
@@ -77,8 +77,8 @@
         searchable: true
     });
     columnsFilled.push({
-        name: 'state_date',
-        data: 'state_date'
+        name: 'started_date',
+        data: 'started_date'
     });
     columnsFilled.push({
         data: 'cancellation_date',

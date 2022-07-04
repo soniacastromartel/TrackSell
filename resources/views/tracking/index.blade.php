@@ -172,6 +172,12 @@
         </div>
     </div>
 </div>
+<style>
+    .myclass 
+{
+    text-transform:capitalize;
+}
+</style>
 
 
 
@@ -207,8 +213,8 @@
         searchable: true
     });
     columnsFilled.push({
-        name: 'state_date',
-        data: 'state_date'
+        name: 'started_date',
+        data: 'started_date'
     });
     columnsFilled.push({
         name: 'cancellation_date',
@@ -318,6 +324,8 @@
         });
     }
 
+   
+
 
     function getTrackingData() {
         if ($.fn.dataTable.isDataTable('.tracking-datatable')) {
@@ -357,13 +365,23 @@
                 },
                 // autoWidth:true,
                 columns: columnsFilled,
-                columnDefs: [{
+                columnDefs: [
+                    {
+                        targets:3,
+                        className: 'myclass'
+                        // render:function(data, type, row){
+                        //     d= data.split('')[0].toUpperCase() + data.slice(1)
+                        //     var d = data.toLowerCase();
+                        //     return d;
+                        // }
+
+                    },
+                    {
                         targets: 6,
                         data: "state_date",
                         type: "date",
                         // className: 'dt-body-center',
                         render: function(data, type, row) {
-
                             var datetime = moment(data, 'YYYY-M-D');
                             var displayString = moment(datetime).format('D-M-YYYY');
 
@@ -373,6 +391,19 @@
                                 return datetime; // for sorting
                             }
                         }
+                    },
+                    {
+                        targets: 7,
+                        // type: "date",
+                        render: function (data, type, row) {//data
+                            if(data!=null){
+                                return moment(row.updatedDate).format('D-M-YYYY');
+
+                            }else{
+                                return ' '
+                            }
+    }
+                   
                     },
                     {
                         targets: '_all',

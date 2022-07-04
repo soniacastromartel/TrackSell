@@ -26,7 +26,7 @@ class NotificationController extends Controller {
                     'trackings.id',
                     'trackings.patient_name',
                     'trackings.state',
-                    'trackings.state_date',
+                    'trackings.started_date',
                     'trackings.cancellation_date',
                     'trackings.cancellation_reason',
                     'services.name as service',

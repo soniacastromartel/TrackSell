@@ -182,10 +182,6 @@
             confirmRequest();
         });
 
-        $("#btnConfirmDelete").on('click', function(event) {
-            confirmDelete();
-        });
-
 
         table = $('.request-changes-datatable').DataTable({
             order: [0, "desc"],

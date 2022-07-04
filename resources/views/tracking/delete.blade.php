@@ -28,9 +28,32 @@
                     <tbody>
                     </tbody>
                 </table>  
-        
     </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-validate">
+    <input type="hidden" id="id" />
+    <input type="hidden" id="validateVal" />
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="message-validation" class="px-4 text-center"></p>
+            </div>
+            <div class="modal-footer center">
+                <button id="btnConfirmRequest" type="button" class="btn btn-success">SI</button>
+                <button id="btnCancelRequest" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .col-md-12{
         padding: 0;
@@ -47,6 +70,19 @@
 </style>
 
 <script type="text/javascript">
+
+function confirmRequest(state, id) {
+        if (state == 0) {
+            $("#message-validation").html('¿Confirma la eliminación de la recomendación?');
+            $("#modal-title").html('ELIMINACIÓN');
+        }
+        $("#validateVal").val(state);
+        $("#id").val(id);
+        $("#modal-validate").modal('show');
+    }
+
+
+
     var table; 
     $(function () {
         $(".nav-item").each(function(){
@@ -55,6 +91,11 @@
         $("#btnCheckDelete").text('Buscar');
         $('#trackingRemove').addClass('active');
         $('#pagesTracking').addClass('show');
+
+        $("#btnConfirmRequest").on('click', function(event) {
+            destroy();
+        });
+
 
         loadDeleteTable();
 
@@ -117,7 +158,10 @@
     });
 
 
-    function destroy(trackingId) {
+    function destroy() {
+        console.log($("#id").val());
+        trackingId= $("#id").val();
+
             $.ajax({
                     url: 'destroy/' +  trackingId,
                     type: 'get',
@@ -128,6 +172,10 @@
                             $('#alertTrackingDate').show().delay(2000).slideUp(300);
                             table.ajax.reload();
                         }
+                    },
+                    complete: function() {
+                    $("#modal-validate").modal('hide');
+                    table.ajax.reload();
                     },
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);

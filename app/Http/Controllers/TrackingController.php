@@ -967,8 +967,8 @@ class TrackingController extends Controller
 
                 ->addColumn('action', function ($track) {
                     $btn = '';
-                    $fnCall = 'destroy(\'' . $track->id . '\')';
-                    $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text" "><span class="material-icons">
+                    // $fnCall = 'destroy(\'' . $track->id . '\')';
+                    $btn .= '<a onclick="confirmRequest(0,' . $track->id . ')" class="btn btn-red-icot a-btn-slide-text" "><span class="material-icons">
                     delete
                     </span> Borrar</a>';
                     return $btn;
