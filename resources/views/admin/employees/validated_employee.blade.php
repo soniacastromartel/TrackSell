@@ -27,10 +27,10 @@
       </div>
       <div class="modal-footer row">
         <div class="col-12 text-center">
-          <button id="btnConfirmIdEmployee" type="button" class="btn btn-success">SI</button>        
-          <button id="btnCancelConfirmIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
+          <button id="btnConfirmIdEmployee" type="button" class="btn btn-red-icot">SI</button>        
+          <button id="btnCancelConfirmIdEmployee" type="button" class="btn btn-default" data-dismiss="modal">NO</button>
           <br><br>
-          <button id="btnConfirmChangeIdEmployee" type="button" class="btn-change-username  btn btn-red-icot">
+          <button id="btnConfirmChangeIdEmployee" type="button" class="btn-change-username  btn btn-warning">
             <span class="material-icons mr-1">update</span>CAMBIAR DATOS DE USUARIO
           </button>
         </div>
@@ -69,7 +69,7 @@
       <button id="btnChangeIdEmployee" type="button" class="btn btn-red-icot" data-dismiss="modal-validate">
         <span class="material-icons mr-1">update</span>CAMBIAR
       </button> <br>
-        <button id="btnCancelChangeIdEmployee" type="button" class="btn btn-warning" data-dismiss="modal">
+        <button id="btnCancelChangeIdEmployee" type="button" class="btn btn-default" data-dismiss="modal">
           <span class="material-icons mr-1">cancel</span>  
           CANCELAR
         </button>        

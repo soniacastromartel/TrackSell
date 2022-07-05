@@ -129,6 +129,13 @@ class RankingsExport implements FromCollection, WithStyles, WithEvents
                 ->setAutoSize(true);
             $sheet->getStyle($col)->getAlignment()->setWrapText(true);
         }
+        // for($col = 'E'; $col !== 'E'; $col++) {
+        // }
+
+         $sheet->getStyle('E')->getNumberFormat()->setFormatCode('### ### ### ##0.00');
+         $sheet->getStyle('D')->getNumberFormat()->setFormatCode('### ### ### ##0.00');
+
+
         $targetService = new TargetService();
         
 
@@ -148,8 +155,8 @@ class RankingsExport implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('A'.$row,$rankData['position']);
                 $sheet->setCellValue('B'.$row,$rankData['employee']);
                 $sheet->setCellValue('C'.$row,$rankData['centre']);
-                $sheet->setCellValue('D'.$row,$rankData['total_price'] . "€");
-                $sheet->setCellValue('E'.$row,$rankData['total_incentive'] . "€");
+                $sheet->setCellValue('D'.$row,$rankData['total_price']);
+                $sheet->setCellValue('E'.$row,$rankData['total_incentive']);
                 $row++; 
             }
         }

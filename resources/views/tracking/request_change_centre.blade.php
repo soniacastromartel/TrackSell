@@ -73,8 +73,8 @@
                 <p id="message-validation" class="px-4 text-center"></p>
             </div>
             <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-success">SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
+                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot">SI</button>
+                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal">NO</button>
                 </p>
             </div>
         </div>

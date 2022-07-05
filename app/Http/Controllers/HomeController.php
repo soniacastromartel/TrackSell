@@ -76,7 +76,8 @@ class HomeController extends Controller
             $params['monthYear'] = $currentMonth . '/' . $currentYear; 
             $targetService = new TargetService();
             
-            \Session::forget('trackingCentre');
+            \Session::forget('trackingCentre'); // TODO: TrackingCentre revisar 
+
             $this->trackingCentre = \Session::get('trackingCentre');
             if (empty($this->trackingCentre)) {
                 $this->trackingCentre = $targetService->getExportTarget($params);
@@ -328,6 +329,8 @@ class HomeController extends Controller
                 $vp['value']  += $td->vd;
                 $vp['target'] += $td->obj2;
             }
+
+            \Session::forget('trackingCentre');
 
             $this->trackingCentre = \Session::get('trackingCentre');
             if (empty($this->trackingCentre)) {

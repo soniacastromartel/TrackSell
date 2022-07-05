@@ -42,12 +42,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <p id="message-validation" class="px-4 text-center"></p>
+            <div class="modal-body text-center">
+                <p id="message-validation" class="px-4 text-center"  style= "margin-bottom: 20px;"></p>
+                <label class="label" for="reason">Motivo: </label>
+                <input type="text" name="reason" id="reason" style= "margin-bottom: 20px;"placeholder="Escriba el motivo..." value="{{ isset($tracking) ? $tracking->cancellation_reason : ''}}"></input>
             </div>
             <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-success">SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-warning" data-dismiss="modal">NO</button>
+                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot">SI</button>
+                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal">NO</button>
                 </p>
             </div>
         </div>
@@ -73,7 +75,7 @@
 
 function confirmRequest(state, id) {
         if (state == 0) {
-            $("#message-validation").html('¿Confirma la eliminación de la recomendación?');
+            $("#message-validation").html('Está a punto de eliminar este Seguimiento ¿Confirmar?');
             $("#modal-title").html('ELIMINACIÓN');
         }
         $("#validateVal").val(state);
@@ -159,12 +161,19 @@ function confirmRequest(state, id) {
 
 
     function destroy() {
-        console.log($("#id").val());
         trackingId= $("#id").val();
+        reason = $("#reason").val();
+        console.log($("#reason").val());
+        console.log($("#id").val());
+
+        params = {};
+        params["reason"] =  $("#reason").val();
+        params["id"] =  $("#id").val();
 
             $.ajax({
-                    url: 'destroy/' +  trackingId,
+                url: 'destroy/' + trackingId,
                     type: 'get',
+                    data: params,
                     success: function(response, textStatus, jqXHR) {
                         // if success, HTML response is expected, so replace current
                         if(textStatus === 'success') {

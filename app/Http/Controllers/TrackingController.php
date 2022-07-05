@@ -893,15 +893,18 @@ class TrackingController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         try {
+            $params = $request->all();
+            $id=  $params['id'];
 
             $tracking = Tracking::find($id);
             $fields['cancellation_date'] = date("Y-m-d H:i:s");
             $fields['state_date'] = date("Y-m-d H:i:s"); //actualizamos fecha de cambio de estado
             $fields['state'] = 'Cancelado'; //actualizamos estado
             $fields['cancellation_user_id'] = session()->get('user')->id;
+            $fields['cancellation_reason'] = $params['reason'];
 
             /** Validar que las fechas, son las que están dentro del corte actual */
             $validateFechas = Tracking::checkDate($tracking['validation_date']);
