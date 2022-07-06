@@ -121,6 +121,9 @@ class TargetService {
         return $resultData; 
     }
 
+    /**
+     * Function que obtiene la venta cruzada
+     */
     public function getVC($centres, $target)  {
         $vcTotal = 0;
 
@@ -200,7 +203,6 @@ class TargetService {
                         $monthYearBef = explode("/", $targetByCentre[$target->centre_id][$monthBefore]->calc_month);
                         $nextMonthYear = intval($monthYearBef[0]); 
                         if ($targetByCentre[$target->centre_id][$monthBefore]->obj1_done) {
-                            
                             if ($monthYearBef[0] < 12){
                                 $nextMonthYear += 1;
                                 $calcMonth = $nextMonthYear .'/'. $monthYearBef[1];
@@ -499,6 +501,8 @@ class TargetService {
         return $tracking; 
     }
 
+    /* 
+    */ 
     private function getDiscount ($targetRow, $field) {
         $result = $targetRow->$field; 
         if (!empty($targetRow->discount) && $targetRow->is_calculate === 1) {

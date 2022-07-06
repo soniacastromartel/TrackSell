@@ -200,7 +200,8 @@
                     type: "POST",
                     data: function(d) {
                         d._token = "{{ csrf_token() }}",
-                        d.date = $('#monthYearPicker').val()
+                        d.date = $('#monthYearPicker').val(),
+                        d.search = $('input[type="search"]').val()
                     },
                     dataSrc: function(json) {
                         $('#btnSubmit').show();
@@ -236,7 +237,7 @@
 
                     {
                         targets: 3,
-                        data: "state_date",
+                        data: "started_date",
                         type: "date",
                         render: function(data, type, row) {
 
@@ -270,10 +271,7 @@
     .button-size {
         height: 39px;
     }
-    td{
-        font-weight: bold;
- 
-    }
+   
 </style>
 
 @endsection

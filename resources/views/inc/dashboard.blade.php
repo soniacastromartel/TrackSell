@@ -33,6 +33,8 @@
                     <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor<span class="obligatory">*</span> </label>
                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="* Seleccione Centro" tabindex="-98">
 
+                    <!-- <option selected>GRUPO ICOT</option> -->
+
                       @if (isset($employee) && $employee->rol_id != 1)
                       <option value="{{$employee->centre_id}}" selected>{{$employee->centre}}</option>
                       @endif
@@ -547,10 +549,9 @@
           // if success, HTML response is expected, so replace current
           if (textStatus === 'success') {
             var target = JSON.parse(data);
+            console.log(data);
             google.charts.setOnLoadCallback(function() {
               options.hAxis.title = getLabelMonth($("#monthYearPicker").val().substr(0, $("#monthYearPicker").val().indexOf('/')));
-              // console.log(target.data.vc);
-              // console.log(target.data.vp);
               drawGraphVC(target.data.vc);
               drawGraphVP(target.data.vp);
             });
@@ -621,9 +622,11 @@
               d.type = idDataTable == '.sales-month-datatable' ? 'monthly' : 'anual'
           }
         },
-        columnDefs: [{
-            targets: [ 3, 4],
-            render: $.fn.dataTable.render.number('.', ',', 2) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
+        columnDefs: [
+          {
+            targets:  idDataTable == '.sales-month-datatable' ? [2,3]: [3,4],
+            render:
+             $.fn.dataTable.render.number('.', ',', 2) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
           },
 
         ],

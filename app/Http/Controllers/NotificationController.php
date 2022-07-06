@@ -67,16 +67,30 @@ class NotificationController extends Controller {
                 $canceledTrackings = $query
                     ->where('state', 'Cancelado')
                     ->whereNotNull('trackings.cancellation_date')
+                    
+                    
                     ->where(function ($q) use ($params, $initPeriod, $endPeriod) {
 
                         $q->where(function ($q2) use ($params, $initPeriod, $endPeriod) {
-                            $q2->whereBetween('started_date', [$initPeriod, $endPeriod])
-                                ->orWhereBetween('service_date', [$initPeriod, $endPeriod]);
+                            $q2->
+                            // whereBetween('started_date', [$initPeriod, $endPeriod])
+                                // ->orWhereBetween('service_date', [$initPeriod, $endPeriod])
+                                WhereBetween('trackings.cancellation_date', [$initPeriod, $endPeriod]);
                         });
-                    })
-                    ->get();
+                    });
+                    // ->get();
 
                 return DataTables::of($canceledTrackings)
+                ->filter(function ($instance) use ($request) {
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function ($w) use ($request) {
+                            $search = $request->get('search');
+                            $w
+                                ->orWhere('employees.name', 'LIKE', "%$search%")
+                                ->orWhere('services.name', 'LIKE', "%$search%");
+                        });
+                    }
+                })
                     ->make(true);
             }
             $centres = Centre::getCentresActive();
