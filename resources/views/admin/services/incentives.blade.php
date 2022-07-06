@@ -111,9 +111,41 @@
     </div>
 </div>
 
+<div class="modal" tabindex="-1" role="dialog" id="modal-validate">
+    <input type="hidden" id="id" />
+    <input type="hidden" id="validateVal" />
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p id="message-validation" class="px-4 text-center"  style= "margin-bottom: 20px;"></p>
+            </div>
+            <div class="modal-footer center">
+                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot">SI</button>
+                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <script type="text/javascript">
+
+    function confirmRequest(state, id) {
+            $("#message-validation").html('Está a punto de eliminar este Incentivo ¿Confirmar?');
+            $("#modal-title").html('ELIMINACIÓN');
+    
+        $("#id").val(id);
+        $("#modal-validate").modal('show');
+    }
+
     var table;
 
     var columnsFilled = [];
@@ -178,6 +210,10 @@
             clearForms();
         });
 
+        $("#btnConfirmRequest").on('click', function(event) {
+            destroyIncentive();
+        });
+        
         getServiceIncentives();
         $("#targetInputIncentiveFile").on('change', function() {
             document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
@@ -189,6 +225,7 @@
             $("#importTargetForm").submit();
         });
 
+        //FIXME BOTON DE EXPORTAR?? DONDE ESTÁ?
         $("#btnExportIncentives").on('click', function(e) {
             console.log('obteniendo documento de servicios');
             $('#targetExportFileLoad').show();
@@ -206,7 +243,8 @@
         });
 
     });
-
+ 
+    //FIXME donde se usa este método? puede ser útil?
     function exportServicesToExcel() {
 
         $.ajax({
@@ -319,12 +357,12 @@
 
 
 
-    function destroyIncentive(servicePriceId) {
+    function destroyIncentive() {
         $('#alertErrorServiceIncentive').hide();
         $('#alertServiceIncentive').hide();
         params = {};
         params["_token"] = "{{ csrf_token() }}";
-        params["serviceprice_id"] = servicePriceId;
+        params["serviceprice_id"] = $("#id").val();
         $.ajax({
             url: "{{ route('services.destroyIncentive') }}",
             type: 'post',
@@ -343,6 +381,10 @@
                     table.ajax.reload();
                 }
             },
+            complete: function() {
+                    $("#modal-validate").modal('hide');
+                    table.ajax.reload();
+                    },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
 

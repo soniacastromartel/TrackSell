@@ -348,8 +348,8 @@ class ServiceController extends Controller
                     $btn = '';
                     $user = session()->get('user');
                     if (empty($service->cancellation_date) && $user->rol_id == 1 ) {
-                        $fnCall = 'destroyIncentive('.$service->serviceprice_id.' )';
-                        $btn .= '<a onclick="'. $fnCall .'"  class="btnDeleteServicePrice btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                        // $fnCall = 'destroyIncentive('.$service->serviceprice_id.' )';
+                        $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btnDeleteServicePrice btn btn-red-icot a-btn-slide-text"><span class="material-icons">
                         delete
                         </span> Borrar</a>';
                     }
