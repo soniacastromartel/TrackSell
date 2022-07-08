@@ -5,6 +5,11 @@
 @include('inc.navbar')
 @include('common.alert')
 
+<div id="alertErrorCentre" class="alert alert-danger" role="alert" style="display: none">
+</div>
+<div id="alertCentre" class="alert alert-success" role="alert" style="display: none">
+</div>
+
 <div class="content">
     <div class="container-fluid">
         @if ($user -> rol_id == 1)
@@ -35,10 +40,9 @@
     </div>
 </div>
 
+@include('common.modal')
+
 <style>
-    td {
-        font-weight: bold;
-    }
 
     table.dataTable.dataTable_width_auto {
         /* width: 100%; */
@@ -46,6 +50,15 @@
 </style>
 
 <script type="text/javascript">
+ function confirmRequest(state, id) {
+            $("#message-validation").html('Está a punto de eliminar este Centro ¿Confirmar?');
+            $("#modal-title").html('ELIMINACIÓN');
+    
+        $("#id").val(id);
+        $("#modal-validate").modal('show');
+    }
+    var table;
+
     $(function() {
 
         $(".nav-item").each(function() {
@@ -54,7 +67,11 @@
         $('#pagesConfig').addClass('show');
         $('#adminCentre').addClass('active');
 
-        var table = $('.centres-datatable').DataTable({
+        $("#btnConfirmRequest").on('click', function(event) {
+            destroy();
+        });
+
+         table = $('.centres-datatable').DataTable({
             processing: true,
             serverSide: true,
             language: {
@@ -162,6 +179,41 @@
             }
         });
     });
+
+    function destroy() {
+       
+        params = {};
+        params["_token"] = "{{ csrf_token() }}";
+        params["id"] = $("#id").val();
+
+        $.ajax({
+            url:  'centres/destroy/' + params['id'],
+            type: 'get',
+            data: params,
+            success: function(response, textStatus, jqXHR) {
+                // if success, HTML response is expected, so replace current
+                if (textStatus === 'success') {
+                    $('#alertCentre').text(response.mensaje); 
+                    $('#alertCentre').show().delay(2000).slideUp(300);
+                    $("#modal-validate").modal('hide');
+                    table.ajax.reload();
+                }
+            },
+            complete: function() {
+                    $("#modal-validate").modal('hide');
+                    table.ajax.reload();
+                    },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                $('#alertErrorCentre').text(response.mensaje); 
+                $('#alertErrorCentre').show().delay(2000).slideUp(300); 
+            }
+
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            alert('Error cargando centros');
+        });
+    }
+
 </script>
 
 @endsection

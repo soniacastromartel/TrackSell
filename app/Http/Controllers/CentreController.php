@@ -35,7 +35,7 @@ class CentreController extends Controller
                             $buttons = '<a href="centres/edit/'.$centre->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
                             edit
                             </span> Editar</a>';
-                            $buttons .= '<a href="centres/destroy/'.$centre->id.'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                            $buttons .= '<a onclick="confirmRequest(0,' . $centre->id . ')" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
                             delete
                             </span> Borrar</a>';
                         }    
@@ -198,17 +198,19 @@ class CentreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
         try{
+            $params = $request->all();
+            $id=$params['id'];
             $centre = Centre::find($id);
             $fields['cancellation_date'] = date("Y-m-d H:i:s"); 
             $centre->update($fields);
 
-            return redirect()->action('CentreController@index')
-    
-                            ->with('success','Centro cancelado correctamente');
+            return response()->json([
+                'success' => true,  'mensaje' => 'Centro eliminado correctamente'
+            ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al eliminar centro, contacte con el administrador');
         }

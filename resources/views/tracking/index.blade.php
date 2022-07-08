@@ -108,7 +108,7 @@
                                             <select class="selectpicker" name="state_id" id="state_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Estado" tabindex="-98">
                                             <option>SIN SELECCION </option>
                                                 @foreach ($states as $state)
-                                                <option value="{{ $state->texto }}">{{$state->nombre}}</option>
+                                                <option class= "text-uppercase" value="{{ $state->texto }}">{{$state->nombre}}</option>
                                                 @endforeach
                                                 
                                             </select>

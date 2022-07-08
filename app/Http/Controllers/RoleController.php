@@ -47,7 +47,7 @@ class RoleController extends Controller
                         $btn .= '<a href="roles/edit/'.$role->id.'"class="btn btn-warning a-btn-slide-text" style=""><span class="material-icons">
                         edit
                         </span>  Editar</a>';
-                        $btn .= '<a href="roles/destroy/'.$role->id.'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                        $btn .= '<a onclick="confirmRequest(0,' . $role->id . ')" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
                         delete
                         </span>  Borrar</a>';
                         return $btn;
@@ -159,16 +159,18 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         try{
+            $params = $request->all();
+            $id=$params['id'];
             $role = Role::findOrFail($id);
 
             $role->delete();
 
-            return redirect()->action('RoleController@index')
-    
-                            ->with('success','Rol eliminado correctamente');
+            return response()->json([
+                'success' => true,  'mensaje' => 'Rol eliminado correctamente'
+            ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al eliminar rol, contacte con el administrador');
         }

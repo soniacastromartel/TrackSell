@@ -4,6 +4,11 @@
 @include('inc.navbar')
 @include('common.alert')
 
+<div id="alertErrorRole" class="alert alert-danger" role="alert" style="display: none">
+</div>
+<div id="alertRole" class="alert alert-success" role="alert" style="display: none">
+</div>
+
 <div class="content">
     <div class="container-fluid">
         <div class="row col-md-12 mb-3 ">
@@ -28,7 +33,18 @@
     </div>
 </div>
 
+@include('common.modal')
+
+
 <script type="text/javascript">
+    function confirmRequest(state, id) {
+            $("#message-validation").html('Está a punto de eliminar este Rol ¿Confirmar?');
+            $("#modal-title").html('ELIMINACIÓN');
+    
+        $("#id").val(id);
+        $("#modal-validate").modal('show');
+    }
+    var table;
     $(function () {
         
         $(".nav-item").each(function(){
@@ -36,8 +52,11 @@
         });
         $('#pagesConfig').addClass('show');
         $('#adminRole').addClass('active');
+        $("#btnConfirmRequest").on('click', function(event) {
+            destroy();
+        });
         
-        var table = $('.roles-datatable').DataTable({
+         table = $('.roles-datatable').DataTable({
             processing: true,
             serverSide: true,
             language:{
@@ -85,6 +104,41 @@
             }
         });
     });
+
+    function destroy() {
+       
+       params = {};
+       params["_token"] = "{{ csrf_token() }}";
+       params["id"] = $("#id").val();
+
+       $.ajax({
+           url:  'roles/destroy/' + params['id'],
+           type: 'get',
+           data: params,
+           success: function(response, textStatus, jqXHR) {
+               // if success, HTML response is expected, so replace current
+               if (textStatus === 'success') {
+                   $('#alertRole').text(response.mensaje); 
+                   $('#alertRole').show().delay(2000).slideUp(300);
+                   $("#modal-validate").modal('hide');
+                   table.ajax.reload();
+               }
+           },
+           complete: function() {
+                   $("#modal-validate").modal('hide');
+                   table.ajax.reload();
+                   },
+           error: function(xhr, status, error) {
+               var response = JSON.parse(xhr.responseText);
+               $('#alertErrorRole').text(response.mensaje); 
+               $('#alertErrorRole').show().delay(2000).slideUp(300); 
+           }
+
+       }).fail(function(jqXHR, textStatus, errorThrown) {
+           alert('Error cargando centros');
+       });
+   }
+
     
 </script>
 

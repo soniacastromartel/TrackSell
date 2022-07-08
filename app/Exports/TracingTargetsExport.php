@@ -89,6 +89,12 @@ class TracingTargetsExport implements FromCollection, WithStyles, WithEvents
      */
     private function printContent($target,$centre, $sheet){
 
+        for($col = 'A'; $col !== 'Q'; $col++) {
+            $sheet->getColumnDimension($col)
+                ->setAutoSize(true);
+            $sheet->getStyle($col)->getAlignment()->setWrapText(true);
+        }
+
         $filaCont = $this->rows+1; 
         foreach ($target[$centre] as $i =>$targetRow) {
             

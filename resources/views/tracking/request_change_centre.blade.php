@@ -58,28 +58,7 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="modal-validate">
-    <input type="hidden" id="idRequest" />
-    <input type="hidden" id="validateVal" />
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p id="message-validation" class="px-4 text-center"></p>
-            </div>
-            <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot">SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal">NO</button>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
+@include('common.modal')
 
 
 
@@ -121,7 +100,7 @@
 
     var table;
 
-    function validateRequest(state, requestId) {
+    function validateRequest(state, id) {
         if (state == -1) {
             $("#message-validation").html('¿Confirma la eliminación de la solicitud?');
             $("#modal-title").html('ELIMINACIÓN');
@@ -134,13 +113,13 @@
         }
 
         $("#validateVal").val(state);
-        $("#idRequest").val(requestId);
+        $("#id").val(id);
         $("#modal-validate").modal('show');
     }
 
     function confirmRequest() {
         var params = {
-            'idrequest': $("#idRequest").val(),
+            'id': $("#id").val(),
             'state': $("#validateVal").val(),
             '_token': "{{ csrf_token() }}"
         };

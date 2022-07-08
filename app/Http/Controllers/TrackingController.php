@@ -1483,12 +1483,13 @@ class TrackingController extends Controller
                     // $btn  = '<div class="row col-md-12">';
                     $btn = '';
                     if ($request->validated == 0) {
-                        $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm center" >Validar</a>';
-                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm center" >Borrar</a>';
+                        $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm center" > <span class="material-icons mr-1">check</span>Validar</a>';
+                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm center" > <span class="material-icons mr-1">delete</span>Borrar</a>';
                     } else {
-                        $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm">Invalidar</a>';
+                        $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm"> <span class="material-icons mr-1">close</span>Invalidar</a>';
                     }
                     // $btn .= '</div>';
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -1505,7 +1506,7 @@ class TrackingController extends Controller
             $params = [];
             $params = $request->all();
 
-            $requestChange =  RequestChange::where(['id' => $params['idrequest']]);
+            $requestChange =  RequestChange::where(['id' => $params['id']]);
             $user = session()->get('user');
 
             switch ($params['state']) {
@@ -1521,7 +1522,7 @@ class TrackingController extends Controller
                     break;
             }
 
-            return json_encode(['data' =>  ['requestId'  => $params['idrequest']]]);
+            return json_encode(['data' =>  ['id'  => $params['id']]]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }

@@ -69,7 +69,7 @@ class ServiceController extends Controller
                             $btn = '<a href="services/edit/'.$service->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
                             edit
                             </span> Editar</a>';
-                            $btn .= '<a href="services/destroy/'.$service->id.'" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
                             delete
                             </span> Borrar</a>';
                         }
@@ -275,17 +275,19 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
         try{
+            $params = $request->all();
+            $id=$params['id'];
             $service = Service::find($id);
             $fields['cancellation_date'] = date("Y-m-d H:i:s"); 
             $service->update($fields);
 
-            return redirect()->action('ServiceController@index')
-        
-                            ->with('success','Servicio cancelado con éxito');
+            return response()->json([
+                'success' => true,  'mensaje' => 'Servicio eliminado correctamente'
+            ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al eliminar servicio, contacte con el administrador');
         }

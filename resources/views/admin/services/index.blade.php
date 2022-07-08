@@ -31,10 +31,22 @@
             </tbody>
         </table>
     </div>
-</div>   
+</div> 
+  
+@include('common.modal')
 
 
 <script type="text/javascript">
+
+     function confirmRequest(state, id) {
+            $("#message-validation").html('Está a punto de eliminar este Servicio ¿Confirmar?');
+            $("#modal-title").html('ELIMINACIÓN');
+    
+        $("#id").val(id);
+        $("#modal-validate").modal('show');
+    }
+    var table;
+
     $(function () {
         
         $(".nav-item").each(function(){
@@ -42,8 +54,12 @@
         });
         $('#pagesConfig').addClass('show');
         $('#adminService').addClass('active')
+
+        $("#btnConfirmRequest").on('click', function(event) {
+            destroy();
+        });
         
-        var table = $('.services-datatable').DataTable({
+         table = $('.services-datatable').DataTable({
             processing: true,
             serverSide: true,
             language:{
@@ -92,6 +108,40 @@
             }
         });
     });
+
+    function destroy() {
+       
+       params = {};
+       params["_token"] = "{{ csrf_token() }}";
+       params["id"] = $("#id").val();
+
+       $.ajax({
+           url:  'services/destroy/' + params['id'],
+           type: 'get',
+           data: params,
+           success: function(response, textStatus, jqXHR) {
+               // if success, HTML response is expected, so replace current
+               if (textStatus === 'success') {
+                   $('#alertCentre').text(response.mensaje); 
+                   $('#alertCentre').show().delay(2000).slideUp(300);
+                   $("#modal-validate").modal('hide');
+                   table.ajax.reload();
+               }
+           },
+           complete: function() {
+                   $("#modal-validate").modal('hide');
+                   table.ajax.reload();
+                   },
+           error: function(xhr, status, error) {
+               var response = JSON.parse(xhr.responseText);
+               $('#alertErrorCentre').text(response.mensaje); 
+               $('#alertErrorCentre').show().delay(2000).slideUp(300); 
+           }
+
+       }).fail(function(jqXHR, textStatus, errorThrown) {
+           alert('Error cargando centros');
+       });
+   }
 </script>
 
 @endsection
