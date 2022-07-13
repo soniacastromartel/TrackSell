@@ -106,9 +106,15 @@
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Exportando datos...') }}
                             </button>
-                            <button id="btnValidate" type="button" class="ml-2 btn btn-fill btn-red-icot">
+                            <button id="btnValidate" type="button" class="ml-2 btn btn-fill btn-success">
                             <span class="material-icons mr-2">paid</span>{{ __('Pagar todos') }}</button>
-                            <button id="btnValidateLoad" type="submit" class="btn btn-red-icot" style="display: none">
+                            <button id="btnValidateLoad" type="submit" class="btn btn-success" style="display: none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                {{ __('Validando datos...') }}
+                            </button>
+                            <button id="btnUnvalidate" type="button" class="ml-2 btn btn-fill btn-red-icot">
+                            <span class="material-icons mr-2">restart_alt</span>{{ __('Deshacer Pagar todos') }}</button>
+                            <button id="btnUnvalidateLoad" type="submit" class="btn btn-red-icot" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Validando datos...') }}
                             </button>
@@ -152,6 +158,7 @@
         height: 100%;
     }
 </style>
+
 <script type="text/javascript">
     var table;
     $(function() {
@@ -161,6 +168,8 @@
         });
         $('#pagesTracking').addClass('show');
         $('#trackingValidateFinal').addClass('active');
+
+        $('#btnUnvalidate').hide();
 
         var columnsFilled = [];
         columnsFilled.push({
@@ -199,7 +208,7 @@
         $.fn.dataTable.ext.errMode = 'none';
 
         var d = new Date();
-        var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
+        var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
         $('#monthYearPicker').val(textMonthYear);
         $('#monthYearPicker').MonthPicker();
 
@@ -221,8 +230,8 @@
                     type: "POST",
                     data: function(d) {
                         d.monthYear = $('#monthYearPicker').val(),
-                            d._token = "{{ csrf_token() }}",
-                            d.search = $('input[type="search"]').val()
+                        d._token = "{{ csrf_token() }}",
+                        d.search = $('input[type="search"]').val()
                         d.codbusiness = $("#business_id option:selected").val()
                     },
                     dataSrc: function(json) {
@@ -257,14 +266,12 @@
             params["business"] = $("#business_id option:selected").text();
 
             if (table == undefined) {
-                $('#alertErrorTrackingDate').text("No hay datos seleccionados");
-                $('#alertErrorTrackingDate').show();
+                timeOutAlert($('#alertErrorTrackingDate'),"No hay datos seleccionados");
                 return;
             }
             var validateData = table.ajax.json();
             if (validateData['recordsTotal'] == 0) {
-                $('#alertErrorTrackingDate').text("No hay datos seleccionados");
-                $('#alertErrorTrackingDate').show();
+                timeOutAlert($('#alertErrorTrackingDate'),"No hay datos seleccionados");
                 return;
             }
             $('#btnValidateLoad').show();
@@ -281,23 +288,77 @@
 
                         $('#btnValidateLoad').hide();
                         $('#btnValidate').show();
-                        $('#alertTrackingDate').text("Recomendaciones validadas correctamente");
-                        $('#alertTrackingDate').show();
+                        timeOutAlert($('#alertTrackingDate'))
                         $('.tracking-validation-datatable').DataTable().ajax.reload();
                     }
                 },
                 error: function(xhr, status, error) {
                     //alert('OK calculados incentivos');
                     //$('#btnCalculate').show();
-                    $('#alertErrorTrackingDate').text("Error al validar");
-                    $('#alertErrorTrackingDate').show();
+                    timeOutAlert($('#alertErrorTrackingDate'),"Error al validar")
                     $('#btnValidateLoad').hide();
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                //alert('Error cargando servicios');
+                alert('Error'+jqXHR.responseText);
             }).done(function() {
-                timeOutAlert($('#alertErrorTrackingDate'));
+                $('#btnUnvalidate').show();
+                $('#btnValidateLoad').hide();
+                $('#btnValidate').hide();
+                
+                // timeOutAlert($('#alertErrorTrackingDate')); //FIXME VER ESTE METODO QUE NO EXISTE?
+                timeOutAlert($('#alertTrackingDate'));
+            });
+        });
+
+        // Accion DESHACER PAGAR TODOS
+        $("#btnUnvalidate").on('click', function(e) {
+            $('#alertTrackingDate').hide();
+            $('#alertErrorTrackingDate').hide();
+            params = {};
+            params["_token"] = "{{ csrf_token() }}";
+            params["monthYear"] = $('#monthYearPicker').val();
+            params["cod_business"] = $("#business_id option:selected").val();
+            params["business"] = $("#business_id option:selected").text();
+
+            if (table == undefined) {
+                timeOutAlert($('#alertErrorTrackingDate'),"No hay datos seleccionados");
+                return;
+            }
+            var validateData = table.ajax.json();
+            if (validateData['recordsTotal'] == 0) {
+                timeOutAlert($('#alertErrorTrackingDate'),"No hay datos seleccionados");
+                return;
+            }
+            $('#btnUnvalidateLoad').show();
+            $('#btnUnvalidate').hide();
+
+            $.ajax({
+                url: "{{ route('tracking.unvalidateTrackings') }}",
+                type: 'post',
+                data: params,
+                success: function(data, textStatus, jqXHR) {
+
+                    // if success, HTML response is expected, so replace current
+                    if (textStatus === 'success') {
+                        $('#btnUnvalidateLoad').hide();
+                        $('#btnUnvalidate').show();
+                        timeOutAlert($('#alertTrackingDate'), "Realizado correctamente")
+                        $('.tracking-validation-datatable').DataTable().ajax.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    //alert('OK calculados incentivos');
+                    //$('#btnCalculate').show();
+                    timeOutAlert($('#alertErrorTrackingDate'),"Error al validar")
+                    $('#btnUnvalidateLoad').hide();
+                }
+
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                alert('Error'+jqXHR.responseText);
+            }).done(function() {
+                $('#btnValidate').show();
+                $('#btnUnvalidate').hide();
                 timeOutAlert($('#alertTrackingDate'));
             });
         });
@@ -321,6 +382,7 @@
                 success: function(response, textStatus, jqXHR) {
                     // if success, HTML response is expected, so replace current
                     //alert('OK calculados incentivos'); 
+                    timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
                     $('#btnCalculate').show();
                     $('#btnCalculateLoad').hide();
                     getEmployeeIncentives();
@@ -332,10 +394,10 @@
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                //alert('Error cargando servicios');
+                timeOutAlert($('#alertErrorTrackingDate'), jqXHR.responseText);
             }).done(function() {
-                timeOutAlert($('#alertErrorTrackingDate'));
-                timeOutAlert($('#alertTrackingDate'));
+                // timeOutAlert($('#alertErrorTrackingDate'));
+                timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
             });
         });
 
@@ -385,12 +447,14 @@
         });
     });
 
+    /**
+     * FUNCION PAGAR INDIVIDUAL
+     */
     function updateValidation(employeeId, trackingIds, totalIncome, supervisor, back) {
         $('#alertErrorTrackingDate').hide();
         $('#alertTrackingDate').hide();
         var trackingDate = $("#tracking_date_" + employeeId).val();
         state = 'paid';
-
         params = {};
         params["_token"] = "{{ csrf_token() }}";
         params["employee_id"] = employeeId;
@@ -408,9 +472,7 @@
             success: function(response, textStatus, jqXHR) {
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
-                    $('#alertTrackingDate').text(response.mensaje);
-                    $('#alertTrackingDate').show();
-                    //table.ajax.reload();
+                    timeOutAlert($('#alertTrackingDate'), response.mensaje);
                     $('.tracking-validation-datatable').DataTable().ajax.reload();
                 }
             },
@@ -425,8 +487,7 @@
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
-
-            //alert('Error cargando servicios');
+            timeOutAlert(alert, jqXHR.responseText);
 
         }).done(function() {
             timeOutAlert($('#alertErrorTrackingDate'));
@@ -434,8 +495,10 @@
         });
     }
 
+    /*
+    *Función para EXPORTAR los datos
+    */
     function exportData() {
-
         params = {};
         params["monthYear"] = $('#monthYearPicker').val();
         params["cod_business"] = $("#business_id option:selected").val();
@@ -451,15 +514,16 @@
                 'responseType': 'blob'
             },
             success: function(data, textStatus, jqXHR) {
-
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
+                    timeOutAlert($('#alertTrackingDate'), 'Exportando los datos...');
+
 
                     $('#btnSubmitLoad').hide();
                     $('#btnSubmit').show();
 
                     var link = document.createElement('a'),
-                        filename = 'export_incentives.xls';
+                    filename = 'export_incentives.xls';
                     link.href = URL.createObjectURL(data);
                     link.download = filename;
                     link.click();
@@ -479,6 +543,12 @@
             $('#btnExportLoad').hide();
         });
     }
+
+    function timeOutAlert($alert, $message) {
+        $alert.text($message);
+        $alert.show().delay(2000).slideUp(300);
+    }
+
 </script>
 
 @endsection

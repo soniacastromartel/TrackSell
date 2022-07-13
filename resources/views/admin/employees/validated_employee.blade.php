@@ -268,6 +268,7 @@
                 table.ajax.reload(); 
               }
         }).fail(function(jqXHR, textStatus, errorThrown) {
+          alert('Error'+jqXHR.responseText);
         });
     } 
   });

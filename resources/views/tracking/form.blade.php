@@ -240,8 +240,7 @@
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                
-                 alert('Error cargando servicios');
+              alert('Error'+jqXHR.responseText);
                 
             });
     }
@@ -278,9 +277,8 @@
                     // $('#btnSubmit').show();
                 }
 
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                
-                 alert('Error cargando servicios');
+            }).fail(function(jqXHR, textStatus, errorThrown) { 
+                 alert('Error'+jqXHR.responseText);
                 
             });
     }
@@ -338,8 +336,7 @@
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                
-                 alert('Error de validación de fecha');
+              alert('Error'+jqXHR.responseText);
         });
     }
     

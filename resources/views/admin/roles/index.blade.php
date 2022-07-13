@@ -135,7 +135,7 @@
            }
 
        }).fail(function(jqXHR, textStatus, errorThrown) {
-           alert('Error cargando centros');
+        alert('Error'+jqXHR.responseText);
        });
    }
 

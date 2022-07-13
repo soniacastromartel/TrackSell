@@ -69,6 +69,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/exportFinalValidation', 'TrackingController@exportFinalValidation')->name('tracking.exportFinalValidation');
     Route::post('/tracking/calculateValidationRRHH', 'TrackingController@calculateValidationRRHH')->name('tracking.calculateValidationRRHH');
     Route::post('/tracking/validateTrackings', 'TrackingController@validateTrackings')->name('tracking.validateTrackings');
+    Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::get('/tracking/requestChange', 'TrackingController@requestChange')->name('tracking.requestChange');
     Route::post('/tracking/saveRequest', 'TrackingController@saveRequest')->name('tracking.saveRequest');
     Route::post('/tracking/getRequestChanges', 'TrackingController@getRequestChanges')->name('tracking.getRequestChanges');

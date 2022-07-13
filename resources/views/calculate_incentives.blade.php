@@ -372,10 +372,7 @@
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-
-                //FIXME... show error alert
-                //$.parseJSON(jqXHR.responseText);
-                // alert('Error: ' + textStatus);
+                alert('Error '+jqXHR.responseText);
 
             });
         });

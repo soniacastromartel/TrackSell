@@ -954,7 +954,14 @@ class TrackingController extends Controller
 
             return DataTables::of($tracking)
                 ->addIndexColumn()
-
+                ->addColumn('action', function ($track) {
+                    $btn = '';
+                    // $fnCall = 'destroy(\'' . $track->id . '\')';
+                    $btn .= '<a onclick="confirmRequest(0,' . $track->id . ')" class="btn btn-red-icot a-btn-slide-text" "><span class="material-icons">
+                    delete
+                    </span> Borrar</a>';
+                    return $btn;
+                })
                 ->filter(function ($instance) use ($request) {
                     if (!empty($request->get('search'))) {
                         $instance->where(function ($w) use ($request) {
@@ -966,15 +973,6 @@ class TrackingController extends Controller
                                 ->orWhere('hc', 'LIKE', "%$search%");
                         });
                     }
-                })
-
-                ->addColumn('action', function ($track) {
-                    $btn = '';
-                    // $fnCall = 'destroy(\'' . $track->id . '\')';
-                    $btn .= '<a onclick="confirmRequest(0,' . $track->id . ')" class="btn btn-red-icot a-btn-slide-text" "><span class="material-icons">
-                    delete
-                    </span> Borrar</a>';
-                    return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -1190,11 +1188,32 @@ class TrackingController extends Controller
                     $conditions['cod_business'] = $request->codbusiness;
                 }
                 if (isset($request->monthYear)) {
-                    $conditions['month_year']   = $request->monthYear;
+                    $conditions['month_year']   =$request->monthYear;
+                    // $request->monthYear;
                 }
-                $normalizedSales = ValidationRrhh::where($conditions)
-                    ->orderBy('cod_business')
-                    ->orderBy('cod_employee');
+                $query = ValidationRrhh::select(
+                    'id',
+                    'cod_business',
+                    'cod_employee',
+                    'dni', 
+                    'centre',
+                    'name',
+                    'cancellation_date',
+                    'paid_date',
+                    'total_income',
+                    'employee_id',
+                    'employee_id',
+                    'tracking_ids',
+                    'is_supervisor',
+                    'total_super_incentive',
+                    'month_year'
+
+                );
+
+                $normalizedSales= $query
+                    ->where($conditions);
+                    // ->orderBy('cod_business')
+                    // ->orderBy('cod_employee');
 
                 return DataTables::of($normalizedSales)
                     ->addIndexColumn()
@@ -1243,13 +1262,15 @@ class TrackingController extends Controller
                         if (!empty($request->get('search'))) {
                             $instance->where(function ($w) use ($request) {
                                 $search = $request->get('search');
-                                $r = $w->orWhere('services.name', 'LIKE', "%$search%")
-                                    ->orWhere('centres.name', 'LIKE', "%$search%")
+                                $w->orWhere('dni', 'LIKE', "%$search%")
+                                    ->orWhere('centre', 'LIKE', "%$search%")
                                     ->orWhere('name', 'LIKE', "%$search%")
-                                    ->orWhere('dni', 'LIKE', "%$search%");
+                                    ->orWhere('cod_business', 'LIKE', "%$search%")
+                                    ->orWhere('cod_employee', 'LIKE', "%$search%");
                             });
                         }
                     })
+                   
                     ->rawColumns(['action'])
                     ->make(true);
             }
@@ -1329,7 +1350,7 @@ class TrackingController extends Controller
 
     /**
      * 
-     * Metodo que se encarga de validación multiple 
+     * Metodo que se encarga de validación multiple 'PAGAR TODOS'
      * @param 
      * $request (monthYear, cod_business, business, trackingIds)
      * 
@@ -1355,7 +1376,7 @@ class TrackingController extends Controller
                     return response()->json([
                         'success' => false, 'url'    => '/tracking/indexvalidation', 'mensaje' => 'Vuelva a calcular, no hay datos'
                     ], 400);
-                }
+                } 
                 /** Contemplar casos de baja, antes de fecha fin de corte */
                 foreach ($validations as $val) {
                     $tIds = explode('-', $val->tracking_ids);
@@ -1383,7 +1404,64 @@ class TrackingController extends Controller
             return back()->with('error', 'Ha ocurrido un error al validar, contacte con el administrador');
         }
     }
+    /**
+     * 
+     * Metodo que se encarga de validación multiple 'DESHACER PAGAR TODOS'
+     * @param 
+     * $request (monthYear, cod_business, business, trackingIds)
+     * 
+     * 
+     */
+    public function unvalidateTrackings(Request $request)
+    {
+        try {
+            $user = session()->get('user');
+            $params = [
+                'paid_date'      => null, 'paid_user_id' => $user->id, 'paid_done'    => false, 'state'        => env('STATE_PENDING'), 'state_date'   => date('Y-m-d')
+            ];
 
+            if (isset($request->trackingIds)) {
+                $tIds = explode('-', $request->trackingIds);
+                $this->updateTrackingIds($tIds, $params);
+            } else {
+                $validations = ValidationRrhh::where([
+                    'month_year' => $request->monthYear
+                ])->whereNotNull('paid_date')
+                    ->get();
+                if (empty($validations)) {
+                    return response()->json([
+                        'success' => false, 'url'    => '/tracking/indexvalidation', 'mensaje' => 'Vuelva a calcular, no hay datos'
+                    ], 400);
+                } 
+                /** Contemplar casos de baja, antes de fecha fin de corte */
+                foreach ($validations as $val) {
+                    $tIds = explode('-', $val->tracking_ids);
+                    $this->updateTrackingIds($tIds, $params);
+
+                    if ($val->is_supervisor == 1) {
+                        $tbonus = TrackingBonus::where([
+                            'month_year' => $request->monthYear, 'employee_id' => $val->employee_id
+                        ])->get();
+                        if (empty($tbonus->toArray())) {
+                            $params['employee_id'] = $val->employee_id;
+                            $params['total_income'] = $val->total_income;
+                            $params['month_year']   = $request->monthYear;
+                            TrackingBonus::create($params);
+                            unset($params['employee_id']);
+                        }
+                    }
+                    $validateEmployee = ValidationRrhh::where('employee_id', '=', $val->employee_id);
+                    $validateEmployee->update(['paid_date' => null]);
+                }
+            }
+            //$this->calculateValidationRRHH($request);
+            //$this->exportFinalValidation($request);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->with('error', 'Ha ocurrido un error al validar, contacte con el administrador');
+        }
+    }
+
+    
     private function updateTrackingIds($trackingIds, $params)
     {
 

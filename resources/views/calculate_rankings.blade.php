@@ -194,7 +194,7 @@
                             $('#btnSubmit').show();
 
                             var link = document.createElement('a'),
-                                filename = 'ranking.xls';
+                            filename = 'ranking.xls';
                             link.href = URL.createObjectURL(data);
                             link.download = filename;
                             link.click();
@@ -202,11 +202,9 @@
                     },
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
-                        $('#alertErrorCalculate').text(response.errors);
-                        $('#alertErrorCalculate').show().delay(2000).slideUp(300);
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
-                        timeOutAlert($('#alertErrorCalculate'));
+                        timeOutAlert($('#alertErrorCalculate'), response.errors);
                     }
 
                 });
@@ -267,5 +265,10 @@
             }
 
         });
+
+        function timeOutAlert($alert, $message) {
+        $alert.text($message);
+        $alert.show().delay(2000).slideUp(300);
+    }
     </script>
 @endsection

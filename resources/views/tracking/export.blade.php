@@ -213,7 +213,7 @@
                     }
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('fail submit');
+                alert('Error'+jqXHR.responseText);
 
             });
         });

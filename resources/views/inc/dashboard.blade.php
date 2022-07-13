@@ -355,7 +355,6 @@
     function showMonthYearPicker() {
       var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
       $('#monthYearPicker').val(textMonthYear);
-      console.log(textMonthYear);
       $('#monthYearPicker').MonthPicker();
       $('#monthYearPicker').MonthPicker({
         ShowIcon: true,
@@ -397,7 +396,6 @@
       showMonthYearPicker();
       var d = new Date();
       var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
-      console.log('Centro seleccionado: ' + $('#centre_id option:selected').val());
       getTargets($('#centre_id option:selected').val());
       getSales('.sales-month-datatable');
       getSales('.sales-year-datatable');
@@ -499,8 +497,8 @@
 
     //Gráfico Venta Privada
     function drawGraphVP(val) {
-      console.log('drawGraphVP');
-      console.log(val);
+      // console.log('drawGraphVP');
+      // console.log(val);
       var aa = [
         ['Objetivo VP', 'Venta Privada', 'Objetivo Venta Privada'],
         ['', val['value'], val['target']],
@@ -519,8 +517,8 @@
 
     //Gráfico Venta Cruzada
     function drawGraphVC(val) {
-      console.log('drawGraphVC');
-      console.log(val);
+      // console.log('drawGraphVC');
+      // console.log(val);
       bb = [
         ['Objetivo VC', 'Venta Cruzada', 'Objetivo Venta Cruzada'],
         ['', val['value'], val['target']],
@@ -534,7 +532,6 @@
      * Obtener datos para las Gráficas
      */
     function getTargets(centre_id) {
-      console.log('getTargets -> ' + centre_id);
       var params = {};
       if (centre_id != undefined) {
         params["centre_id"] = centre_id;
@@ -549,7 +546,6 @@
           // if success, HTML response is expected, so replace current
           if (textStatus === 'success') {
             var target = JSON.parse(data);
-            console.log(data);
             google.charts.setOnLoadCallback(function() {
               options.hAxis.title = getLabelMonth($("#monthYearPicker").val().substr(0, $("#monthYearPicker").val().indexOf('/')));
               drawGraphVC(target.data.vc);
@@ -558,7 +554,7 @@
           }
         }
       }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.log('fail submit');
+        alert('Error'+jqXHR.responseText);
       });
     }
 

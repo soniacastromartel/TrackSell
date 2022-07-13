@@ -175,7 +175,7 @@
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
-
+            alert('Error'+jqXHR.responseText);
             //alert('Error cargando servicios');
 
         });

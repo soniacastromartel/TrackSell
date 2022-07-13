@@ -193,8 +193,8 @@ function confirmRequest(state, id) {
                     }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                
-                    //alert('Error cargando servicios');
+                alert('Error'+jqXHR.responseText);
+
                 
             });
         }

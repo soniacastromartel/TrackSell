@@ -319,7 +319,7 @@
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error cargando servicios');
+            alert('Error'+jqXHR.responseText);
 
         });
     }
@@ -477,8 +477,8 @@
                 }
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.log(textStatus);
-            console.log(errorThrown);
+            alert('Error'+jqXHR.responseText);
+
 
         });
     });
