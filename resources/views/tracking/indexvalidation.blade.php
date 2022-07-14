@@ -68,7 +68,7 @@
                         <div class="row m-0" >
                             <div class="col-md-4 dropdown bootstrap-select mb-2" style="margin-right: 25px;">
                                 <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Cod Empresa" tabindex="-98">
-                                    <option value="-1">SIN CODIGO </option>
+                                    <option value="">SIN CODIGO </option>
                                     @foreach ($a3business as $a3business)
                                     <option value="{{$a3business->code_business}}">{{ $a3business->code_business .'-'. $a3business->name_business}}</option>
                                     @endforeach
@@ -156,6 +156,9 @@
         align-items: flex-end;
         justify-content: flex-end;
         height: 100%;
+    }
+    table.dataTable.dataTable_width_auto {
+        width: 100%; 
     }
 </style>
 
@@ -305,8 +308,6 @@
                 $('#btnUnvalidate').show();
                 $('#btnValidateLoad').hide();
                 $('#btnValidate').hide();
-                
-                // timeOutAlert($('#alertErrorTrackingDate')); //FIXME VER ESTE METODO QUE NO EXISTE?
                 timeOutAlert($('#alertTrackingDate'));
             });
         });
@@ -359,7 +360,7 @@
             }).done(function() {
                 $('#btnValidate').show();
                 $('#btnUnvalidate').hide();
-                timeOutAlert($('#alertTrackingDate'));
+                timeOutAlert($('#alertTrackingDate'), "Realizado correctamente");
             });
         });
 
@@ -433,9 +434,10 @@
 
         function clearForms() {
             var d = new Date();
-            var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear();
+            var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
             $('#monthYearPicker').val(textMonthYear);
-            $('select').val('');
+            // $('select').val('');
+            $('select#business_id').val('');
             $('select#business_id').selectpicker("refresh");
             $('.tracking-validation-datatable').DataTable().ajax.reload();
         }
@@ -490,8 +492,7 @@
             timeOutAlert(alert, jqXHR.responseText);
 
         }).done(function() {
-            timeOutAlert($('#alertErrorTrackingDate'));
-            timeOutAlert($('#alertTrackingDate'));
+            timeOutAlert($('#alertTrackingDate', "Realizado correctamente"));
         });
     }
 
