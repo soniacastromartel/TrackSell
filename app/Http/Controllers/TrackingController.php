@@ -82,7 +82,7 @@ class TrackingController extends Controller
                     'trackings.state',
                     'trackings.state_date',
                     'services.name as service',
-                    'started_date',
+                    'trackings.started_date',
                     'apointment_date',
                     'service_date',
                     'invoiced_date',
@@ -96,7 +96,7 @@ class TrackingController extends Controller
                 $currentDay   = substr($params['dateTo'], -2, strpos($params['dateTo'], '/'));
                 $beforeDay = substr($params['dateFrom'], -2, strpos($params['dateFrom'], '/'));
                 $currentMonth = substr($params['dateFrom'], -5,  2);
-                $nextMonth = substr($params['dateTo'],  strpos($params['dateTo'], '/') + 1);
+                $nextMonth = substr($params['dateTo'], -5,  2 );
                 $year         = substr($params['dateFrom'], 0, strpos($params['dateFrom'], '/'));
                 $nextYear  = substr($params['dateTo'], 0, strpos($params['dateTo'], '/'));
 
@@ -148,7 +148,9 @@ class TrackingController extends Controller
                         }
                         $q->where(function ($q2) use ($params, $initPeriod, $endPeriod) {
                             $q2
-                                ->whereBetween('state_date', [$initPeriod, $endPeriod]);
+                                ->whereBetween('state_date', [$initPeriod, $endPeriod])
+                                 ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
+                                ;
                         });
                     });
                 //  ->get();

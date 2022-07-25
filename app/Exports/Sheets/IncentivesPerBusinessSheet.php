@@ -64,15 +64,49 @@ class IncentivesPerBusinessSheet extends \PhpOffice\PhpSpreadsheet\Cell\StringVa
         return 'EMPRESA-' . substr($this->codBusiness, 0, strpos($this->codBusiness, "-"));
     }
 
+    public function coloringCells($color,$cells, $sheet){
+      return $sheet->getStyle($cells)->applyFromArray(
+        array (
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => array('rgb' => $color)
+        ])
+            );
+    }
+
     public function styles(Worksheet $sheet)
     {
+       
+
+
         $aligmentRight = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT;
+         $sheet->getStyle('C2:D2')->applyFromArray(array (
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => array('rgb' => 'b01c2e')
+        ]));
+         $sheet->getStyle('A5:B5')->applyFromArray(array (
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => array('rgb' => '39843c')
+        ]));
+         $sheet->getStyle('A7:D7')->applyFromArray(array (
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => array('rgb' => '69727E')
+        ]));
+         $sheet->getStyle('A8:D8')->applyFromArray(array (
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => array('rgb' => '959BA3')
+        ]));
+
         $sheet->getStyle('A:J')->getAlignment()->setHorizontal($aligmentRight);
             return [
                 // Style the first row as bold text.
                 7    => ['font' => ['bold' => true]],
                 8    => ['font' => ['bold' => true]],
-                'C2' => ['font' => ['bold' => true]],
+                'C2' => ['font' => ['bold' => true]], 
                 'C5' => ['font' => ['bold' => true]],
                 'D2' => ['font' => ['bold' => true], 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
@@ -88,11 +122,12 @@ class IncentivesPerBusinessSheet extends \PhpOffice\PhpSpreadsheet\Cell\StringVa
         $sheet = $event->sheet; 
         $sheet->setCellValue('C2','EMPRESA');
         $sheet->setCellValue('D2',$codBusiness);
-        $sheet->setCellValue('C5','FECHA');
-        $sheet->setCellValue('D5',date('d/m/Y'));
+        $sheet->setCellValue('A5','Fecha:');
+        $sheet->setCellValue('B5',date('d/m/Y'));
 
         $sheet->mergeCells("A7:C7");
         $sheet->setCellValue('A7','TRABAJADORES');
+
     }
 
     public function registerEvents(): array

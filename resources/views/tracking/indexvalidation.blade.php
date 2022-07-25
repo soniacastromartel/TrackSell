@@ -2,6 +2,7 @@
 
 @section('content')
 @include('inc.navbar')
+@include('common.alert')
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -124,7 +125,7 @@
                 </div>
             </div>
         </form>
-        <table class="table  table-striped table-bordered tracking-validation-datatable">
+        <table class="table  table-striped table-bordered tracking-validation-datatable" style="width:100%;">
             <thead class="table-header">
                 <tr>
                     <th>C.Empresa</th>
@@ -157,9 +158,9 @@
         justify-content: flex-end;
         height: 100%;
     }
-    table.dataTable.dataTable_width_auto {
+    /* table.dataTable.dataTable_width_auto {
         width: 100%; 
-    }
+    } */
 </style>
 
 <script type="text/javascript">
@@ -216,12 +217,12 @@
         $('#monthYearPicker').MonthPicker();
 
         function getEmployeeIncentives() {
-
             if ($.fn.dataTable.isDataTable('.tracking-validation-datatable')) {
                 $('.tracking-validation-datatable').DataTable().ajax.reload();
             }
 
             table = $('.tracking-validation-datatable').DataTable({
+                responsive: true,
                 ordering: false,
                 processing: true,
                 serverSide: true,
@@ -255,7 +256,7 @@
                     });
                 }
             });
-            //table.columns.adjust().draw();
+           // table.columns.adjust().draw();
         }
 
         // Accion PAGAR TODOS
@@ -291,7 +292,7 @@
 
                         $('#btnValidateLoad').hide();
                         $('#btnValidate').show();
-                        timeOutAlert($('#alertTrackingDate'))
+                        timeOutAlert($('#alertTrackingDate'), "Pagado correctamente")
                         $('.tracking-validation-datatable').DataTable().ajax.reload();
                     }
                 },
@@ -411,8 +412,7 @@
 
             var codBusiness = $("#business_id option:selected").val();
             if (codBusiness == "") {
-                $('#alertErrorTrackingDate').text("Indique una empresa");
-                $('#alertErrorTrackingDate').show();
+                timeOutAlert($('#alertErrorTrackingDate'),"Indique una empresa")
                 return false;
             }
             $('#btnSubmit').hide();
@@ -547,7 +547,7 @@
 
     function timeOutAlert($alert, $message) {
         $alert.text($message);
-        $alert.show().delay(2000).slideUp(300);
+        $alert.show().delay(3000).slideUp(300);
     }
 
 </script>
