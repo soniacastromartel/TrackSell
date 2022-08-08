@@ -15,7 +15,6 @@ class CreateA3EmpleadosTable extends Migration
     {
         Schema::create('a3_empleados', function (Blueprint $table) {
             $table->id();
-
             $table->string('Nombre_Completo');
             $table->string('Email')->nullable();
             $table->string('Telefono')->nullable();
@@ -25,7 +24,7 @@ class CreateA3EmpleadosTable extends Migration
             $table->string('Categoria')->nullable();
             $table->string('Nombre_Empresa')->nullable();
             $table->string('NIF');
-            $table->string('Fecha_de_Alta_en_compañia')->nullable();
+            $table->string('Fecha_de_alta_en_compañia')->nullable();
             $table->string('Fecha_de_baja_en_compañia')->nullable();
             $table->timestamps();
 

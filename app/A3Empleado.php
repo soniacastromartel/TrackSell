@@ -19,7 +19,7 @@ class A3Empleado extends Model
         ,'Codigo_Empleado'
         ,'Categoria'
         ,'Email'
-        ,'Fecha_de_Alta_en_compañia'
+        ,'Fecha_de_alta_en_compañia'
         ,'Fecha_de_baja_en_compañia'
     ];
 }

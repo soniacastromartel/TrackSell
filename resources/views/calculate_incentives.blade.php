@@ -207,6 +207,7 @@
         function clearForms() {
             var d = new Date();
             var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear();
+            console.log(textMonthYear);
             $('#monthYearPicker').val(textMonthYear);
             var textYear = d.getFullYear();
             $('#yearTargetPicker').val(textYear);
@@ -275,7 +276,7 @@
                     $('#alertErrorCalculate').show();
                     $('#btnSubmitLoad').hide();
                     $('#btnSubmit').show();
-                    timeOutAlert($('#alertErrorCalculate'));
+                    timeOutAlert($('#alertErrorCalculate'), response);
                 }
             });
         });
@@ -378,5 +379,10 @@
         });
 
     });
+
+    function timeOutAlert($alert, $message) {
+        $alert.text($message);
+        $alert.show().delay(2000).slideUp(300);
+    }
 </script>
 @endsection

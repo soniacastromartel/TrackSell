@@ -50,7 +50,7 @@
       <li id="menuConfig" class="nav-item ">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesConfig" aria-expanded="false">
           <i class="material-icons">settings</i>
-          <p style="font-weight: bold"> Configuracion
+          <p style="font-weight: bold"> Configuración
             <b class="caret"></b>
           </p>
         </a>
@@ -131,6 +131,7 @@
           </ul>
         </div>
       </li>
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesReport" aria-expanded="false">
           <i class="material-icons">insert_drive_file</i>
@@ -140,28 +141,44 @@
         </a>
         <div class="collapse" id="pagesReport">
           <ul class="nav">
-            <!-- <li id="exportRecommendation" class="nav-item">
-              <a class="nav-link" href="{{route('tracking.exportForm')}}">
-                <i class="material-icons">screen_share</i>
-                <span class="sidebar-normal"> Exportar recomendaciones </span>
-              </a>
-            </li> -->
+
             <li id="calculateIncentive" class="nav-item">
               <a class="nav-link" href="{{route('calculateIncentive')}}">
                 <i class="material-icons">calculate</i>
-                <span class="sidebar-normal"> Calculadora de incentivos </span>
+                <span class="sidebar-normal"> Calculadora de Incentivos </span>
               </a>
             </li>
-            
+
             <li id="centerLeague" class="nav-item">
               <a class="nav-link" href="{{route('centerLeague')}}">
                 <i class="material-icons">dvr</i>
                 <span class="sidebar-normal"> Liga de Centros </span>
               </a>
             </li>
+
           </ul>
         </div>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification" aria-expanded="false">
+          <i class="material-icons">notifications</i>
+          <p style="font-weight: bold"> Notificaciones
+            <b class="caret"></b>
+          </p>
+        </a>
+        <div class="collapse" id="pagesNotification">
+          <ul class="nav">
+            <li id="supervisorNotificationsIndex" class="nav-item">
+              <a class="nav-link" href="{{route('notifications.index')}}">
+                <i class="material-icons">mail</i>
+                <span class="sidebar-normal"> Avisos de supervisor</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
     </ul>
     <div class="versionContainer">
       <hr>

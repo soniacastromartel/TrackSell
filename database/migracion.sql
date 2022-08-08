@@ -655,7 +655,7 @@ ALTER TABLE pdi2.trackings MODIFY COLUMN validation_done tinyint(1) DEFAULT fals
 
 ALTER TABLE pdi2.empleados_a3 ADD created_at timestamp NULL;
 ALTER TABLE pdi2.empleados_a3 ADD updated_at timestamp NULL;
-ALTER TABLE pdi2.a3_empleados MODIFY COLUMN   Fecha_de_Alta_en_compañia DATETIME(6);
+ALTER TABLE pdi2.a3_empleados MODIFY COLUMN   Fecha_de_alta_en_compañia DATETIME(6);
 ALTER TABLE empleados_a3 MODIFY NIF VARCHAR(255) 
 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE empleados_a3 MODIFY Nombre_Completo VARCHAR(255) 

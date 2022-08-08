@@ -56,11 +56,14 @@ return [
         ],
         'a3' => [
             'driver' => 'sqlsrv',
+            'default' => env('DB_CONNECTION', 'sqlsrv'),
             'host' => env('DB_HOST_A3'),
             'port' => env('DB_PORT_A3'),
             'database' => env('DB_DATABASE_A3'),
             'username' => env('DB_USERNAME_A3'),
             'password' => env('DB_PASSWORD_A3'),
+            'charset' => 'utf8',
+            'prefix' => ''
         ],
         'sqlite' => [
             'driver' => 'sqlite',

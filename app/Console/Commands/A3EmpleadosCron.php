@@ -59,9 +59,12 @@ class A3EmpleadosCron extends Command
                                         , 'dbo.Vista_Empleados.Codigo_Empresa'
                                         , 'Categoria'
                                         , 'dbo.Vista_Empresa.Nombre_Empresa'
-                                        , 'Fecha_de_Alta_en_compañia'
+                                        , 'Fecha_de_alta_en_compañia'
                                         , 'Fecha_de_baja_en_compañia')
-                                ->join('dbo.Vista_Empresa', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Empleados.Codigo_Empresa'); 
+                                ->join('dbo.Vista_Empresa', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Empleados.Codigo_Empresa')
+                                ->join('dbo.Vista_Centros_De_Trabajo', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Centros_De_Trabajo.Empresa_listada')
+                                ->whereNotIn('dbo.Vista_Centros_De_Trabajo.Empresa_listada', [10,11,14,15,20,23,24,25])
+                                ; 
 
             //Parametro DNI - Sin parametros
             if (!empty($dni)) {
@@ -173,15 +176,15 @@ class A3EmpleadosCron extends Command
                         $employeeCentre =  $query->whereNotNull('cancellation_date')->first(); 
                     }
                     
-                    if (empty($employeeCentre) ||  empty($employeeCentre->contract_startdate) || $employeeCentre->contract_startdate >$ea3->Fecha_de_Alta_en_compañia ){
+                    if (empty($employeeCentre) ||  empty($employeeCentre->contract_startdate) || $employeeCentre->contract_startdate >$ea3->Fecha_de_alta_en_compañia ){
                         if (!empty($employeeCentre)) {
-                            $employeeCentre->update(['contract_startdate'   => date("Y-m-d H:i:s", strtotime($ea3->Fecha_de_Alta_en_compañia)) ]); 
+                            $employeeCentre->update(['contract_startdate'   => date("Y-m-d H:i:s", strtotime($ea3->Fecha_de_alta_en_compañia)) ]); 
                         } else {
                             if (!empty(($centreId)) && empty($ea3->Fecha_de_baja_en_compañia)) {
                                 EmployeeHistory::create(['employee_id'          => $employeeFound->id
                                                         ,'rol_id'               => $employeeFound->rol_id
                                                         ,'centre_id'            => $centreId
-                                                        ,'contract_startdate'   => $ea3->Fecha_de_Alta_en_compañia
+                                                        ,'contract_startdate'   => $ea3->Fecha_de_alta_en_compañia
                                 ]);
                             }
                         }
@@ -193,6 +196,7 @@ class A3EmpleadosCron extends Command
             foreach ($deletedEmployeeIDS as $employeeID) {
                 //Borramos Employee History ( aplicar cancellation_date) para marcarlo de baja
                 $eToCancel = Employee::find($employeeID);
+                // \Log::channel('a3')->info($employeeID);
                 foreach ($empleadosA3 as $ea3) {
                     if ($ea3->NIF == $eToCancel->dni && !empty($ea3->Fecha_de_baja_en_compañia)) {
                         $centreId = $this->getCentrePdi($ea3); 
@@ -209,6 +213,7 @@ class A3EmpleadosCron extends Command
                 $key = array_search($employeeID, $updatedEmployeeIDS); 
                 if ($key !== false) {
                     \Log::channel('a3')->info("No se borra employeeID, para actualizar " . $employeeID); 
+                    \Log::channel('a3')->info($employeeID); 
                     continue; 
                 }
 
@@ -340,7 +345,7 @@ class A3EmpleadosCron extends Command
                                     ->first();
 
                 $codEmployee = A3Empleado::where(['Codigo_Empresa'             => $centreA3->code_business
-                                                  ,'Fecha_de_Alta_en_compañia' => $minDate 
+                                                  ,'Fecha_de_alta_en_compañia' => $minDate 
                                                   ,'NIF'                       => $employee->dni 
                                                 ])->first();
                 if ($employee->force_centre_id === 1) {

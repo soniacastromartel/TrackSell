@@ -353,7 +353,8 @@
     showMonthYearPicker();
 
     function showMonthYearPicker() {
-      var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
+      var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
+      console.log(textMonthYear);
       $('#monthYearPicker').val(textMonthYear);
       $('#monthYearPicker').MonthPicker();
       $('#monthYearPicker').MonthPicker({
@@ -395,7 +396,8 @@
     $('#monthly').on('click', function(e) {
       showMonthYearPicker();
       var d = new Date();
-      var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
+      var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
+      console.log(textMonthYear);
       getTargets($('#centre_id option:selected').val());
       getSales('.sales-month-datatable');
       getSales('.sales-year-datatable');
@@ -498,7 +500,7 @@
     //Gráfico Venta Privada
     function drawGraphVP(val) {
       // console.log('drawGraphVP');
-      // console.log(val);
+       console.log(val);
       var aa = [
         ['Objetivo VP', 'Venta Privada', 'Objetivo Venta Privada'],
         ['', val['value'], val['target']],
@@ -518,7 +520,7 @@
     //Gráfico Venta Cruzada
     function drawGraphVC(val) {
       // console.log('drawGraphVC');
-      // console.log(val);
+       console.log(val);
       bb = [
         ['Objetivo VC', 'Venta Cruzada', 'Objetivo Venta Cruzada'],
         ['', val['value'], val['target']],
@@ -538,6 +540,7 @@
       }
       params["_token"] = "{{ csrf_token() }}";
       params["monthYear"] = $("#monthYearPicker").val();
+      console.log($("#monthYearPicker").val());
       $.ajax({
         url: "{{ route('home.getTargets') }}",
         type: 'post',
@@ -653,7 +656,7 @@
 
     function clearForms() {
       var d = new Date();
-      var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
+      var textMonthYear =('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
       $('#monthYearPicker').val(textMonthYear);
       $('select#centre_id').val('');
       $('select#centre_id').selectpicker("refresh");
@@ -674,6 +677,9 @@
     getSales('.sales-month-datatable');
     getSales('.sales-year-datatable');
 
+    /**
+     * Detecta el cambio del selector de Centro
+     */
     $("#centre_id").on('change', function() {
       getValueCentre();
       getTargets($('#centre_id option:selected').val());

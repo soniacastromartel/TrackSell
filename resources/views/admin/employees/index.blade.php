@@ -76,6 +76,7 @@
                     [1, "asc"]
                 ],
                 processing: true,
+                responsive: true,
                 serverSide: true,
                 language: {
                     "url": "{{ asset('dataTables/Spanish.json') }}"

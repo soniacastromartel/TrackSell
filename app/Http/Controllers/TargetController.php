@@ -75,6 +75,7 @@ class TargetController extends Controller
     }
 
     /** Funcion que se encarga de importar todos los objetivos - Todos los centros */
+    //FIXME: ESTE METODO NO SE PUEDE REFACTORIZAR CON IMPORT SALES??
     public function import(Request $request) {
         try {
             if($request->hasFile('targetInputFile')) {
