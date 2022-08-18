@@ -1542,6 +1542,43 @@ group by
     round(`spd`.`super_incentive1`, 2),
     round(`spd`.`super_incentive2`, 2);
 
+-- Variable de control solicitudes de desbloqueo
 ALTER TABLE pdi2.employees ADD unlockRequest int default 0;
+
+-- //VISTAS INCENTIVOS
+-- Incentivos Servicios
+Create or replace view incentivosServicios as 
+select s.name as servicio,sp.price as precio, sp.service_price_direct_incentive as incentivodirecto,sp.service_price_incentive1 as incentivoobjetivo1,
+sp.service_price_incentive2 as incentivoobjetivo2, sp.service_price_super_incentive1 as incentivosupervisorobjetivo1, 
+sp.service_price_super_incentive2 as incentivosupervisorobjetivo2 
+from services s
+join service_prices sp on
+s.id  = sp.service_id 
+where s.cancellation_date is null
+
+-- Incentivos Servicios con Descuento
+Create or replace view incentivosDescuentos  as 
+select distinct s.name as servicio,sp.price as precio,spd.price as precioDescuento,spd.discount_type as tipoDescuento, spd.direct_incentive incentivoDescuento, spd.incentive1 incentivoObj1, spd.incentive2 incentivoObj2, spd.super_incentive1 incentivoSupervisorObj1,
+spd.incentive2 incentivoSupervisorObj2
+from services s
+join service_prices sp on
+s.id  = sp.service_id 
+JOIN service_prices_discounts spd
+on sp.id = spd.service_price_id 
+where s.cancellation_date is null
+and spd.cancellation_date is null
+
+-- // Incentivos + Descuentos
+create or replace view incentives_discounts_services as
+select distinct s.name as servicio,sp.price as precio,spd.price as precioDescuento,spd.discount_type as tipoDescuento,sp.service_price_direct_incentive incentivo, spd.direct_incentive incentivoDescuento,
+sp.service_price_incentive1 incentivoObj1 ,spd.incentive1 incentivoObj1Descuento,sp.service_price_incentive2 incentivoObj2 , spd.incentive2 incentivoObj2Descuento,sp.service_price_super_incentive1 incentivoSupervisorObj1,  spd.super_incentive1 incentivoSupervisorObj1Descuento,
+sp.service_price_super_incentive2  incentivoSupervisorObj2 ,spd.incentive2 incentivoSupervisorObj2Descuento
+from services s
+join service_prices sp on
+s.id  = sp.service_id 
+JOIN service_prices_discounts spd
+on sp.id = spd.service_price_id 
+where s.cancellation_date is null
+and spd.cancellation_date is null
 
 

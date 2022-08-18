@@ -177,8 +177,8 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
 
                     $valueIncentiveObj1 = $this->getDiscount ($targetRow, 'service_price_incentive1');
                     $valueIncentiveObj2 = $this->getDiscount ($targetRow, 'service_price_incentive2');
-
                     $totalIncentive = 0; 
+                    
                     if ($i == 0) {
                         if (!empty($this->targetDefined)) {
                             
@@ -259,8 +259,7 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
                         } else {
                             $totalSuperIncentive[$supervisorId] += $auxIncentive * $targetRow->quantity;
                             if ($centre->id == env('ID_CENTRE_HCT') && $totalBonus == 0 
-                                || $centre->id != env('ID_CENTRE_HCT')
-                            )  {
+                                || $centre->id != env('ID_CENTRE_HCT'))  {
                                 if ($supervisorId  == $targetRow->employee_id) {
                                     $totalIncomeSuperv += $totalIncentive * $targetRow->quantity;
                                 }
@@ -270,7 +269,7 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
 
                         
         
-                        $sheet->setCellValue('N'.$this->rows,$totalIncentive * $targetRow->quantity);
+                        $sheet->setCellValue('N'.$this->rows,($totalIncentive * $targetRow->quantity)+$totalBonus); 
                         if ($auxIncentive == 0 && $supervisorId  == $targetRow->employee_id){
                             $totalIncome[$supervisorId] +=  $totalIncentive * $targetRow->quantity;
                         }
@@ -295,7 +294,7 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
                                         'bold' => true
                                     ]
                                 ];
-                                $sheet->getStyle('A'.$this->rows.':M'.$this->rows)->applyFromArray(
+                                $sheet->getStyle('A'.$this->rows.':N'.$this->rows)->applyFromArray(
                                     $style
                                 );
                                 $supervisor = Employee::find($supervisorId); 
@@ -377,6 +376,8 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
                 $sheet->getStyle('A'.$this->rows.':D'.$this->rows)->getFont()->setBold(true);
                 $this->rows++;
                 foreach($totalDetail['details'] as $total){
+
+                    //Si es supervisor imprime los datos del detalle
                     if ($total['is_supervisor'] == 1) {
                         $style =  [
                             'fill' => [
@@ -390,12 +391,21 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
                         $sheet->getStyle('A'.$this->rows.':D'.$this->rows)->applyFromArray(
                             $style
                         );
+                        $sheet->setCellValue('A'.$this->rows, $total['name']);
+                        $sheet->setCellValue('B'.$this->rows, $total['total_incentive']);
+                        $sheet->setCellValue('C'.$this->rows, $total['total_super_incentive']);
+                        $sheet->setCellValue('D'.$this->rows, $total['total_income']);
+                        $this->rows++;
+
+                    }else { //Si no, imprime los datos de la suma de ingresos
+                        $sheet->setCellValue('A'.$this->rows, $total['name']);
+                        $sheet->setCellValue('B'.$this->rows, $total['total_incentive']);
+                        $sheet->setCellValue('C'.$this->rows, $total['total_super_incentive']);
+                        $sheet->setCellValue('D'.$this->rows,$total['total_incentive']+$total['total_super_incentive']);
+                        $this->rows++;
+
                     }
-                    $sheet->setCellValue('A'.$this->rows, $total['name']);
-                    $sheet->setCellValue('B'.$this->rows, $total['total_incentive']);
-                    $sheet->setCellValue('C'.$this->rows, $total['total_super_incentive']);
-                    $sheet->setCellValue('D'.$this->rows, $total['total_income']);
-                    $this->rows++;
+                   
                 }
     
             }

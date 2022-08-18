@@ -516,6 +516,7 @@ class TargetService {
         }
         return $result; 
     }
+    
 
     public function getSummarySales($tracking, $targetDefined, $monthYear, $centres, $vcTotal=0)
     {
@@ -570,7 +571,7 @@ class TargetService {
                     if ($trackingRow->discount !== null && $trackingRow->discount === 'DESCUENTO1') {
                         $total[$trackingRow->employee_id]['total_incentive'] += 0;
                         $total[$trackingRow->employee_id]['total_income']    += 0;
-                        $total[$trackingRow->employee_id]['total_income']     = 0;
+                        //$total[$trackingRow->employee_id]['total_income']     = 0;
                         $total[$trackingRow->employee_id]['tracking_ids'][]   = 0; 
                         $totalCentre[$centre['name']]['total_incentive']     += 0;
                     } else {
