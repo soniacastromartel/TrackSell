@@ -269,7 +269,7 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
 
                         
         
-                        $sheet->setCellValue('N'.$this->rows,($totalIncentive * $targetRow->quantity)+$totalBonus); 
+                        $sheet->setCellValue('N'.$this->rows,$totalIncentive * $targetRow->quantity); 
                         if ($auxIncentive == 0 && $supervisorId  == $targetRow->employee_id){
                             $totalIncome[$supervisorId] +=  $totalIncentive * $targetRow->quantity;
                         }
@@ -365,8 +365,15 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
 
         foreach ($centres as $centre) {
             $centresData = Centre::where('name', $centre->name)->get(); 
-            $vcTotal =  $targetService->getVC($centresData, $target); 
-            $totalCentre = $targetService->getSummarySales([$centre->name => $target[$centre->name]], $this->targetDefined, $this->filters['month'] .'/'.$this->filters['year'], $centresData, $vcTotal); 
+            $params = $this->filters; 
+            unset($params['employee']); 
+            $params['monthYear'] = $params['month'] . '/' . $params['year']; 
+            $params['centre']    = $centresData; 
+            $salesCentres =  $targetService->getExportTarget($params);
+            $targetCentre = $targetService->normalizeData($salesCentres); 
+
+            //$vcTotal =  $targetService->getVC($centresData, $targetCentre); 
+            $totalCentre = $targetService->getSummarySales([$centre->name => $target[$centre->name]], $this->targetDefined, $this->filters['month'] .'/'.$this->filters['year'], $centresData, $targetCentre); 
         
             foreach ($totalCentre as $tc => $totalDetail){
                 $sheet->setCellValue('A'.$this->rows, $centre->name);
@@ -376,7 +383,6 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
                 $sheet->getStyle('A'.$this->rows.':D'.$this->rows)->getFont()->setBold(true);
                 $this->rows++;
                 foreach($totalDetail['details'] as $total){
-
                     //Si es supervisor imprime los datos del detalle
                     if ($total['is_supervisor'] == 1) {
                         $style =  [
@@ -400,8 +406,8 @@ class TargetsExport implements FromCollection, WithStyles, WithEvents
                     }else { //Si no, imprime los datos de la suma de ingresos
                         $sheet->setCellValue('A'.$this->rows, $total['name']);
                         $sheet->setCellValue('B'.$this->rows, $total['total_incentive']);
-                        $sheet->setCellValue('C'.$this->rows, $total['total_super_incentive']);
-                        $sheet->setCellValue('D'.$this->rows,$total['total_incentive']+$total['total_super_incentive']);
+                        //$sheet->setCellValue('C'.$this->rows, $total['total_super_incentive']);
+                        $sheet->setCellValue('D'.$this->rows,$total['total_incentive']);
                         $this->rows++;
 
                     }

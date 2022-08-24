@@ -126,6 +126,11 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/appError.log'),
             'level' => 'debug',
+        ],
+        'testing' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/testing.log'),
+            'level' => 'debug',
         ]
     ],
 

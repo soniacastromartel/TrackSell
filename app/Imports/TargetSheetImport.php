@@ -36,7 +36,7 @@ class TargetSheetImport implements WithStartRow, ToModel,WithHeadingRow, WithVal
             throw new \Exception("Error formato campo mes");
         }
 
-        if ($this->onlySales && count($row) > 3) {
+        if ($this->onlySales && count($row) > 4) {
             throw new \Exception("Formato de archivo incorrecto");
         }
 

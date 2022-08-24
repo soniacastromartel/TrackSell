@@ -33,7 +33,7 @@
                     <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor<span class="obligatory">*</span> </label>
                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="* Seleccione Centro" tabindex="-98">
 
-                    <!-- <option selected>GRUPO ICOT</option> -->
+                      <!-- <option selected>GRUPO ICOT</option> -->
 
                       @if (isset($employee) && $employee->rol_id != 1)
                       <option value="{{$employee->centre_id}}" selected>{{$employee->centre}}</option>
@@ -285,9 +285,9 @@
       $(".form-check-label").removeAttr('id');
       $(this).parent().attr('id', 'selected-label');
     });
-/**
- * Botón exportar 
-*/
+    /**
+     * Botón exportar 
+     */
     $("#btnSubmit").on('click', function(e) {
       $('#alertErrorCalculate').hide();
       e.preventDefault();
@@ -353,8 +353,7 @@
     showMonthYearPicker();
 
     function showMonthYearPicker() {
-      var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
-      console.log(textMonthYear);
+      var textMonthYear = ('0' + (d.getMonth() + 1) + '/' + d.getFullYear());
       $('#monthYearPicker').val(textMonthYear);
       $('#monthYearPicker').MonthPicker();
       $('#monthYearPicker').MonthPicker({
@@ -390,13 +389,13 @@
       packages: ['corechart', 'bar']
     });
 
-/** 
- * Radio Button Mensual
-*/
+    /** 
+     * Radio Button Mensual
+     */
     $('#monthly').on('click', function(e) {
       showMonthYearPicker();
       var d = new Date();
-      var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
+      var textMonthYear = ('0' + (d.getMonth() + 1) + '/' + d.getFullYear());
       console.log(textMonthYear);
       getTargets($('#centre_id option:selected').val());
       getSales('.sales-month-datatable');
@@ -409,9 +408,9 @@
       $('#monthlyData').show();
     });
 
-/** 
-* Radio Button Anual
-*/
+    /** 
+     * Radio Button Anual
+     */
     $('#annual').on('click', function(e) {
       showYearPicker();
       getTargets($('#centre_id option:selected').val());
@@ -482,7 +481,7 @@
         $("#title-target").html("Objetivos " + centro);
         $("#title-sales").html("Ranking Mensual de  " + centro);
         $("#title-ranking").html("Ranking Anual de  " + centro);
-        
+
       } else {
         $("#employee-centre").html(centro);
         $("#title-target").html("Objetivos  del  GRUPO ICOT");
@@ -499,8 +498,8 @@
 
     //Gráfico Venta Privada
     function drawGraphVP(val) {
-      // console.log('drawGraphVP');
-       console.log(val);
+      console.log('drawGraphVP');
+      console.log(val);
       var aa = [
         ['Objetivo VP', 'Venta Privada', 'Objetivo Venta Privada'],
         ['', val['value'], val['target']],
@@ -520,7 +519,7 @@
     //Gráfico Venta Cruzada
     function drawGraphVC(val) {
       // console.log('drawGraphVC');
-       console.log(val);
+      console.log(val);
       bb = [
         ['Objetivo VC', 'Venta Cruzada', 'Objetivo Venta Cruzada'],
         ['', val['value'], val['target']],
@@ -555,9 +554,10 @@
               drawGraphVP(target.data.vp);
             });
           }
+          getValueCentre();
         }
       }).fail(function(jqXHR, textStatus, errorThrown) {
-        alert('Error'+jqXHR.responseText);
+        alert('Error' + jqXHR.responseText);
       });
     }
 
@@ -621,11 +621,9 @@
               d.type = idDataTable == '.sales-month-datatable' ? 'monthly' : 'anual'
           }
         },
-        columnDefs: [
-          {
-            targets:  idDataTable == '.sales-month-datatable' ? [2,3]: [3,4],
-            render:
-             $.fn.dataTable.render.number('.', ',', 2) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
+        columnDefs: [{
+            targets: idDataTable == '.sales-month-datatable' ? [2, 3] : [3, 4],
+            render: $.fn.dataTable.render.number('.', ',', 2) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
           },
 
         ],
@@ -656,14 +654,14 @@
 
     function clearForms() {
       var d = new Date();
-      var textMonthYear =('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
+      var textMonthYear = ('0' + (d.getMonth() + 1) + '/' + d.getFullYear());
       $('#monthYearPicker').val(textMonthYear);
       $('select#centre_id').val('');
       $('select#centre_id').selectpicker("refresh");
-      $("#employee-centre").html("GRUPO ICOT");
-      $("#title-target").html("Objetivos  del  GRUPO ICOT");
-      $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
-      $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
+      // $("#employee-centre").html("GRUPO ICOT");
+      // $("#title-target").html("Objetivos  del  GRUPO ICOT");
+      // $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
+      // $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
     }
 
     $("#btnClear").on('click', function(e) {
@@ -673,7 +671,7 @@
     });
 
     getValueCentre();
-    getTargets({{$user -> centre_id}});
+    getTargets({{ $user -> centre_id}});
     getSales('.sales-month-datatable');
     getSales('.sales-year-datatable');
 
@@ -681,12 +679,12 @@
      * Detecta el cambio del selector de Centro
      */
     $("#centre_id").on('change', function() {
-      getValueCentre();
+      // getValueCentre();
       getTargets($('#centre_id option:selected').val());
       // if (filterSearch() == 1) {
-        getSales('.sales-month-datatable');
+      getSales('.sales-month-datatable');
       // } else {
-        getSales('.sales-year-datatable');
+      getSales('.sales-year-datatable');
       // }
     });
 
@@ -702,7 +700,7 @@
       changeYear: true,
       showButtonPanel: true,
       dateFormat: 'MM yy',
-      onClose: function(dateText, inst) { 
+      onClose: function(dateText, inst) {
         $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
       }
     });

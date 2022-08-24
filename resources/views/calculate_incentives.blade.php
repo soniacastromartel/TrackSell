@@ -29,6 +29,7 @@
                                                     descargar la plantilla desde <a style="color:var(--red-icot)"
                                                         href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong></a>
                                 </h5>
+                                <hr>
                                 <h5 class="card-title font-size-18">- Indicar en formulario centro / empleado / fecha
                                                     según se requiera y hacer click en botón Calcular</h5>
                                 <h5 class="card-title font-size-18">- Tenga en cuenta que el fichero a importar debe
@@ -354,9 +355,8 @@
                     if (textStatus === 'success') {
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
-
                         var link = document.createElement('a'),
-                            filename = 'target.xls';
+                        filename = 'target.xls';
                         link.href = URL.createObjectURL(data);
                         link.download = filename;
                         link.click();
@@ -373,7 +373,8 @@
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error '+jqXHR.responseText);
+                // alert('Error '+jqXHR.responseText);
+                timeOutAlert($('#alertErrorCalculate'), jqXHR.responseText);
 
             });
         });

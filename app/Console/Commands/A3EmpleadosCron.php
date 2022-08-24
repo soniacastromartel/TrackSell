@@ -63,7 +63,7 @@ class A3EmpleadosCron extends Command
                                         , 'Fecha_de_baja_en_compañia')
                                 ->join('dbo.Vista_Empresa', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Empleados.Codigo_Empresa')
                                 ->join('dbo.Vista_Centros_De_Trabajo', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Centros_De_Trabajo.Empresa_listada')
-                                ->whereNotIn('dbo.Vista_Centros_De_Trabajo.Empresa_listada', [10,11,14,15,20,23,24,25])
+                                 ->whereNotIn('dbo.Vista_Centros_De_Trabajo.Empresa_listada', [10,11,14,15,20,23,24,25])
                                 ; 
 
             //Parametro DNI - Sin parametros
@@ -73,7 +73,7 @@ class A3EmpleadosCron extends Command
                 $a3EmpleadoPDI = new A3Empleado; 
                 $a3EmpleadoPDI->setConnection('');
                 if (empty($name)) {
-                    $a3EmpleadoPDI::truncate();
+                    $a3EmpleadoPDI::truncate(); // Drops all rows from the table without logging individual row deletions
                 }
             }
             $empleadosA3 = $query->get();
@@ -112,7 +112,7 @@ class A3EmpleadosCron extends Command
                 $employeeFound = null; 
                 foreach ($empleadosPDI as $epdi) {
                     //No realizar nada con employees validated. //FIXME... Solo carga inicial  
-                    if (empty($dni) && $epdi->validated == 1) continue;    
+                    // if (empty($dni) && $epdi->validated == 1) continue;    esto no dejaba borrar algunos empleados
                     if (!empty($epdi->nombre_a3)) {    //EXCEPCIONES de importar automatico, casos indicados a mano
                         if ( $ea3->Nombre_Completo == $epdi->nombre_a3) {
                                 $employeeFound = $epdi; 
@@ -194,6 +194,7 @@ class A3EmpleadosCron extends Command
             
             /** Empleados a dar de baja */
             foreach ($deletedEmployeeIDS as $employeeID) {
+                \Log::channel('a3')->info($employeeID);
                 //Borramos Employee History ( aplicar cancellation_date) para marcarlo de baja
                 $eToCancel = Employee::find($employeeID);
                 // \Log::channel('a3')->info($employeeID);
@@ -213,7 +214,7 @@ class A3EmpleadosCron extends Command
                 $key = array_search($employeeID, $updatedEmployeeIDS); 
                 if ($key !== false) {
                     \Log::channel('a3')->info("No se borra employeeID, para actualizar " . $employeeID); 
-                    \Log::channel('a3')->info($employeeID); 
+                     
                     continue; 
                 }
 
@@ -361,7 +362,7 @@ class A3EmpleadosCron extends Command
                         $employee->update(['cod_employee'=> $codEmployee->Codigo_Empleado ]); 
                     }
 
-                    \Log::channel('a3')->info("Empleado Multicentro"); 
+                    \Log::channel('a3')->info("Empleado Multicentro: ".$employee-> name); 
                     //\Log::channel('a3')->info( $employee->toArray()); 
                     
                 } else {

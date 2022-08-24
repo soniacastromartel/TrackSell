@@ -289,7 +289,6 @@
 
                     // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
-
                         $('#btnValidateLoad').hide();
                         $('#btnValidate').show();
                         timeOutAlert($('#alertTrackingDate'), "Pagado correctamente")
@@ -297,14 +296,12 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    //alert('OK calculados incentivos');
                     //$('#btnCalculate').show();
                     timeOutAlert($('#alertErrorTrackingDate'),"Error al validar")
                     $('#btnValidateLoad').hide();
                 }
-
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error'+jqXHR.responseText);
+                timeOutAlert($('#alertErrorTrackingDate'),jqXHR.responseText)
             }).done(function() {
                 $('#btnUnvalidate').show();
                 $('#btnValidateLoad').hide();
@@ -383,7 +380,6 @@
                 data: params,
                 success: function(response, textStatus, jqXHR) {
                     // if success, HTML response is expected, so replace current
-                    //alert('OK calculados incentivos'); 
                     timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
                     $('#btnCalculate').show();
                     $('#btnCalculateLoad').hide();
@@ -398,7 +394,6 @@
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 timeOutAlert($('#alertErrorTrackingDate'), jqXHR.responseText);
             }).done(function() {
-                // timeOutAlert($('#alertErrorTrackingDate'));
                 timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
             });
         });

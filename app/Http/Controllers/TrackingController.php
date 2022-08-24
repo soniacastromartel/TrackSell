@@ -600,7 +600,7 @@ class TrackingController extends Controller
             }
             $validateEmployee = ValidationRrhh::where('employee_id', '=', $paramsRequest['employee_id']);
             $validateEmployee->update($paramUpdateVal);
-            $mensaje = 'Recomendacion validada correctamente';
+            $mensaje = 'Realizado correctamente';
 
             return response()->json([
                 'success' => true, 'mensaje' => $mensaje
@@ -1040,8 +1040,8 @@ class TrackingController extends Controller
                 }
             });
             if (isset($target[$centre->name])) {
-                $vcTotal =  $targetService->getVC($centreData, $target);
-                $totalCentre = $targetService->getSummarySales([$centre->name => $target[$centre->name]], $targetDefined, $params['monthYear'], $centreData, $vcTotal);
+                //$vcTotal =  $targetService->getVC($centreData, $target);
+                $totalCentre = $targetService->getSummarySales([$centre->name => $target[$centre->name]], $targetDefined, $params['monthYear'], $centreData, $target);
                 $trackingPaid = null;
                 foreach ($totalCentre[$centre->name]['details'] as $eId => $detailSale) {
                     if (!empty($detailSale['dni'])) {

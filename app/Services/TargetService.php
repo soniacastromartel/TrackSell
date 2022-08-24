@@ -517,8 +517,22 @@ class TargetService {
         return $result; 
     }
     
+    /**
+     * Función que devuelve un array para el centro seleccionado con:
+     * total_incentive: suma incentivos empleados
+     * total_super_incentive: suma incentivos supervisor
+     * total_income:suma ingreso total
+     * details []: array de objetos Employee con sus datos, más incentivos por empleado y si es supervisor o no.
+     * 
+     * @param $tracking consulta a la vista 'export-target'
+     * @param $targetDefined registro(s) de la tabla 'targets'
+     * @param $monthYear mes seleccionado
+     * @param $centres
+     * @param $targetCentre registros para obtener VCTotal
+     */
+    
 
-    public function getSummarySales($tracking, $targetDefined, $monthYear, $centres, $vcTotal=0)
+    public function getSummarySales($tracking, $targetDefined, $monthYear, $centres, $targetCentre)
     {
         try {
             $total = [];  
@@ -533,7 +547,7 @@ class TargetService {
                     // Cogemos el grupo de supervisores por centro
                     if ($i == 0) {
                         if (!empty($targetDefined)) {
-                            $targets = $this->stateTarget($targetDefined, $monthYear, $tracking, $centres);
+                            $targets = $this->stateTarget($targetDefined, $monthYear, $targetCentre, $centres);
                         }
                         $totalCentre[$centre['name']]['total_incentive']       = 0; 
                         $totalCentre[$centre['name']]['total_super_incentive'] = 0; 

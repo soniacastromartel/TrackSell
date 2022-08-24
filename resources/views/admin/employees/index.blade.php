@@ -266,12 +266,19 @@
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
+                timeOutAlert($('#alertErrorChangeEmployee'),response );
                 window.location = response.url;
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error'+jqXHR.responseText);
+            timeOutAlert($('#alertErrorChangeEmployee'),jqXHR.responseText );
         });
+    }
+
+    
+    function timeOutAlert($alert, $message) {
+        $alert.text($message);
+        $alert.show().delay(2000).slideUp(300);
     }
 </script>
 @endsection

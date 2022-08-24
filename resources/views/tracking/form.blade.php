@@ -216,7 +216,7 @@
             clearForms();
         });
 
-    function recargarServicios(centre_id) {
+    function loadServices(centre_id) {
         $.ajax({
                 url: "/tracking/refreshServices/" +  centre_id ,
                 type: 'get',
@@ -290,8 +290,7 @@
 
     $('#centre_id').change(function(){
         $('#service_id option').hide();
-        recargarServicios($(this).val()); 
-
+        loadServices($(this).val()); 
         resetDiscounts();
         $('#serviceRow').show();
 

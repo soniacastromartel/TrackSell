@@ -238,7 +238,7 @@ class TargetController extends Controller
 
                             $centresData = Centre::where('name', $centre->name)->get(); 
                             $vcTotal =  $targetService->getVC($centresData, $tracking); 
-                            $totalCentre = $targetService->getSummarySales([$centre->name => $tracking[$centre->name]], $target, $params['monthYear'], $centresData, $vcTotal);
+                            $totalCentre = $targetService->getSummarySales([$centre->name => $tracking[$centre->name]], $target, $params['monthYear'], $centresData, $tracking);
                         }
 
                         if (isset($target[$centre->id]) && !empty($target[$centre->id])) {
