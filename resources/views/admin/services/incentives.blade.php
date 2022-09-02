@@ -180,6 +180,7 @@
             $('select#service_id').val('');
             $('select#centre_id').selectpicker("refresh");
             $('select#service_id').selectpicker("refresh");
+            $('.services-datatable').DataTable().search('').draw();
             $('.services-datatable').DataTable().ajax.reload();
         }
         $("#btnClear").on('click', function(e) {
@@ -347,12 +348,9 @@
             success: function(response, textStatus, jqXHR) {
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
-                    $('#alertServiceIncentive').text(response.mensaje);
-                    
-                    // $('#alertServiceIncentive').show();
-
-                    $("#alertServiceIncentive").fadeTo(2000, 500).slideUp(500, function(){
-    $("#alertServiceIncentive").alert('close');
+                $('#alertServiceIncentive').text(response.mensaje);
+                $("#alertServiceIncentive").fadeTo(2000, 500).slideUp(500, function(){
+                $("#alertServiceIncentive").alert('close');
 });
 
                     table.ajax.reload();

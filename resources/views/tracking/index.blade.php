@@ -231,19 +231,6 @@
     $(function() {
 
         setDate();
-    // var d = new Date();
-    // var dayOfMonth = d.getDate();
-    // var year = d.getFullYear();
-    // var month = d.getMonth()+1;
-
-    // var textMonthYear = month >= 10 ? month : '0' + month;
-    // var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
-    // dateTo =year +'-'+textMonthYear+ '-' + day;
-    // console.log(dateTo);
-
-    // document.getElementById("date_to").value = dateTo;
-    // document.getElementById("date_from").value = dateTo;
-
         $(".nav-item").each(function() {
             $(this).removeClass("active");
         });
@@ -271,6 +258,7 @@
 
         function clearForms() {
             setDate();
+            console.log( $('input[type="search"]').val());
             $('select#centre_id').val('');
             $('select#state_id').val('');
             $('select#employee_id').val('');
@@ -281,11 +269,16 @@
             $('select#employee_id').selectpicker("refresh");
             $('select#service_id').selectpicker("refresh");
             $('select#patient_name').selectpicker("refresh");
-            $('.tracking-datatable').DataTable().ajax.reload();
+            $('input[type="search"]').val('');
+            // $('input[type="search"]').selectpicker("refresh");
+            //table.ajax.draw();
+            table.search('').draw();
+            table.ajax.reload();
         }
 
 
         $("#btnClear").on('click', function(e) {
+
             e.preventDefault();
             clearForms();
         });
@@ -333,7 +326,6 @@
     var textMonthYear = month >= 10 ? month : '0' + month;
     var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
     var dateTo =year +'-'+textMonthYear+ '-' + day;
-    console.log(dateTo);
 
     var previousMonth=0;
     if(textMonthYear != 1 || dayOfMonth >= 21){
@@ -346,7 +338,6 @@
 
     textMonthYear =previousMonth >=10 ? previousMonth : '0' + previousMonth;
     var dateFrom = year +'-' + textMonthYear+ '-' + 21;
-    console.log(dateFrom);
 
     document.getElementById("date_from").value = dateFrom;
     document.getElementById("date_to").value = dateTo;
@@ -482,7 +473,7 @@
         params["date_from"] = $('#date_from').val();
         params["date_to"] = $('#date_to').val();
 
-        console.log(params.trackingState);
+        // console.log(params.trackingState);
 
         $.ajax({
             url: $("#exportTracking").attr('action'),

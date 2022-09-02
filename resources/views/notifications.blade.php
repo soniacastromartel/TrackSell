@@ -61,6 +61,8 @@
 
 <script type="text/javascript">
     var table;
+    setDate();
+
     var columnsFilled = [];
     columnsFilled.push({
         data: 'id',
@@ -89,6 +91,70 @@
         name: 'cancellation_reason'
     });
 
+    // var d = new Date();
+    // var dayOfMonth = d.getDate();
+    // var year = d.getFullYear();
+    // var month = 1;
+
+    // if (d.getMonth() < 11) {
+    //     if (dayOfMonth > 20) {
+    //         month = d.getMonth() + 2;
+    //     } else {
+    //         month = d.getMonth() + 1;
+    //     }
+    // } else {
+    //     if (dayOfMonth > 20) {
+    //         month = 1;
+    //         year = year + 1;
+    //     } else {
+    //         month = d.getMonth() + 1;
+    //     }
+    // }
+
+    // var textMonthYear = month >= 10 ? month : '0' + month;
+    // textMonthYear += '/' + year;
+
+    // $('#monthYearPicker').val(textMonthYear);
+    // // Default functionality.
+    // $('#monthYearPicker').MonthPicker();
+    // $('#monthPicker').datepicker($.datepicker.regional["es"]);
+
+    $(function() {
+        $(".nav-item").each(function() {
+            $(this).removeClass("active");
+        });
+        $('#pagesNotification').addClass('show');
+        $('#supervisorNotificationsIndex').addClass('active');
+
+        var state = "{{ collect(request()->segments())->last() }}";
+        state = state.split("_")[1];
+
+        var tableHtml = '';
+
+        tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
+        getTrackingData();
+
+        $("#btnSubmit").on('click', function(e) {
+            e.preventDefault();
+            $('#btnSubmit').hide();
+            $('#btnSubmitLoad').show();
+            $('#btnSubmitLoad').prop('disabled', true);
+            getTrackingData();
+        });
+
+        function clearForms() {
+            setDate();
+            table.search('').draw();
+            table.ajax.reload();
+        }
+
+        $("#btnClear").on('click', function(e) {
+            e.preventDefault();
+            clearForms();
+        });
+    });
+
+    function setDate(){
     var d = new Date();
     var dayOfMonth = d.getDate();
     var year = d.getFullYear();
@@ -116,39 +182,7 @@
     // Default functionality.
     $('#monthYearPicker').MonthPicker();
     $('#monthPicker').datepicker($.datepicker.regional["es"]);
-
-    $(function() {
-        $(".nav-item").each(function() {
-            $(this).removeClass("active");
-        });
-        $('#pagesNotification').addClass('show');
-        $('#supervisorNotificationsIndex').addClass('active');
-
-        var state = "{{ collect(request()->segments())->last() }}";
-        state = state.split("_")[1];
-
-        var tableHtml = '';
-
-        tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
-        getTrackingData();
-
-        $("#btnSubmit").on('click', function(e) {
-            e.preventDefault();
-            $('#btnSubmit').hide();
-            $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
-            getTrackingData();
-        });
-
-        function clearForms() {
-            $('select').val('');
-        }
-
-        $("#btnClear").on('click', function(e) {
-            e.preventDefault();
-            clearForms();
-        });
-    });
+}
 
     function updateDateTracking(state, trackingId, back) {
         $('#alertErrorTrackingDate').hide();
