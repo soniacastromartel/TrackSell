@@ -230,15 +230,19 @@
 
     $(function() {
 
-    var d = new Date();
-    var dayOfMonth = d.getDate();
-    var year = d.getFullYear();
-    var month = d.getMonth()+1;
+        setDate();
+    // var d = new Date();
+    // var dayOfMonth = d.getDate();
+    // var year = d.getFullYear();
+    // var month = d.getMonth()+1;
 
-    var textMonthYear = month >= 10 ? month : '0' + month;
-    fullDate =year +'-'+textMonthYear+ '-' + dayOfMonth;
-    document.getElementById("date_to").value = fullDate;
-    document.getElementById("date_from").value = fullDate;
+    // var textMonthYear = month >= 10 ? month : '0' + month;
+    // var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
+    // dateTo =year +'-'+textMonthYear+ '-' + day;
+    // console.log(dateTo);
+
+    // document.getElementById("date_to").value = dateTo;
+    // document.getElementById("date_from").value = dateTo;
 
         $(".nav-item").each(function() {
             $(this).removeClass("active");
@@ -266,10 +270,7 @@
         });
 
         function clearForms() {
-            var d = new Date();
-            var textMonthYear = d.getFullYear()+ '-' +'0'+(d.getMonth()+ 1)+'-' +d.getDate() ;
-            document.getElementById("date_to").value = textMonthYear;
-            document.getElementById("date_from").value = textMonthYear;
+            setDate();
             $('select#centre_id').val('');
             $('select#state_id').val('');
             $('select#employee_id').val('');
@@ -281,7 +282,6 @@
             $('select#service_id').selectpicker("refresh");
             $('select#patient_name').selectpicker("refresh");
             $('.tracking-datatable').DataTable().ajax.reload();
-            //$('select').selectpicker("refresh");
         }
 
 
@@ -322,6 +322,35 @@
             alert('Error'+jqXHR.responseText);
 
         });
+    }
+
+    function setDate() {
+    var date = new Date();
+    var dayOfMonth = date.getDate();
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+
+    var textMonthYear = month >= 10 ? month : '0' + month;
+    var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
+    var dateTo =year +'-'+textMonthYear+ '-' + day;
+    console.log(dateTo);
+
+    var previousMonth=0;
+    if(textMonthYear != 1 || dayOfMonth >= 21){
+        previousMonth= textMonthYear -1;
+    } else if (dayOfMonth == 21 ) {
+        previousMonth=month;
+    }else {
+        previousMonth= 1;
+    }
+
+    textMonthYear =previousMonth >=10 ? previousMonth : '0' + previousMonth;
+    var dateFrom = year +'-' + textMonthYear+ '-' + 21;
+    console.log(dateFrom);
+
+    document.getElementById("date_from").value = dateFrom;
+    document.getElementById("date_to").value = dateTo;
+
     }
 
    
