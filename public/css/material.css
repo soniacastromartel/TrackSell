@@ -15111,6 +15111,8 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
   /* position: relative; */
   padding: 20px 15px;
   line-height: 20px;
+  font-weight: bolder !important;
+
 }
 
 .alert b {
@@ -15185,6 +15187,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
 .alert.alert-danger {
   background-color: #f55145;
   color: var(--white);
+  font-weight: bolder;
 }
 
 .alert.alert-danger .alert-link,

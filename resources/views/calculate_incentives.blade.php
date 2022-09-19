@@ -369,7 +369,7 @@
                     $('#btnSubmit').show();
                 },
                 complete: function() {
-                    $("#btnTracingTargets").html("Seguimiento de objetivos");
+                    $("#btnTracingTargets").html("<span class='material-icons mr-1'>download</span> Seguimiento de objetivos");
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
