@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
@@ -110,7 +110,7 @@
                                                 @foreach ($states as $state)
                                                 <option class= "text-uppercase" value="{{ $state->texto }}">{{$state->nombre}}</option>
                                                 @endforeach
-                                                
+
                                             </select>
                                         </div>
                                     </div>
@@ -162,6 +162,7 @@
                         <th>Servicio</th>
                         <th>Estado</th>
                         <th>F. Inicio</th>
+                        <th>F. Actualización</th>
                         <th>F. Cancelación</th>
                         <th>Acciones</th>
                     </tr>
@@ -173,7 +174,7 @@
     </div>
 </div>
 <style>
-    .myclass 
+    .myclass
 {
     text-transform:capitalize;
 }
@@ -215,6 +216,10 @@
     columnsFilled.push({
         name: 'started_date',
         data: 'started_date'
+    });
+    columnsFilled.push({
+        name: 'state_date',
+        data: 'state_date'
     });
     columnsFilled.push({
         name: 'cancellation_date',
@@ -322,29 +327,57 @@
     var dayOfMonth = date.getDate();
     var year = date.getFullYear();
     var month = date.getMonth()+1;
+    var currentMonth= month >= 10 ? month : '0' + month;;
+    var day= dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
+    var corteDesde=21;
+    var corteHasta=20;
 
-    var textMonthYear = month >= 10 ? month : '0' + month;
-    var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
-    var dateTo =year +'-'+textMonthYear+ '-' + day;
+    if (dayOfMonth>=corteDesde) {
+        dateFrom= year +'-'+currentMonth+ '-' + corteHasta;
+        dateTo=  year +'-'+currentMonth+ '-' + day;
+        console.log(dateFrom);
+        console.log(dateTo);
 
-    var previousMonth=0;
-    if(textMonthYear != 1 || dayOfMonth >= 21){
-        previousMonth= textMonthYear -1;
-    } else if (dayOfMonth == 21 ) {
-        previousMonth=month;
-    }else {
-        previousMonth= 1;
+    }else if(dayofMonth<21){
+        if(currentMonth!=1){
+            previousMonth =(month-1)>= 10 ? month-1 : '0' + (month-11);
+            dateFrom= year +'-'+previousMonth+ '-' + corteDesde;
+            dateTo=  year +'-'+currentMonth+ '-' + day;
+            console.log(dateFrom);
+            console.log(dateTo);
+        }else{
+            previousMonth=12;
+            dateFrom= year +'-'+previousMonth+ '-' + corteDesde;
+            dateTo=  year +'-'+currentMonth+ '-' + day;
+            console.log(dateFrom);
+            console.log(dateTo);
+        }
+        
+
     }
 
-    textMonthYear =previousMonth >=10 ? previousMonth : '0' + previousMonth;
-    var dateFrom = year +'-' + textMonthYear+ '-' + 21;
+    // var textMonthYear = month >= 10 ? month : '0' + month;
+    // var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
+    // var dateTo =year +'-'+textMonthYear+ '-' + day;
+
+    // var previousMonth=0;
+    // if(textMonthYear != 1 || dayOfMonth >= 21){
+    //     previousMonth= textMonthYear -1;
+    // } else if (dayOfMonth == 21 ) {
+    //     previousMonth=month;
+    // }else {
+    //     previousMonth= 1;
+    // }
+
+    // textMonthYear =previousMonth >=10 ? previousMonth : '0' + previousMonth;
+    // var dateFrom = year +'-' + textMonthYear+ '-' + 21;
 
     document.getElementById("date_from").value = dateFrom;
     document.getElementById("date_to").value = dateTo;
 
     }
 
-   
+
 
 
     function getTrackingData() {
@@ -352,7 +385,7 @@
             table = $('.tracking-datatable').DataTable();
         } else {
             table = $('.tracking-datatable').DataTable({
-                order: [6, "desc"],
+                order: [7, "desc"],
                 processing: true,
                 serverSide: true,
                 language: {
@@ -397,11 +430,12 @@
 
                     },
                     {
-                        targets: 6,
-                        data: "state_date",
+                        targets: [6,7,8],
+                        // data: "cancellation_date",
                         type: "date",
-                        // className: 'dt-body-center',
                         render: function(data, type, row) {
+
+                            if (data!=null){
                             var datetime = moment(data, 'YYYY-M-D');
                             var displayString = moment(datetime).format('D-M-YYYY');
 
@@ -410,28 +444,40 @@
                             } else {
                                 return datetime; // for sorting
                             }
+                        }else {
+                            return null;
+                        }
+
                         }
                     },
                     {
-                        targets: 7,
-                        // type: "date",
-                        render: function (data, type, row) {//data
-                            if(data!=null){
-                                return moment(row.updatedDate).format('D-M-YYYY');
-
-                            }else{
-                                return ' '
-                            }
-    }
-                   
+                    width: "10%",
+                    targets: 0
+                },
+                {
+                    width: "15%",
+                    targets: [1,3,4]
+                },
+                {
+                    width: "5%",
+                    targets: 2
+                },
+                
+                {
+                    width: "5%",
+                    targets: 5
+                },
+                {
+                    width: "5%",
+                    targets: [6,7,8]
+                },
+                    {
+                        targets: -1,
+                        width: '30%'
                     },
                     {
                         targets: '_all',
                         className: 'dt-body-center',
-                    },
-                    {
-                        targets: -1,
-                        width: '30%'
                     }
 
                 ],

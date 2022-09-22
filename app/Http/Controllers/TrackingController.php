@@ -143,13 +143,13 @@ class TrackingController extends Controller
                                 $params['state'] = null;
                             } else {
                                 $q->where('trackings.state', $params['state'])
-                                    ->whereNull('trackings.cancellation_date');
+                                ->whereNull('trackings.cancellation_date');
                             }
                         }
                         $q->where(function ($q2) use ($params, $initPeriod, $endPeriod) {
                             $q2
-                                ->whereBetween('state_date', [$initPeriod, $endPeriod])
-                                 ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
+                                ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
+                                ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
                                 ;
                         });
                     });
@@ -166,7 +166,9 @@ class TrackingController extends Controller
                                     ->orWhere('services.name', 'LIKE', "%$search%")
                                     ->orWhere('trackings.patient_name', 'LIKE', "%$search%")
                                     ->orWhere('trackings.state', 'LIKE', "%$search%")
-                                    ->orWhere('trackings.hc', 'LIKE', "%$search%");
+                                    ->orWhere('trackings.hc', 'LIKE', "%$search%")
+                                    // ->orderBy('trackings.state_date')
+                                    ;
                             });
                         }
                     })
@@ -180,10 +182,11 @@ class TrackingController extends Controller
                             $btn .= '<div class="col-md-12">';
                             $btn .= '<a href="edit/' . $state . '/' . $tracking->id . '" class="btn btn-warning a-btn-slide-text btn-sm">Editar</a>';
                             $btn .= '</div>';
+                            $trackingDate =  date('Y-m-d');
 
                             $state = substr($state, 0, strpos($state, "_"));
-                            if ($tracking->state == env('STATE_PENDING')) {
-                                $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
+                            if ($tracking->state == env('STATE_PENDING')) {//PENDIENTE
+                                // $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6" >';
                                 $btn .= '<input style="resize:horizontal; width: 120px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
@@ -193,8 +196,8 @@ class TrackingController extends Controller
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
                             }
-                            if ($tracking->state == env('STATE_APOINTMENT')) {
-                                $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
+                            if ($tracking->state == env('STATE_APOINTMENT')) {//CITADOS
+                                // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
@@ -210,8 +213,8 @@ class TrackingController extends Controller
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Reiniciar</a>';
                                 $btn .= '</div></div>';
                             }
-                            if ($tracking->state == env('STATE_SERVICE')) {
-                                $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
+                            if ($tracking->state == env('STATE_SERVICE')) {//REALIZADOS
+                                // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
@@ -227,8 +230,8 @@ class TrackingController extends Controller
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
                             }
-                            if ($tracking->state == env('STATE_INVOICED')) {
-                                $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
+                            if ($tracking->state == env('STATE_INVOICED')) {//FACTURADOS
+                                // $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-4">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
@@ -651,7 +654,7 @@ class TrackingController extends Controller
                     //     $mensaje = 'Recomendacion iniciada correctamente';
                     // } else {
                     $params = [
-                        'apointment_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'apointment_user_id' => $user->id, 'apointment_done'    => true, 'service_done'       => 0, 'state'              => env('STATE_APOINTMENT')
+                        'apointment_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'apointment_user_id' => $user->id, 'apointment_done'    => true, 'service_done'       => 0, 'state'              => env('STATE_APOINTMENT'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                     ];
                     $mensaje = 'Recomendacion citada correctamente';
                     $responseUrl = '/tracking/index_apointment';
@@ -668,13 +671,13 @@ class TrackingController extends Controller
                 case 'apointment':
                     if ($back) {
                         $params = [
-                            'apointment_date'     => null, 'apointment_user_id' => null, 'apointment_done'    => 0, 'started_date'       => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'started_user_id'    => $user->id, 'state'              => env('STATE_PENDING'), 'state_date'         => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'apointment_date'     => null, 'apointment_user_id' => null, 'apointment_done'    => 0, 'started_date'       => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'started_user_id'    => $user->id, 'state'              => env('STATE_PENDING'), 'state_date'         => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion citada correctamente';
                         $responseUrl = '/tracking/index_apointment';
                     } else {
                         $params = [
-                            'service_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'service_user_id' => $user->id, 'service_done'    => true, 'invoiced_done'   => 0, 'state'           => env('STATE_SERVICE'), 'state_date'      => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'service_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'service_user_id' => $user->id, 'service_done'    => true, 'invoiced_done'   => 0, 'state'           => env('STATE_SERVICE'), 'state_date'      => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $responseUrl = '/tracking/index_service';
                         $mensaje = 'Recomendacion realizado servicio correctamente';
@@ -689,14 +692,14 @@ class TrackingController extends Controller
                 case 'service':
                     if ($back) {
                         $params = [
-                            'service_date'        => null, 'service_user_id'    => null, 'service_done'       => 0, 'apointment_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'apointment_user_id'  => $user->id, 'state'               => env('STATE_APOINTMENT'), 'state_date'          => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'service_date'        => null, 'service_user_id'    => null, 'service_done'       => 0, 'apointment_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'apointment_user_id'  => $user->id, 'state'               => env('STATE_APOINTMENT'), 'state_date'          => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $rules = ['tracking_date' => 'before_or_equal:' . $tracking['service_date'] . '|before:tomorrow'];
                         $mensaje = 'Recomendacion realizado servicio correctamente';
                         $responseUrl = '/tracking/index_service';
                     } else {
                         $params = [
-                            'invoiced_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'invoiced_user_id' => $user->id, 'invoiced_done'    => true, 'validation_done'  => 0, 'state'            => env('STATE_INVOICED')
+                            'invoiced_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'invoiced_user_id' => $user->id, 'invoiced_done'    => true, 'validation_done'  => 0, 'state'            => env('STATE_INVOICED'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion facturada correctamente';
                         $responseUrl = '/tracking/index_invoiced';
@@ -711,13 +714,13 @@ class TrackingController extends Controller
                 case 'invoiced':
                     if ($back) {
                         $params = [
-                            'invoiced_date'     => null, 'invoiced_user_id' => null, 'invoiced_done'    => 0, 'service_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'service_user_id'  => $user->id, 'state'            => env('STATE_SERVICE')
+                            'invoiced_date'     => null, 'invoiced_user_id' => null, 'invoiced_done'    => 0, 'service_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'service_user_id'  => $user->id, 'state'            => env('STATE_SERVICE'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion facturada correctamente';
                         $responseUrl = '/tracking/index_invoiced';
                     } else {
                         $params = [
-                            'validation_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'validation_user_id' => $user->id, 'validation_done'    => true, 'state'              => env('STATE_VALIDATE')
+                            'validation_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'validation_user_id' => $user->id, 'validation_done'    => true, 'state'              => env('STATE_VALIDATE'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion validada correctamente';
                         $responseUrl = '/tracking/index_validation';

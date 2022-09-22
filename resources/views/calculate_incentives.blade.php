@@ -20,19 +20,19 @@
                             <div class="card-body" id="cardBody">
                             @if ($user->rol_id == 1)
                             <h5 class="card-title font-size-18">- <strong>Importar Objetivos</strong>, puede
-                                                    descargar la plantilla desde <a style="color:var(--red-icot)"
+                                                    descargar la plantilla* desde <a style="color:var(--red-icot)"
                                                         href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong></a>
                                 </h5>
                                 <hr>
                             @endif
                                 <h5 class="card-title font-size-18">- <strong>Importar Venta Privada</strong>, puede
-                                                    descargar la plantilla desde <a style="color:var(--red-icot)"
+                                                    descargar la plantilla* desde <a style="color:var(--red-icot)"
                                                         href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong></a>
                                 </h5>
                                 <hr>
-                                <h5 class="card-title font-size-18">- Indicar en formulario centro / empleado / fecha
-                                                    según se requiera y hacer click en botón Calcular</h5>
-                                <h5 class="card-title font-size-18">- Tenga en cuenta que el fichero a importar debe
+                                <h5 class="card-title font-size-18">- <strong>Incentivos: </strong>Indicar en formulario centro / empleado / fecha
+                                                    según se requiera y hacer click en botón  <span style="color:var(--red-icot);font-weight: bolder;"> <span class="material-icons">file_download</span>Exportar</span><h5>
+                                <h5 class="text-right" style="color:grey;font-size:14px;">* Tenga en cuenta que el fichero a importar debe
                                                     tener extensión .xls</h5>
                             </div>
                         </div>
@@ -85,9 +85,14 @@
                                         @endif
                                         <div class="form-group col-sm-7" >
                                             <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
-                                                <span class="material-icons mr-1">download</span>{{ __('Seguimiento de objetivos') }}
+                                                <span class="material-icons mr-1">download</span>{{ __('Descargar Seguimiento') }}
                                             </button>
                                         </div>
+                                        <!-- <div class="form-group col-sm-7" >
+                                            <button id="btnTargetsPreview" class="file-upload btn btn-block btn-primary">
+                                                <span class="material-icons mr-1">visibility</span>{{ __('Ver Seguimiento') }}
+                                            </button>
+                                        </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -321,16 +326,14 @@
             $("#importTargetForm").submit();
         });
 
-        $("#btnTracingTargets").on('click', function(e) {
+        
+        $("#btnTargetsPreview").on('click', function(e) {
             e.preventDefault();
-            $("#btnTracingTargets").html(
-                "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Obteniendo datos..."
-            );
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["yearTarget"] = $("#yearTargetPicker").val();
             $.ajax({
-                url: "{{ route('target.tracingTargets') }}",
+                url: "{{ route('target.targetsReportView') }}",
                 type: 'post',
                 data: params,
                 dataType: 'binary',
@@ -351,6 +354,68 @@
                     return xhr;
                 },
                 success: function(data, textStatus, jqXHR) {
+                    console.log(data);
+                    // if success, HTML response is expected, so replace current
+                    if (textStatus === 'success') {
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmit').show();
+                        var link = document.createElement('a'),
+                        filename = 'target.xls';
+                        link.href = URL.createObjectURL(data);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    alert(response.errors);
+                    $('#btnSubmitLoad').hide();
+                    $('#btnSubmit').show();
+                },
+                complete: function() {
+                    $("#btnTracingTargets").html("<span class='material-icons mr-1'>download</span> Seguimiento de objetivos");
+                }
+
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                // alert('Error '+jqXHR.responseText);
+                timeOutAlert($('#alertErrorCalculate'), jqXHR.responseText);
+
+            });
+
+
+        });
+
+        $("#btnTracingTargets").on('click', function(e) {
+            e.preventDefault();
+            $("#btnTracingTargets").html(
+                "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Obteniendo datos..."
+            );
+            params = {};
+            params["_token"] = "{{ csrf_token() }}";
+            params["yearTarget"] = $("#yearTargetPicker").val();
+            $.ajax({
+                url: "{{ route('target.targetsReportDownload') }}",
+                type: 'post',
+                data: params,
+                dataType: 'binary',
+                xhrFields: {
+                    'responseType': 'blob'
+                },
+                xhr: function() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == 2) {
+                            if (xhr.status == 200) {
+                                xhr.responseType = "blob";
+                            } else {
+                                xhr.responseType = "text";
+                            }
+                        }
+                    };
+                    return xhr;
+                },
+                success: function(data, textStatus, jqXHR) {
+                    console.log(data);
                     // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
                         $('#btnSubmitLoad').hide();
