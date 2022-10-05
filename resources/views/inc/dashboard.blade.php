@@ -347,19 +347,42 @@
       });
     });
 
-    var d = new Date();
-    $("#yearPicker").datepicker("destroy");
-    $("#yearPickerContainer").hide();
-    showMonthYearPicker();
+    // var d = new Date();
+    var d;
+    var year;
+    var month;
+    var textMonthYear;
+    var fecha;
+
+    function setDate() {
+   date = new Date();
+   year = date.getFullYear();
+   month = date.getMonth()+1;
+   textMonthYear = month >= 10 ? month : '0' + month;
+   fecha= textMonthYear + '/' +year;
+
+   console.log(fecha);
+
+   return fecha;
+
+ }
 
     function showMonthYearPicker() {
-      var textMonthYear = ('0' + (d.getMonth() + 1) + '/' + d.getFullYear());
-      $('#monthYearPicker').val(textMonthYear);
+     fecha= setDate();
+     $('#monthYearPicker').val(fecha);
       $('#monthYearPicker').MonthPicker();
       $('#monthYearPicker').MonthPicker({
         ShowIcon: true,
       });
     }
+
+    $("#yearPicker").datepicker("destroy");
+    $("#yearPickerContainer").hide();
+    showMonthYearPicker();
+
+
+    // var textMonthYear = month >= 10 ? month : '0' + month;
+ 
 
     function showYearPicker() {
       $('#monthYearPicker').MonthPicker({
@@ -653,9 +676,8 @@
     }
 
     function clearForms() {
-      var d = new Date();
-      var textMonthYear = ('0' + (d.getMonth() + 1) + '/' + d.getFullYear());
-      $('#monthYearPicker').val(textMonthYear);
+      fecha= setDate();
+      $('#monthYearPicker').val(fecha);
       $('select#centre_id').val('');
       $('select#centre_id').selectpicker("refresh");
       // $("#employee-centre").html("GRUPO ICOT");

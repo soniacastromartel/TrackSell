@@ -183,6 +183,8 @@
 
 
 <script type="text/javascript">
+
+
     var table;
 
     var columnsFilled = [];
@@ -323,54 +325,59 @@
     }
 
     function setDate() {
+    // var date = new Date();
+    // var dayOfMonth = date.getDate();
+    // var year = date.getFullYear();
+    // var month = date.getMonth()+1;
+    // var currentMonth= month >= 10 ? month : '0' + month;;
+    // var day= dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
+    // var corteDesde=21;
+    // var corteHasta=20;
+
+    // if (dayOfMonth>=corteDesde) {
+    //     dateFrom= year +'-'+currentMonth+ '-' + corteHasta;
+    //     dateTo=  year +'-'+currentMonth+ '-' + day;
+    //     console.log(dateFrom);
+    //     console.log(dateTo);
+
+    // }else if(dayofMonth<corteDesde) {
+    //     if(currentMonth!=1){
+    //         previousMonth =(month-1)>= 10 ? month-1 : '0' + (month-11);
+    //         dateFrom= year +'-'+previousMonth+ '-' + corteDesde;
+    //         dateTo=  year +'-'+currentMonth+ '-' + day;
+    //         console.log(dateFrom);
+    //         console.log(dateTo);
+    //     }else{
+    //         previousMonth=12;
+    //         dateFrom= year +'-'+previousMonth+ '-' + corteDesde;
+    //         dateTo=  year +'-'+currentMonth+ '-' + day;
+    //         console.log(dateFrom);
+    //         console.log(dateTo);
+    //     }
+        
+
+    // }
+
     var date = new Date();
     var dayOfMonth = date.getDate();
     var year = date.getFullYear();
     var month = date.getMonth()+1;
-    var currentMonth= month >= 10 ? month : '0' + month;;
-    var day= dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
-    var corteDesde=21;
-    var corteHasta=20;
 
-    if (dayOfMonth>=corteDesde) {
-        dateFrom= year +'-'+currentMonth+ '-' + corteHasta;
-        dateTo=  year +'-'+currentMonth+ '-' + day;
-        console.log(dateFrom);
-        console.log(dateTo);
+    var textMonthYear = month >= 10 ? month : '0' + month;
+    var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
+    var dateTo =year +'-'+textMonthYear+ '-' + day;
 
-    }else if(dayofMonth<21){
-        if(currentMonth!=1){
-            previousMonth =(month-1)>= 10 ? month-1 : '0' + (month-11);
-            dateFrom= year +'-'+previousMonth+ '-' + corteDesde;
-            dateTo=  year +'-'+currentMonth+ '-' + day;
-            console.log(dateFrom);
-            console.log(dateTo);
-        }else{
-            previousMonth=12;
-            dateFrom= year +'-'+previousMonth+ '-' + corteDesde;
-            dateTo=  year +'-'+currentMonth+ '-' + day;
-            console.log(dateFrom);
-            console.log(dateTo);
-        }
-        
-
+    var previousMonth=0;
+    if(textMonthYear != 1 || dayOfMonth >= 21){
+        previousMonth= textMonthYear -1;
+    } else if (dayOfMonth == 21 ) {
+        previousMonth=month;
+    }else {
+        previousMonth= 1;
     }
 
-    // var textMonthYear = month >= 10 ? month : '0' + month;
-    // var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
-    // var dateTo =year +'-'+textMonthYear+ '-' + day;
-
-    // var previousMonth=0;
-    // if(textMonthYear != 1 || dayOfMonth >= 21){
-    //     previousMonth= textMonthYear -1;
-    // } else if (dayOfMonth == 21 ) {
-    //     previousMonth=month;
-    // }else {
-    //     previousMonth= 1;
-    // }
-
-    // textMonthYear =previousMonth >=10 ? previousMonth : '0' + previousMonth;
-    // var dateFrom = year +'-' + textMonthYear+ '-' + 21;
+    textMonthYear =previousMonth >=10 ? previousMonth : '0' + previousMonth;
+    var dateFrom = year +'-' + textMonthYear+ '-' + 21;
 
     document.getElementById("date_from").value = dateFrom;
     document.getElementById("date_to").value = dateTo;
