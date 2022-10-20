@@ -162,7 +162,7 @@
 
     if (d.getMonth() < 11) {
         if (dayOfMonth > 20) {
-            month = d.getMonth() + 2;
+            month = d.getMonth() + 1;
         } else {
             month = d.getMonth() + 1;
         }

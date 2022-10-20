@@ -82,7 +82,6 @@ class TrackingController extends BaseController {
      *  acumulative - when true get data from all year 
      */
     private function getDataIncentives($params, $acumulative) {
-
         $targetService = new TargetService();
         $monthTo = date('m');
         if ($acumulative) {
@@ -97,7 +96,6 @@ class TrackingController extends BaseController {
         $detailSale = [];
         $contSales = 0;
         while ($month <= $monthTo) {
-
             $params['monthYear'] =  $month . '/' . $params['year'];
             $params['employee']  = $employee;
             $params['todos_estados'] = true;
@@ -158,10 +156,10 @@ class TrackingController extends BaseController {
                         $totalDefSale += $sale->price * $sale->quantity;
                         $contSales += $sale->quantity;
 
-                        if ($sale->current_state == env('STATE_PAID')) {
+                        // if ($sale->current_state == env('STATE_PAID')) {
                             $totalDefIncentive  += $totalIncentive * $sale->quantity;
                             $detailedSale['incentive'] = $totalIncentive * $sale->quantity;
-                        }
+                        //}
                         $detailSale[] = $detailedSale;
                     }
                 }

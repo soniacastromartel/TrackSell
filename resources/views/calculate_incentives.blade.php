@@ -212,11 +212,9 @@
 
         function clearForms() {
             var d = new Date();
-            var textMonthYear = (d.getMonth()+1) + '/' + d.getFullYear();
-            console.log(textMonthYear);
+            var textMonthYear = setDate(d);
             $('#monthYearPicker').val(textMonthYear);
-            var textYear = d.getFullYear();
-            $('#yearTargetPicker').val(textYear);
+            $('#yearTargetPicker').val(d.getFullYear());
             $('select').val('');
             $('select').selectpicker("refresh");
             $("input[name=trackingState][value='service']").prop("checked", true);
@@ -287,14 +285,12 @@
             });
         });
 
-        var d = new Date();
-        var textMonthYear = (d.getMonth() + 1) + '/' + d.getFullYear();
+        var date = new Date();
+        var textMonthYear = setDate(date);
         $('#monthYearPicker').val(textMonthYear);
-        // Default functionality.
         $('#monthYearPicker').MonthPicker();
 
-        var textYear = d.getFullYear();
-        $('#yearTargetPicker').val(textYear);
+        $('#yearTargetPicker').val(date.getFullYear());
         $('#yearTargetPicker').datepicker({
             changeMonth: false,
             changeYear: true,
@@ -445,6 +441,15 @@
         });
 
     });
+
+    function setDate($date) {
+        date = new Date();
+        year = date.getFullYear();
+        month = date.getMonth()+1;
+        textMonthYear = month >= 10 ? month : '0' + month;
+        fecha= textMonthYear + '/' +year;
+        return fecha;
+    }
 
     function timeOutAlert($alert, $message) {
         $alert.text($message);

@@ -63,7 +63,10 @@ class A3EmpleadosCron extends Command
                                         , 'Fecha_de_baja_en_compañia')
                                 ->join('dbo.Vista_Empresa', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Empleados.Codigo_Empresa')
                                 ->join('dbo.Vista_Centros_De_Trabajo', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Centros_De_Trabajo.Empresa_listada')
-                                 ->whereNotIn('dbo.Vista_Centros_De_Trabajo.Empresa_listada', [10,11,14,15,20,23,24,25])
+                                 ->whereNotIn('dbo.Vista_Centros_De_Trabajo.Empresa_listada', [10,11,14,15,20,23,24,25,69])
+                                //  ->where ([ ['dbo.Vista_Empleados.Codigo_Empresa', '!=', 1], ['dbo.Vista_Empleados.Codigo_Centro', '!=', 12]])
+                                //  ->whereIn('dbo.Vista_Empresa.Codigo_Empresa', [1,2,3,4,5,6,7,8,9,12,13,17,19,21])
+
                                 ; 
 
             //Parametro DNI - Sin parametros

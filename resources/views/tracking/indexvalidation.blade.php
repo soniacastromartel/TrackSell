@@ -211,8 +211,8 @@
         });
         $.fn.dataTable.ext.errMode = 'none';
 
-        var d = new Date();
-        var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
+        var date = new Date();
+        var textMonthYear =  setDate(date);
         $('#monthYearPicker').val(textMonthYear);
         $('#monthYearPicker').MonthPicker();
 
@@ -379,6 +379,8 @@
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
+                    console.log($("#business_id option:selected").val());
+                    console.log('holi');
                     // if success, HTML response is expected, so replace current
                     timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
                     $('#btnCalculate').show();
@@ -394,6 +396,8 @@
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 timeOutAlert($('#alertErrorTrackingDate'), jqXHR.responseText);
             }).done(function() {
+                console.log($("#business_id option:selected").val());
+                    console.log('holi');
                 timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
             });
         });
@@ -428,8 +432,7 @@
         });
 
         function clearForms() {
-            var d = new Date();
-            var textMonthYear = ('0'+(d.getMonth() + 1) + '/' + d.getFullYear());
+            var textMonthYear = setDate(date);
             $('#monthYearPicker').val(textMonthYear);
             // $('select').val('');
             $('select#business_id').val('');
@@ -438,7 +441,6 @@
         }
 
         $("#btnClear").on('click', function(e) {
-            
             e.preventDefault();
             clearForms();
         });
@@ -526,18 +528,30 @@
                 }
             },
             error: function(xhr, status, error) {
-                var response = JSON.parse(xhr.responseText);
-                window.location = response.url;
+                console.log('error ' + error);
+                timeOutAlert($('#alertErrorTrackingDate', error));
+                // var response = JSON.parse(xhr.responseText);
+                // window.location = response.url;
                 $('#btnSubmitLoad').hide();
                 $('#btnSubmit').show();
             }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            timeOutAlert($('#alertErrorTrackingDate'), jqXHR.responseText);
         }).done(function() {
-            timeOutAlert($('#alertErrorTrackingDate'));
-            timeOutAlert($('#alertTrackingDate'));
+            timeOutAlert($('#alertTrackingDate', "Realizado correctamente"));
 
             $('#btnExport').show();
             $('#btnExportLoad').hide();
         });
+    }
+
+    function setDate($date) {
+        date = new Date();
+        year = date.getFullYear();
+        month = date.getMonth()+1;
+        textMonthYear = month >= 10 ? month : '0' + month;
+        fecha= textMonthYear + '/' +year;
+        return fecha;
     }
 
     function timeOutAlert($alert, $message) {
