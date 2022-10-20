@@ -223,7 +223,7 @@
         } else {
             table = $('.notifications-datatable').DataTable({
 
-                order: [3, "desc"],
+                order: [4, "desc"],
                 processing: true,
                 serverSide: true,
                 language: {

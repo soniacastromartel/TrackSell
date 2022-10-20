@@ -8,7 +8,8 @@ use App\A3Empleado;
 use App\A3Centre;
 use App\Employee; 
 use App\EmployeeHistory;
-use App\VistaEmpleados; 
+use App\VistaEmpleados;
+use DateTime;
 
 class A3EmpleadosCron extends Command
 {
@@ -64,6 +65,7 @@ class A3EmpleadosCron extends Command
                                 ->join('dbo.Vista_Empresa', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Empleados.Codigo_Empresa')
                                 ->join('dbo.Vista_Centros_De_Trabajo', 'dbo.Vista_Empresa.Codigo_Empresa', '=', 'dbo.Vista_Centros_De_Trabajo.Empresa_listada')
                                  ->whereNotIn('dbo.Vista_Centros_De_Trabajo.Empresa_listada', [10,11,14,15,20,23,24,25,69])
+                          
                                 //  ->where ([ ['dbo.Vista_Empleados.Codigo_Empresa', '!=', 1], ['dbo.Vista_Empleados.Codigo_Centro', '!=', 12]])
                                 //  ->whereIn('dbo.Vista_Empresa.Codigo_Empresa', [1,2,3,4,5,6,7,8,9,12,13,17,19,21])
 
@@ -229,6 +231,7 @@ class A3EmpleadosCron extends Command
                         if (empty($centreId)){
                             \Log::channel('a3')->info("Centro no encontrado en PDI, CodEmpresa:". $ea3->Codigo_Empresa .' CodCentro:' . $ea3->Codigo_Centro );
                             \Log::channel('a3')->info("No se borra employeeID, no encontrado centro " . $employeeID); 
+                            $ea3Cancel = $ea3;
                             continue;
                         } else {
                             //FIXME... quitarlo
@@ -247,6 +250,7 @@ class A3EmpleadosCron extends Command
                 $contDeleted += 1; 
                 \Log::channel('a3')->info("Dando de baja empleado en PDI con nombre: " . $eToCancel->name);
 
+              
                 $eToCancel->update(['baja_a3'             => true
                                     ,'cancellation_date'  => $ea3->Fecha_de_baja_en_compañia
                 ]);
