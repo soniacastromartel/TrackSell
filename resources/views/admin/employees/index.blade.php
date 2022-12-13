@@ -110,7 +110,6 @@
                         } else {
                             return data;
                         }
-                     // TODO ARREGLAR AQUÍ LA CAPITALIZAION DE CATEGORÍAS
                         
                     }
                 }

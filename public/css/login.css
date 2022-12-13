@@ -2,12 +2,21 @@
 /* BASIC */
 
 html {
-    background-color: #56baed;
+    /* background-color: #56baed; */
   }
   
   body {
     font-family: "Poppins", sans-serif;
     height: 100vh;
+    background-color: #222222;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 1920px;
+    height: 1080px;
   }
   
   a {
@@ -213,6 +222,8 @@ html {
     animation-delay: 0.4s;
   }
   
+
+
   .fadeIn.second {
     -webkit-animation-delay: 0.6s;
     -moz-animation-delay: 0.6s;

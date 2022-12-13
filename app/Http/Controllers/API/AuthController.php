@@ -178,6 +178,7 @@ class AuthController extends BaseController
     /** Metodo procesa correo de  solicitud desbloqueo */
     public function sendEmailUnlockRequest($params)
     {
+        \Log::channel('app')->info("Inicio Envio Correo");
         $user = [];
         $user['username']       = $params['username'];
         $user['name']       = $params['name'];
@@ -202,6 +203,8 @@ class AuthController extends BaseController
      */
     public function unlockRequestUpdate($params)
     {
+        \Log::channel('app')->info("Inicio update UnlockRequest");
+
         $user       = $params['username'];
         if (!empty($user)) {
             $employee = Employee::whereRaw("BINARY username = ?", [$user])->first();

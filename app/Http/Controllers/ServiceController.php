@@ -402,7 +402,7 @@ class ServiceController extends Controller
                 session()->flash('error','Error al dar de baja servicio incentivado');
                 return response()->json(['success' => false
                                         , 'url'    => null
-                                        , 'mensaje'=> 'Error'], 200);
+                                        , 'mensaje'=> 'Error'], 400);
             }
             
             

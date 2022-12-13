@@ -101,6 +101,10 @@ class Tracking extends Model
             if ($endDayName == "sábado" && $currentDay-21 == 1) { //Cael el 20 en sábado, fecha 21 es domingo
                 $controlFecha = false; 
             }
+            if ($endDayName == "domingo" && $currentDay-21 == 1){
+                $controlFecha = false; 
+
+            }
             
         }
         if (!empty($this->user) && $this->user->rol_id == 1) { //ROL_ID admin se permiten cambios

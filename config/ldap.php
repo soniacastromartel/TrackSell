@@ -199,7 +199,7 @@ return [
                 */
 
                 'username' => env('LDAP_USERNAME', 'intranet@grupoicot.net'),
-                'password' => env('LDAP_PASSWORD', 'OverDover'),
+                'password' => env('LDAP_PASSWORD', 'OverDover.1'),
 
                 /*
                 |--------------------------------------------------------------------------

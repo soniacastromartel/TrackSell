@@ -347,22 +347,22 @@
       });
     });
 
-    // var d = new Date();
-    var d;
+    var d = new Date();
     var year;
     var month;
     var textMonthYear;
     var fecha;
 
-    function setDate() {
+    $("#yearPicker").datepicker("destroy");
+    $("#yearPickerContainer").hide();
+    showMonthYearPicker();
+
+  function setDate() {
    date = new Date();
    year = date.getFullYear();
    month = date.getMonth()+1;
    textMonthYear = month >= 10 ? month : '0' + month;
    fecha= textMonthYear + '/' +year;
-
-   console.log(fecha);
-
    return fecha;
 
  }
@@ -417,13 +417,11 @@
      */
     $('#monthly').on('click', function(e) {
       showMonthYearPicker();
-      var d = new Date();
-      var textMonthYear = ('0' + (d.getMonth() + 1) + '/' + d.getFullYear());
-      console.log(textMonthYear);
+      fecha= setDate();
       getTargets($('#centre_id option:selected').val());
       getSales('.sales-month-datatable');
       getSales('.sales-year-datatable');
-      $('#monthYearPicker').val(textMonthYear);
+      $('#monthYearPicker').val(fecha);
       $("#yearPicker").datepicker("destroy");
       $("#yearPickerContainer").hide();
       $('#monthYearPickerContainer').show();
@@ -521,8 +519,8 @@
 
     //Gráfico Venta Privada
     function drawGraphVP(val) {
-      console.log('drawGraphVP');
-      console.log(val);
+      // console.log('drawGraphVP');
+      // console.log(val);
       var aa = [
         ['Objetivo VP', 'Venta Privada', 'Objetivo Venta Privada'],
         ['', val['value'], val['target']],
@@ -542,7 +540,7 @@
     //Gráfico Venta Cruzada
     function drawGraphVC(val) {
       // console.log('drawGraphVC');
-      console.log(val);
+      // console.log(val);
       bb = [
         ['Objetivo VC', 'Venta Cruzada', 'Objetivo Venta Cruzada'],
         ['', val['value'], val['target']],
@@ -562,7 +560,6 @@
       }
       params["_token"] = "{{ csrf_token() }}";
       params["monthYear"] = $("#monthYearPicker").val();
-      console.log($("#monthYearPicker").val());
       $.ajax({
         url: "{{ route('home.getTargets') }}",
         type: 'post',
