@@ -100,7 +100,6 @@ class TrackingController extends BaseController {
             $params['employee']  = $employee;
             $params['todos_estados'] = true;
             $params['centre'] = null;
-            $params['acumulative'] = $acumulative;
             $employeeSales = $targetService->getExportTarget($params);
             if (empty($employeeSales->toArray())) {
                 $month++;
