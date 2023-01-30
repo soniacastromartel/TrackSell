@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        'app\Console\Commands\A3EmpleadosCron',
+        'app\Console\Commands\A3Download'
         //
     ];
 
@@ -24,7 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('a3empleados:cron')->dailyAt('09:00');
+        // $schedule->command('a3empleados:cron')->everyMinute();
+        $schedule->command('a3:download')->daily();
+        $schedule->command('a3empleados:cron')->dailyAt('07:00');
     }
 
     /**

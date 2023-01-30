@@ -57,4 +57,18 @@ class Centre extends Model
                 return $query->where('id', $centre)->get();
             }
         }
+        /**
+         * Busca un centro por el nombre o id recibido
+         * 
+         */
+        public function scopeGetCentreName($query, $centre) 
+        {
+            if (!is_numeric($centre)) {
+                $centre= $query->where('name', $centre)->first();
+            } else {
+                $centre= $query->where('id', $centre)->first();
+            }
+
+            return !empty($centre) ? $centre->name : null;
+        }
 }

@@ -22,7 +22,31 @@ class Employee extends Authenticatable
         'password', 'remember_token'
     ];
     protected $fillable = [
-        'name', 'username', 'username_temp', 'cancellation_date', 'password', 'centre_id', 'rol_id', 'validated', 'pending_password', 'username_temp', 'dni', 'phone', 'mobile_phone', 'email', 'category', 'user_cancellation_date', 'centro_a3', 'baja_a3', 'cod_employee', 'cod_business', 'nombre_a3', 'force_centre_id', 'updateRequest', 'excludeRanking', 'unlockRequest'
+        'name'
+        , 'username'
+        , 'username_temp'
+        , 'cancellation_date'
+        , 'password'
+        , 'centre_id'
+        , 'rol_id'
+        , 'validated'
+        , 'pending_password'
+        , 'username_temp'
+        , 'dni'
+        , 'phone'
+        , 'mobile_phone'
+        , 'email'
+        , 'category'
+        , 'user_cancellation_date'
+        , 'centro_a3'
+        , 'baja_a3'
+        , 'cod_employee'
+        , 'cod_business'
+        , 'nombre_a3'
+        , 'force_centre_id'
+        , 'updateRequest'
+        , 'excludeRanking'
+        , 'unlockRequest'
     ];
 
     //ldap AUTHENTICATABLE

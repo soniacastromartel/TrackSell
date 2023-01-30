@@ -326,29 +326,35 @@
 
     function setDate() {
     var date = new Date();
-    var dayOfMonth = date.getDate();
-    var year = date.getFullYear();
+    var day = date.getDate();
     var month = date.getMonth()+1;
+    var year = date.getFullYear();
 
-    var textMonthYear = month >= 10 ? month : '0' + month;
-    var day = dayOfMonth >= 10 ? dayOfMonth : '0' + dayOfMonth;
-    var dateTo =year +'-'+textMonthYear+ '-' + day;
+    day= day >= 10 ? day : '0' + dayOfMonth;
+    month= month >= 10 ? month : '0' + month;
+    var dateTo =year +'-'+month+ '-' + day;
 
     var previousMonth=0;
-    if(textMonthYear != 1 && dayOfMonth < 21){
-        previousMonth= textMonthYear -1;
-    } else if (textMonthYear != 1 && dayOfMonth >= 21 ) {
-        previousMonth=textMonthYear;
-    }else if(textMonthYear==1 && dayOfMonth < 21){
+    if(month != 1 && day < 21){
+        previousDay=21;
+        previousMonth= month -1;
+    } else if (month != 1 && day >= 21 ) 
+    {
+        previousDay=20;
+        previousMonth=month;
+    }else if(month==1 && day < 21){
+        previousDay=21;
         previousMonth=12
-        year= year-1;
+        year= year-1;   
     }
-    else {
-        previousMonth= 1;
+    else if(month==1 && day >= 21) {
+        previousDay= 20;
+        previousMonth= 1;     
     }
 
-    textMonthYear =previousMonth >=10 ? previousMonth : '0' + previousMonth;
-    var dateFrom = year +'-' + textMonthYear+ '-' + 21;
+    previousMonth =previousMonth >=10 ? previousMonth : '0' + previousMonth;
+    previousDay= previousDay >=10 ? previousDay : '0' + previousDay;
+    var dateFrom = year +'-' + previousMonth+ '-' + previousDay;
 
     document.getElementById("date_from").value = dateFrom;
     document.getElementById("date_to").value = dateTo;

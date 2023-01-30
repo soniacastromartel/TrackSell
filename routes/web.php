@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -55,10 +58,10 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/store', 'TrackingController@store')->name('tracking.store');
     Route::get('/tracking/edit/{state}/{id}', 'TrackingController@edit')->name('tracking.edit');
     Route::put('/tracking/update/{state}/{id}', 'TrackingController@update')->name('tracking.update');
-    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}','TrackingController@updateState')->name('tracking.updateState');
-    Route::post('/tracking/updatePaidState','TrackingController@updatePaidState')->name('tracking.updatePaidState');
-    Route::get('/tracking/refreshServices/{centre_id}','TrackingController@refreshServices')->name('tracking.refreshServices');
-    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}','TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
+    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}', 'TrackingController@updateState')->name('tracking.updateState');
+    Route::post('/tracking/updatePaidState', 'TrackingController@updatePaidState')->name('tracking.updatePaidState');
+    Route::get('/tracking/refreshServices/{centre_id}', 'TrackingController@refreshServices')->name('tracking.refreshServices');
+    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}', 'TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
     Route::get('/tracking/exportForm', 'TrackingController@exportForm')->name('tracking.exportForm');
     Route::post('/tracking/export', 'TrackingController@export')->name('tracking.export');
     Route::get('/tracking/deleteForm', 'TrackingController@deleteForm')->name('tracking.deleteForm');
@@ -95,7 +98,6 @@ Route::middleware(['check-permission'])->group(function () {
 
 
     Route::any('/notifications/index', 'NotificationController@index')->name('notifications.index');
-
 });
 
 Route::middleware(['check-admin-permission'])->group(function () {
@@ -116,3 +118,26 @@ Route::get('/getSales', 'HomeController@getSales')->name('home.getSales');
 Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets');
 
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
+
+
+//A3API
+Route::prefix('a3api')->group(function() {
+    Route::get('/a3', 'A3Controller@index')->name('a3');
+    Route::get('/centres/{companyCode}', 'A3Controller@getCentres')->name('centres');
+    Route::get('/employees/{companyCode}/{workplaceCode}', 'A3Controller@getEmployees')->name('employees');
+    Route::get('/allemployees', 'A3Controller@getAllEmployees')->name('allemployees');
+    Route::get('/jobTitle/{companyCode}/{employeeCode}', 'A3Controller@getJobTitle')->name('jobTitle');
+    Route::get('/contactData/{companyCode}/{employeeCode}', 'A3Controller@getContactData')->name('contactData');
+    Route::get('/hiringData/{companyCode}/{employeeCode}', 'A3Controller@getHiringData')->name('hiringData');
+    Route::get('/workplace/{companyCode}/{workplaceCode}', 'A3Controller@getCentreName')->name('workplace');
+    Route::get('/token', 'A3Controller@refreshToken')->name('token');
+});
+
+
+// Route::get('/a3', 'A3Controller@index')->name('a3');
+// Route::get('/employees', 'A3Controller@getEmployee')->name('employees');
+// Route::get('/token', 'A3Controller@refreshToken')->name('token');
+
+// Route::fallback(function () {
+//     return response()->json(['error' => 'No encontrado'], 404);
+//   });

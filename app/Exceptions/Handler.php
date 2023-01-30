@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Response;
+use Illuminate\Auth\AuthenticationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -49,12 +51,30 @@ class Handler extends ExceptionHandler
      *
      * @throws \Throwable
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $e)
     {
-        if ($exception instanceof MyCustomException) {
-            Redirect::back()->with('error', 'Sin permisos'); 
+        if ($e instanceof AuthenticationException) {
+            return response()->json(
+                [
+                    'type' => 'error',
+                    'status' => Response::HTTP_UNAUTHORIZED,
+                    'message' => 'Access Token expires',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
         }
+    
+        return parent::render($request, $e);if ($e instanceof AuthenticationException) {
+        return response()->json(
+            [
+                'type' => 'error',
+                'status' => Response::HTTP_UNAUTHORIZED,
+                'message' => 'Access Token expires',
+            ],
+            Response::HTTP_UNAUTHORIZED
+        );
+    }
 
-        return parent::render($request, $exception);
+    return parent::render($request, $e);
     }
 }
