@@ -48,10 +48,10 @@ class A3Centre extends Model
         return $centres;
     }
 
-    public function scopeGetPDICentre($query,$ea3)
+    public function scopeGetPDICentre($query,$companyCode, $workplaceCode)
     {
 
-        $centreId = $query->where(['code_business' => $ea3->companyCode, 'code_centre' => $ea3->workplaceCode])
+        $centreId = $query->where(['code_business' => $companyCode, 'code_centre' => $workplaceCode])
             ->first();
 
         return !empty($centreId) ? $centreId->centre_id : null;

@@ -10,8 +10,7 @@ class A3Employee extends Model
     protected $table = 'a3_employees';
 
     protected $fillable = [
-        'employeeId'
-        , 'employeeCode'
+         'employeeCode'
         , 'completeName'
         , 'identifierNumber'
         , 'jobTitleDescription'

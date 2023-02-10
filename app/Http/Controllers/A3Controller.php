@@ -24,11 +24,19 @@ class A3Controller extends Controller
         return A3Centre::getA3Centres($companyCode);;
     }
 
+    public function getAuthCode()
+    {
+        return $this->a3service->getAuthCode();
+    }
     public function refreshToken()
     {
         return $this->a3service->refreshToken();
     }
 
+    public function getPages($companyCode, $workplaceCode)
+    {
+        return $this->a3service->getPages($companyCode,$workplaceCode);
+    }
     public function getEmployees($companyCode, $workplaceCode)
     {
         return $this->a3service->getEmployees($companyCode,$workplaceCode);

@@ -16,8 +16,7 @@ class CreateA3EmployeesTable extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('a3_employees', function (Blueprint $table) {
-            $table->id();
-            $table->string('employeeId');
+            $table->increments('id')->unsigned();
             $table->string('employeeCode');
             $table->string('completeName');
             $table->string('identifierNumber');

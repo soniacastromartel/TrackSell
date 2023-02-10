@@ -125,18 +125,18 @@ Route::prefix('a3api')->group(function() {
     Route::get('/a3', 'A3Controller@index')->name('a3');
     Route::get('/centres/{companyCode}', 'A3Controller@getCentres')->name('centres');
     Route::get('/employees/{companyCode}/{workplaceCode}', 'A3Controller@getEmployees')->name('employees');
+    Route::get('/pages/{companyCode}/{workplaceCode}', 'A3Controller@getPages')->name('pages');
     Route::get('/allemployees', 'A3Controller@getAllEmployees')->name('allemployees');
     Route::get('/jobTitle/{companyCode}/{employeeCode}', 'A3Controller@getJobTitle')->name('jobTitle');
     Route::get('/contactData/{companyCode}/{employeeCode}', 'A3Controller@getContactData')->name('contactData');
     Route::get('/hiringData/{companyCode}/{employeeCode}', 'A3Controller@getHiringData')->name('hiringData');
     Route::get('/workplace/{companyCode}/{workplaceCode}', 'A3Controller@getCentreName')->name('workplace');
-    Route::get('/token', 'A3Controller@refreshToken')->name('token');
+    Route::get('/refreshtoken', 'A3Controller@refreshToken')->name('refreshtoken');
+    Route::get('/code', 'A3Controller@getAuthCode')->name('code');
 });
 
 
-// Route::get('/a3', 'A3Controller@index')->name('a3');
-// Route::get('/employees', 'A3Controller@getEmployee')->name('employees');
-// Route::get('/token', 'A3Controller@refreshToken')->name('token');
+
 
 // Route::fallback(function () {
 //     return response()->json(['error' => 'No encontrado'], 404);
