@@ -340,8 +340,15 @@ class EmployeeController extends DefaultLoginController //Controller
             $employee = Employee::find($idEmployee); 
 
             if (!empty($employee->dni)){
-                Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con DNI: " . $employee->dni);
-                Artisan::call('a3empleados:cron', ['dni' => $employee->dni]); 
+                if(!empty($employee->name)){
+                    Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con DNI: " . $employee->dni);
+                    Artisan::call('a3empleados:cron', ['dni' => $employee->dni, 'name' => $employee ->name]); 
+
+                }else{
+                    Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con DNI: " . $employee->dni);
+                    Artisan::call('a3empleados:cron', ['dni' => $employee->dni]); 
+                }
+               
             } else {
                 Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con Nombre: " . $employee->name);
                 Artisan::call('a3empleados:cron', ['name' => $employee->name]); 

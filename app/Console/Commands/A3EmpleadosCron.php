@@ -91,7 +91,7 @@ class A3EmpleadosCron extends Command
                 $employeeFound = null;
 
                 foreach ($empleadosPDI as $epdi) {
-                   
+
                     if ($ea3->completeName == $epdi->nombre_a3) {
                         $employeeFound = $epdi;
                     } else {
@@ -111,9 +111,6 @@ class A3EmpleadosCron extends Command
                             $coincidenciaPrimerNombre  !== false ||
                             $coincidenciaSegundoNombre !== false
                         ) && (stripos($nameEmployee, $apellidos) !== false)) {
-                            if ($epdi->id == 1448){
-                                $epdi->id ;
-                            }
                             $employeeFound = $epdi;
                             break;
                         }
@@ -121,8 +118,8 @@ class A3EmpleadosCron extends Command
                 }
 
                 if (!empty($employeeFound)) {
-                    if ($employeeFound->force_centre_id === 1 && $ea3->dropDate == null ) {
-                         continue;  // No forzamos centro de empleado que lo tiene forzado
+                    if ($employeeFound->force_centre_id === 1 && $ea3->dropDate == null) {
+                        $ea3->pdiCentre = $employeeFound->centre_id; //si tiene el centro forzado, dejamos el que tiene
                     }
                     $eToUpdate = Employee::find($employeeFound->id);
                     $changes = $this->updatePDIEmployees($eToUpdate, $ea3);
@@ -165,10 +162,7 @@ class A3EmpleadosCron extends Command
                         } else {
                             if (!empty(($centreId)) && empty($ea3->dropDate)) {
                                 EmployeeHistory::create([
-                                    'employee_id'          => $employeeFound->id
-                                    , 'rol_id'               => $employeeFound->rol_id
-                                    , 'centre_id'            => $centreId
-                                    , 'contract_startdate'   => $ea3->enrolmentDate
+                                    'employee_id'          => $employeeFound->id, 'rol_id'               => $employeeFound->rol_id, 'centre_id'            => $centreId, 'contract_startdate'   => $ea3->enrolmentDate
                                 ]);
                             }
                         }
@@ -252,6 +246,10 @@ class A3EmpleadosCron extends Command
             }
 
 
+            /** Asignar centro principal */
+            $this->setLastCenter($updatedEmployeeIDS);
+            //FIXME... quitarlo
+            $this->setLastCenter($deletedEmployeeIDS);
 
             \Log::channel('a3')->info("Se han actualizado " . $contUpdated . " empleados");
             \Log::channel('a3')->info("Se han dado de baja " . $contDeleted .  " empleados");
@@ -299,5 +297,52 @@ class A3EmpleadosCron extends Command
         }
 
         return $eToUpdate->getChanges();
+    }
+
+    function setLastCenter($updatedEmployeeIDS)
+    {
+        \Log::channel('a3')->info("Iniciando la asignación inicial a empleados multicentro");
+        foreach ($updatedEmployeeIDS as $employeeID) {
+
+            $eHistory = EmployeeHistory::where(['employee_id' => $employeeID])->get();
+
+            $minDate = null;
+            $centre_id = null;
+            foreach ($eHistory as $eh) {
+                if ((empty($minDate) || $minDate > $eh->contract_startdate) && empty($eh->cancellation_date)) {
+                    $minDate = $eh->contract_startdate;
+                    $centre_id = $eh->centre_id;
+                }
+            }
+            if (!empty($centre_id)) {
+                $employee = Employee::where(['id' =>  $employeeID])->first();
+                $centreA3 = A3Centre::where(['centre_id' => $centre_id])
+                    ->first();
+
+                $codEmployee = A3Employee::where([
+                    'companyCode'             => $centreA3->code_business, 'enrolmentDate' => $minDate, 'identifierNumber'                       => $employee->dni
+                ])->first();
+                if ($employee->force_centre_id === 1) {
+                    continue;  // No forzamos centro de empleado que lo tiene forzado
+                }
+
+                if (!empty($centreA3)) {
+                    $employee->update([
+                        'cod_business' => $centreA3->code_business, 'centre_id'   => $centre_id
+                    ]);
+
+                    if (!empty($codEmployee)) {
+                        $employee->update(['cod_employee' => $codEmployee->employeeCode]);
+                    }
+
+                    \Log::channel('a3')->info("Empleado Multicentro: " . $employee->name);
+                    //\Log::channel('a3')->info( $employee->toArray()); 
+
+                } else {
+                    \Log::channel('a3')->info("No se encuentra centro A3 para centro PDI con id:" . $centre_id);
+                }
+            }
+        }
+        \Log::channel('a3')->info("Finalizado la asignación inicial a empleados multicentro");
     }
 }
