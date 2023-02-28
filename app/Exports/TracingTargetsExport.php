@@ -47,12 +47,19 @@ class TracingTargetsExport implements FromCollection, WithStyles, WithEvents
     {
         return [
             BeforeExport::class => function(BeforeExport $event){
+
+
+                if (isset($this->filters['type']) && $this->filters['type']== 'only'){
+                    $path =storage_path('templates').'/tracing_targets-'.$this->filters['type'].'.xls';
+                } else{
+                    $path= storage_path('templates').'/tracing_targets-'.$this->filters['yearTarget'].'.xls';
+                }
                 
-                $existFile = file_exists(storage_path('templates').'/tracing_targets-'.$this->filters['year'].'.xls'); 
+                $existFile = file_exists($path); 
                 if (!$existFile) {
                     throw new Exception ( 'error no se ha encontrado fichero de exportación'); 
                 }
-                $event->writer->reopen(new \Maatwebsite\Excel\Files\LocalTemporaryFile(storage_path('templates/tracing_targets-'.$this->filters['year'].'.xls')),Excel::XLS);
+                $event->writer->reopen(new \Maatwebsite\Excel\Files\LocalTemporaryFile($path),Excel::XLS);
                 $this->spreadSheet = $event->writer->getDelegate();
                 
                 $this->generateContent($this->target,$event); 
@@ -98,7 +105,7 @@ class TracingTargetsExport implements FromCollection, WithStyles, WithEvents
         $filaCont = $this->rows+1; 
         foreach ($target[$centre] as $i =>$targetRow) {
             
-            $sheet->setCellValue('D3' , $this->filters['year']);
+            $sheet->setCellValue('D3' , $this->filters['yearTarget']);
             $sheet->setCellValue('B'.($this->rows) , $centre);
             $range = range('E', 'P');
             if (empty($target[$centre][$i])) {

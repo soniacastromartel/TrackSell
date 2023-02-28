@@ -19,35 +19,19 @@ class A3Service
     public $expires_at;
     public $refresh_token;
     public $isExpired;
-    public $totalPages;
+    //public $totalPages;
 
     public function __construct()
     {
         $this->refreshToken();
     }
 
-   /**
- * Function to get the authentication code
- */
-    public function getAuthCode(){
-        $query = http_build_query([
-                    'client_id' => env('OAUTH_CLIENTNAME'),
-                    'response_type' => 'code',
-                    'redirect_uri' => env('REDIRECT_URI'),
-                    'scope' =>'offline_access+openid+IDInfo+WK.ES.A3EquipoContex',
-                    'state' => 'GUID',
-                     'nonce' => 'GUID' 
-                ]);
-        // $url= env('AUTH_ENDPOINT') .'?' . $query;
-        $url= 'https://login.wolterskluwer.eu/auth/core/connect/authorize?client_id=WK.ES.A3WebApi.00267&response_type=code&redirect_uri=http://localhost:53971/Login&scope=offline_access+openid+IDInfo+WK.ES.A3EquipoContex&state=GUID&nonce=GUID';
-        return redirect($url);
-
-    }
 
     /**
- * Function to get the access token
- */
-    public function getToken ($code){
+     * Function to get the access token
+     */
+    public function getToken($code)
+    {
         try {
             $url = env('TOKEN_ENDPOINT');
             $response = Http::asForm()->post($url, [
@@ -80,9 +64,9 @@ class A3Service
         }
     }
 
-/**
- * Function to refresh the access token
- */
+    /**
+     * Function to refresh the access token
+     */
     public function refreshToken()
     {
         try {
@@ -91,8 +75,7 @@ class A3Service
                 'grant_type' => 'refresh_token',
                 'client_id' => env('OAUTH_CLIENTNAME'),
                 'client_secret' => env('OAUTH_CLIENTSECRET'),
-                'refresh_token' => '31fa8ef16fd0516e52e956967cc86278b814b397d3eb96d1ab12ce8207d7dd00'
-
+                'refresh_token' => env('REFRESH_TOKEN')
             ]);
             $this->access_token = $response['access_token'];
             $this->expires_in = $response['expires_in'];
@@ -134,11 +117,8 @@ class A3Service
             \Log::channel('a3')->info('Token refrescado');
         }
 
-        $url = env('API_ENDPOINT') . $companyCode . '/employees';
-        $response = Http::withHeaders([
-            'authorization' => 'Bearer ' . $this->access_token,
-            'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-        ])->get($url, [
+        $url = $companyCode . '/employees';
+        $response = Http::a3($this->access_token)->get($url, [
             'pageNumber' => 1,
             'pageSize' => 600,
             'filter' => 'workplaceCode eq ' . $workplaceCode . ' and dropDate eq null or dropDate ge 2019-01-01'
@@ -155,55 +135,9 @@ class A3Service
     public function getEmployees($companyCode, $workplaceCode, $pageNumber)
     {
         try {
+            $url = $companyCode . '/employees';
 
-            // \Log::channel('a3')->info($this->expires_at);
-            // \Log::channel('a3')->info($this->getTokenExpired($this->expires_at));
-
-            // if ($this->isExpired) {
-            //     $this->refreshToken();
-            //     \Log::channel('a3')->info($this->isExpired);
-            //     \Log::channel('a3')->info('Token refrescado');
-            // }
-
-            // $this->totalPages = $this->getPages($companyCode, $workplaceCode);
-            // $result = [];
-
-            $url = env('API_ENDPOINT') . $companyCode . '/employees';
-
-            // if ($this->totalPages > 1) {
-            //     for ($i = 0; $i <= $this->totalPages - 1; $i++) {
-            //         $response = Http::withHeaders([
-            //             'authorization' => 'Bearer ' . $this->access_token,
-            //             'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            //         ])->get($url, [
-            //             'pageNumber' => $i + 1,
-            //             'pageSize' => 1000,
-            //             'filter' => 'workplaceCode eq ' . $workplaceCode,
-
-            //         ]);
-
-            //         $result[] = $response->json();
-            //     }
-            //     return $result;
-            // } else {
-            //     $response = Http::withHeaders([
-            //         'authorization' => 'Bearer ' . $this->access_token,
-            //         'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            //     ])->get($url, [
-            //         'pageNumber' => 1,
-            //         'pageSize' => 600,
-            //         'filter' => 'workplaceCode eq ' . $workplaceCode,
-            //         'orderBy' => 'employeeCode asc',
-
-            //     ]);
-            //     return $response->json();
-            // }
-
-
-            $response = Http::withHeaders([
-                'authorization' => 'Bearer ' . $this->access_token,
-                'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            ])->get($url, [
+            $response = Http::a3($this->access_token)->get($url, [
                 'pageNumber' => $pageNumber,
                 'pageSize' => 1000,
                 'filter' => 'workplaceCode eq ' . $workplaceCode . ' and dropDate eq null or dropDate ge 2019-01-01',
@@ -231,12 +165,17 @@ class A3Service
      */
     public function getJobTitle($companyCode = null, $employeeCode)
     {
+
+        $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+        if ($this->isExpired) {
+            $this->refreshToken();
+            \Log::channel('a3')->info($this->isExpired);
+            \Log::channel('a3')->info('Token refrescado');
+        }
+
         try {
-            $url = env('API_ENDPOINT') . $companyCode . '/employees/' . $employeeCode . '/jobtitle';
-            $response = Http::withHeaders([
-                'authorization' => 'Bearer ' . $this->access_token,
-                'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            ])->get($url);
+            $url = $companyCode . '/employees/' . $employeeCode . '/jobtitle';
+            $response = Http::a3($this->access_token)->get($url);
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
             ], 200);
@@ -261,12 +200,18 @@ class A3Service
      */
     public function getContactData($companyCode = null, $employeeCode)
     {
+
         try {
-            $url = env('API_ENDPOINT') . $companyCode . '/employees/' . $employeeCode . '/contactdata/personal';
-            $response = Http::withHeaders([
-                'authorization' => 'Bearer ' . $this->access_token,
-                'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            ])->get($url);
+            $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+            if ($this->isExpired) {
+                $this->refreshToken();
+                \Log::channel('a3')->info($this->isExpired);
+                \Log::channel('a3')->info('Token refrescado');
+            }
+
+
+            $url =  $companyCode . '/employees/' . $employeeCode . '/contactdata/personal';
+            $response = Http::a3($this->access_token)->get($url);
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
             ], 200);
@@ -291,11 +236,16 @@ class A3Service
     public function getHiringData($companyCode = null, $employeeCode)
     {
         try {
-            $url = env('API_ENDPOINT') . $companyCode . '/employees/' . $employeeCode . '/hiringdates';
-            $response = Http::withHeaders([
-                'authorization' => 'Bearer ' . $this->access_token,
-                'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            ])->get($url);
+
+            $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+            if ($this->isExpired) {
+                $this->refreshToken();
+                \Log::channel('a3')->info($this->isExpired);
+                \Log::channel('a3')->info('Token refrescado');
+            }
+
+            $url = $companyCode . '/employees/' . $employeeCode . '/hiringdates';
+            $response = Http::a3($this->access_token)->get($url);
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
             ], 200);
@@ -321,11 +271,16 @@ class A3Service
     public function getCentreName($companyCode = null, $workplaceCode = null)
     {
         try {
-            $url = env('API_ENDPOINT') . $companyCode . '/workplaces';
-            $response = Http::withHeaders([
-                'authorization' => 'Bearer ' . $this->access_token,
-                'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            ])->get($url, [
+
+            $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+            if ($this->isExpired) {
+                $this->refreshToken();
+                \Log::channel('a3')->info($this->isExpired);
+                \Log::channel('a3')->info('Token refrescado');
+            }
+
+            $url =  $companyCode . '/workplaces';
+            $response = Http::a3($this->access_token)->get($url, [
                 'pageNumber' => 1,
                 'pageSize' => 1000,
                 'filter' => 'workplaceCode eq ' . $workplaceCode
@@ -417,11 +372,5 @@ class A3Service
         return $this->isExpired;
     }
 
-    // public function tokenExpired()
-    // {
-    //     if (Carbon::parse($this->attributes['expires_in']) < Carbon::now()) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
+   
 }

@@ -49,7 +49,7 @@ class LeagueService {
                         }
                     }
 
-                    $actualCentre = Centre::getIdCentre($fr[0]->centre_id);
+                    $actualCentre = Centre::getCentreByField($fr[0]->centre_id);
                     $clasification['data'][$i] = [
                         'centre'=>$actualCentre[0]->name,
                         'points'=>$totalPoints,
@@ -152,7 +152,7 @@ class LeagueService {
             foreach ( $yearGroupCentre as $center4Months) { 
                 $c4m = $center4Months;
                 foreach ( $center4Months as $centreMonth ) { 
-                    $centreSearch = Centre::getIdCentre($centreMonth->centre_id);
+                    $centreSearch = Centre::getCentreByField($centreMonth->centre_id);
                     $objCumplir = $targetService->getTarget($centreSearch, $centreMonth->month, $year);
 
                     if ($centreMonth->month != $objCumplir[$centreSearch[0]->id]->month) {
@@ -180,7 +180,7 @@ class LeagueService {
     {
         $tPoints = 0;
         try{
-            $centre = Centre::getIdCentre($request['centre']);
+            $centre = Centre::getCentreByField($request['centre']);
             $dataRes = $this->groupData($request);
 
             $months = env('MONTHS_VALUES');

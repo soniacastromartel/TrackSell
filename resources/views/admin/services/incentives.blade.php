@@ -101,7 +101,7 @@
                     <th>Incentivo Objetivo 2</th>
                     <th>Bonus Objetivo 1</th>
                     <th>Bonus Objetivo 2</th>
-                    <th>Fecha baja</th>
+                    <!-- <th>Fecha baja</th> -->
                     <th>Acciones </th>
                 </tr>
             </thead>
@@ -158,10 +158,10 @@
         data: 'bonus_obj2',
         name: 'bonus_obj2'
     });
-    columnsFilled.push({
-        data: 'cancellation_date',
-        name: 'cancellation_date'
-    });
+    // columnsFilled.push({
+    //     data: 'cancellation_date',
+    //     name: 'cancellation_date'
+    // });
     columnsFilled.push({
         data: 'action',
         name: 'action'

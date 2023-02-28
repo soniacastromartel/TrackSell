@@ -49,12 +49,12 @@ class Centre extends Model
          * Busca un centro por el nombre o id recibido
          * 
          */
-        public function scopeGetIdCentre($query, $centre) 
+        public function scopeGetCentreByField($query, $field) 
         {
-            if (!is_numeric($centre)) {
-                return $query->where('name', $centre)->get();
+            if (!is_numeric($field)) {
+                return $query->where('name', $field)->get();
             } else {
-                return $query->where('id', $centre)->get();
+                return $query->where('id', $field)->get();
             }
         }
         /**

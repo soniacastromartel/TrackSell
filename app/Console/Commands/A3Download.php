@@ -73,25 +73,16 @@ class A3Download extends Command
                             if ($employees != null) {
                                 foreach ($employees as $employee) {
                                     $employee = (object) [
-                                        // "employeeId" => $employee['employeeId'],
                                         "employeeCode" => $employee['employeeCode'],
                                         "completeName" => $employee['completeName'],
                                         "identifierNumber" => $employee['identifierNumber'],
-                                        // "dropDate" =>$employee['dropDate'],
                                         "workplaceCode" => $employee['workplaceCode'],
     
                                     ];
                                     $a3employee = $employee;
-                                    // $centreName = $this->a3service->getCentreName($companyCode, $employee->workplaceCode);
                                     $job = $this->a3service->getJobTitle($companyCode, $employee->employeeCode);
                                     $personalData = $this->a3service->getContactData($companyCode, $employee->employeeCode);
                                     $hiringData = $this->a3service->getHiringData($companyCode, $employee->employeeCode);
-    
-                                    // if ($employee->dropDate == '0001-01-01T00:00:00Z' ||  $employee->dropDate == '0001-01-01') {
-                                    //     $employee->dropDate = null;
-                                    // }else{
-                                    //     $employee->dropDate  =substr($employee->dropDate, 0, strpos($employee->dropDate, 'T'));
-                                    // }
     
                                     if (is_array($job)) {
                                         $a3employee->jobTitleDescription = $job['jobTitleDescription'];
@@ -126,7 +117,6 @@ class A3Download extends Command
                                     $a3employee->workplaceName = Centre::getCentreName($a3employee->pdiCentre);
     
                                     $a3employee = (array) $a3employee;
-                                    // A3Employee::create($a3employee);
                                     A3Employee::create($a3employee);
                                     \Log::channel('a3')->info("Creado Empleado " . $a3employee['completeName']);
                                 }
@@ -151,7 +141,6 @@ class A3Download extends Command
         } catch (\Throwable $e) {
             \Log::channel('a3')->info("Error");
             \Log::channel('a3')->info($e);
-            // return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar empleados, contacte con el administrador');
         }
     }
 }

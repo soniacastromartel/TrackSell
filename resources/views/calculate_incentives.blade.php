@@ -83,13 +83,11 @@
                                         @if ($user->rol_id != 1)
                                         <span class="m-3"></span>
                                         @endif
-                                        @if ($user->rol_id == 1)
                                         <div class="form-group col-sm-7" >
                                             <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
                                                 <span class="material-icons mr-1">download</span>{{ __('Descargar Seguimiento') }}
                                             </button>
                                         </div>
-                                         @endif
                                         <!-- <div class="form-group col-sm-7" >
                                             <button id="btnTargetsPreview" class="file-upload btn btn-block btn-primary">
                                                 <span class="material-icons mr-1">visibility</span>{{ __('Ver Seguimiento') }}

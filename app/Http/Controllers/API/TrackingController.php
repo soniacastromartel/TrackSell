@@ -182,8 +182,8 @@ class TrackingController extends BaseController {
         $params = $request->all();
         $trackingSearch = Tracking::where('id', '=', $params['id'])->first();
         $collection = [];
-        $collection['centre'] = Centre::getIdCentre($trackingSearch['centre_id']);
-        $collection['centre_employee_id'] = Centre::getIdCentre($trackingSearch['centre_employee_id']);
+        $collection['centre'] = Centre::getCentreByField($trackingSearch['centre_id']);
+        $collection['centre_employee_id'] = Centre::getCentreByField($trackingSearch['centre_employee_id']);
         $collection['service'] = Service::GetService4Id($trackingSearch['service_id']);
 
         $collection['category'] = DB::table('service_categories')

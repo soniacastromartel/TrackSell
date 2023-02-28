@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Target;
 use App\Centre;
 use App\Employee;
+use Auth;
 use DB;
 use App\Imports\TargetsImport;
 use App\Imports\IncentiveImport;
@@ -22,6 +23,9 @@ use Exception;
 class TargetController extends Controller
 {
 
+    public $user;
+    public $centreId;
+
     public function __construct()
     {
         $this->user = session()->get('user');
@@ -29,6 +33,10 @@ class TargetController extends Controller
 
     public function index()
     {
+        $this->user = session()->get('user');
+        $this->centreId = $this->user['centre_id'];
+
+
         $title = 'Calculadora de incentivos';
         $centres = Centre::getCentresActive();
         $employees = Employee::getEmployeesActive();
@@ -36,7 +44,7 @@ class TargetController extends Controller
         return view(
             'calculate_incentives',
             [
-                'title'      => $title, 'centres'   => $centres, 'employees' => $employees, 'user'      => session()->get('user')
+                'title'      => $title, 'centres'   => $centres, 'employees' => $employees, 'user'      => $this->user
             ]
         );
     }
@@ -212,17 +220,22 @@ class TargetController extends Controller
     public function tracingTargets(Request $request)
     {
         try {
+            $orderIslands = ['HOSPITAL ICOT CIUDAD DE TELDE', 'GRAN CANARIA', 'TENERIFE', 'LANZAROTE', 'FUERTEVENTURA'];
+
+            $params= $request -> all();
             $targetService = new TargetService();
-            //$currentMonth = date('m'); 
+            if ($params['type']=='only') {
+                $centres = Centre:: getCentreByField( $params['centreId']);
+            } else {
+                $centres = DB::table('centres')
+                    ->whereNull('cancellation_date')
+                    ->orderByRaw(\DB::raw("FIELD(island, '" . implode('\',\'', $orderIslands) . "' )"))
+                    ->get();
+            }
             $currentYear = isset($request->yearTarget) ? $request->yearTarget : date('Y');
             $targetData = [];
 
-            $orderIslands = ['HOSPITAL ICOT CIUDAD DE TELDE', 'GRAN CANARIA', 'TENERIFE', 'LANZAROTE', 'FUERTEVENTURA'];
-            $centres = DB::table('centres')
-                ->whereNull('cancellation_date')
-                ->orderByRaw(\DB::raw("FIELD(island, '" . implode('\',\'', $orderIslands) . "' )"))
-                ->get();
-
+            
             $month = 1;
             $params['centre'] = $centres;
 
@@ -300,50 +313,53 @@ class TargetController extends Controller
 
             $totalTargetICOT = [];
 
-            //$orderIslands = ['HOSPITAL ICOT CIUDAD DE TELDE', 'GRAN CANARIA', 'TENERIFE', 'LANZAROTE', 'FUERTEVENTURA'];
-            //unset($orderIslands[0]);
-            foreach ($orderIslands as $island) {
-                if (isset($totalTargetByIsland[$island])) {
-                    foreach ($totalTargetByIsland[$island] as $year => $totalTargetMonthYear) {
-                        foreach ($totalTargetMonthYear as $month => $totalTarget) {
-                            if (!isset($totalByIsland[$island])) {
-                                $totalByIsland[$island] = [];
-                                $totalByIsland[$island][$month] = [];
-                            }
-                            $totalByIsland[$island][$month]['salesPerEmployee']  = $totalTarget['cont_employees'] > 0 ? $totalTarget['vc'] / $totalTarget['cont_employees']  : 0;
-                            $totalByIsland[$island][$month]['incentive_percent'] = $totalTarget['vc'] > 0             ? $totalTarget['total_incentive'] / $totalTarget['vc'] : 0;
+            if($params['type']!='only'){
 
-                            if (!isset($targetData[$island])) {
-                                $targetData[$island] = [];
-                                $targetData[$island][$year] = [];
-                            }
-                            $targetData[$island][$year][$month] = [];
-                            $targetData[$island][$year][$month] = $totalTarget;
-                            $targetData[$island][$year][$month]['salesPerEmployee']  = $totalByIsland[$island][$month]['salesPerEmployee'];
-                            $targetData[$island][$year][$month]['incentive_percent'] = $totalByIsland[$island][$month]['incentive_percent'];
-
-                            if (!isset($totalTargetICOT[$year])) {
-                                $totalTargetICOT[$year] = [];
-                            }
-                            if (!isset($totalTargetICOT[$year][$month])) {
-                                $totalTargetICOT[$year][$month] = [
-                                    'obj_vc'              => 0, 'obj_vp'            => 0, 'vc'                => 0, 'vp'                => 0, 'cont_employees'    => 0, 'salesPerEmployee'  => 0, 'total_incentive'   => 0, 'incentive_percent' => 0
-                                ];
-                            }
-                            if ($island != 'HOSPITAL ICOT CIUDAD DE TELDE') {
-                                $totalTargetICOT[$year][$month]['obj_vc']          += $targetData[$island][$year][$month]['obj_vc'];
-                                $totalTargetICOT[$year][$month]['obj_vp']          += $targetData[$island][$year][$month]['obj_vp'];
-                                $totalTargetICOT[$year][$month]['vc']              += $targetData[$island][$year][$month]['vc'];
-                                $totalTargetICOT[$year][$month]['vp']              += $targetData[$island][$year][$month]['vp'];
-                                $totalTargetICOT[$year][$month]['cont_employees']  += $targetData[$island][$year][$month]['cont_employees'];
-                                $totalTargetICOT[$year][$month]['total_incentive'] += $targetData[$island][$year][$month]['total_incentive'];
+                foreach ($orderIslands as $island) {
+                    if (isset($totalTargetByIsland[$island])) {
+                        foreach ($totalTargetByIsland[$island] as $year => $totalTargetMonthYear) {
+                            foreach ($totalTargetMonthYear as $month => $totalTarget) {
+                                if (!isset($totalByIsland[$island])) {
+                                    $totalByIsland[$island] = [];
+                                    $totalByIsland[$island][$month] = [];
+                                }
+                                $totalByIsland[$island][$month]['salesPerEmployee']  = $totalTarget['cont_employees'] > 0 ? $totalTarget['vc'] / $totalTarget['cont_employees']  : 0;
+                                $totalByIsland[$island][$month]['incentive_percent'] = $totalTarget['vc'] > 0             ? $totalTarget['total_incentive'] / $totalTarget['vc'] : 0;
+    
+                                if (!isset($targetData[$island])) {
+                                    $targetData[$island] = [];
+                                    $targetData[$island][$year] = [];
+                                }
+                                $targetData[$island][$year][$month] = [];
+                                $targetData[$island][$year][$month] = $totalTarget;
+                                $targetData[$island][$year][$month]['salesPerEmployee']  = $totalByIsland[$island][$month]['salesPerEmployee'];
+                                $targetData[$island][$year][$month]['incentive_percent'] = $totalByIsland[$island][$month]['incentive_percent'];
+    
+                                if (!isset($totalTargetICOT[$year])) {
+                                    $totalTargetICOT[$year] = [];
+                                }
+                                if (!isset($totalTargetICOT[$year][$month])) {
+                                    $totalTargetICOT[$year][$month] = [
+                                        'obj_vc'              => 0, 'obj_vp'            => 0, 'vc'                => 0, 'vp'                => 0, 'cont_employees'    => 0, 'salesPerEmployee'  => 0, 'total_incentive'   => 0, 'incentive_percent' => 0
+                                    ];
+                                }
+                                if ($island != 'HOSPITAL ICOT CIUDAD DE TELDE') {
+                                    $totalTargetICOT[$year][$month]['obj_vc']          += $targetData[$island][$year][$month]['obj_vc'];
+                                    $totalTargetICOT[$year][$month]['obj_vp']          += $targetData[$island][$year][$month]['obj_vp'];
+                                    $totalTargetICOT[$year][$month]['vc']              += $targetData[$island][$year][$month]['vc'];
+                                    $totalTargetICOT[$year][$month]['vp']              += $targetData[$island][$year][$month]['vp'];
+                                    $totalTargetICOT[$year][$month]['cont_employees']  += $targetData[$island][$year][$month]['cont_employees'];
+                                    $totalTargetICOT[$year][$month]['total_incentive'] += $targetData[$island][$year][$month]['total_incentive'];
+                                }
                             }
                         }
                     }
                 }
             }
+            
             $totalIcot = [];
-            foreach ($totalTargetICOT as $y => $totalYear) {
+            if ($params['type']!='only'){
+                foreach ($totalTargetICOT as $y => $totalYear) {
                 foreach ($totalYear as $month => $totalTargetIcotMonthYear) {
                     $totalIcot[$y][$month] = $totalTargetICOT[$y][$month];
                     $totalIcot[$y][$month]['salesPerEmployee']  =  $totalTargetIcotMonthYear['cont_employees'] > 0 ? $totalTargetIcotMonthYear['vc'] / $totalTargetIcotMonthYear['cont_employees'] : 0;
@@ -352,6 +368,9 @@ class TargetController extends Controller
                     $targetData['GRUPO ICOT ' . $year][$year][$month] = $totalIcot[$y][$month];
                 }
             }
+
+            }
+            
             unset($targetData['LANZAROTE']);
             unset($targetData['FUERTEVENTURA']);
             unset($targetData['HOSPITAL TELDE']);
@@ -376,9 +395,23 @@ class TargetController extends Controller
     public function targetsReportDownload(Request $request)
     {
         try {
+            $this->user = session()->get('user');
+            $centreId = $this->user['centre_id'];
+
+            if (isset($centreId) && $centreId != null) {
+                $request['type']='only';
+                $request ['centreId']= $centreId;
+            }else {
+             $request['type']='full';
+            }
+
             $targetData = $this->tracingTargets($request);
-            $currentYear = isset($request->yearTarget) ? $request->yearTarget : date('Y');
-            return  Excel::download((new TracingTargetsExport($targetData, ['year' => $currentYear])), 'target.xls');
+            if (!isset($request->yearTarget)){ 
+           
+                $request ['yearTarget'] = date('Y');
+            }  
+            $data =$request -> all();
+            return  Excel::download((new TracingTargetsExport($targetData, $data)), 'target.xls');
         } catch (\Exception $e) {
 
             return response()->json([
@@ -396,21 +429,20 @@ class TargetController extends Controller
     {
         try {
             $targetData = $this->tracingTargets($request);
-            $target= collect($targetData);
-            foreach($target as $t) {
-                $t=$t;
-                $year= $t['2022'];
-                foreach($year as $a) {
-                    $objVC= $a['obj_vc'];
-                    $objVP= $a['obj_vp'];
-                    $vc= $a['vc'];
-                    $vp= $a['vp'];
-                    $contEmployees= $a['cont_employees'];
-                    $salesPerEmployee= $a['salesPerEmployee'];
-                    $totalIncentive= $a['total_incentive'];
-                    $incentivePercent= $a['incentive_percent'];
+            $target = collect($targetData);
+            foreach ($target as $t) {
+                $t = $t;
+                $year = $t['2022'];
+                foreach ($year as $a) {
+                    $objVC = $a['obj_vc'];
+                    $objVP = $a['obj_vp'];
+                    $vc = $a['vc'];
+                    $vp = $a['vp'];
+                    $contEmployees = $a['cont_employees'];
+                    $salesPerEmployee = $a['salesPerEmployee'];
+                    $totalIncentive = $a['total_incentive'];
+                    $incentivePercent = $a['incentive_percent'];
                 }
-
             }
             // return DataTables::of(collect($targetData))
             //     ->addIndexColumn()

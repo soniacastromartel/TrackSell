@@ -124,7 +124,7 @@ Route::get('/generateVersion', 'VersionAppController@generateVersion');
 Route::prefix('a3api')->group(function() {
     Route::get('/a3', 'A3Controller@index')->name('a3');
     Route::get('/centres/{companyCode}', 'A3Controller@getCentres')->name('centres');
-    Route::get('/employees/{companyCode}/{workplaceCode}', 'A3Controller@getEmployees')->name('employees');
+    Route::get('/employees/{companyCode}/{workplaceCode}/{pagenumber}', 'A3Controller@getEmployees')->name('employees');
     Route::get('/pages/{companyCode}/{workplaceCode}', 'A3Controller@getPages')->name('pages');
     Route::get('/allemployees', 'A3Controller@getAllEmployees')->name('allemployees');
     Route::get('/jobTitle/{companyCode}/{employeeCode}', 'A3Controller@getJobTitle')->name('jobTitle');
@@ -132,7 +132,7 @@ Route::prefix('a3api')->group(function() {
     Route::get('/hiringData/{companyCode}/{employeeCode}', 'A3Controller@getHiringData')->name('hiringData');
     Route::get('/workplace/{companyCode}/{workplaceCode}', 'A3Controller@getCentreName')->name('workplace');
     Route::get('/refreshtoken', 'A3Controller@refreshToken')->name('refreshtoken');
-    Route::get('/code', 'A3Controller@getAuthCode')->name('code');
+    Route::get('/token', 'A3Controller@getAuthCode')->name('code');
 });
 
 

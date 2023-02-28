@@ -94,22 +94,22 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        // try {
-        //     Http::macro('a3', function ($access_token) {
-        //         return Http::withHeaders([
-        //             'authorization' => 'Bearer ' . $access_token,
-        //             'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-        //         ])->baseUrl( env('API_ENDPOINT'));
-        //     });
-        // } catch (\Exception $e) {
-        //     return response()->json(
-        //         [
-        //             'success' => 'false',
-        //             'errors'  => $e->getMessage(),
-        //         ],
-        //         400
-        //     );
-        // }
+        try {
+            Http::macro('a3', function ($access_token) {
+                return Http::withHeaders([
+                    'authorization' => 'Bearer ' . $access_token,
+                    'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
+                ])->baseUrl( env('API_ENDPOINT').'/');
+            });
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'success' => 'false',
+                    'errors'  => $e->getMessage(),
+                ],
+                400
+            );
+        }
        
 
     }

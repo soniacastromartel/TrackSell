@@ -332,7 +332,8 @@ class ServiceController extends Controller
                     if (!empty($params['service'])) {
                         $q->where('services.id',$params['service'] );
                     }
-                });
+                })
+                ->whereNull('service_prices.cancellation_date');
                 
                 return DataTables::of($services)
                 ->addIndexColumn()

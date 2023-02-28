@@ -27,8 +27,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('a3empleados:cron')->everyMinute();
-        $schedule->command('a3:download')->daily();
-        $schedule->command('a3empleados:cron')->dailyAt('07:00');
+        $schedule->command('a3:download');
+        $schedule->command('a3empleados:cron');
     }
 
     /**

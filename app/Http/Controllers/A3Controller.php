@@ -24,9 +24,10 @@ class A3Controller extends Controller
         return A3Centre::getA3Centres($companyCode);;
     }
 
-    public function getAuthCode()
+   
+    public function getToken($code)
     {
-        return $this->a3service->getAuthCode();
+        return $this->a3service->getToken($code);
     }
     public function refreshToken()
     {
@@ -37,19 +38,11 @@ class A3Controller extends Controller
     {
         return $this->a3service->getPages($companyCode,$workplaceCode);
     }
-    public function getEmployees($companyCode, $workplaceCode)
+    public function getEmployees($companyCode, $workplaceCode, $pageNumber)
     {
-        return $this->a3service->getEmployees($companyCode,$workplaceCode);
+        return $this->a3service->getEmployees($companyCode,$workplaceCode,$pageNumber);
     }
 
-    public function getAllEmployees()
-    {
-        // $centres = $this->index();
-        // foreach ($centres as $companyCode) {
-        //     $employees[] = $this->getEmployees($companyCode);
-        // }
-        // return $employees;
-    }
 
     public function getJobTitle($companyCode = null, $employeeCode)
     {

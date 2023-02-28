@@ -329,34 +329,27 @@
     var day = date.getDate();
     var month = date.getMonth()+1;
     var year = date.getFullYear();
+    var startDay= 21;
 
     day= day >= 10 ? day : '0' + day;
     month= month >= 10 ? month : '0' + month;
     var dateTo =year +'-'+month+ '-' + day;
-    console.log(dateTo);
 
     var previousMonth=0;
     if(month != 1 && day < 21){
-        previousDay=21;
         previousMonth= month -1;
-        console.log(previousMonth);
     } else if (month != 1 && day >= 21 ) 
     {
-        previousDay=20;
         previousMonth=month;
     }else if(month==1 && day < 21){
-        previousDay=21;
         previousMonth=12
         year= year-1;   
     }
     else if(month==1 && day >= 21) {
-        previousDay= 20;
         previousMonth= 1;     
     }
 
-    previousMonth =previousMonth >=10 ? previousMonth : '0' + previousMonth;
-    previousDay= previousDay >=10 ? previousDay : '0' + previousDay;
-    var dateFrom = year +'-' + previousMonth+ '-' + previousDay;
+    var dateFrom = year +'-' + previousMonth+ '-' + startDay;
 
     document.getElementById("date_from").value = dateFrom;
     document.getElementById("date_to").value = dateTo;
