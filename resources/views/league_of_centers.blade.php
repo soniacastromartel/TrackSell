@@ -25,59 +25,60 @@
 
                             @csrf
                             @method('POST')
-                            <div class="row px-5" style="justify-content: space-between;">
-                                <div class="row col-lg-8">
-                                    <div class="form-group col-md-4">
-                                        <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="datepickerType" id="datepickerType" data-size="7" data-style="btn btn-red-icot btn-round" title=" Mensual / Anual" tabindex="-98">
-                                                <option value="1" selected>Mensual</option>
-                                                <option value="2">Anual</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4 centre_picker">
-                                        <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="centre_id" id="centre_id_picker" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
-
-                                                @foreach ($centres as $centre)
-                                                <option value="{{$centre->id}}">{{$centre->name}}</option>
-                                                @endforeach
-
-                                            </select>
-                                            <input type="hidden" name="centre" id="centre" />
-                                        </div>
-                                    </div>
-                                    <div id="monthYearPickerContainer" class="col-md-2">
-                                        <div class="input-group date mt-2">
-                                            <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
-                                            <input type="hidden" name="monthYear" id="monthYear" />
-                                        </div>
-                                    </div>
-                                    <div id="yearPickerContainer" class="form-group date col-md-1">
-                                        <input id="yearPicker" class='form-control' type="text" placeholder="yyyy"/>
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <div class="dropdown bootstrap-select">
+                                        <select class="selectpicker" name="datepickerType" id="datepickerType" data-size="7" data-style="btn btn-red-icot btn-round" title=" Mensual / Anual" tabindex="-98">
+                                            <option value="1" selected>Mensual</option>
+                                            <option value="2">Anual</option>
+                                        </select>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3 centre_picker">
+                                    <div class="dropdown bootstrap-select">
+                                        <select class="selectpicker" name="centre_id" id="centre_id_picker" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
 
-                                <div class="mt-2">
-                                    <div class="">
-                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                        <span class="material-icons">clear_all
-                                                </span>    {{ __('Limpiar formulario') }}
-                                        </button>
-                                        <button id="btnSubmit" type="submit" class="btn btn-success"><span class="material-icons">
-                                            search</span> {{ __('Buscar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
-                                        </button>
+                                            @foreach ($centres as $centre)
+                                            <option value="{{$centre->id}}">{{$centre->name}}</option>
+                                            @endforeach
+
+                                        </select>
+                                        <input type="hidden" name="centre" id="centre" />
                                     </div>
+                                </div>
+                                <div id="monthYearPickerContainer" class="col-md-2">
+                                    <div class="input-group date mt-2">
+                                        <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
+                                        <input type="hidden" name="monthYear" id="monthYear" />
+                                    </div>
+                                </div>
+                                <div id="yearPickerContainer" class="form-group date col-md-1">
+                                    <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
+                                </div>
+
+                                <div class="col-lg-6" style="text-align:right">
+                                    <button id="btnSubmit" type="submit" class="btn btn-success"><span class="material-icons">
+                                            search</span> {{ __('Buscar') }}</button>
+                                    <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        {{ __('Obteniendo datos...') }}
+                                    </button>
+                                    <button id="btnSubmitExport" type="submit" class="btn btn-dark-black"><span class="material-icons">
+                                            file_download
+                                        </span> {{ __('Exportar') }}</button>
+                                    <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                                        <span class="material-icons">clear_all
+                                        </span> {{ __('Limpiar') }}
+                                    </button>
                                 </div>
                             </div>
+
+
                         </form>
                     </div>
                 </div>
                 <div class="col-sm-3" style="margin-left: 560px;">
-                <label id="centreName" class=""></label>
+                    <label id="centreName" class=""></label>
                 </div>
                 <div class="card-header-table" style="display: none;">
                     <table id="league-month-datatable" class="table table-striped table-bordered league-month-datatable col-lg-12">
@@ -112,6 +113,7 @@
     .month-picker-open-button {
         vertical-align: middle !important;
     }
+
     button.ui-datepicker-trigger {
         border: none !important;
     }
@@ -192,6 +194,102 @@
             clearForms();
         });
 
+        /**
+         * Botón exportar 
+         */
+        $("#btnSubmitExport").on('click', function(e) {
+            $('#alertErrorLeague').hide();
+            e.preventDefault();
+            $("#leagueForm").attr('action', '{{ route('league.exportLeague')}}');
+            $('#btnSubmitExport').hide();
+            $('#btnSubmitLoad').show();
+            $('#btnSubmitLoad').prop('disabled', true);
+            $('#centre').val($("#centre_id_picker option:selected").text());
+            
+
+            params = {};
+            params["_token"] = "{{ csrf_token() }}";
+            //   params["centre"] = $('#centre').val();
+
+            if ($("#datepickerType").val() == 1) {
+                $('#centre').selectpicker('refresh');
+                params['centre'] = null;
+                params["state"] = 'mensual';
+
+            } else {
+                params["centre"] = $('#centre').val();
+                params["state"] = 'anual';
+            }
+
+            console.log(params["state"]);
+
+            if (params["centre"]) {
+                params["year"] = $("#yearPicker").val()
+                params["month"] = null;
+            } else {
+                if ($('#monthYearPicker').is(":visible")) {
+                    monthYear = $("#monthYearPicker").val();
+                    dateSearch = monthYear.split('/');
+                    params["month"] = dateSearch[0];
+                    params["year"] = dateSearch[1];
+
+                } else {
+                    params["year"] = $("#yearPicker").val()
+                    params["month"] = null;
+
+                }
+            }
+
+
+            $.ajax({
+                url: $("#leagueForm").attr('action'),
+                type: 'post',
+                data: params,
+                dataType: 'binary',
+                xhrFields: {
+                    'responseType': 'blob'
+                },
+                xhr: function() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == 2) {
+                            if (xhr.status == 200) {
+                                xhr.responseType = "blob";
+                            } else {
+                                xhr.responseType = "text";
+                            }
+                        }
+                    };
+                    return xhr;
+                },
+                success: function(data, textStatus, jqXHR) {
+                    // if success, HTML response is expected, so replace current
+                    if (textStatus === 'success') {
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmitExport').show();
+
+                        var link = document.createElement('a'),
+                            filename = 'league.xls';
+                        link.href = URL.createObjectURL(data);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    $('#alertErrorLeague').text(response);
+                    $('#alertErrorLeague').show().delay(2000).slideUp(300);
+                    $('#btnSubmitLoad').hide();
+                    $('#btnSubmitExport').show();
+                    timeOutAlert($('#alertErrorLeague'));
+                }
+            });
+        });
+
+
+        /**
+         * Botón Buscar 
+         */
         $("#btnSubmit").on('click', function(e) {
             $('#alertErrorLeague').hide();
             e.preventDefault();
@@ -201,11 +299,17 @@
             $('#centre').val($("#centre_id_picker option:selected").text());
             $('.card-header-table').show();
 
+           
+
             params = {};
             params["centre"] = $('#centre').val();
+           
             if ($("#datepickerType").val() == 1) {
                 $('#centre').selectpicker('refresh');
                 params['centre'] = null;
+                params["state"] ='mensual';
+            }else{
+                params["state"] = 'anual';
             }
 
             if (!params['centre']) {
@@ -285,6 +389,7 @@
         function drawLeague(centre, idDataTable) {
             var params = {};
             params["_token"] = "{{ csrf_token() }}";
+            params["state"] = $("#datepickerType").text();
 
             if (centre) {
                 params["centre"] = centre;
@@ -409,6 +514,12 @@
             });
         }
     });
+
+
+    function timeOutAlert($alert, $message) {
+        $alert.text($message);
+        $alert.show().delay(2000).slideUp(300);
+    }
 </script>
 
 @endsection

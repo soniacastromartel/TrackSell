@@ -26,6 +26,7 @@ class LeagueService {
             $finalRes = $this->groupData($request);
             $params = $request->all();
 
+
             if (!empty($finalRes[0])) {
                 $clasification = ['data' => []];
                 $totalPoints = 0;
@@ -65,7 +66,7 @@ class LeagueService {
                     $clasif['position'] = $index+1;
                     $finalClasification[] = $clasif;
                 }
-                return $finalClasification;
+                return collect($finalClasification);
             } else {
                 return [];
             }
@@ -191,7 +192,7 @@ class LeagueService {
                 foreach ($dataRes as $data) {
                     if ($data[0]->centre_id == $centre[0]->id) {
                         $finalDataRes = $data;
-                        foreach ($data as $i=>$m) {
+                        foreach ($data as $i=>$month) {
                             if ($data[$i]->cv === -2) {
                                 $data[$i]->cv = 0;
                             }
@@ -201,7 +202,7 @@ class LeagueService {
                         break;
                     }
                 }
-                return $finalDataRes;
+                return collect($finalDataRes);
             } else {
                 return [];
             }
@@ -281,18 +282,18 @@ class LeagueService {
     {
         $winnerDataForCentre = [];
 
-        for ($m=0; $m<12; $m++) {
+        for ($month=0; $month<12; $month++) {
             $calcCVBig = 0;
             $centreWinner = -1;
             for ( $i=0; $i<count($collection); $i++ ) {
                 if (count($collection[$i]) > 0 ) {
-                    if (round($collection[$i][$m]->cv, 2) > round($calcCVBig, 2)) {
-                        $calcCVBig = $collection[$i][$m]->cv;
-                        $centreWinner = $collection[$i][$m]->centre_id;
+                    if (round($collection[$i][$month]->cv, 2) > round($calcCVBig, 2)) {
+                        $calcCVBig = $collection[$i][$month]->cv;
+                        $centreWinner = $collection[$i][$month]->centre_id;
                     }
                 }
             }
-            $winnerDataForCentre[] = ['month'=>$m+1, 'centre' => $centreWinner, 'cv'=>$calcCVBig];
+            $winnerDataForCentre[] = ['month'=>$month+1, 'centre' => $centreWinner, 'cv'=>$calcCVBig];
         }   
 
         $finalCollection = $collection;

@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Pool;
 
 use Illuminate\Support\Carbon;
 
@@ -105,6 +106,30 @@ class A3Service
      * @param $workplaceCode
      */
 
+    // public function getPages($companyCode, $workplaceCode)
+    // {
+
+    //     \Log::channel('a3')->info($this->expires_at);
+    //     \Log::channel('a3')->info($this->getTokenExpired($this->expires_at));
+
+    //     if ($this->isExpired) {
+    //         $this->refreshToken();
+    //         \Log::channel('a3')->info($this->isExpired);
+    //         \Log::channel('a3')->info('Token refrescado');
+    //     }
+
+    //     $url = $companyCode . '/employees';
+    //     $response = Http::a3($this->access_token)->get($url, [
+    //         'pageNumber' => 1,
+    //         'pageSize' => 600,
+    //         'filter' => 'workplaceCode eq ' . $workplaceCode . ' and dropDate eq null or dropDate ge 2019-01-01'
+    //     ]);
+
+    //     $pagination = json_decode($response->header('X-pagination'), true);
+    //     return $pagination['totalPages'];
+    // }
+
+
     public function getPages($companyCode, $workplaceCode)
     {
 
@@ -166,7 +191,7 @@ class A3Service
     public function getJobTitle($companyCode = null, $employeeCode)
     {
 
-        $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+        $this->isExpired = $this->getTokenExpired($this->expires_at);
         if ($this->isExpired) {
             $this->refreshToken();
             \Log::channel('a3')->info($this->isExpired);
@@ -175,7 +200,7 @@ class A3Service
 
         try {
             $url = $companyCode . '/employees/' . $employeeCode . '/jobtitle';
-            $response = Http::a3($this->access_token)->get($url);
+            $response = Http::a3($this->access_token)->retry(3, 500)->get($url);
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
             ], 200);
@@ -202,7 +227,7 @@ class A3Service
     {
 
         try {
-            $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+            $this->isExpired = $this->getTokenExpired($this->expires_at);
             if ($this->isExpired) {
                 $this->refreshToken();
                 \Log::channel('a3')->info($this->isExpired);
@@ -211,7 +236,7 @@ class A3Service
 
 
             $url =  $companyCode . '/employees/' . $employeeCode . '/contactdata/personal';
-            $response = Http::a3($this->access_token)->get($url);
+            $response = Http::a3($this->access_token)->retry(3, 500)->get($url);
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
             ], 200);
@@ -237,7 +262,7 @@ class A3Service
     {
         try {
 
-            $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+            $this->isExpired = $this->getTokenExpired($this->expires_at);
             if ($this->isExpired) {
                 $this->refreshToken();
                 \Log::channel('a3')->info($this->isExpired);
@@ -245,7 +270,7 @@ class A3Service
             }
 
             $url = $companyCode . '/employees/' . $employeeCode . '/hiringdates';
-            $response = Http::a3($this->access_token)->get($url);
+            $response = Http::a3($this->access_token)->retry(3, 500)->get($url);
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
             ], 200);
@@ -272,7 +297,7 @@ class A3Service
     {
         try {
 
-            $this-> isExpired= $this-> getTokenExpired($this->expires_at);
+            $this->isExpired = $this->getTokenExpired($this->expires_at);
             if ($this->isExpired) {
                 $this->refreshToken();
                 \Log::channel('a3')->info($this->isExpired);
@@ -280,7 +305,7 @@ class A3Service
             }
 
             $url =  $companyCode . '/workplaces';
-            $response = Http::a3($this->access_token)->get($url, [
+            $response = Http::a3($this->access_token)->retry(3, 500)->get($url, [
                 'pageNumber' => 1,
                 'pageSize' => 1000,
                 'filter' => 'workplaceCode eq ' . $workplaceCode
@@ -371,6 +396,4 @@ class A3Service
         }
         return $this->isExpired;
     }
-
-   
 }
