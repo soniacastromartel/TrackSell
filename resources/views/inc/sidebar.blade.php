@@ -89,7 +89,7 @@
             <li id="adminServiceIncentive" class="nav-item ">
               <a class="nav-link" href="{{route('services.incentives')}}">
                 <i class="material-icons">money</i>
-                <span class="sidebar-normal"> Incentivos - Servicios </span>
+                <span class="sidebar-normal"> Precios & Incentivos </span>
               </a>
             </li>
         </div>

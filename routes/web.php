@@ -83,10 +83,13 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/target/import', 'TargetController@import')->name('target.import');
     Route::post('/target/importSales', 'TargetController@importSales')->name('target.importSales');
     Route::post('/target/importIncentive', 'TargetController@importIncentive')->name('target.importIncentive');
-    Route::post('/target/calculateTargets', 'TargetController@calculateTargets')->name('target.calculateTargets');
+    Route::post('/target/calculateIncentives', 'TargetController@calculateIncentives')->name('target.calculateIncentives');
+    Route::post('/target/incentivesReportDownload', 'TargetController@incentivesReportDownload')->name('target.incentivesReportDownload');
     Route::post('/target/tracingTargets', 'TargetController@tracingTargets')->name('target.tracingTargets');
     Route::post('/target/targetReportDownload', 'TargetController@targetsReportDownload')->name('target.targetsReportDownload');
     Route::post('/target/targetReportView', 'TargetController@targetsReportView')->name('target.targetsReportView');
+    Route::post('/target/incentivesReportView', 'TargetController@incentivesReportView')->name('target.incentivesReportView');
+    Route::post('/target/incentivesSummaryView', 'TargetController@incentivesSummaryView')->name('target.incentivesSummaryView');
 
     Route::get('/calculateRanking', 'RankingController@index')->name('calculateRanking');
     Route::post('/ranking/calculateRankings', 'RankingController@calculateRankings')->name('ranking.calculateRankings');

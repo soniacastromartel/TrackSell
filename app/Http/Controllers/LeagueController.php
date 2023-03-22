@@ -134,7 +134,7 @@ class LeagueController extends Controller
             $leagueService = new LeagueService();
             $dataRes = $leagueService->detailsCentreLeague($request);
 
-            if (!empty($dataRes[0])) {
+            if (!empty($dataRes)) {
                 return DataTables::of(collect($dataRes))
                     ->addIndexColumn()
                     ->make(true);

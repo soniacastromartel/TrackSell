@@ -91,7 +91,7 @@ class LeagueService {
 
             $year  = $params['year'];
             $params['acumulative'] = true; 
-            $params['monthYear'] = '1 /'. $params['year']; 
+            $params['monthYear'] = '1/'. $params['year']; 
 
             $centres = Centre::getCentersWithoutHCT();
             $params['centre'] = $centres;           
@@ -202,7 +202,7 @@ class LeagueService {
                         break;
                     }
                 }
-                return collect($finalDataRes);
+                return $finalDataRes;
             } else {
                 return [];
             }

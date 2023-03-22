@@ -347,10 +347,9 @@
         year= year-1;   
     }
     else if(month==1 && day >= 21) {
-        previousMonth= 1;     
-    }
-    previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
-
+        previousMonth= 01;     
+    } 
+    // previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
     var dateFrom = year +'-' + previousMonth+ '-' + startDay;
 
     document.getElementById("date_from").value = dateFrom;
