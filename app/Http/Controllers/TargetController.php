@@ -89,7 +89,7 @@ class TargetController extends Controller
      * Funcion que se encarga de importar todos los objetivos - Todos los centros
      * 
      */
-        public function import(Request $request)
+    public function import(Request $request)
     {
         try {
             if ($request->hasFile('targetInputFile')) {
@@ -700,11 +700,16 @@ class TargetController extends Controller
             $request['yearTarget'] = $year;
             $target = $this->tracingTargets($request);
 
+
+
             if (!empty($target)) {
                 if (strpos($month, '0') === 0) {
                     $month = substr($month, 1);
                 }
                 foreach ($target as $t => $key) {
+                    if ($params['centre'] == 'HOSPITAL TELDE' && strpos($t, 'HOSPITAL') !== false) {
+                        $t = 'HOSPITAL TELDE';
+                    }
                     if ($t == $params['centre']) {
                         foreach ($key as $data) {
                             $targetData[] = [
@@ -718,6 +723,9 @@ class TargetController extends Controller
                             ];
                         }
                     }
+                }
+                if (empty($targetData)) {
+                    $targetData = [];
                 }
             } else {
                 $targetData = [];

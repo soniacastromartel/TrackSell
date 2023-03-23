@@ -87,7 +87,7 @@
                                 <th name="position">Posición</th>
                                 <th name="centre">Centro</th>
                                 <th name="points">Puntos</th>
-                                <th name="average">Promedio coeficiente de venta</th>
+                                <th name="average" id="average">Coeficiente de Venta</th>
                             </tr>
                         </thead>
                         <tbody id="bodyContent">
@@ -98,7 +98,7 @@
                             <tr>
                                 <th name="month">Mes</th>
                                 <th name="points">Puntos Recibidos</th>
-                                <th name="cv">Coeficiente de venta</th>
+                                <th name="cv">Coeficiente de Venta</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -221,8 +221,6 @@
                 params["state"] = 'anual';
             }
 
-            console.log(params["state"]);
-
             if (params["centre"]) {
                 params["year"] = $("#yearPicker").val()
                 params["month"] = null;
@@ -310,6 +308,8 @@
                 params["state"] ='mensual';
             }else{
                 params["state"] = 'anual';
+                document.getElementById('average').innerHTML = 'Promedio Coeficiente de Venta';
+
             }
 
             if (!params['centre']) {

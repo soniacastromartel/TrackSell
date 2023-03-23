@@ -23,7 +23,7 @@ class LeagueService {
     public function generateLeague(Request $request)
     {
         try{
-            $finalRes = $this->groupData($request);
+            $finalRes = $this->getLeagueData($request);
             $params = $request->all();
 
 
@@ -41,6 +41,7 @@ class LeagueService {
                             if ($data->cv === -2) {
                                 $data->cv = 0;
                             }
+                           
                             $cvSum += $data->cv;
                         } else {
                             if ($data->month == $params['month']) {
@@ -50,6 +51,10 @@ class LeagueService {
                         }
                     }
 
+                    if($cvSum < -1){
+                        $cvSum= -1;
+                    }
+                    
                     $actualCentre = Centre::getCentreByField($fr[0]->centre_id);
                     $clasification['data'][$i] = [
                         'centre'=>$actualCentre[0]->name,
@@ -82,7 +87,7 @@ class LeagueService {
     /**
      * Realiza los cálculos generales para generar la clasificacion
      */
-    private function groupData(Request $request)
+    private function getLeagueData(Request $request)
     {
         try{
             // Tratamiento y construccion de consulta
@@ -182,7 +187,7 @@ class LeagueService {
         $tPoints = 0;
         try{
             $centre = Centre::getCentreByField($request['centre']);
-            $dataRes = $this->groupData($request);
+            $dataRes = $this->getLeagueData($request);
 
             $months = env('MONTHS_VALUES');
             $monthsTrim = explode(',', $months);
@@ -221,7 +226,7 @@ class LeagueService {
      * Se aplica la siguiente formula:
      *  (Venta Privada [vd] - Objetivo Venta Privada) [obj2] + 
      *  (Venta Cruzada [vc] - Objetivo Venta Cruzada) [obj1] /
-     *  (Objetivo Venta Cruzada [obj1] + Objetivo Venta Privada) [obj2])
+     *  (Objetivo Venta Cruzada [obj1] + Objetivo Venta Privada [obj2]) )
      * 
      * @param $dataGroup: Grupo de valores.
      **/
@@ -231,14 +236,14 @@ class LeagueService {
         
         foreach ($dataGroup as $i=>$dg) {
             if (($dg->year == date('Y') && $dg->month <= date('n')) || ($dg->year < date('Y'))) {
-                if ($dg->vc > 0 || $dg->vd >0){
+                if ($dg->vc >= 0 || $dg->vd >=0){
                     $coeficienteVenta = (($dg->vd - $dg->obj2) + ($dg->vc - $dg->obj1)) / ($dg->obj1 + $dg->obj2);
                     $dataCalculate[] = $dataGroup[$i];
                     $dataCalculate[$i]->cv = round($coeficienteVenta, 2, PHP_ROUND_HALF_UP);
                     $dataCalculate[$i]->points = $this->setPointsForTargets($dg);
                 } else {
                     $dataCalculate[] = $dataGroup[$i];
-                    $dataCalculate[$i]->cv = -2;
+                    $dataCalculate[$i]->cv = -1;
                     $dataCalculate[$i]->points = $this->setPointsForTargets($dg);
                 }
             } else {
