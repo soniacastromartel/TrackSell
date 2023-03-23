@@ -114,9 +114,18 @@
                                             <div class="dropdown bootstrap-select">
                                                 <label class="label" for="centre_origin_id">Centro <span class="obligatory">*</span></label>
                                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
+                                                    @if ($user->rol_id != 1)
+                                                    @foreach ($centres as $centre)
+                                                    @if ($centre->id == $user->centre_id)
+                                                    <option value="{{ $centre->id }}" selected>{{ $centre->name }}</option>
+                                                    @endif
+                                                    @endforeach
+
+                                                    @else
                                                     @foreach ($centres as $centre)
                                                     <option value="{{ $centre->id }}">{{ $centre->name }}</option>
                                                     @endforeach
+                                                    @endif
                                                 </select>
                                                 <input type="hidden" name="centre" id="centre" />
                                             </div>
@@ -126,9 +135,18 @@
                                             <div class="dropdown bootstrap-select">
                                                 <label class="label">Empleado <span class="obligatory">*</span></label>
                                                 <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
+                                                    @if ($user->rol_id != 1)
                                                     @foreach ($employees as $employee)
-                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                    @if ($employee->centre_id== $user-> centre_id)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name}}</option>
+                                                    @endif
                                                     @endforeach
+
+                                                    @else
+                                                    @foreach ($employees as $employee)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name}}</option>
+                                                    @endforeach
+                                                    @endif
                                                 </select>
                                                 <input type="hidden" name="employee" id="employee" />
                                             </div>
@@ -138,7 +156,7 @@
                                 </div>
                                 <hr class="mt-4">
                                 <div class="row" style="display: flex;justify-content: space-evenly;">
-                                    <div class="form-group" >
+                                    <div class="form-group">
                                         <button id="btnClear" href="#" class="myBtn btn  btn-warning">
                                             <span class="material-icons">clear_all</span>{{ __('Limpiar formulario') }}
                                         </button>
@@ -163,14 +181,18 @@
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Obteniendo datos...') }}
                                         </button>
-                                        <button id="btnTargetsPreview" class="myBtn btn btn-grey" disabled= "disabled">
-                                            <span class="material-icons mr-1">visibility</span>{{ __('Ver Objetivos') }}
-                                        </button>
-                                        <button id="btnTargetsLoad" type="submit" class="file-upload btn btn-dark-black" style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
-                                        </button>
-                                        
+                                        @if ($user->rol_id != 1)
+                                        <button id="btnTargetsPreview" class="myBtn btn btn-grey">
+                                            @else
+                                            <button id="btnTargetsPreview" class="myBtn btn btn-grey" disabled="disabled">
+                                                @endif
+                                                <span class="material-icons mr-1">visibility</span>{{ __('Ver Objetivos') }}
+                                            </button>
+                                            <button id="btnTargetsLoad" type="submit" class="file-upload btn btn-dark-black" style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                {{ __('Obteniendo datos...') }}
+                                            </button>
+
 
                                     </div>
                                 </div>
@@ -350,6 +372,7 @@
     var table;
 
     $(function() {
+        // console.log($user);
 
         $('#centreName').hide();
 
@@ -422,7 +445,6 @@
 
         function clearForms() {
             $('#centreName').hide();
-            $('#btnTargetsPreview').hide();
             $('#targetsData').hide();
             $('#incentivesData').hide();
             $('#summaryData').hide();
@@ -444,6 +466,7 @@
          */
 
         $("#btnSubmit").on('click', function(e) {
+            console.log($("#centre_id option:selected").text());
             e.preventDefault();
             $('#alertErrorCalculate').hide();
             $("#importTargetForm").attr('action', '{{ route('target.incentivesReportDownload')}}');
@@ -459,6 +482,7 @@
             params["centre"] = $('#centre').val();
             params["employee"] = $('#employee').val();
             params["monthYear"] = $('#monthYear').val();
+            console.log(params);
 
             $.ajax({
                 url: $("#importTargetForm").attr('action'),
@@ -628,7 +652,7 @@
                 // Incentivos
                 $('incentives-datatable').DataTable();
                 $('incentives-datatable').DataTable().ajax.reload();
-                lenMenu = [10,25,50];
+                lenMenu = [10, 25, 50];
                 url = "{{ route('target.incentivesReportView') }}";
                 columnss = [{
                         data: 'centre_employee',
@@ -674,37 +698,65 @@
                     }
                 ];
 
-                columnsDef = [
-                    { width: "5%", targets: 0 },
-                    { width: "5%", targets: 1 },
-                    { width: "15%", targets: 2 },
-                    { width: "10%", targets: 3 },
-                    { width: "5%", targets: 4 },
-                    { width: "15%", targets: 5 },
-                    { width: "5%", targets: 6 },
-                    { width: "5%", targets: 7 },
-                    { width: "5%", targets: 8 },
-                    { width: "5%", targets: 9 },
+                columnsDef = [{
+                        width: "5%",
+                        targets: 0
+                    },
                     {
-                    targets:  [6, 7, 8, 9],
-                    render: $.fn.dataTable.render.number('.', ',', 2, '', '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
-                },
-                {
-                    targets: [0,1,4,6, 7, 8, 9],
-                    visible: true,
-                    className: 'dt-body-right'
-
-                
-                },
-                {
-                    targets: [2,3,5],
-                    visible: true,
-                    className: 'dt-body-left'
-
-                }
-                ,
+                        width: "5%",
+                        targets: 1
+                    },
                     {
-                        targets: [2,3,5],
+                        width: "15%",
+                        targets: 2
+                    },
+                    {
+                        width: "10%",
+                        targets: 3
+                    },
+                    {
+                        width: "5%",
+                        targets: 4
+                    },
+                    {
+                        width: "15%",
+                        targets: 5
+                    },
+                    {
+                        width: "5%",
+                        targets: 6
+                    },
+                    {
+                        width: "5%",
+                        targets: 7
+                    },
+                    {
+                        width: "5%",
+                        targets: 8
+                    },
+                    {
+                        width: "5%",
+                        targets: 9
+                    },
+                    {
+                        targets: [6, 7, 8, 9],
+                        render: $.fn.dataTable.render.number('.', ',', 2, '', '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
+                    },
+                    {
+                        targets: [0, 1, 4, 6, 7, 8, 9],
+                        visible: true,
+                        className: 'dt-body-right'
+
+
+                    },
+                    {
+                        targets: [2, 3, 5],
+                        visible: true,
+                        className: 'dt-body-left'
+
+                    },
+                    {
+                        targets: [2, 3, 5],
                         data: "employee",
                         render: function(data, type, row) {
                             if (data != null) {
@@ -713,17 +765,20 @@
                                 return data;
                             }
                         }
+                    },
+                    {
+                        targets: '_all',
+                        defaultContent: ' '
                     }
-            ];
+                ];
 
-            }else if (idDataTable == '.summary-datatable'){
+            } else if (idDataTable == '.summary-datatable') {
                 params["isSumary"] = true;
                 $('summary-datatable').DataTable();
                 $('summary-datatable').DataTable().ajax.reload();
                 lenMenu = [20];
                 url = "{{ route('target.incentivesSummaryView') }}";
-                columnss = [
-                    {
+                columnss = [{
                         data: 'centre_name',
                         name: 'centre_name',
 
@@ -742,28 +797,31 @@
                         name: 'total_income'
                     }
                 ];
-                columnsDef = [
+                columnsDef = [{
+                        targets: [1, 2, 3],
+                        render: $.fn.dataTable.render.number('.', ',', 2, '', '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
+                    },
                     {
-                    targets:  [1,2,3],
-                    render: $.fn.dataTable.render.number('.', ',', 2, '', '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
-                },
-                {
-                    targets: [1,2,3],
-                    visible: true,
-                    className: 'dt-body-right'
+                        targets: [1, 2, 3],
+                        visible: true,
+                        className: 'dt-body-right'
 
-                
-                },
-                {
-                    targets: [0],
-                    visible: true,
-                    className: 'dt-body-left'
 
-                }
-            ];
-                
+                    },
+                    {
+                        targets: [0],
+                        visible: true,
+                        className: 'dt-body-left'
 
-            
+                    },
+                    {
+                        targets: '_all',
+                        defaultContent: ' '
+                    }
+                ];
+
+
+
             } else {
                 // Objetivos
                 params["isSumary"] = false;
@@ -798,18 +856,21 @@
 
                 ];
 
-                columnsDef = [
+                columnsDef = [{
+                        targets: [0, 1, 2, 3, 5],
+                        render: $.fn.dataTable.render.number('.', ',', 2, '', '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
+                    },
                     {
-                    targets:  [0, 1, 2, 3, 5],
-                    render: $.fn.dataTable.render.number('.', ',', 2, '', '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
-                },
-                {
-                    targets: '_all',
-                    visible: true,
-                    className: 'dt-body-right'
+                        targets: '_all',
+                        visible: true,
+                        className: 'dt-body-right'
 
-                }
-            ];
+                    },
+                    {
+                        targets: '_all',
+                        defaultContent: ' '
+                    }
+                ];
             }
 
             $(idDataTable).dataTable({
@@ -818,16 +879,36 @@
                 bDestroy: true,
                 ordering: false,
                 language: {
-                    "url": "{{ asset('dataTables/Spanish.json') }}"
+                    "emptyTable": "No hay datos disponibles en la tabla",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    },
+                    "infoEmpty": "Sin registros",
+                    "search": "Buscar:",
+                    "info": "",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando, espere...",
+                    "lengthMenu": "Mostrando _MENU_ registros",
+                    "infoFiltered": ""
                 },
                 ajax: {
                     url: url,
                     type: 'post',
                     data: params,
+                    dataSrc: function(json) {
+                        if (json == null) {
+                            return [];
+                        } else {
+                            return json.data;
+                        }
+                    }
+
                 },
                 columnDefs: columnsDef,
                 columns: columnss,
                 initComplete: function(data, idDatatable) {
+                    console.log(data.json.data);
                     console.log(data);
                     console.log(idDataTable);
                     if (data.jqXHR.statusText === 'OK') {
@@ -851,7 +932,7 @@
                             $('#btnIncentivesLoad').hide();
                             $('#btnIncentivesPreview').show();
                         }
-                            if (idDataTable == '.targets-datatable') {
+                        if (idDataTable == '.targets-datatable') {
                             $('#btnTargetsPreview').hide();
                             $('#btnTargetsLoad').show();
                         }

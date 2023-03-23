@@ -85,9 +85,11 @@ class TargetController extends Controller
         }
     }
 
-    /** Funcion que se encarga de importar todos los objetivos - Todos los centros */
-    //FIXME: ESTE METODO NO SE PUEDE REFACTORIZAR CON IMPORT SALES??
-    public function import(Request $request)
+    /**
+     * Funcion que se encarga de importar todos los objetivos - Todos los centros
+     * 
+     */
+        public function import(Request $request)
     {
         try {
             if ($request->hasFile('targetInputFile')) {
@@ -193,12 +195,15 @@ class TargetController extends Controller
         }
     }
 
+    /**
+     * Función que obtiene los datos de incentivos
+     * @param $target
+     * @param $centres
+     * @param $filters
+     */
     private function getCalculatedIncentives($target, $centres, $filters)
     {
         try {
-            // Get target : obtener objetivo según  
-            //1.- si es conseguido en mes de filtro, igual al objetivo de ese mes
-            //2.- si no es conseguido en mes de filtro  de mes anterior que no tenga objetivo conseguido
             $targetService = new TargetService();
             $targetDefined = $targetService->getTarget($centres, $filters['month'], $filters['year']);
 
@@ -254,8 +259,6 @@ class TargetController extends Controller
                                 }
                             }
                         }
-                        // $sheet->setCellValue('L'.$this->rows,$totalIncentive * $targetRow->quantity);
-
                         // Cogemos el grupo de supervisores por centro
                         if ($i == 0) {
                             $totalSuperIncentive  = [];
@@ -309,10 +312,6 @@ class TargetController extends Controller
                                     $totalBonus += $auxIncentive * $targetRow->quantity;
                                 }
                             }
-
-
-
-
                             if ($auxIncentive == 0 && $supervisorId  == $targetRow->employee_id) {
                                 $totalIncome[$supervisorId] +=  $totalIncentive * $targetRow->quantity;
                             }
@@ -382,41 +381,46 @@ class TargetController extends Controller
     }
 
 
-    private function getIncentivesSummary($target, $centres, $filters){
+    /**
+     * Función que obtiene los datos del resumen de incentivos
+     * @param $target
+     * @param $centres
+     * @param $filters
+     */
+    private function getIncentivesSummary($target, $centres, $filters)
+    {
         try {
             $targetService = new TargetService();
             $targetDefined = $targetService->getTarget($centres, $filters['month'], $filters['year']);
 
-            $total = [];  
-            $totalCentre = []; 
-    
+            $total = [];
+            $totalCentre = [];
+
             foreach ($centres as $centre) {
-                $centresData = Centre::where('name', $centre->name)->get(); 
-                $params = $filters; 
-                unset($params['employee']); 
+                $centresData = Centre::where('name', $centre->name)->get();
+                $params = $filters;
+                unset($params['employee']);
                 // $params['monthYear'] = $params['month'] . '/' . $params['year']; 
-                $params['centre']    = $centresData; 
+                $params['centre']    = $centresData;
                 $salesCentres =  $targetService->getExportTarget($params);
-                $targetCentre = $targetService->normalizeData($salesCentres); 
-    
+                $targetCentre = $targetService->normalizeData($salesCentres);
+
                 //$vcTotal =  $targetService->getVC($centresData, $targetCentre); 
-                $totalCentre = $targetService->getSummarySales([$centre->name => $target[$centre->name]],$targetDefined, $filters['month'] .'/'.$filters['year'], $centresData, $targetCentre); 
-            
-                foreach ($totalCentre as $tc => $totalDetail){
-                    $resultData[]=[
-                        'centre_name'=>$centre->name,
-                        'total_incentive'=> $totalDetail['total_incentive'],
-                        'total_super_incentive'=> $totalDetail['total_super_incentive'],
-                        'total_income'=> $totalDetail['total_income'],
+                $totalCentre = $targetService->getSummarySales([$centre->name => $target[$centre->name]], $targetDefined, $filters['month'] . '/' . $filters['year'], $centresData, $targetCentre);
+
+                foreach ($totalCentre as $tc => $totalDetail) {
+                    $resultData[] = [
+                        'centre_name' => $centre->name,
+                        'total_incentive' => $totalDetail['total_incentive'],
+                        'total_super_incentive' => $totalDetail['total_super_incentive'],
+                        'total_income' => $totalDetail['total_income'],
 
                     ];
-        
                 }
             }
 
 
             return $resultData;
-
         } catch (\Exception $e) {
             return redirect('calculateIncentive')->with('error', $e->getMessage());
         }
@@ -687,7 +691,6 @@ class TargetController extends Controller
     /** Funcion que muestra la tabla de Seguimiento de objetivos
      * @param request Request
      */
-
     public function targetsReportView(Request $request)
     {
         try {
@@ -696,23 +699,28 @@ class TargetController extends Controller
             $year = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
             $request['yearTarget'] = $year;
             $target = $this->tracingTargets($request);
-            if (strpos($month, '0') === 0) {
-                $month = substr($month, 1);
-            }
-            foreach ($target as $t => $key) {
-                if ($t == $params['centre']) {
-                    foreach ($key as $data) {
-                        $targetData[] = [
-                            'obj_vc' => $data[$month]['obj_vc'],
-                            'obj_vp' => $data[$month]['obj_vp'],
-                            'vc' => $data[$month]['vc'],
-                            'vp' => $data[$month]['vp'],
-                            'cont_employees' => $data[$month]['cont_employees'],
-                            'salesPerEmployee' => $data[$month]['salesPerEmployee'],
 
-                        ];
+            if (!empty($target)) {
+                if (strpos($month, '0') === 0) {
+                    $month = substr($month, 1);
+                }
+                foreach ($target as $t => $key) {
+                    if ($t == $params['centre']) {
+                        foreach ($key as $data) {
+                            $targetData[] = [
+                                'obj_vc' => $data[$month]['obj_vc'],
+                                'obj_vp' => $data[$month]['obj_vp'],
+                                'vc' => $data[$month]['vc'],
+                                'vp' => $data[$month]['vp'],
+                                'cont_employees' => $data[$month]['cont_employees'],
+                                'salesPerEmployee' => $data[$month]['salesPerEmployee'],
+
+                            ];
+                        }
                     }
                 }
+            } else {
+                $targetData = [];
             }
             return DataTables::of(collect($targetData))
                 ->addIndexColumn()
@@ -727,10 +735,11 @@ class TargetController extends Controller
             );
         }
     }
+
+
     /** Funcion que muestra la tabla de Incentivos
      * @param request Request
      */
-
     public function incentivesReportView(Request $request)
     {
         try {
@@ -763,8 +772,13 @@ class TargetController extends Controller
 
 
             $targetData = $this->calculateIncentives($request);
+
             $resultData = $targetService->normalizeData($targetData);
-            $incentivesData = $this->getCalculatedIncentives($resultData, $centres, $filters);
+            if (!empty($resultData)) {
+                $incentivesData = $this->getCalculatedIncentives($resultData, $centres, $filters);
+            } else {
+                $incentivesData = [];
+            }
 
             return DataTables::of(collect($incentivesData))
                 ->addIndexColumn()
@@ -780,6 +794,9 @@ class TargetController extends Controller
         }
     }
 
+    /** Funcion que muestra la tabla de Resumen de Incentivos
+     * @param request Request
+     */
     public function incentivesSummaryView(Request $request)
     {
         try {
@@ -802,28 +819,24 @@ class TargetController extends Controller
                 $whereLikeLast    = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
             }
 
-            
-
-
             $targetData = $this->calculateIncentives($request);
             $resultData = $targetService->normalizeData($targetData);
-            $centres = Centre::whereIn('name',array_keys($resultData))->get(); 
+            if (!empty($resultData)) {
+                $centres = Centre::whereIn('name', array_keys($resultData))->get();
+                $filters = [
+                    //'centre'       =>  isset($params['centre'])             ?  $params['centre']             : 'TODOS',
+                    'employee'     =>  isset($params['employee'])     ?  $params['employee']     : 'TODOS',
+                    'monthYear'     =>  $params['monthYear'],
+                    'month'        =>  ltrim($currentMonth, "0"),
+                    'year'         =>  $year,
+                    'date_from'    =>  date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
+                    'date_to'      =>  date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
+                ];
 
-
-            $filters = [
-                //'centre'       =>  isset($params['centre'])             ?  $params['centre']             : 'TODOS',
-                'employee'     =>  isset($params['employee'])     ?  $params['employee']     : 'TODOS',
-                'monthYear'     =>  $params['monthYear'],
-                'month'        =>  ltrim($currentMonth, "0"),
-                'year'         =>  $year,
-                'date_from'    =>  date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
-                'date_to'      =>  date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
-            ];
-
-            $summaryData= $this->getIncentivesSummary($resultData, $centres, $filters);
-           
-
-
+                $summaryData = $this->getIncentivesSummary($resultData, $centres, $filters);
+            } else {
+                $summaryData = [];
+            }
 
             return DataTables::of(collect($summaryData))
                 ->addIndexColumn()
