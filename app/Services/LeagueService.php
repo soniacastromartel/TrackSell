@@ -23,30 +23,59 @@ class LeagueService {
     public function generateLeague(Request $request)
     {
         try{
-            $finalRes = $this->getLeagueData($request);
+            $currentYear= date('Y');
+            $currentMonth= date('m');
+            $isCurrent= false;
+
+            $centresAnualData = $this->getLeagueData($request);
             $params = $request->all();
 
+            if (strpos($currentMonth, '0') === 0) {
+                $currentMonth = substr($currentMonth, 1);
+            }
+            if ($params ['year']== $currentYear){
+                $limit= (int) $currentMonth;
+                $isCurrent= true;
+            }
 
-            if (!empty($finalRes[0])) {
+            if (!empty($centresAnualData[0])) {
                 $clasification = ['data' => []];
                 $totalPoints = 0;
                 $cvSum = 0;
-                foreach ($finalRes as $i=>$fr) {
+                $vpAnual= 0;
+                $vcAnual= 0;
+                $obj_vpAnual= 0;
+                $obj_vcAnual= 0;
+
+                foreach ($centresAnualData as $i=>$centreYear) {
                     $totalPoints = 0;
                     $cvSum = 0;
                     
-                    foreach ($fr as $data) {
+                    foreach ($centreYear as $j=>$centreMonth) {
                         if ($params['month'] == null) {
-                            $totalPoints += $data->points;
-                            if ($data->cv === -2) {
-                                $data->cv = 0;
+                            $totalPoints += $centreMonth->points;
+                            if ($centreMonth->cv === -2) {
+                                $centreMonth->cv = 0;
+                            }
+                             $cvSum += $centreMonth->cv;
+
+                            // $vpAnual += $centreMonth-> vd;
+                            // $vcAnual += $centreMonth -> vc;
+                            // $obj_vpAnual += $centreMonth -> obj2;
+                            // $obj_vcAnual += $centreMonth -> obj1;
+
+                            if($isCurrent){
+                                if($j == $limit -1){
+                                    break;
+                                }
                             }
                            
-                            $cvSum += $data->cv;
+                            // $cvSum += (($vpAnual -$obj_vpAnual)+($vcAnual - $obj_vcAnual))/($obj_vcAnual+$obj_vpAnual);
+
                         } else {
-                            if ($data->month == $params['month']) {
-                                $totalPoints = $data->points;
-                                $cvSum = $data->cv;
+                            if ($centreMonth->month == $params['month']) {
+                                $totalPoints = $centreMonth->points;
+                                $cvSum = $centreMonth->cv;
                             }
                         }
                     }
@@ -54,8 +83,15 @@ class LeagueService {
                     if($cvSum < -1){
                         $cvSum= -1;
                     }
+
+                    if ($params['month']== null && $isCurrent){
+                        // $cvSum += (($vpAnual -$obj_vpAnual)+($vcAnual - $obj_vcAnual))/($obj_vcAnual+$obj_vpAnual);
+                        $cvSum= $cvSum/$limit;
+                    }else if ($params['month']== null && !$isCurrent){
+                        $cvSum= $cvSum/12;
+                    }
                     
-                    $actualCentre = Centre::getCentreByField($fr[0]->centre_id);
+                    $actualCentre = Centre::getCentreByField($centreYear[0]->centre_id);
                     $clasification['data'][$i] = [
                         'centre'=>$actualCentre[0]->name,
                         'points'=>$totalPoints,
@@ -304,8 +340,8 @@ class LeagueService {
         $finalCollection = $collection;
         foreach ($collection as $i=>$reg) {
             foreach ($winnerDataForCentre as $wdc) {
-                foreach ($reg as $pos=>$centreMonthData) {
-                    if ($wdc['month'] == $centreMonthData->month && $wdc['centre'] == $centreMonthData->centre_id) {
+                foreach ($reg as $pos=>$centreYear) {
+                    if ($wdc['month'] == $centreYear->month && $wdc['centre'] == $centreYear->centre_id) {
                         $finalCollection[$i][$pos]->points++;
                         $finalCollection[$i][$pos]->extra = ['month' => $wdc['month'], 'cv' => $wdc['cv'] ];
                     }

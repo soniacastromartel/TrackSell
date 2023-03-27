@@ -179,14 +179,16 @@
         $('.centre_picker').hide();
 
         function clearForms() {
-            $('.selectpicker').val('');
-            $('select').selectpicker("refresh");
+            // $('.selectpicker').val('');
+            // $('select').selectpicker("refresh");
             $('#centreName').hide();
             $('.centre_picker').hide();
             $('#datepickerType').selectpicker('val', 1);
             $('#league-centre-datatable').hide();
-            $('#league-month-datatable').show();
+            $('#league-month-datatable').hide();
             drawLeague(null, '.league-month-datatable');
+            $('#league-month-datatable').show();
+
         }
 
         $("#btnClear").on('click', function(e) {
@@ -308,7 +310,6 @@
                 params["state"] ='mensual';
             }else{
                 params["state"] = 'anual';
-                document.getElementById('average').innerHTML = 'Promedio Coeficiente de Venta';
 
             }
 
@@ -438,6 +439,7 @@
                         name: 'cv'
                     }
                 ];
+                order = false;
             } else {
                 // Clasificación anual de todos los centros (Acumulado anual)
                 $('league-month-datatable').DataTable();
@@ -461,13 +463,14 @@
                         name: 'average'
                     }
                 ];
+                order= true;
             }
 
             $(idDataTable).dataTable({
                 lengthMenu: lenMenu,
                 processing: true,
                 bDestroy: true,
-                ordering: false,
+                ordering: order,
                 language: {
                     "emptyTable": "No hay datos disponibles en la tabla",
                     "paginate": {
