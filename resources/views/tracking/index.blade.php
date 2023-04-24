@@ -29,14 +29,14 @@
                                 <div>
                                     <label class="label" for="dateFrom">Fecha desde </label>
                                     <div class=" input-group ">
-                                    <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-control"></input>
+                                        <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-control"></input>
                                     </div>
 
 
                                     <br>
                                     <label class="label" for="dateTo">Fecha hasta </label>
                                     <div class=" input-group ">
-                                    <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
+                                        <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
                                     </div>
                                 </div>
 
@@ -49,12 +49,22 @@
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
-                                            <option>SIN SELECCION </option>
+                                                @if ($user->rol_id != 1)
                                                 @foreach ($centres as $centre)
-                                                <option class= "text-uppercase" value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                @if ($centre->id == $user->centre_id)
+                                                <option class="text-uppercase" value="{{ $centre->id }}" selected @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                    {{ $centre->name }}
+                                                </option>
+                                                @endif
+                                                @endforeach
+
+                                                @else
+                                                @foreach ($centres as $centre)
+                                                <option class="text-uppercase" value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
                                                     {{ $centre->name }}
                                                 </option>
                                                 @endforeach
+                                                @endif
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
@@ -62,11 +72,19 @@
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
-                                            <option>SIN SELECCION </option>
-                                                @foreach ($employees as $employee)
-                                                <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                </option>
-                                                @endforeach
+                                                <option>SIN SELECCION </option>
+                                                @if ($user->rol_id != 1)
+                                                    @foreach ($employees as $employee)
+                                                    @if ($employee->centre_id== $user-> centre_id)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name}}</option>
+                                                    @endif
+                                                    @endforeach
+
+                                                    @else
+                                                    @foreach ($employees as $employee)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name}}</option>
+                                                    @endforeach
+                                                    @endif
                                             </select>
                                             <input type="hidden" name="employee" id="employee" />
                                         </div>
@@ -77,9 +95,9 @@
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select text-uppercase">
                                             <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
-                                            <option>SIN SELECCION </option>
+                                                <option>SIN SELECCION </option>
                                                 @foreach ($services as $service)
-                                                <option   value="{{ $service->id }}" @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
+                                                <option value="{{ $service->id }}" @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
                                                     {{ $service->name }}
                                                 </option>
                                                 @endforeach
@@ -91,7 +109,7 @@
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="patient_name" id="patient_name" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Paciente" tabindex="-98">
-                                            <option>SIN SELECCION </option>
+                                                <option>SIN SELECCION </option>
                                                 @foreach ($patients as $patient)
                                                 <option value="{{ $patient->patient_name }}">
                                                     {{ $patient->patient_name }}
@@ -106,9 +124,9 @@
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="state_id" id="state_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Estado" tabindex="-98">
-                                            <option>SIN SELECCION </option>
+                                                <option>SIN SELECCION </option>
                                                 @foreach ($states as $state)
-                                                <option class= "text-uppercase" value="{{ $state->texto }}">{{$state->nombre}}</option>
+                                                <option class="text-uppercase" value="{{ $state->texto }}">{{$state->nombre}}</option>
                                                 @endforeach
 
                                             </select>
@@ -174,17 +192,14 @@
     </div>
 </div>
 <style>
-    .myclass
-{
-    text-transform:capitalize;
-}
+    .myclass {
+        text-transform: capitalize;
+    }
 </style>
 
 
 
 <script type="text/javascript">
-
-
     var table;
 
     var columnsFilled = [];
@@ -265,7 +280,7 @@
 
         function clearForms() {
             setDate();
-            console.log( $('input[type="search"]').val());
+            console.log($('input[type="search"]').val());
             $('select#centre_id').val('');
             $('select#state_id').val('');
             $('select#employee_id').val('');
@@ -319,44 +334,47 @@
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error'+jqXHR.responseText);
+            alert('Error' + jqXHR.responseText);
 
         });
     }
 
     function setDate() {
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth()+1;
-    var year = date.getFullYear();
-    var startDay= 21;
-    
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var startDay = 21;
 
-    day= day >= 10 ? day : '0' + day;
-    month= month >= 10 ? month : '0' + month;
-    var dateTo =year +'-'+month+ '-' + day;
+        day = day >= 10 ? day : '0' + day;
+        month = month >= 10 ? month : '0' + month;
+        var dateTo = year + '-' + month + '-' + day;
 
-    var previousMonth=0;
-    if(month != 1 && day < 21){
-        previousMonth= month -1;
-    } else if (month != 1 && day >= 21 ) 
-    {
-        previousMonth=month;
-    }else if(month==1 && day < 21){
-        previousMonth=12
-        year= year-1;   
-    }
-    else if(month==1 && day >= 21) {
-        previousMonth= 01;     
-    } 
-    // previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
-    var dateFrom = year +'-' + previousMonth+ '-' + startDay;
+        switch (month) {
+            case 1:
+                previousMonth = (day < 21) ? 12 : 1;
+                year = (day < 21) ? year - 1 : year;
+                break;
+            default:
+                previousMonth = (day < 21) ? month - 1 : month;
+                break;
+        }
 
-    document.getElementById("date_from").value = dateFrom;
-    document.getElementById("date_to").value = dateTo;
+        previousMonth = startsWithZero(previousMonth) ? previousMonth : '0' + previousMonth;
+        var dateFrom = year + '-' + previousMonth + '-' + startDay;
+        document.getElementById("date_from").value = dateFrom;
+        document.getElementById("date_to").value = dateTo;
 
     }
 
+
+    function startsWithZero(value) {
+        if (typeof value === 'number') {
+            // If the value is a number, convert it to a string
+            value = value.toString();
+        }
+        return value.charAt(0) === '0';
+    }
 
 
 
@@ -376,16 +394,16 @@
                     type: "POST",
                     data: function(d) {
                         d._token = "{{ csrf_token() }}",
-                        d.centre_id = $('#centre_id option:selected').val(),
-                        d.employee=  $('#employee_id option:selected').text(),
-                        d.patient=  $('#patient_name option:selected').val(),
-                        d.service=  $('#service_id option:selected').text(),
-                        d.state = $('#state_id option:selected').text(),
-                        date1=$('#date_from').val().replaceAll('-', '/');
-                        date2=$('#date_to').val().replaceAll('-', '/');
+                            d.centre_id = $('#centre_id option:selected').val(),
+                            d.employee = $('#employee_id option:selected').text(),
+                            d.patient = $('#patient_name option:selected').val(),
+                            d.service = $('#service_id option:selected').text(),
+                            d.state = $('#state_id option:selected').text(),
+                            date1 = $('#date_from').val().replaceAll('-', '/');
+                        date2 = $('#date_to').val().replaceAll('-', '/');
                         d.dateFrom = (date1),
-                        d.dateTo = (date2),
-                        d.search = $('input[type="search"]').val()
+                            d.dateTo = (date2),
+                            d.search = $('input[type="search"]').val()
                     },
                     dataSrc: function(json) {
                         $('#btnSubmitFind').show();
@@ -398,9 +416,8 @@
                 },
                 // autoWidth:true,
                 columns: columnsFilled,
-                columnDefs: [
-                    {
-                        targets:3,
+                columnDefs: [{
+                        targets: 3,
                         className: 'myclass'
                         // render:function(data, type, row){
                         //     d= data.split('')[0].toUpperCase() + data.slice(1)
@@ -410,47 +427,47 @@
 
                     },
                     {
-                        targets: [6,7,8],
+                        targets: [6, 7, 8],
                         // data: "cancellation_date",
                         type: "date",
                         render: function(data, type, row) {
 
-                            if (data!=null){
-                            var datetime = moment(data, 'YYYY-M-D');
-                            var displayString = moment(datetime).format('D-M-YYYY');
+                            if (data != null) {
+                                var datetime = moment(data, 'YYYY-M-D');
+                                var displayString = moment(datetime).format('D-M-YYYY');
 
-                            if (type === 'display' || type === 'filter') {
-                                return displayString;
+                                if (type === 'display' || type === 'filter') {
+                                    return displayString;
+                                } else {
+                                    return datetime; // for sorting
+                                }
                             } else {
-                                return datetime; // for sorting
+                                return null;
                             }
-                        }else {
-                            return null;
-                        }
 
                         }
                     },
                     {
-                    width: "10%",
-                    targets: 0
-                },
-                {
-                    width: "15%",
-                    targets: [1,3,4]
-                },
-                {
-                    width: "5%",
-                    targets: 2
-                },
-                
-                {
-                    width: "5%",
-                    targets: 5
-                },
-                {
-                    width: "5%",
-                    targets: [6,7,8]
-                },
+                        width: "10%",
+                        targets: 0
+                    },
+                    {
+                        width: "15%",
+                        targets: [1, 3, 4]
+                    },
+                    {
+                        width: "5%",
+                        targets: 2
+                    },
+
+                    {
+                        width: "5%",
+                        targets: 5
+                    },
+                    {
+                        width: "5%",
+                        targets: [6, 7, 8]
+                    },
                     {
                         targets: -1,
                         width: '30%'
@@ -515,14 +532,14 @@
                     $('#btnSubmit').show();
 
                     var link = document.createElement('a'),
-                    filename = 'tracking.xls';
+                        filename = 'tracking.xls';
                     link.href = URL.createObjectURL(data);
                     link.download = filename;
                     link.click();
                 }
             }
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error'+jqXHR.responseText);
+            alert('Error' + jqXHR.responseText);
 
 
         });

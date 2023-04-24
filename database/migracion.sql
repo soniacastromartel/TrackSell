@@ -180,6 +180,8 @@ join pdi2.centres   c2  on c2.id = t.centre_employee_id
 join pdi2.services  s  on s.id = t.service_id 
 join pdi2.service_prices sp   on sp.service_id = t.service_id
 and sp.centre_id = t.centre_id
+where sp.cancellation_date is null
+
 
 
 create or replace view pdi2.ranking as

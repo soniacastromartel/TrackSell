@@ -30,6 +30,7 @@ use App\RequestChange;
 class TrackingController extends Controller
 {
     protected $finalDetailedSales = [];
+    
 
     public function __construct()
     {
@@ -66,95 +67,28 @@ class TrackingController extends Controller
     public function index(Request $request)
     {
 
+        $this->user = session()->get('user');
         try {
             $state = '';
             $title = 'Recomendaciones';
             if ($request->ajax()) {
-
                 $params = $request->all();
-                $query  = Tracking::select(
-                    'centres.id as centre_id',
-                    'centres.name as centre',
-                    'employees.name as employee',
-                    'trackings.id',
-                    'trackings.hc',
-                    'trackings.patient_name',
-                    'trackings.state',
-                    'trackings.state_date',
-                    'services.name as service',
-                    'trackings.started_date',
-                    'apointment_date',
-                    'service_date',
-                    'invoiced_date',
-                    'validation_date',
-                    'trackings.cancellation_date'
-                )
-                    ->join('services', 'services.id', '=', 'service_id')
-                    ->join('employees', 'employees.id', '=', 'employee_id')
-                    ->join('centres', 'centres.id', '=', 'centre_employee_id');
-
                 $currentDay   = substr($params['dateTo'], -2, strpos($params['dateTo'], '/'));
                 $beforeDay = substr($params['dateFrom'], -2, strpos($params['dateFrom'], '/'));
                 $currentMonth = substr($params['dateFrom'], -5,  2);
-                $nextMonth = substr($params['dateTo'], -5,  2 );
+                $nextMonth = substr($params['dateTo'], -5,  2);
                 $year         = substr($params['dateFrom'], 0, strpos($params['dateFrom'], '/'));
                 $nextYear  = substr($params['dateTo'], 0, strpos($params['dateTo'], '/'));
 
                 $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . $beforeDay;
                 $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
 
-                $trackings = $query
-                    //->orderByRaw($orderBy)
-                    // ->whereNull('trackings.cancellation_date')
-                    ->where(function ($q) use ($params, $initPeriod, $endPeriod) {
-                        if (!empty($params['centre_id'])) {
-                            if ($params['centre_id'] == 'SIN SELECCION') {
-                                $params['centre_id'] = null;
-                            } else {
-                                $q->where('centres.id', $params['centre_id']);
-                            }
-                        }
-                        if (!empty($params['employee'])) {
-                            if ($params['employee'] == 'SIN SELECCION') {
-                                $params['employee'] = null;
-                            } else {
-                                $q->where('employees.name', $params['employee']);
-                            }
-                        }
-                        if (!empty($params['patient'])) {
-                            if ($params['patient'] == 'SIN SELECCION') {
-                                $params['patient'] = null;
-                            } else {
-                                $q->where('trackings.patient_name', $params['patient']);
-                            }
-                        }
-                        if (!empty($params['service'])) {
-                            if ($params['service'] == 'SIN SELECCION') {
-                                $params['service'] = null;
-                            } else {
-                                $q->where('services.name', $params['service']);
-                            }
-                        }
-                        if (!empty($params['state'])) {
-                            if ($params['state'] == 'Cancelado') {
-                                $q->whereNotNull('trackings.cancellation_date')
-                                    ->whereBetween('trackings.cancellation_date', [$initPeriod, $endPeriod]);
-                            } else  if ($params['state'] == 'SIN SELECCION') {
-                                $params['state'] = null;
-                            } else {
-                                $q->where('trackings.state', $params['state'])
-                                ->whereNull('trackings.cancellation_date');
-                            }
-                        }
-                        $q->where(function ($q2) use ($params, $initPeriod, $endPeriod) {
-                            $q2
-                                ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
-                                ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
-                                ;
-                        });
-                    });
-                //  ->get();
+                $trackings = Tracking::getTrackingsByCentre($params,$initPeriod, $endPeriod);
 
+                $trackings=$trackings->toArray();
+
+
+                
                 return DataTables::of($trackings)
                     ->addIndexColumn()
                     ->filter(function ($instance) use ($request) {
@@ -168,7 +102,7 @@ class TrackingController extends Controller
                                     ->orWhere('trackings.state', 'LIKE', "%$search%")
                                     ->orWhere('trackings.hc', 'LIKE', "%$search%")
                                     // ->orderBy('trackings.state_date')
-                                    ;
+                                ;
                             });
                         }
                     })
@@ -185,7 +119,7 @@ class TrackingController extends Controller
                             $trackingDate =  date('Y-m-d');
 
                             $state = substr($state, 0, strpos($state, "_"));
-                            if ($tracking->state == env('STATE_PENDING')) {//PENDIENTE
+                            if ($tracking->state == env('STATE_PENDING')) { //PENDIENTE
                                 // $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6" >';
                                 $btn .= '<input style="resize:horizontal; width: 120px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -196,7 +130,7 @@ class TrackingController extends Controller
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
                             }
-                            if ($tracking->state == env('STATE_APOINTMENT')) {//CITADOS
+                            if ($tracking->state == env('STATE_APOINTMENT')) { //CITADOS
                                 // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -213,7 +147,7 @@ class TrackingController extends Controller
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Reiniciar</a>';
                                 $btn .= '</div></div>';
                             }
-                            if ($tracking->state == env('STATE_SERVICE')) {//REALIZADOS
+                            if ($tracking->state == env('STATE_SERVICE')) { //REALIZADOS
                                 // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -230,7 +164,7 @@ class TrackingController extends Controller
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
                             }
-                            if ($tracking->state == env('STATE_INVOICED')) {//FACTURADOS
+                            if ($tracking->state == env('STATE_INVOICED')) { //FACTURADOS
                                 // $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-4">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -300,7 +234,8 @@ class TrackingController extends Controller
 
 
             return view('tracking.index', [
-                'title' => $title, 'mensaje' => '',  'centres'  => $centres,  'states'   => $states, 'employees'  => $employees, 'services'  => $services, 'patients'  => $patients
+                'title' => $title, 'mensaje' => '',  'centres'  => $centres,  'states'   => $states, 'employees'  => $employees, 'services'  => $services, 'patients'  => $patients, 
+                'user'      => $this->user,
 
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -953,7 +888,8 @@ class TrackingController extends Controller
                 ->join('centres', 'centres.id', '=', 'centre_employee_id')
                 ->join('services', 'services.id', '=', 'service_id')
                 ->join('employees', 'employees.id', '=', 'employee_id')
-                ->whereNull('trackings.cancellation_date');
+                ->whereNull('trackings.cancellation_date')
+                ->orderBy('trackings.validation_date');
             // ->get();
 
             return DataTables::of($tracking)

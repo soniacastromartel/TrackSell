@@ -42,10 +42,6 @@ class LeagueService {
                 $clasification = ['data' => []];
                 $totalPoints = 0;
                 $cvSum = 0;
-                $vpAnual= 0;
-                $vcAnual= 0;
-                $obj_vpAnual= 0;
-                $obj_vcAnual= 0;
 
                 foreach ($centresAnualData as $i=>$centreYear) {
                     $totalPoints = 0;
@@ -58,20 +54,12 @@ class LeagueService {
                                 $centreMonth->cv = 0;
                             }
                              $cvSum += $centreMonth->cv;
-
-                            // $vpAnual += $centreMonth-> vd;
-                            // $vcAnual += $centreMonth -> vc;
-                            // $obj_vpAnual += $centreMonth -> obj2;
-                            // $obj_vcAnual += $centreMonth -> obj1;
-
                             if($isCurrent){
                                 if($j == $limit -1){
                                     break;
                                 }
                             }
                            
-                            // $cvSum += (($vpAnual -$obj_vpAnual)+($vcAnual - $obj_vcAnual))/($obj_vcAnual+$obj_vpAnual);
-
                         } else {
                             if ($centreMonth->month == $params['month']) {
                                 $totalPoints = $centreMonth->points;
@@ -80,15 +68,17 @@ class LeagueService {
                         }
                     }
 
-                    if($cvSum < -1){
-                        $cvSum= -1;
-                    }
 
                     if ($params['month']== null && $isCurrent){
                         // $cvSum += (($vpAnual -$obj_vpAnual)+($vcAnual - $obj_vcAnual))/($obj_vcAnual+$obj_vpAnual);
                         $cvSum= $cvSum/$limit;
                     }else if ($params['month']== null && !$isCurrent){
                         $cvSum= $cvSum/12;
+                    }
+
+                    
+                    if($cvSum < -1){
+                        $cvSum= -1;
                     }
                     
                     $actualCentre = Centre::getCentreByField($centreYear[0]->centre_id);

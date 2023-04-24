@@ -135,6 +135,7 @@
                                             <div class="dropdown bootstrap-select">
                                                 <label class="label">Empleado <span class="obligatory">*</span></label>
                                                 <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
+                                                <option>SIN SELECCION </option>
                                                     @if ($user->rol_id != 1)
                                                     @foreach ($employees as $employee)
                                                     @if ($employee->centre_id== $user-> centre_id)
