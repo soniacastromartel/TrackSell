@@ -27,10 +27,12 @@ use App\ValidationRrhh;
 use App\Discount;
 use App\RequestChange;
 
+use Carbon\Carbon;
+
 class TrackingController extends Controller
 {
     protected $finalDetailedSales = [];
-    
+
 
     public function __construct()
     {
@@ -83,12 +85,12 @@ class TrackingController extends Controller
                 $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . $beforeDay;
                 $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
 
-                $trackings = Tracking::getTrackingsByCentre($params,$initPeriod, $endPeriod);
+                $trackings = Tracking::getTrackingsByCentre($params, $initPeriod, $endPeriod);
 
-                $trackings=$trackings->toArray();
+                $trackings = $trackings->toArray();
 
 
-                
+
                 return DataTables::of($trackings)
                     ->addIndexColumn()
                     ->filter(function ($instance) use ($request) {
@@ -234,7 +236,7 @@ class TrackingController extends Controller
 
 
             return view('tracking.index', [
-                'title' => $title, 'mensaje' => '',  'centres'  => $centres,  'states'   => $states, 'employees'  => $employees, 'services'  => $services, 'patients'  => $patients, 
+                'title' => $title, 'mensaje' => '',  'centres'  => $centres,  'states'   => $states, 'employees'  => $employees, 'services'  => $services, 'patients'  => $patients,
                 'user'      => $this->user,
 
             ]);
@@ -870,11 +872,21 @@ class TrackingController extends Controller
      */
     public function searchDelete(Request $request)
     {
+
+        $this->user = session()->get('user');
+        $centreId = $this->user->centre_id;
+
+        $endPeriod = Carbon::today(); // current date
+        $initPeriod = Carbon::today()->subMonths(6); // one year before the current date
+        
+
         try {
 
-            $tracking = DB::table('trackings')
+            $query = DB::table('trackings')
                 ->selectRaw(
                     'trackings.id as id, 
+                    centres.id as centre_id,
+                    
                                             centres.name as centre,
                                             services.name as service,
                                             employees.name as employee,
@@ -888,9 +900,17 @@ class TrackingController extends Controller
                 ->join('centres', 'centres.id', '=', 'centre_employee_id')
                 ->join('services', 'services.id', '=', 'service_id')
                 ->join('employees', 'employees.id', '=', 'employee_id')
+                ->where('centres.id','=',$this->user->centre_id)
                 ->whereNull('trackings.cancellation_date')
-                ->orderBy('trackings.validation_date');
+                ->orderBy('trackings.validation_date', 'desc');
             // ->get();
+
+            $tracking = $query->where(function ($q2) use ($initPeriod, $endPeriod) {
+                $q2
+                    ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
+                    ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
+                    ->orWhereBetween('trackings.validation_date', [$initPeriod, $endPeriod]);
+            });
 
             return DataTables::of($tracking)
                 ->addIndexColumn()
