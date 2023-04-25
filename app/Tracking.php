@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
+
 class Tracking extends Model
 {
     protected $fillable = [
@@ -59,7 +60,7 @@ class Tracking extends Model
     }
 
 
-    public function scopeGetTrackingsByCentre($query,$params, $initPeriod, $endPeriod)
+    public function scopeGetTrackings()
     {
 
         $query = DB::table('trackings')
@@ -84,57 +85,8 @@ class Tracking extends Model
             ->join('employees', 'employees.id', '=', 'employee_id')
             ->join('centres', 'centres.id', '=', 'centre_employee_id');
 
-        $trackings =$query
-            //->orderByRaw($orderBy)
-            // ->whereNull('trackings.cancellation_date')
-            ->where(function ($q) use ($params, $initPeriod, $endPeriod) {
-                if (!empty($params['centre_id'])) {
-                    if ($params['centre_id'] == 'SIN SELECCION') {
-                        $params['centre_id'] = null;
-                    } else {
-                        $q->where('centres.id', $params['centre_id']);
-                    }
-                }
-                if (!empty($params['employee'])) {
-                    if ($params['employee'] == 'SIN SELECCION') {
-                        $params['employee'] = null;
-                    } else {
-                        $q->where('employees.name', $params['employee']);
-                    }
-                }
-                if (!empty($params['patient'])) {
-                    if ($params['patient'] == 'SIN SELECCION') {
-                        $params['patient'] = null;
-                    } else {
-                        $q->where('trackings.patient_name', $params['patient']);
-                    }
-                }
-                if (!empty($params['service'])) {
-                    if ($params['service'] == 'SIN SELECCION') {
-                        $params['service'] = null;
-                    } else {
-                        $q->where('services.name', $params['service']);
-                    }
-                }
-                if (!empty($params['state'])) {
-                    if ($params['state'] == 'Cancelado') {
-                        $q->whereNotNull('trackings.cancellation_date')
-                            ->whereBetween('trackings.cancellation_date', [$initPeriod, $endPeriod]);
-                    } else  if ($params['state'] == 'SIN SELECCION') {
-                        $params['state'] = null;
-                    } else {
-                        $q->where('trackings.state', $params['state'])
-                            ->whereNull('trackings.cancellation_date');
-                    }
-                }
-                $q->where(function ($q2) use ($params, $initPeriod, $endPeriod) {
-                    $q2
-                        ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
-                        ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod]);
-                });
-            })
-            ->get();
-        return $trackings;
+        return $query;
+        
     }
 
 

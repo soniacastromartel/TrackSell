@@ -85,12 +85,60 @@ class TrackingController extends Controller
                 $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . $beforeDay;
                 $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
 
-                $trackings = Tracking::getTrackingsByCentre($params, $initPeriod, $endPeriod);
+                $query = Tracking::getTrackings();
 
-                $trackings = $trackings->toArray();
+                $trackings = $query
+                    //->orderByRaw($orderBy)
+                    // ->whereNull('trackings.cancellation_date')
+                    ->where(function ($q) use ($params, $initPeriod, $endPeriod) {
+                        if (!empty($params['centre_id'])) {
+                            if ($params['centre_id'] == 'SIN SELECCION') {
+                                $params['centre_id'] = null;
+                            } else {
+                                $q->where('centres.id', $params['centre_id']);
+                            }
+                        }
+                        if (!empty($params['employee'])) {
+                            if ($params['employee'] == 'SIN SELECCION') {
+                                $params['employee'] = null;
+                            } else {
+                                $q->where('employees.name', $params['employee']);
+                            }
+                        }
+                        if (!empty($params['patient'])) {
+                            if ($params['patient'] == 'SIN SELECCION') {
+                                $params['patient'] = null;
+                            } else {
+                                $q->where('trackings.patient_name', $params['patient']);
+                            }
+                        }
+                        if (!empty($params['service'])) {
+                            if ($params['service'] == 'SIN SELECCION') {
+                                $params['service'] = null;
+                            } else {
+                                $q->where('services.name', $params['service']);
+                            }
+                        }
+                        if (!empty($params['state'])) {
+                            if ($params['state'] == 'Cancelado') {
+                                $q->whereNotNull('trackings.cancellation_date')
+                                    ->whereBetween('trackings.cancellation_date', [$initPeriod, $endPeriod]);
+                            } else  if ($params['state'] == 'SIN SELECCION') {
+                                $params['state'] = null;
+                            } else {
+                                $q->where('trackings.state', $params['state'])
+                                    ->whereNull('trackings.cancellation_date');
+                            }
+                        }
+                        $q->where(function ($q2) use ($params, $initPeriod, $endPeriod) {
+                            $q2
+                                ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
+                                ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
+                                ->orWhereBetween('trackings.validation_date', [$initPeriod, $endPeriod]);
+                        });
+                    });
 
-
-
+                // $trackings = $trackings->toArray();
                 return DataTables::of($trackings)
                     ->addIndexColumn()
                     ->filter(function ($instance) use ($request) {
@@ -878,7 +926,7 @@ class TrackingController extends Controller
 
         $endPeriod = Carbon::today(); // current date
         $initPeriod = Carbon::today()->subMonths(6); // one year before the current date
-        
+
 
         try {
 
@@ -900,7 +948,7 @@ class TrackingController extends Controller
                 ->join('centres', 'centres.id', '=', 'centre_employee_id')
                 ->join('services', 'services.id', '=', 'service_id')
                 ->join('employees', 'employees.id', '=', 'employee_id')
-                ->where('centres.id','=',$this->user->centre_id)
+                ->where('centres.id', '=', $this->user->centre_id)
                 ->whereNull('trackings.cancellation_date')
                 ->orderBy('trackings.validation_date', 'desc');
             // ->get();
@@ -978,6 +1026,10 @@ class TrackingController extends Controller
         return $error;
     }
 
+
+    /**
+     * No se está usando: migración A3Innuva
+     */
     public function getFinalValidationData($request)
     {
         $params = $request->all();
