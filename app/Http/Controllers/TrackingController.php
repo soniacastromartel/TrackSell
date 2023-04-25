@@ -86,7 +86,6 @@ class TrackingController extends Controller
                 $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
 
                 $query = Tracking::getTrackings();
-
                 $trackings = $query
                     //->orderByRaw($orderBy)
                     // ->whereNull('trackings.cancellation_date')
@@ -921,43 +920,30 @@ class TrackingController extends Controller
     public function searchDelete(Request $request)
     {
 
-        $this->user = session()->get('user');
-        $centreId = $this->user->centre_id;
-
         $endPeriod = Carbon::today(); // current date
         $initPeriod = Carbon::today()->subMonths(6); // one year before the current date
 
-
         try {
+            $this->user = session()->get('user');
+            $centreId = $this->user->centre_id;
 
-            $query = DB::table('trackings')
-                ->selectRaw(
-                    'trackings.id as id, 
-                    centres.id as centre_id,
-                    
-                                            centres.name as centre,
-                                            services.name as service,
-                                            employees.name as employee,
-                                            patient_name,
-                                            hc,
-                                            DATE_FORMAT( apointment_date, \'%d-%m-%Y\') as apointment_date,
-                                            DATE_FORMAT( service_date, \'%d-%m-%Y\') as service_date,
-                                            DATE_FORMAT( invoiced_date, \'%d-%m-%Y\') as invoiced_date,
-                                            DATE_FORMAT( validation_date, \'%d-%m-%Y\') as validation_date'
-                )
-                ->join('centres', 'centres.id', '=', 'centre_employee_id')
-                ->join('services', 'services.id', '=', 'service_id')
-                ->join('employees', 'employees.id', '=', 'employee_id')
-                ->where('centres.id', '=', $this->user->centre_id)
-                ->whereNull('trackings.cancellation_date')
-                ->orderBy('trackings.validation_date', 'desc');
-            // ->get();
+            $query = Tracking::getTrackings();
 
-            $tracking = $query->where(function ($q2) use ($initPeriod, $endPeriod) {
-                $q2
+            $tracking = $query
+            ->where(function ($q) use ($initPeriod, $endPeriod, $centreId) {
+                if ($this->user->centre_id != null) {
+                    $q->where('centres.id', '=', $centreId);
+                }
+
+                $q -> where(function($q2) use ($initPeriod, $endPeriod) {
+                 $q2
+                    ->whereNull('trackings.cancellation_date')
                     ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
                     ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
-                    ->orWhereBetween('trackings.validation_date', [$initPeriod, $endPeriod]);
+                    ->orWhereBetween('trackings.validation_date', [$initPeriod, $endPeriod])
+                    ->orderBy('trackings.validation_date', 'desc');
+                });
+                   
             });
 
             return DataTables::of($tracking)
