@@ -18,6 +18,7 @@ class A3Employee extends Model
         , 'personalphone'
         , 'dropDate'
         , 'enrolmentDate'
+        , 'lastUpdate'
         , 'companyCode'
         , 'workplaceCode'
         , 'workplaceName'

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Pool;
 
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 
 
@@ -20,7 +20,7 @@ class A3Service
     public $expires_at;
     public $refresh_token;
     public $isExpired;
-    //public $totalPages;
+    public $oneMonthBefore;
 
     public function __construct()
     {
@@ -43,11 +43,7 @@ class A3Service
                 'redirect_uri' => env('REDIRECT_URI')
 
             ]);
-            $this->access_token = $response['access_token'];
-            $this->expires_in = $response['expires_in'];
-            $this->refresh_token = $response['refresh_token'];
-            $this->expires_at = $this->calculateTokenExpiration($response['expires_in']);
-            $this->isExpired = false;
+            $this->init($response);
 
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
@@ -78,11 +74,7 @@ class A3Service
                 'client_secret' => env('OAUTH_CLIENTSECRET'),
                 'refresh_token' => env('REFRESH_TOKEN')
             ]);
-            $this->access_token = $response['access_token'];
-            $this->expires_in = $response['expires_in'];
-            $this->refresh_token = $response['refresh_token'];
-            $this->expires_at = $this->calculateTokenExpiration($response['expires_in']);
-            $this->isExpired = false;
+            $this->init($response);
 
             return $response->json([
                 'success' => true, 'url'    => null, 'mensaje' => ''
@@ -100,34 +92,6 @@ class A3Service
         }
     }
 
-    /**
-     * Function to get the number of pages on each request
-     * @param $companyCode
-     * @param $workplaceCode
-     */
-
-    // public function getPages($companyCode, $workplaceCode)
-    // {
-
-    //     \Log::channel('a3')->info($this->expires_at);
-    //     \Log::channel('a3')->info($this->getTokenExpired($this->expires_at));
-
-    //     if ($this->isExpired) {
-    //         $this->refreshToken();
-    //         \Log::channel('a3')->info($this->isExpired);
-    //         \Log::channel('a3')->info('Token refrescado');
-    //     }
-
-    //     $url = $companyCode . '/employees';
-    //     $response = Http::a3($this->access_token)->get($url, [
-    //         'pageNumber' => 1,
-    //         'pageSize' => 600,
-    //         'filter' => 'workplaceCode eq ' . $workplaceCode . ' and dropDate eq null or dropDate ge 2019-01-01'
-    //     ]);
-
-    //     $pagination = json_decode($response->header('X-pagination'), true);
-    //     return $pagination['totalPages'];
-    // }
 
 
     public function getPages($companyCode, $workplaceCode)
@@ -146,7 +110,7 @@ class A3Service
         $response = Http::a3($this->access_token)->get($url, [
             'pageNumber' => 1,
             'pageSize' => 600,
-            'filter' => 'workplaceCode eq ' . $workplaceCode . ' and dropDate eq null or dropDate ge 2019-01-01'
+            'filter' => 'workplaceCode eq ' . $workplaceCode . ' and lastUpdate ge ' . $this->oneMonthBefore
         ]);
 
         $pagination = json_decode($response->header('X-pagination'), true);
@@ -165,7 +129,7 @@ class A3Service
             $response = Http::a3($this->access_token)->get($url, [
                 'pageNumber' => $pageNumber,
                 'pageSize' => 1000,
-                'filter' => 'workplaceCode eq ' . $workplaceCode . ' and dropDate eq null or dropDate ge 2019-01-01',
+                'filter' => 'workplaceCode eq ' . $workplaceCode . ' and lastUpdate ge ' . $this->oneMonthBefore,
                 'orderBy' => 'employeeCode asc',
 
             ]);
@@ -326,6 +290,20 @@ class A3Service
         }
     }
 
+    //UTILS
+    /**
+     *  function  which takes in a single parameter Http $response. It sets the values of various properties of the class instance to values extracted from
+     * the $response parameter
+     */
+    public function init($response)
+    {
+        $this->access_token = $response['access_token'];
+        $this->expires_in = $response['expires_in'];
+        $this->refresh_token = $response['refresh_token'];
+        $this->expires_at = $this->calculateTokenExpiration($response['expires_in']);
+        $this->isExpired = false;
+        $this->oneMonthBefore = $this->getPreviousDate();
+    }
     /**
      * Function to transform a string into a lowercase string without tildes
      * @param $cadena the string to be converted
@@ -395,5 +373,16 @@ class A3Service
             $this->isExpired = false;
         }
         return $this->isExpired;
+    }
+
+    /**
+     * Function to get a date one month before current date using Carbon library
+     */
+    public function getPreviousDate()
+    {
+        $currentDate = Carbon::now();
+        $oneMonthBefore = $currentDate->subMonth();
+        $formattedDate = $oneMonthBefore->format('Y-m-d');
+        return $formattedDate;
     }
 }

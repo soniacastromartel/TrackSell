@@ -77,6 +77,7 @@ class A3Download extends Command
                                         "completeName" => $employee['completeName'],
                                         "identifierNumber" => $employee['identifierNumber'],
                                         "workplaceCode" => $employee['workplaceCode'],
+                                        "lastUpdate" => $employee['lastUpdate'],
     
                                     ];
                                     $a3employee = $employee;
