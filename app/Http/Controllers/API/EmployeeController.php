@@ -36,7 +36,7 @@ class EmployeeController extends BaseController
                         , 'employees.category'
                         , 'employees.centre_id'
                         , 'employees.email'
-                        , 'employees.img'
+                        // , 'employees.img'
                         )
                     ->distinct('employees.id' )
                     ->join('employee_history','employee_history.centre_id', '=', 'employees.centre_id')

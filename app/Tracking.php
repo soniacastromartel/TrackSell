@@ -62,7 +62,6 @@ class Tracking extends Model
 
     public function scopeGetTrackings()
     {
-
         $query = DB::table('trackings')
             ->select(
                 'centres.id as centre_id',
@@ -84,13 +83,36 @@ class Tracking extends Model
             ->join('services', 'services.id', '=', 'service_id')
             ->join('employees', 'employees.id', '=', 'employee_id')
             ->join('centres', 'centres.id', '=', 'centre_employee_id');
-
         return $query;
-        
     }
 
-
-
+    public function scopeGetNonCancelledTrackings()
+    {
+        $query = DB::table('trackings')
+            ->select(
+                'centres.id as centre_id',
+                'centres.name as centre',
+                'employees.name as employee',
+                'trackings.id',
+                'trackings.hc',
+                'trackings.patient_name',
+                'trackings.state',
+                'trackings.state_date',
+                'services.name as service',
+                'trackings.started_date',
+                'apointment_date',
+                'service_date',
+                'invoiced_date',
+                'validation_date',
+                'trackings.cancellation_date'
+            )
+            ->join('services', 'services.id', '=', 'service_id')
+            ->join('employees', 'employees.id', '=', 'employee_id')
+            ->join('centres', 'centres.id', '=', 'centre_employee_id')
+            ->whereNull('trackings.cancellation_date'); // Add this condition to filter by cancellation_date
+        return $query;
+    }
+    
     public function scopeCheckDate($query, $trackingDate)
     {
         $result = true;

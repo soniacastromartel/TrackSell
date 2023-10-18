@@ -3,14 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Request;
-use Illuminate\Http\Client\RequestException;
-use Illuminate\Http\Client\Pool;
-
 use Carbon\Carbon;
-
-
-
 
 class A3Service
 {

@@ -919,7 +919,6 @@ class TrackingController extends Controller
      */
     public function searchDelete(Request $request)
     {
-
         $endPeriod = Carbon::today(); // current date
         $initPeriod = Carbon::today()->subMonths(6); // one year before the current date
 
@@ -927,7 +926,7 @@ class TrackingController extends Controller
             $this->user = session()->get('user');
             $centreId = $this->user->centre_id;
 
-            $query = Tracking::getTrackings();
+            $query = Tracking::getNonCancelledTrackings();
 
             $tracking = $query
             ->where(function ($q) use ($initPeriod, $endPeriod, $centreId) {

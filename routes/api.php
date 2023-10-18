@@ -18,19 +18,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->group( function() {
-    /* MIS DATOS */ 
-    Route::get('/employee_info/{id}', 'API\EmployeeController@info');        
-    /* MIS INCENTIVOS */
-    Route::post('/incentives', 'API\TrackingController@incentives');
-    /* MIS SERVICIOS */
-    Route::get('/services/{id}/{order}', 'API\ServiceController@servicesByCentre');
-    /* NUEVO SEGUIMIENTO */
-    Route::post('/tracking/create', 'API\TrackingController@store');
-    /* RANKING EMPLEADO */
-    Route::post('/employee_ranking', 'API\EmployeeController@getRanking');  
-    Route::get('/promotions', 'API\PromotionsController@getPromotions');
-}); 
+/* MIS DATOS */
+Route::get('/employee_info/{id}', 'API\EmployeeController@info');
+/* MIS INCENTIVOS */
+Route::post('/incentives', 'API\TrackingController@incentives');
+/* MIS SERVICIOS */
+Route::get('/services/{id}/{order}', 'API\ServiceController@servicesByCentre');
+/* NUEVO SEGUIMIENTO */
+Route::post('/tracking/create', 'API\TrackingController@store');
+/* RANKING EMPLEADO */
+Route::post('/employee_ranking', 'API\EmployeeController@getRanking');
+Route::get('/promotions', 'API\PromotionsController@getPromotions');
+
+
+
 /* LISTADOS DE CENTROS Y CATEGORÍAS */
 Route::get('/employee_categories', 'API\EmployeeController@getJobCategories');
 Route::get('/getCenters', 'API\CentreController@getCenters');
@@ -64,3 +65,6 @@ Route::get('/tracking/search', 'API\TrackingController@getTrackingInfo');
 Route::get('/discounts/{service_id}/{centre_id}', 'API\ServiceController@getAvailablesDiscounts');
 
 Route::post('/logs', 'API\LogsAppController@savelogs');
+
+Route::get('/service_categories', 'API\ServiceController@getServiceCategories');
+

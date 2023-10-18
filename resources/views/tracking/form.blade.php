@@ -203,7 +203,6 @@
       status = "{{ request()->segment(3)}}";
     }
 
-
     function clearForms() {
             $('select').val('');
             $('input').val('');

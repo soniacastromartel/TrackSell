@@ -108,9 +108,6 @@ class LeagueController extends Controller
                 return  Excel::download((new LeagueExport($exportData, $filters)), 'export_league.xls');
                 
            
-
-
-           
         } catch (Exception $e) {
             return response()->json(
                 [

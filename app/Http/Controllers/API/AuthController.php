@@ -337,7 +337,7 @@ class AuthController extends BaseController
         $eData->category         = $auxEmployeeData['category'];
         $eData->count_access     = $auxEmployeeData['count_access'];
         $eData->unlockRequest    = $auxEmployeeData['unlockRequest'];
-        $eData->img              = $auxEmployeeData['img'];
+        // $eData->img              = $auxEmployeeData['img'];
         $success['user']         = $eData;
 
         // Reseteo de contador de acceso tras inicio correcto

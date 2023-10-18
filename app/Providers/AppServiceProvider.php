@@ -81,7 +81,6 @@ class AppServiceProvider extends ServiceProvider
                 ])->baseUrl( env('API_ENDPOINT').'/');
             });
 
-
             // PendingRequest::macro('a3', function ($access_token) {
             //     return PendingRequest::withHeaders([
             //         'authorization' => 'Bearer ' . $access_token,
@@ -89,12 +88,10 @@ class AppServiceProvider extends ServiceProvider
             //     ])->baseUrl( env('API_ENDPOINT').'/');
             // });
 
-
             Response:: macro('success', function($data){
                 return response()-> json($data);
             });
-
-        
+       
             Response:: macro('error', function($error, $status_code){
                 return response()-> json([
                     'success'=> false,
@@ -102,7 +99,5 @@ class AppServiceProvider extends ServiceProvider
                 ], $status_code);
             });
         
-       
-
     }
 }

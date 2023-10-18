@@ -250,7 +250,6 @@
             type: 'post',
             data: params,
             success: function(response, textStatus, jqXHR) {
-
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
                     if (type == 'only') {
