@@ -280,7 +280,6 @@
 
         function clearForms() {
             setDate();
-            console.log($('input[type="search"]').val());
             $('select#centre_id').val('');
             $('select#state_id').val('');
             $('select#employee_id').val('');

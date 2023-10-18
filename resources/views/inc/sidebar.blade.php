@@ -149,9 +149,18 @@
               </a>
             </li>
 
+            <li id="calculateService" class="nav-item">
+              <a class="nav-link" href="{{route('calculateServices')}}">
+                <i class="material-icons">track_changes</i>
+                <span class="sidebar-normal"> Dinámica de Servicios </span>
+              </a>
+            </li>
+
             <li id="centerLeague" class="nav-item">
               <a class="nav-link" href="{{route('centerLeague')}}">
-                <i class="material-icons">dvr</i>
+                <i class="material-icons">
+                emoji_events
+                </i>
                 <span class="sidebar-normal"> Liga de Centros </span>
               </a>
             </li>

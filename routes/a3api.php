@@ -22,6 +22,41 @@ Route::get('/', function (GuzzleHttp\Client $client) {
 });
 
 
+ /**
+ * Function to get the authentication code
+ */
+// public function getAuthCode(){
+      
+//     $url = 'https://login.wolterskluwer.eu/auth/core/connect/authorize';
+//     $response = Http::withBasicAuth('cgarcia@grupoicot.es', 'Elchiringuito.2')->post($url, [
+//         'client_id' => env('OAUTH_CLIENTNAME'),
+//         'response_type' => 'code',
+//         'redirect_uri' => env('REDIRECT_URI'),
+//         'scope' =>'offline_access+openid+IDInfo+WK.ES.A3EquipoContex',
+//         'state' => 'GUID',
+//         'nonce' => 'GUID' 
+
+//     ]);
+
+//     return redirect($response);
+
+
+
+
+//     // $query = http_build_query([
+//     //             'client_id' => env('OAUTH_CLIENTNAME'),
+//     //             'response_type' => 'code',
+//     //             'redirect_uri' => env('REDIRECT_URI'),
+//     //             'scope' =>'offline_access+openid+IDInfo+WK.ES.A3EquipoContex',
+//     //             'state' => 'GUID',
+//     //              'nonce' => 'GUID' 
+//     //         ]);
+//     // // $url= env('AUTH_ENDPOINT') .'?' . $query;
+//     // $url= 'https://login.wolterskluwer.eu/auth/core/connect/authorize?client_id=WK.ES.A3WebApi.00267&response_type=code&redirect_uri=http://localhost:53971/Login&scope=offline_access+openid+IDInfo+WK.ES.A3EquipoContex&state=GUID&nonce=GUID';
+//     // return redirect($url);
+
+// }
+
 
 
 // usando GuzzleHttp\Client
