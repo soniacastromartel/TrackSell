@@ -348,9 +348,10 @@
         day = day >= 10 ? day : '0' + day;
         month = month >= 10 ? month : '0' + month;
         var dateTo = year + '-' + month + '-' + day;
+        console.log(month);
 
         switch (month) {
-            case 1:
+            case '01':
                 previousMonth = (day < 21) ? 12 : 1;
                 year = (day < 21) ? year - 1 : year;
                 break;
@@ -358,24 +359,11 @@
                 previousMonth = (day < 21) ? month - 1 : month;
                 break;
         }
-
-        previousMonth = startsWithZero(previousMonth) ? previousMonth : '0' + previousMonth;
+        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth; 
         var dateFrom = year + '-' + previousMonth + '-' + startDay;
         document.getElementById("date_from").value = dateFrom;
         document.getElementById("date_to").value = dateTo;
-
     }
-
-
-    function startsWithZero(value) {
-        if (typeof value === 'number') {
-            // If the value is a number, convert it to a string
-            value = value.toString();
-        }
-        return value.charAt(0) === '0';
-    }
-
-
 
     function getTrackingData() {
         if ($.fn.dataTable.isDataTable('.tracking-datatable')) {

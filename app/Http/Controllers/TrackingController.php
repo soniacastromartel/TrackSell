@@ -961,7 +961,7 @@ class TrackingController extends Controller
                             $search = $request->get('search');
                             $w->orWhere('centres.name', 'LIKE', "%$search%")
                                 ->orWhere('employees.name', 'LIKE', "%$search%")
-                                ->orWhere('services.name', 'LIKE', "%$search%")
+                                ->orWhere('services.name', 'LIKE', "%$search%") 
                                 ->orWhere('patient_name', 'LIKE', "%$search%")
                                 ->orWhere('hc', 'LIKE', "%$search%");
                         });

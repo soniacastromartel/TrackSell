@@ -47,8 +47,6 @@ class TracingTargetsExport implements FromCollection, WithStyles, WithEvents
     {
         return [
             BeforeExport::class => function(BeforeExport $event){
-
-
                 if (isset($this->filters['type']) && $this->filters['type']== 'only'){
                     $path =storage_path('templates').'/tracing_targets-'.$this->filters['type'].'.xls';
                 } else{
