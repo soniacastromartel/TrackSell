@@ -51,6 +51,7 @@ class ServiceController extends Controller
                     ->leftjoin('service_categories', 'service_categories.id', '=', 'services.category_id')
                     ->leftjoin('service_prices', 'service_prices.service_id', '=', 'services.id')
                     ->leftjoin('centres', 'centres.id', '=', 'service_prices.centre_id')
+                    ->whereNull('services.cancellation_date')
                     ->groupBy('services.id', 'services.name', 'services.description', 'services.url', 'services.image', 'services.category_id');
 
 

@@ -27,6 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'refresh_token' => env('REFRESH_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------

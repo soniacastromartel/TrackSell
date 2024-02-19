@@ -1266,6 +1266,7 @@ create or replace view pdi2.export_target as
 select DISTINCT  
     `e`.`id` AS `employee_id`,
     `e`.`name` AS `employee`,
+    `e`.`nombre_a3` AS `nombreA3`,
     `e`.`rol_id` AS `rol_id`,
 	`e`.`dni` AS `dni`,
 	`e`.`cod_business` AS `cod_business`,

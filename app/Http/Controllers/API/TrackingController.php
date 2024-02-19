@@ -85,8 +85,10 @@ class TrackingController extends BaseController {
     private function getDataIncentives($params, $acumulative) {
         $targetService = new TargetService();
         $monthTo = date('m');
+        $currentYear=  date('Y');
         if ($acumulative) {
             $month = 1;
+           
         } else {
             $month = $params['month'];
             $monthTo = $month;

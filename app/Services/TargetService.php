@@ -55,7 +55,8 @@ class TargetService {
         }
         
          $exportData = DB::table('export_target')
-         ->whereRaw($whereFields); 
+         ->whereRaw($whereFields)
+         ->orderBy('cod_business'); 
         
         $exportData = $exportData->where(function($query) use ($whereLikeBegin, $whereLikeLast, $params){
 
@@ -555,6 +556,7 @@ class TargetService {
                     }
                     if (!isset($total[$trackingRow->employee_id])) {
                         $total[$trackingRow->employee_id]['name'] = $trackingRow->employee; 
+                        $total[$trackingRow->employee_id]['nombre_a3'] = $trackingRow->nombreA3; 
                         $total[$trackingRow->employee_id]['dni'] = $trackingRow->dni; 
                         $total[$trackingRow->employee_id]['cod_business'] = $trackingRow->cod_business; 
                         $total[$trackingRow->employee_id]['cod_employee'] = $trackingRow->cod_employee; 
@@ -608,6 +610,7 @@ class TargetService {
                             $isSupervisorActive = $this->employeeActive($supervisor, $monthYear); 
                             if (!isset($total[$supervisorId])) {
                                 $total[$supervisorId]['name'] = $supervisor->name;
+                                $total[$supervisorId]['nombre_a3'] = $supervisor->nombre_a3;
                                 $total[$supervisorId]['dni'] =  $supervisor->dni; 
                                 $total[$supervisorId]['cod_business'] =  $supervisor->cod_business; 
                                 $total[$supervisorId]['cod_employee'] =  $supervisor->cod_employee; 
