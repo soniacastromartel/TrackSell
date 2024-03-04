@@ -20,4 +20,14 @@ class CentreController extends BaseController{
             return $this->sendError('Error de base de datos', 500 ); 
         } 
     }
+
+    public function getCentersByService($serviceId)
+    {
+        try{
+            $centers = Centre::getCentersByServiceId($serviceId);
+            return $centers;
+        } catch (\Illuminate\Database\QueryException $e) {
+            return $this->sendError('Error de base de datos', 500 ); 
+        } 
+    }
 }

@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}" />
     
+
+
+ 
+
+    
     {{-- <link rel="stylesheet" href="{{ asset('css/material.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/mdb.min.css') }}"> --}}
     

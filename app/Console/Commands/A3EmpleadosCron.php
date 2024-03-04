@@ -264,7 +264,7 @@ class A3EmpleadosCron extends Command
 
 
 
-    function updatePDIEmployees($eToUpdate, $ea3)
+    function updatePdiEmployees($eToUpdate, $ea3)
     {
         $datosEmployee = $eToUpdate->toArray();
         //Solo actualizamos NIF cuando no hay

@@ -61,7 +61,7 @@ class A3Service
     {
         try {
             $url = env('TOKEN_ENDPOINT');
-            $response = Http::asForm()->post($url, [
+            $response = Http::asForm()->post('https://login.wolterskluwer.eu/auth/core/connect/token', [
                 'grant_type' => 'refresh_token',
                 'client_id' => env('OAUTH_CLIENTNAME'),
                 'client_secret' => env('OAUTH_CLIENTSECRET'),

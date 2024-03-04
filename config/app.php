@@ -27,6 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'refresh_token' => env('REFRESH_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------
@@ -165,6 +166,9 @@ return [
         /*
          * Package Service Providers...
          */
+        Adldap\Laravel\AdldapServiceProvider::class,
+        Adldap\Laravel\AdldapAuthServiceProvider::class,
+
 
         /*
          * Application Service Providers...

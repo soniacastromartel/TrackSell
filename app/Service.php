@@ -19,12 +19,13 @@ class Service extends Model
         'alias_img',
         'image'
     ];
-    public function service_price()
+    
+    public function servicePrice()
     {
         $this->belongsTo(ServicePrice::class);
     }
 
-    public function scopeGetServicesActive($query, $centre_id = null, $basic = false, $orderDif = false) {
+    public function scopeGetServicesActive($query, $centre_id = null, $basic = false, $orderDif = false, $groupBy= false) {
         $whereFields = "";
         $currentDate = date('Y-m-d H:i:s'); 
         $fields = ''; 
@@ -75,6 +76,17 @@ class Service extends Model
             $services = $query 
                 ->orderBy('category')
                 ->orderBy('services.name')->get();
+        }
+
+        if(!empty($category)){
+            $services = $query
+            -> where('service_categories.name', '=',$category)
+            ->get();
+        }
+
+        if($groupBy){
+            $services = $query
+            ->groupBy('category')->get();
         }
         return $services;
     }

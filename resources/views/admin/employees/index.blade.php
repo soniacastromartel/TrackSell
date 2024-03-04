@@ -1,15 +1,14 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
 
 <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
 </div>
 <div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
 </div>
-
 
 <div class="content">
     <div class="container-fluid">
@@ -44,22 +43,6 @@
     </div>
 </div>
 
-<style>
-    #category {
-        text-transform: lowercase;
-    }
-
-    #btnSyncA3 {
-        font-weight: 900;
-        font-size: large;
-        background-color: #eeeeee;
-        color: var(--red-icot);
-    }
-    td.upper {
-        text-transform: lowercase;
-
-    }
-</style>
 
 <script type="text/javascript">
     var table
@@ -73,8 +56,14 @@
 
         table = $('.employees-datatable').DataTable({
                 order: [
-                    [1, "asc"]
-                ],
+                    [1, "asc"],
+                    ],
+                createdRow: function( row, data, dataIndex ) {
+                   
+                    if (parseInt(data.count_access) === 3) {
+                        $(row).addClass('row-red-bloqued');
+                    } },
+                
                 processing: true,
                 responsive: true,
                 serverSide: true,
@@ -144,6 +133,7 @@
                     orderable: true,
                     searchable: true
                 },
+            
             ],
             search: {
                 "regex": true,
@@ -194,6 +184,35 @@
                 var response = JSON.parse(xhr.responseText);
                 $('#alertErrorChangeEmployee').text(response.mensaje);
                 $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300)();
+            }
+
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            alert('Error cargando servicios');
+        });
+    }
+
+    function resetPassword(employeeId, back) {
+        $('#alertChangeEmployee').hide();
+        $('#alertErrorChangeEmployee').hide();
+        params = {};
+        params["_token"] = "{{ csrf_token() }}";
+        params["employee_id"] = employeeId;
+        $.ajax({
+            url: "{{ route('employees.resetPassword') }}",
+            type: 'post',
+            data: params,
+            success: function(response, textStatus, jqXHR) {
+                // if success, HTML response is expected, so replace current
+                if (textStatus === 'success') {
+                    $('#alertChangeEmployee').text(response.mensaje);
+                    $('#alertChangeEmployee').show().delay(2000).slideUp(300);
+                    table.ajax.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                $('#alertErrorChangeEmployee').text(response.mensaje);
+                $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {

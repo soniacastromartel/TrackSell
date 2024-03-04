@@ -35,6 +35,8 @@ Route::get('/promotions', 'API\PromotionsController@getPromotions');
 /* LISTADOS DE CENTROS Y CATEGORÍAS */
 Route::get('/employee_categories', 'API\EmployeeController@getJobCategories');
 Route::get('/getCenters', 'API\CentreController@getCenters');
+Route::get('/getCentersByService/{id}', 'API\CentreController@getCentersByService');
+
 
 /* CONTROL/RESETEO DE ACCESOS */
 Route::get('/controlUser', 'API\EmployeeController@controlUser');
@@ -58,7 +60,7 @@ Route::post('/getLastChanges', 'API\VersionAppController@getLastChanges');
 Route::post('/notUpdate', 'API\VersionAppController@notUpdate');
 Route::post('/resetCountUpdate', 'API\VersionAppController@resetCountUpdate');
 
-Route::get('/getDataFAQ', 'API\FAQController@getDataFAQ');
+Route::get('/getDataFaq', 'API\FAQController@getDataFaq');
 
 Route::get('/tracking/search', 'API\TrackingController@getTrackingInfo');
 
@@ -66,5 +68,9 @@ Route::get('/discounts/{service_id}/{centre_id}', 'API\ServiceController@getAvai
 
 Route::post('/logs', 'API\LogsAppController@savelogs');
 
-Route::get('/service_categories', 'API\ServiceController@getServiceCategories');
+Route::get('/getServiceCategories', 'API\ServiceController@getServiceCategories');
+Route::get('/getCategoriesWithServices', 'API\ServiceController@getServiceCategoriesWithServices');
+Route::get('/getServicesList', 'API\ServiceController@getServices');
+Route::get('/getCentersByService/{id}', 'API\CentreController@getCentersByService');
+
 
