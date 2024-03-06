@@ -241,6 +241,8 @@
     function denyAccess(employeeId, back) {
         $('#alertChangeEmployee').hide();
         $('#alertErrorChangeEmployee').hide();
+        $('#btnDenyAccess' + employeeId + ' .material-icons').hide();
+        $('#btnDenyAccess' + employeeId + ' .spinner-border').show();
         params = {};
         params["_token"] = "{{ csrf_token() }}";
         params["employee_id"] = employeeId;
@@ -254,17 +256,25 @@
                     $('#alertChangeEmployee').text(response.mensaje);
                     $('#alertChangeEmployee').show().delay(2000).slideUp(300);
                     table.ajax.reload();
+                    $('#btnDenyAccess' + employeeId + ' .material-icons').show();
+                    $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
                 }
             },
             error: function(xhr, status, error) {
                 var response = JSON.parse(xhr.responseText);
                 $('#alertErrorChangeEmployee').text(response.mensaje);
                 $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300)();
+                $('#btnDenyAccess' + employeeId + ' .material-icons').show();
+                $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
             }
+           
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
             alert('Error cargando servicios');
+            $('#btnDenyAccess' + employeeId + ' .material-icons').show();
+            $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
         });
+    
     }
 
     function syncA3(employeeId, type) {

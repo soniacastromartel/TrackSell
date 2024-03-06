@@ -81,29 +81,28 @@ class EmployeeController extends DefaultLoginController
 
                     ->addColumn('action', function ($employee) {
                         $btn = '';
+                        //!BTN EDIT
                         $btn = '<a href="employees/edit/' . $employee->id . '" class="btn-edit" data-editar="Editar">
                         <span class="material-icons">edit</span></a>';
-                        
                         //!BTN RESET ACCESS
                         $fnCall = 'resetAccessApp(' . $employee->id . ' )';
                         $btn .= '<a id="btnResetAccess' .  $employee->id . '" onclick="' . $fnCall . '"  class="btn-reset-access"  data-access="Resetear número de acceso">
                         <span class="material-icons">refresh</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"  style="display: none;"></span>
                         </a>';
-                      
                         //!BTN NEW PASSWORD AND VALIDATE 
                         $fnCall = 'resetPassword(' . $employee->id . ' )';
                         $btn .= '<a id="btnResetPass' .  $employee->id . '" onclick="' . $fnCall . '"  class="btn-validate-password" data-validate="Validación y nueva contraseña">
                         <span class="material-icons">person</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                         </a>';
-                    
+                        //!BTN DENY ACCESS
                         $fnCall = 'denyAccess(' . $employee->id . ' )';
-                        $btn .= '<a onclick="' . $fnCall . '" class="btn-denegate-access" data-denegate="Denegar accesso">
+                        $btn .= '<a id="btnDenyAccess' .  $employee->id . '" onclick="' . $fnCall . '" class="btn-denegate-access" data-denegate="Denegar accesso">
                         <span class="material-icons">block</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                         </a>';
-                      
+                        //!BTN SYNC A3
                         $fnCall = 'syncA3(' . $employee->id . ' , \'only\')';
                         $btn .= '<a id="btnSyncA3_' .  $employee->id . '" onclick="' . $fnCall . '" class="btn-sincro-a3"  data-sincro="Sincronizar A3">
                         <span class="material-icons">sync</span>
