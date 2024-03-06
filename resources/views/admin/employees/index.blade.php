@@ -1,15 +1,14 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
 
 <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
 </div>
 <div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
 </div>
-
 
 <div class="content">
     <div class="container-fluid">
@@ -44,22 +43,6 @@
     </div>
 </div>
 
-<style>
-    #category {
-        text-transform: lowercase;
-    }
-
-    #btnSyncA3 {
-        font-weight: 900;
-        font-size: large;
-        background-color: #eeeeee;
-        color: var(--red-icot);
-    }
-    td.upper {
-        text-transform: lowercase;
-
-    }
-</style>
 
 <script type="text/javascript">
     var table
@@ -73,9 +56,15 @@
 
         table = $('.employees-datatable').DataTable({
                 order: [
-                    [1, "asc"]
-                ],
-                processing: true,
+                    [1, "asc"],
+                    ],
+                createdRow: function( row, data, dataIndex ) {
+                   
+                    if (parseInt(data.count_access) === 3) {
+                        $(row).addClass('row-red-bloqued');
+                    } },
+                
+                processing: false,
                 responsive: true,
                 serverSide: true,
                 language: {
@@ -144,6 +133,7 @@
                     orderable: true,
                     searchable: true
                 },
+            
             ],
             search: {
                 "regex": true,
@@ -170,7 +160,83 @@
         syncA3(null, 'full');
     });
     });
+    
 
+    function resetAccessApp(employeeId, back) {
+        $('#alertChangeEmployee').hide();
+        $('#alertErrorChangeEmployee').hide();
+        $('#btnResetAccess' + employeeId + ' .material-icons').hide();
+        $('#btnResetAccess' + employeeId + ' .spinner-border').show();
+        
+        params = {};
+        params["_token"] = "{{ csrf_token() }}";
+        params["employee_id"] = employeeId;
+        $.ajax({
+            url: "{{ route('employees.resetAccessApp') }}",
+            type: 'post',
+            data: params,
+            success: function(response, textStatus, jqXHR) {
+                // if success, HTML response is expected, so replace current
+                if (textStatus === 'success') {
+                    $('#alertChangeEmployee').text(response.mensaje);
+                    $('#alertChangeEmployee').show().delay(2000).slideUp(300);
+                    table.ajax.reload();
+                    $('#btnResetAccess' + employeeId + ' .material-icons').show();
+                    $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
+                }
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                $('#alertErrorChangeEmployee').text(response.mensaje);
+                $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
+                $('#btnResetAccess' + employeeId + ' .material-icons').show();
+                $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
+            }
+
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            alert('Error cargando servicios');
+            $('#btnResetAccess' + employeeId + ' .material-icons').show();
+                $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
+        });
+    }
+    
+    function resetPassword(employeeId, back) {
+        $('#alertChangeEmployee').hide();
+        $('#alertErrorChangeEmployee').hide();
+        $('#btnResetPass' + employeeId + ' .material-icons').hide();
+        $('#btnResetPass' + employeeId + ' .spinner-border').show();
+        params = {};
+        params["_token"] = "{{ csrf_token() }}";
+        params["employee_id"] = employeeId;
+        $.ajax({
+            url: "{{ route('employees.resetPassword') }}",
+            type: 'post',
+            data: params,
+            success: function(response, textStatus, jqXHR) {
+                // if success, HTML response is expected, so replace current
+                if (textStatus === 'success') {
+                    $('#alertChangeEmployee').text(response.mensaje);
+                    $('#alertChangeEmployee').show().delay(2000).slideUp(300);
+                    table.ajax.reload();
+                    $('#btnResetPass' + employeeId + ' .material-icons').show();
+                    $('#btnResetPass' + employeeId + ' .spinner-border').hide();
+                }
+            },
+            error: function(xhr, status, error) {
+                var response = JSON.parse(xhr.responseText);
+                $('#alertErrorChangeEmployee').text(response.mensaje);
+                $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
+                $('#btnResetPass' + employeeId + ' .material-icons').show();
+                $('#btnResetPass' + employeeId + ' .spinner-border').hide();
+ 
+            }
+
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            alert('Error cargando servicios');
+            $('#btnResetPass' + employeeId + ' .material-icons').show();
+            $('#btnResetPass' + employeeId + ' .spinner-border').hide();
+        });
+    }
 
     function denyAccess(employeeId, back) {
         $('#alertChangeEmployee').hide();
@@ -201,47 +267,19 @@
         });
     }
 
-    function resetAccessApp(employeeId, back) {
-        $('#alertChangeEmployee').hide();
-        $('#alertErrorChangeEmployee').hide();
-        params = {};
-        params["_token"] = "{{ csrf_token() }}";
-        params["employee_id"] = employeeId;
-        $.ajax({
-            url: "{{ route('employees.resetAccessApp') }}",
-            type: 'post',
-            data: params,
-            success: function(response, textStatus, jqXHR) {
-                // if success, HTML response is expected, so replace current
-                if (textStatus === 'success') {
-                    $('#alertChangeEmployee').text(response.mensaje);
-                    $('#alertChangeEmployee').show().delay(2000).slideUp(300);
-                    table.ajax.reload();
-                }
-            },
-            error: function(xhr, status, error) {
-                var response = JSON.parse(xhr.responseText);
-                $('#alertErrorChangeEmployee').text(response.mensaje);
-                $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
-            }
-
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error cargando servicios');
-        });
-    }
-
     function syncA3(employeeId, type) {
         params = {};
         params["_token"] = "{{ csrf_token() }}";
         params["employee_id"] = employeeId;
         params["type"] = type;
-
+      
         if (employeeId == null) {
             $('#btnSyncA3').hide();
             $('#btnSubmitLoad').show();
+    
         } else {
-            $('#btnSyncA3_' + employeeId).hide();
-            $('#btnSubmitLoad_' + employeeId).show();
+            $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
+            $('#btnSyncA3_' + employeeId + ' .spinner-border').show();
         }
         $('#alertChangeEmployee').hide();
         $('#alertErrorChangeEmployee').hide();
@@ -254,8 +292,8 @@
                 // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
                     if (type == 'only') {
-                        $('#btnSyncA3_' + employeeId).show();
-                        $('#btnSubmitLoad_' + employeeId).hide();
+                        $('#btnSyncA3_' + employeeId + ' .material-icons').show();
+                        $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
                     } else {
                         $('#btnSubmitLoad').hide();
                         $('#btnSyncA3').show();
