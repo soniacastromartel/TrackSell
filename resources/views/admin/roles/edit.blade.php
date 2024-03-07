@@ -37,7 +37,6 @@
         });
         $('#pagesConfig').addClass('show');
         $('#adminRole').addClass('active');
-        
         $("#btnSubmit").on('click', function(){
             $('#btnSubmit').hide();
             $('#btnSubmitLoad').show();

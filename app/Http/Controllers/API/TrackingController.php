@@ -10,6 +10,7 @@ use App\Service;
 use App\Tracking;
 use DB;
 use App\Services\TargetService;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 
 class TrackingController extends BaseController {
@@ -179,33 +180,47 @@ class TrackingController extends BaseController {
      * Recoge informacion de un tracking en concreto
      */
     public function getTrackingInfo(Request $request) {
-        $params = $request->all();
-        $trackingSearch = Tracking::where('id', '=', $params['id'])->first();
-        $collection = [];
-        $collection['centre'] = Centre::getCentreByField($trackingSearch['centre_id']);
-        $collection['centre_employee_id'] = Centre::getCentreByField($trackingSearch['centre_employee_id']);
-        $collection['service'] = Service::GetService4Id($trackingSearch['service_id']);
-
-        $collection['category'] = DB::table('service_categories')
-            ->select('service_categories.name', 'service_categories.image_portrait')
-            ->whereNull('service_categories.cancellation_date')
-            ->where('service_categories.id', $collection['service'][0]['category_id'])
-            ->get();
-
-        $collection['patient_name'] = $trackingSearch['patient_name'];
-        $collection['employee_id'] = $trackingSearch['employee_id'];
-        $collection['quantity'] = $trackingSearch['quantity'];
-        if ($trackingSearch['hc'] == null && $trackingSearch['dni'] == null) {
-            $collection['idType'] = 'phone';
-            $collection['patientId'] = $trackingSearch['phone'];
-        } else if ($trackingSearch['phone'] == null && $trackingSearch['dni'] == null) {
-            $collection['idType'] = 'hc';
-            $collection['patientId'] = $trackingSearch['hc'];
-        } else if ($trackingSearch['phone'] == null && $trackingSearch['hc'] == null) {
-            $collection['idType'] = 'dni';
-            $collection['patientId'] = $trackingSearch['dni'];
+        try {
+            $params = $request->all();
+            $trackingSearch = Tracking::where('id', '=', $params['id'])->first();
+            $collection = [];
+            $collection['centre'] = Centre::getCentreByField($trackingSearch['centre_id']);
+            $collection['centre_employee_id'] = Centre::getCentreByField($trackingSearch['centre_employee_id']);
+            $collection['service'] = Service::GetService4Id($trackingSearch['service_id']);
+    
+            $collection['category'] = DB::table('service_categories')
+                ->select('service_categories.name', 'service_categories.image_portrait')
+                ->whereNull('service_categories.cancellation_date')
+                ->where('service_categories.id', $collection['service'][0]['category_id'])
+                ->get();
+    
+            $collection['patient_name'] = $trackingSearch['patient_name'];
+            $collection['employee_id'] = $trackingSearch['employee_id'];
+            $collection['quantity'] = $trackingSearch['quantity'];
+            if ($trackingSearch['hc'] == null && $trackingSearch['dni'] == null) {
+                $collection['idType'] = 'phone';
+                $collection['patientId'] = $trackingSearch['phone'];
+            } else if ($trackingSearch['phone'] == null && $trackingSearch['dni'] == null) {
+                $collection['idType'] = 'hc';
+                $collection['patientId'] = $trackingSearch['hc'];
+            } else if ($trackingSearch['phone'] == null && $trackingSearch['hc'] == null) {
+                $collection['idType'] = 'dni';
+                $collection['patientId'] = $trackingSearch['dni'];
+            }
+            return $collection;
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'success' => 'false',
+                    'errors'  => $e->getMessage(),
+                ],
+                400
+            );
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendError('Error de validación', 500);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return $this->sendError('Ha ocurrido un error al crear seguimiento, contacte con el administrador', 500);
         }
-        return $collection;
     }
 
     public function getDetailSale($sale) {

@@ -60,11 +60,6 @@
 
 @include('common.modal')
 
-
-
-
-
-
 <script type="text/javascript">
     var columnsFilled = [];
     columnsFilled.push({
@@ -149,8 +144,6 @@
         });
     }
 
-
-
     $(function() {
         $(".nav-item").each(function() {
             $(this).removeClass("active");
@@ -161,7 +154,6 @@
         $("#btnConfirmRequest").on('click', function(event) {
             confirmRequest();
         });
-
 
         table = $('.request-changes-datatable').DataTable({
             order: [0, "desc"],
@@ -177,7 +169,6 @@
                     d._token = "{{ csrf_token() }}"
                     //d.centre_id  = $('#centre_id option:selected').val()
                 }
-
             },
             columns: columnsFilled,
             columnDefs: [{
@@ -234,7 +225,6 @@
                     data: "state_date",
                     type: "date",
                     render: function(data, type, row) {
-
                         var datetime = moment(data, 'YYYY-M-D');
                         var displayString = moment(datetime).format('D-MM-YYYY');
 

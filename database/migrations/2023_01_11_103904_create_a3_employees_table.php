@@ -25,6 +25,7 @@ class CreateA3EmployeesTable extends Migration
             $table->string('personalphone')->nullable();
             $table->dateTime('dropDate')->nullable();
             $table->dateTime('enrolmentDate')->nullable();
+            $table->dateTime('lastUpdate')->nullable();
             $table->integer('companyCode');
             $table->integer('workplaceCode');
             $table->string('workplaceName');

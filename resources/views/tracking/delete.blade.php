@@ -82,9 +82,6 @@ function confirmRequest(state, id) {
         $("#id").val(id);
         $("#modal-validate").modal('show');
     }
-
-
-
     var table; 
     $(function () {
         $(".nav-item").each(function(){
@@ -97,7 +94,6 @@ function confirmRequest(state, id) {
         $("#btnConfirmRequest").on('click', function(event) {
             destroy();
         });
-
 
         loadDeleteTable();
 
@@ -151,14 +147,12 @@ function confirmRequest(state, id) {
                             column
                                     .search( val ? '^'+val+'$' : '', true, false )
                                     .draw();
-                        });
-                        
+                        });  
                     });
                 }
             });
         }
     });
-
 
     function destroy() {
         trackingId= $("#id").val();
@@ -191,11 +185,8 @@ function confirmRequest(state, id) {
                         $('#alertErrorTrackingDate').text(response.mensaje); 
                         $('#alertErrorTrackingDate').show().delay(2000).slideUp(300); 
                     }
-
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error'+jqXHR.responseText);
-
-                
             });
         }
 </script>

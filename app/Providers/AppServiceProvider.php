@@ -5,16 +5,14 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-use Psr\Http\Message\RequestInterface;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Response;
+// use Illuminate\Http\Client\Response;
+
+
 
 use App\Services\A3Service;
-
-
+use Illuminate\Http\Client\PendingRequest;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,26 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
-        //obtenemos el valor de nuentro EndPoint
-        // $baseUrl = env('API_ENDPOINT');
-        // $someAccessToken= 'token';
-
-        // $client = new Client([
-        //             'base_uri'=> $baseUrl
-        //         ]);
-
-        // $handler = HandlerStack::create();
-        // $handler->push(Middleware::mapRequest(function (RequestInterface $request) {
-        //     return $request->withHeader('Authorization', "Bearer {{$someAccessToken}}");
-        // }));
-
-        // //usamos un objeto singleton para registrar nuestro servicio
-        // $this->app->singleton(Client::class, function ($app) use ($baseUrl) {
-        //     return new Client(['base_uri' => $baseUrl,
-    //                             'handler' => $handler
-    // ]);
-        // });
 
 
     }
@@ -94,23 +72,32 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        try {
+        //MACROS
+        
             Http::macro('a3', function ($access_token) {
                 return Http::withHeaders([
                     'authorization' => 'Bearer ' . $access_token,
                     'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
                 ])->baseUrl( env('API_ENDPOINT').'/');
             });
-        } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'success' => 'false',
-                    'errors'  => $e->getMessage(),
-                ],
-                400
-            );
-        }
-       
 
+            // PendingRequest::macro('a3', function ($access_token) {
+            //     return PendingRequest::withHeaders([
+            //         'authorization' => 'Bearer ' . $access_token,
+            //         'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
+            //     ])->baseUrl( env('API_ENDPOINT').'/');
+            // });
+
+            Response:: macro('success', function($data){
+                return response()-> json($data);
+            });
+       
+            Response:: macro('error', function($error, $status_code){
+                return response()-> json([
+                    'success'=> false,
+                    'data'=> $error
+                ], $status_code);
+            });
+        
     }
 }

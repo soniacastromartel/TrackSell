@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Mail;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Exception;
+
+use App\A3Employee;
 
 //use Illuminate\Support\Facades\Log;
 
@@ -61,7 +64,7 @@ class AuthController extends BaseController
             }
 
             //Comprobación que usuario existe en A3
-            $pending_validate_employee = A3Empleado::where(['NIF' => $params['dni']]);
+            $pending_validate_employee = A3Employee::where(['identifierNumber' => $params['dni']]);
             $userA3 = $pending_validate_employee->first();
             if (empty($userA3)) {
                 $errormessage = "Error solicitud acceso, empleado no se encuentra en A3, se envía correo a " . $this->cauEmail;
@@ -178,23 +181,34 @@ class AuthController extends BaseController
     /** Metodo procesa correo de  solicitud desbloqueo */
     public function sendEmailUnlockRequest($params)
     {
-        \Log::channel('app')->info("Inicio Envio Correo");
-        $user = [];
-        $user['username']       = $params['username'];
-        $user['name']       = $params['name'];
+        try {
+            \Log::channel('app')->info("Inicio Envio Correo");
+            $user = [];
+            $user['username']       = $params['username'];
+            $user['name']       = $params['name'];
 
-        $emailData = $user;
-        $emailData['subject'] = 'Se ha recibido una solicitud de desbloqueo de cuenta';
-        $emailData['view']    = 'emails.blocked_account';
+            $emailData = $user;
+            $emailData['subject'] = 'Se ha recibido una solicitud de desbloqueo de cuenta';
+            $emailData['view']    = 'emails.blocked_account';
 
 
-        /**
-         * ENVIAR CORREO  SOLICITUD DESBLOQUEO
-         */
-        Mail::to($this->cauEmail)
-            ->cc($this->copycauEmail)
-            ->send(new RegisteredUser($emailData));
-        return $this->sendResponse([], env('REQUESTED'));
+            /**
+             * ENVIAR CORREO  SOLICITUD DESBLOQUEO
+             */
+            Mail::to($this->cauEmail)
+                ->cc($this->copycauEmail)
+                ->send(new RegisteredUser($emailData));
+            return $this->sendResponse([], env('REQUESTED'));
+        } catch (Exception $e) {
+            \Log::channel('appError')->info($e->getMessage());
+            return response()->json(
+                [
+                    'success' => 'false',
+                    'errors'  => $e->getMessage(),
+                ],
+                400
+            );
+        }
     }
 
     /**
@@ -209,12 +223,22 @@ class AuthController extends BaseController
         if (!empty($user)) {
             $employee = Employee::whereRaw("BINARY username = ?", [$user])->first();
             if (!empty($employee)) {
-                $employee->update(['unlockRequest' => 1]);
-                return $this->sendResponse('', 200);
+                try {
+                    $employee->update(['unlockRequest' => 1]);
+                    return $this->sendResponse('', 200);
+                } catch (Exception $e) {
+                    \Log::channel('appErrpr')->info($e->getMessage());
+                    return response()->json(
+                        [
+                            'success' => 'false',
+                            'errors'  => $e->getMessage(),
+                        ],
+                        400
+                    );
+                }
             }
         }
     }
-
     /**
      * LOGIN
      */
@@ -313,6 +337,7 @@ class AuthController extends BaseController
         $eData->category         = $auxEmployeeData['category'];
         $eData->count_access     = $auxEmployeeData['count_access'];
         $eData->unlockRequest    = $auxEmployeeData['unlockRequest'];
+        // $eData->img              = $auxEmployeeData['img'];
         $success['user']         = $eData;
 
         // Reseteo de contador de acceso tras inicio correcto
@@ -323,8 +348,8 @@ class AuthController extends BaseController
         Employee::updatingRegistryVersion($employeeArray[0]['username'], $request['version']);
         // Control conteo de accesos
         if (!empty($employee)) {
-            Employee::updatingAccess($success['user']['id'], 0); 
-            Employee::updatingUnlockRequest($request['username']);//TODO metodo para update unlockRequest añadir
+            Employee::updatingAccess($success['user']['id'], 0);
+            Employee::updatingUnlockRequest($request['username']); //TODO metodo para update unlockRequest añadir
         }
         return $this->sendResponse($success, 'Usuario logueado!!');
     }

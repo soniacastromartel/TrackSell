@@ -11,7 +11,7 @@ class CentreController extends BaseController{
     public function getCenters()
     {
         try{
-            $centers = Centre::select('id', 'name')
+            $centers = Centre::select('id', 'name','image')
                                 ->whereNull('cancellation_date')
                                 ->orderBy('name')->get();
 
