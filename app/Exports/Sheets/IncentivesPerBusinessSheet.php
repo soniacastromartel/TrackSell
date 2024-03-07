@@ -61,7 +61,7 @@ class IncentivesPerBusinessSheet extends \PhpOffice\PhpSpreadsheet\Cell\StringVa
 
     public function title(): string
     {
-        return 'EMPRESA-' . substr($this->codBusiness, 0, strpos($this->codBusiness, "-"));
+        return 'Empresa (' . substr($this->codBusiness, 0, strpos($this->codBusiness, "-")).')';
     }
 
     public function coloringCells($color,$cells, $sheet){

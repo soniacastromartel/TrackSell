@@ -30,13 +30,10 @@ Route::post('/tracking/create', 'API\TrackingController@store');
 Route::post('/employee_ranking', 'API\EmployeeController@getRanking');
 Route::get('/promotions', 'API\PromotionsController@getPromotions');
 
-
-
 /* LISTADOS DE CENTROS Y CATEGORÍAS */
 Route::get('/employee_categories', 'API\EmployeeController@getJobCategories');
 Route::get('/getCenters', 'API\CentreController@getCenters');
 Route::get('/getCentersByService/{id}', 'API\CentreController@getCentersByService');
-
 
 /* CONTROL/RESETEO DE ACCESOS */
 Route::get('/controlUser', 'API\EmployeeController@controlUser');

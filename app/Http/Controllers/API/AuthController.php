@@ -164,8 +164,6 @@ class AuthController extends BaseController
         $emailData = $user;
         $emailData['subject'] = 'Se ha recibido una nueva solicitud accesso de empleado';
         $emailData['view']    = 'emails.registered_employee';
-
-
         /**
          * ENVIAR CORREO  SOLICITUD ACCESO
          */

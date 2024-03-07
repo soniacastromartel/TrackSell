@@ -199,7 +199,7 @@
         </div>
       </li>
       <!-- SARA PRUEBA -->
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification" aria-expanded="false">
           <i class="material-icons">notifications</i>
           <p style="font-weight: bold"> Sara Prueba
@@ -216,7 +216,7 @@
             </li>
           </ul>
         </div>
-      </li>
+      </li> --}}
       
     </ul>
     <!-- VERSION sideBar -->
