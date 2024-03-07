@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Exports\Sheets;
-
-
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeSheet;

@@ -6,8 +6,8 @@
 <div class="content">
   <div class="container-fluid mt-3">
     <div class="row">
-      <div class="col-lg-4">
-        <div id="employee-info" class="card" style="min-height: 462px;">
+      <div class="col-lg-3">
+        <div id="employee-info" class="card">
           <div class="card-header card-header-danger">
             <h4 class="card-title">Búsqueda</h4>
           </div>
@@ -16,7 +16,7 @@
               @csrf
               @method('POST')
               <div class="row">
-                <div class="col-sm-10" style="padding-top: 40px;">
+                <div class="col-sm-10">
                   <label class="label" for="monthYearPicker">Fecha </label>
                   <div id="monthYearPickerContainer">
                     <div class="input-group date mt-2">
@@ -28,10 +28,12 @@
                     <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
                   </div>
                 </div>
-                <div class="form-group col-sm-10">
+
+                <div class="form-group col-sm-7">
                   <div class="dropdown bootstrap-select">
-                    <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor<span class="obligatory">*</span> </label>
-                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="* Seleccione Centro" tabindex="-98">
+                    {{-- nuevos cambios home  --}}
+                    {{-- <label class="label" for="centre_id" style="margin-top: 35px; margin-bottom: 25px;">Centro prescriptor<span class="obligatory">*</span> </label> --}}
+                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
 
                       <!-- <option selected>GRUPO ICOT</option> -->
 
@@ -47,13 +49,13 @@
                     </select>
                     <input type="hidden" name="centre" id="centre" />
                   </div>
+                  
                 </div>
+                {{-- nuevos cambios  --}}
                 <div class="col-md-12">
                   <div class="row" style="margin-top:20px;">
                     <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                      <span class="material-icons">
-                        clear_all
-                      </span> {{ __('Limpiar formulario') }}
+                      <span class="material-icons">refresh</span>
                     </button>
                   </div>
                 </div>
@@ -82,7 +84,9 @@
         </div>
       </div>
     </div>
+
     <hr id="separator">
+
     <div class="row">
       <div class="col-lg">
 
@@ -111,6 +115,7 @@
           {{ __('Obteniendo datos...') }}
       </div>
     </div>
+
     <div class="row" id="monthlyData">
       <div class="col-lg-11">
         <div class="card">
@@ -161,6 +166,27 @@
   </div>
 </div>
 <style>
+
+  .row{
+  background-color: rgba(119, 157, 167, 0.829);
+  }
+  .content{
+    background-color: beige;
+    margin:0px;
+    padding:0px;
+  }
+.col-lg-3{
+  background-color:violet;
+}
+  .card-body{
+    background-color: lightblue;
+    height: 350px;
+  }
+
+  .card{
+    
+    background-color: yellow
+  }
   table.dataTable.dataTable_width_auto {
     width: 100%;
   }

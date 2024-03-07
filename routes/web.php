@@ -7,18 +7,15 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\A3CenterSaraController;
 use Illuminate\Support\Arr;
+
 Route::get('/', function () {
     return redirect('login');
 });
 
 Auth::routes();
-
-
-
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
-    Route::get('/admin/employees/validation', 'EmployeeController@indexPending')->name('employees.indexPending');
     Route::get('/admin/employees/history/{id}', 'EmployeeController@history')->name('employees.history.index');
     Route::get('/admin/employees/edit/{id}', 'EmployeeController@edit')->name('employees.edit');
     Route::put('/admin/employees/update/{id}', 'EmployeeController@update')->name('employees.update');
@@ -67,6 +64,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/exportFinalValidation', 'TrackingController@exportFinalValidation')->name('tracking.exportFinalValidation');
     Route::post('/tracking/calculateValidationRRHH', 'TrackingController@calculateValidationRRHH')->name('tracking.calculateValidationRRHH');
     Route::post('/tracking/validateTrackings', 'TrackingController@validateTrackings')->name('tracking.validateTrackings');
+    Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::get('/tracking/requestChange', 'TrackingController@requestChange')->name('tracking.requestChange');
     Route::post('/tracking/saveRequest', 'TrackingController@saveRequest')->name('tracking.saveRequest');
     Route::post('/tracking/getRequestChanges', 'TrackingController@getRequestChanges')->name('tracking.getRequestChanges');
@@ -112,7 +110,6 @@ Route::get('/admin/profile', 'HomeController@viewProfile')->name('admin.profile'
 Route::put('/editProfile/{id}', 'HomeController@editProfile')->name('editProfile');
 Route::get('/getSales', 'HomeController@getSales')->name('home.getSales');
 Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets');
-
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
 
 //!A3API

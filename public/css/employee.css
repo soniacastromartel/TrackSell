@@ -32,15 +32,15 @@ margin: 10px;
 .btn-edit::after {
 content: attr(data-editar); 
 position: absolute;
-bottom: 100%; /* Posiciónalo encima del botón */
-left: 50%; /* Centrarlo horizontalmente respecto al botón */
-transform: translateX(-50%); /* Ajuste fino para centrar el tooltip */
-white-space: nowrap; /* Asegura que el texto no se envuelva */
-visibility: hidden; /* Oculta el tooltip por defecto */
+bottom: 100%; 
+left: 50%;
+transform: translateX(-50%); 
+white-space: nowrap; 
+visibility: hidden; 
 opacity: 0;
-transition: opacity 0.2s, visibility 0.2s; /* Transición suave */
-background-color: black; /* Color de fondo del tooltip */
-color: white; /* Color de texto del tooltip */
+transition: opacity 0.2s, visibility 0.2s; 
+background-color: black; 
+color: white; 
 padding: 5px 10px;
 border-radius: 4px;
 font-size: 12px;
@@ -77,12 +77,12 @@ margin: 10px;
 content: attr(data-access); 
 position: absolute;
 bottom: 100%; 
-left: 50%; /* Centrarlo horizontalmente respecto al botón */
-transform: translateX(-50%); /* Ajuste fino para centrar el tooltip */
-white-space: nowrap; /* Asegura que el texto no se envuelva */
-visibility: hidden; /* Oculta el tooltip por defecto */
+left: 50%; 
+transform: translateX(-50%); 
+white-space: nowrap; 
+visibility: hidden; 
 opacity: 0;
-transition: opacity 0.2s, visibility 0.2s; /* Transición suave */
+transition: opacity 0.2s, visibility 0.2s; 
 background-color: black; 
 color: white; 
 padding: 5px 10px;
@@ -119,15 +119,15 @@ margin: 10px;
 }
 
 .btn-validate-password::after{
-content: attr(data-validate); /* Usa el texto del atributo data-tooltip */
+content: attr(data-validate); 
 position: absolute;
-bottom: 100%; /* Posiciónalo encima del botón */
-left: 50%; /* Centrarlo horizontalmente respecto al botón */
-transform: translateX(-50%); /* Ajuste fino para centrar el tooltip */
-white-space: nowrap; /* Asegura que el texto no se envuelva */
-visibility: hidden; /* Oculta el tooltip por defecto */
+bottom: 100%; 
+left: 50%; 
+transform: translateX(-50%); 
+white-space: nowrap; 
+visibility: hidden; 
 opacity: 0;
-transition: opacity 0.2s, visibility 0.2s; /* Transición suave */
+transition: opacity 0.2s, visibility 0.2s;
 background-color: black; 
 color: white; 
 padding: 5px 10px;
@@ -172,7 +172,7 @@ transform: translateX(-50%);
 white-space: nowrap; 
 visibility: hidden; 
 opacity: 0;
-transition: opacity 0.2s, visibility 0.2s; /* Transición suave */
+transition: opacity 0.2s, visibility 0.2s; 
 background-color: black; 
 color: white; 
 padding: 5px 10px;
@@ -217,7 +217,7 @@ transform: translateX(-50%);
 white-space: nowrap; 
 visibility: hidden; 
 opacity: 0;
-transition: opacity 0.2s, visibility 0.2s; /* Transición suave */
+transition: opacity 0.2s, visibility 0.2s; 
 background-color: black; 
 color: white; 
 padding: 5px 10px;
@@ -234,8 +234,6 @@ color:teal;
 visibility: visible;
 opacity: 1;
 }
-
-/* SPINNER*/
 
 /* ROW RED FOR BLOQUED USER */
 

@@ -108,9 +108,6 @@ class EmployeeController extends DefaultLoginController
                         <span class="material-icons">sync</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                         </a>';
-
-                    
-
                         return $btn;
                     })
                     ->rawColumns(['action', 'options'])
@@ -345,7 +342,6 @@ class EmployeeController extends DefaultLoginController
         ], 500);
     }
 }
-
 
     //! VALIDATE USER AND NEW PASSWORD
 
