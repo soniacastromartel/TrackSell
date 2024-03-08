@@ -1,26 +1,17 @@
 
 /* BASIC */
 
-html {
-    /* background-color: #56baed; */
-  }
+
   
   body {
     font-family: "Poppins", sans-serif;
     height: 100vh;
-    background-color: white !important;
     margin: 0px;
     padding: 0px;
     overflow: hidden;
   }
-
-  .container {
-    width: 1920px;
-    height: 1080px;
-  }
   
   a {
-    color: #92badd;
     display:inline-block;
     text-decoration: none;
     font-weight: 400;
@@ -35,34 +26,10 @@ html {
     margin: 40px 8px 10px 8px; 
     color: #cccccc;
   }
-  
-  
+
+
   
   /* STRUCTURE */
-  
-  .wrapper {
-    display: flex;
-    align-items: center;
-    flex-direction: column; 
-    justify-content: center;
-    width: 100%;
-    min-height: 100%;
-    padding: 20px;
-  }
-  
-  #formContent {
-    -webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 10px 10px 10px 10px;
-    background: #fff;
-    padding: 30px;
-    width: 90%;
-    max-width: 450px;
-    position: relative;
-    padding: 0px;
-    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    text-align: center;
-  }
   
   #formFooter {
     background-color: #f6f6f6;
@@ -72,8 +39,6 @@ html {
     -webkit-border-radius: 0 0 10px 10px;
     border-radius: 0 0 10px 10px;
   }
-  
-  
   
   /* TABS */
   
@@ -85,8 +50,6 @@ html {
     color: #0d0d0d;
     border-bottom: 2px solid #5fbae9;
   }
-  
-  
   
   /* FORM TYPOGRAPHY*/
   
@@ -156,8 +119,6 @@ html {
     color: #cccccc;
   }
   
-  
-  
   /* ANIMATIONS */
   
   /* Simple CSS3 Fade-in-down Animation */
@@ -222,8 +183,6 @@ html {
     animation-delay: 0.4s;
   }
   
-
-
   .fadeIn.second {
     -webkit-animation-delay: 0.6s;
     -moz-animation-delay: 0.6s;
@@ -261,8 +220,6 @@ html {
   .underlineHover:hover:after{
     width: 100%;
   }
-  
-  
   
   /* OTHERS */
   

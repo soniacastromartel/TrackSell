@@ -4270,7 +4270,14 @@ input[type="button"].btn-block {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
-
+.wrapper {
+  background-image: url("/assets/img/background-home-grey.png");
+    background-position-y: -100px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0px;
+    padding: 0px;
+}
 .custom-file-label::after {
   position: absolute;
   top: 0;

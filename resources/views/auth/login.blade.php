@@ -3,11 +3,10 @@
 @section('content')
 @include('common.alert')
 
-<div class="container">
-    <div class="row justify-content-center">
-        <!-- Styles -->
+<div class="container-login">
+    <div class="row">
         <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-        <div class="wrapper fadeInDown">
+        <div class="fadeInDown">
             @if ($message = Session::get('error'))
             <div class="alert alert-danger">
                 <p>{{ $message }}</p>
@@ -23,7 +22,8 @@
 
                 <!-- Icon -->
                 <div class="fadeIn first">
-                    <img src="{{ asset('assets/img/LOGO.png') }}" width="100px" id="icon" alt="User Icon" /> <br>
+                    <img src="{{ asset('assets/img/logoGif5.gif') }}"  id="icon" alt="User Icon"/> 
+                    <img src="{{ asset('assets/img/logoIncentivos.png') }}" width="300px"/>
                 </div>
 
                 <!-- Login Form -->
@@ -55,16 +55,19 @@
 @endsection
 
 <style>
+
+
+
     #btnSubmit {
         font-weight: 900;
         margin-top: 16px;
     }
 
     #formContent{
-        border: 4px solid var(--red-icot);
+        
     }
 
     #icon {
-        padding: 70px;
+        padding: 10px;
     }
 </style>
