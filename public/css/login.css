@@ -1,8 +1,6 @@
 
 /* BASIC */
 
-
-  
   body {
     font-family: "Poppins", sans-serif;
     height: 100vh;
@@ -27,8 +25,6 @@
     color: #cccccc;
   }
 
-
-  
   /* STRUCTURE */
   
   #formFooter {
@@ -48,7 +44,7 @@
   
   h2.active {
     color: #0d0d0d;
-    border-bottom: 2px solid #5fbae9;
+    border-bottom: 2px solid #ffffff;
   }
   
   /* FORM TYPOGRAPHY*/
@@ -63,8 +59,8 @@
     display: inline-block;
     text-transform: uppercase;
     font-size: 13px;
-    -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+    -webkit-box-shadow: 0 10px 30px 0 rgb(254, 255, 255);
+    box-shadow: 0 10px 30px 0 rgb(253, 253, 253);
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
     margin: 5px 20px 40px 20px;
@@ -90,6 +86,7 @@
   }
   
   input[type=text] , input[type=password] {
+  
     background-color: #f6f6f6;
     border: none;
     color: #0d0d0d;
@@ -99,7 +96,6 @@
     display: inline-block;
     font-size: 16px;
     margin: 5px;
-    width: 85%;
     border: 2px solid #f6f6f6;
     -webkit-transition: all 0.5s ease-in-out;
     -moz-transition: all 0.5s ease-in-out;
@@ -112,7 +108,7 @@
   
   input[type=text]:focus {
     background-color: #fff;
-    border-bottom: 2px solid #5fbae9;
+    border-bottom: 2px solid #fafafa;
   }
   
   input[type=text]:placeholder {
@@ -122,6 +118,7 @@
   /* ANIMATIONS */
   
   /* Simple CSS3 Fade-in-down Animation */
+
   .fadeInDown {
     -webkit-animation-name: fadeInDown;
     animation-name: fadeInDown;
@@ -208,7 +205,7 @@
     bottom: -10px;
     width: 0;
     height: 2px;
-    background-color: #56baed;
+    background-color: #8d979c;
     content: "";
     transition: width 0.2s;
   }
@@ -230,4 +227,4 @@
   #icon {
     width:100%;
   }
-  
+

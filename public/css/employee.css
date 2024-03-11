@@ -237,6 +237,11 @@ opacity: 1;
 
 /* ROW RED FOR BLOQUED USER */
 
-.row-red-bloqued {
+.user-bloqued {
     color: red ;
+}
+
+/* ROW GREEN FOR UPDATED USER */
+.user-updated {
+    color: green !important;
 }

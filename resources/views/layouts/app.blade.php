@@ -10,7 +10,7 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="shortcut icon" href="{{ asset('assets/img/LogoICOT.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/img/LOGOICOT.png') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}" />
     
@@ -21,7 +21,7 @@
     
 </head>
 <body>
-    <div class="wrapper ">
+    <div class="wrapper">
         
         <div class="main-panel">
             @yield('content')

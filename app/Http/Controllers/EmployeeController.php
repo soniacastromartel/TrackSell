@@ -50,6 +50,7 @@ class EmployeeController extends DefaultLoginController
                     'employees.cancellation_date',
                     'employees.category',
                     'employees.count_access',
+                    'employees.updated_at',
                     'roles.name as role',
                     'centres.name as centre'
                 )
@@ -59,7 +60,11 @@ class EmployeeController extends DefaultLoginController
                     })
                     ->join('roles', 'roles.id', '=', 'rol_id')
                     ->leftJoin('centres', 'centres.id', '=', 'centre_id')
-                    ->orderByRaw('CASE WHEN employees.count_access = 3 THEN 0 ELSE 1 END, employees.name ASC');
+                    ->orderBy('employees.updated_at', 'desc')
+                    ->orderByRaw('CASE WHEN employees.count_access = 3 THEN 0 ELSE 1 END')
+                    ->orderBy('employees.name', 'asc');
+                   
+                  
 
 
                 return  Datatables::of($employees)
@@ -310,13 +315,12 @@ class EmployeeController extends DefaultLoginController
             ], 400);
         }
 
-        $resultado = Employee::updatingAccess($idEmployee, 0); // Asumiendo que esta función devuelve un booleano
+        $resultado = Employee::updatingAccess($idEmployee, 0); 
 
         if ($resultado) {
             $emailData = [
                 'subject' => 'Reseteo de Acceso',
-                'view' => 'emails.template_unlockAccount', // Asegúrate de que esta vista existe
-                // Otros datos necesarios para la vista
+                'view' => 'emails.template_unlockAccount', 
             ];
 
             Mail::to($employee->email)
@@ -325,6 +329,8 @@ class EmployeeController extends DefaultLoginController
                  
                  \Log::debug('CC Emails:', $this->copycauEmail);
 
+                 $employee->updated_at = now();
+                 $employee->save();
             return response()->json([
                 'success' => true,
                 'mensaje' => 'Se ha reseteado el contador de accesos y enviado el correo electrónico.'
