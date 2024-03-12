@@ -4271,10 +4271,8 @@ input[type="button"].btn-block {
   border-radius: 0.25rem;
 }
 .wrapper {
-  background-image: url("/assets/img/background-home-grey.png");
-    background-position-y: -100px;
+   background-image: url("/assets/img/background-gradient.png");
     background-size: cover;
-    background-repeat: no-repeat;
     margin: 0px;
     padding: 0px;
 }

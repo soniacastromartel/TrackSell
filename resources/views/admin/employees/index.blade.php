@@ -55,104 +55,115 @@
             $('#adminUser').addClass('active');
 
             table = $('.employees-datatable').DataTable({
-                        order: [
-                            [1, "asc"]
-                        ],
-                        processing: false,
-                        responsive: true,
-                        serverSide: true,
-                        language: {
-                            "url": "{{ asset('dataTables/Spanish.json') }}"
-                        },
-                        ajax: {
-                            url: "{{ route('employees.index') }}",
-                            data: function(d) {
-                                //d.status = $('#status').val(),
-                                d.search = $('input[type="search"]').val()
+                order: [
+                    [1, "asc"]
+                ],
+                processing: false,
+                responsive: true,
+                serverSide: true,
+                language: {
+                    "url": "{{ asset('dataTables/Spanish.json') }}"
+                },
+                ajax: {
+                    url: "{{ route('employees.index') }}",
+                    data: function(d) {
+                        //d.status = $('#status').val(),
+                        d.search = $('input[type="search"]').val()
+                    }
+                },
+                columnDefs: [{
+                        targets: '_all',
+                        visible: true,
+                        className: 'dt-body-center'
+                    },
+                    {
+                        targets: 4,
+                        className: 'upper'
+                    },
+                    {
+                        targets: 4,
+                        data: "category",
+                        render: function(data, type, row) {
+                            if (data != null) {
+
+                                return data.toUpperCase();
+
+                                // return data.split(' ')[1];
+                            } else {
+                                return data;
                             }
-                        },
-                        columnDefs: [{
-                                targets: '_all',
-                                visible: true,
-                                className: 'dt-body-center'
-                            },
-                            {
-                                targets: 4,
-                                className: 'upper'
-                            },
-                            {
-                                targets: 4,
-                                data: "category",
-                                render: function(data, type, row) {
-                                    if (data != null) {
 
-                                        return data.toUpperCase();
+                        }
+                    }
+                ],
+                columns: [{
+                        data: 'dni',
+                        name: 'dni'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'username',
+                        name: 'username'
+                    },
+                    {
+                        data: 'centre',
+                        name: 'centre'
+                    },
+                    {
+                        data: 'category',
+                        name: 'category'
+                    },
+                    // {
+                    //     data: 'role',
+                    //     name: 'role'
+                    // },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: true,
+                        searchable: true
+                    },
 
-                                        // return data.split(' ')[1];
-                                    } else {
-                                        return data;
-                                    }
-
-                                }
-                            }
-                        ],
-                        columns: [{
-                                data: 'dni',
-                                name: 'dni'
-                            },
-                            {
-                                data: 'name',
-                                name: 'name'
-                            },
-                            {
-                                data: 'username',
-                                name: 'username'
-                            },
-                            {
-                                data: 'centre',
-                                name: 'centre'
-                            },
-                            {
-                                data: 'category',
-                                name: 'category'
-                            },
-                            // {
-                            //     data: 'role',
-                            //     name: 'role'
-                            // },
-                            {
-                                data: 'action',
-                                name: 'action',
-                                orderable: true,
-                                searchable: true
-                            },
-
-                        ],
-                        createdRow: function(row, data, dataIndex) {
-                            console.log(data);
-                            if (parseInt(data.count_access) === 3) {
-                                $(row).addClass('user-bloqued');
-
-                            } else if (parseInt(data.count_access) === 0) {
-        if (data.updated_at) { // Asegúrate de que updated_at esté definido antes de intentar usarlo
-            var resetDateTimeString = data.updated_at.split(" GMT")[0]; // Esto debería eliminar la zona horaria y cualquier cosa después de ella
+                ],
+                createdRow: function(row, data, dataIndex) {
+    console.log(data);
+    if (parseInt(data.count_access) === 3) {
+        $(row).addClass('user-bloqued');
+    } else if (parseInt(data.pending_password) === 0) {
+        if (data.updated_at) { 
+            var resetDateTimeString = data.updated_at.split(" GMT")[0];
             var resetDate = new Date(resetDateTimeString);
-
             var currentDate = new Date();
-            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60); // Diferencia en horas
-
+            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60); 
             if (differenceInHours <= 24) {
-                $(row).addClass('user-updated'); // Aplica la clase si han pasado menos de 24 horas
+                $(row).addClass('user-updated-pass');
             } else {
-                $(row).removeClass('user-updated'); // Remueve la clase si han pasado más de 24 horas
+                $(row).removeClass('user-updated-pass');
+            }
+        }
+    } else if (parseInt(data.count_access) === 0) {
+        if (data.updated_at) { 
+            var resetDateTimeString = data.updated_at.split(" GMT")[0]; 
+            var resetDate = new Date(resetDateTimeString);
+            var currentDate = new Date();
+            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60); 
+            if (differenceInHours <= 24) {
+                $(row).addClass('user-updated-acc');
+            } else {
+                $(row).removeClass('user-updated-acc');
             }
         } else {
-            $(row).removeClass('user-updated'); // Remueve la clase si updated_at no está definido
+            $(row).removeClass('user-updated-acc');
         }
     } else {
-        $(row).removeClass('user-updated'); // Para cualquier otro caso, quitar la clase
+        $(row).removeClass('user-updated-acc');
     }
 },
+
+
                 search: {
                     "regex": true,
                     "smart": true,
@@ -172,11 +183,11 @@
 
                     });
                 }
-        });
+            });
 
-        $("#btnSyncA3").on('click', function() {
-        syncA3(null, 'full');
-        });
+            $("#btnSyncA3").on('click', function() {
+                syncA3(null, 'full');
+            });
         });
 
 

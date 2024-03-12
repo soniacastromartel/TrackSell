@@ -17,13 +17,14 @@
                 En {{$nDays}} días llega próximo corte, 20 de {{$currentMonth}}
             </div>
             @endif
-            <div id="formContent" style="background-color: var(--red-icot);display:flex;flex-direction:column; justify-content:center; align-items:center; margin-top:50px;">
+            <div id="formContent" style="background-color: var(--red-icot);display:flex;flex-direction:column; justify-content:center; align-items:center; margin-top:50px;box-shadow: 10px 10px 10px 10px rgba(0,0.5,0.5,0.5);">
                 <!-- Tabs Titles -->
 
                 <!-- Icon -->
                 <div class="fadeInFirst">
                     <img src="{{ asset('assets/img/LogoICOTblanco.png') }}"  id="icon" /> 
                     <img src="{{ asset('assets/img/logoIncentivosBlanco.png') }}" width="300px"/>
+                    <img src="{{ asset('assets/img/logo-arrow.png') }}" width="100px" style="position: absolute; top:290px; right:50px;"/>
                 </div>
 
                 <!-- Login Form -->
@@ -62,10 +63,13 @@
   .bodyLogin {
     display: flex;
     justify-content: center;
-    width: 100vw !important; 
-    height:100vh !important; 
+    width: 100vw ; 
+    height: 100vh; 
+    margin:0px;
+    padding: 0px ;
     background-image: url(/assets/img/background-login.png);
-  
+    background-size: cover;
+ 
 
 }
 

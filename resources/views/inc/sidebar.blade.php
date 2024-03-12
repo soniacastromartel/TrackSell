@@ -36,7 +36,7 @@
       <hr>
 
       <li class="nav-item active" id="menuHome">
-        <a class="nav-link" href="/home">
+        <a class="nav-link"href="{{route('home')}}">
           <i class="material-icons">home</i>
           <p style="font-weight: bold"> Home </p>
         </a>

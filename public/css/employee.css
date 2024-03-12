@@ -242,6 +242,9 @@ opacity: 1;
 }
 
 /* ROW GREEN FOR UPDATED USER */
-.user-updated {
+.user-updated-acc {
     color: green !important;
+}
+.user-updated-pass{
+    color: blueviolet;
 }
