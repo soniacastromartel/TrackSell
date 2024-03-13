@@ -29,7 +29,6 @@ class EmployeeController extends DefaultLoginController
     {
         $this->title = 'Empleados';
         $this->user = session()->get('user');
-        $this->copycauEmail  =  explode(',', env('MAIL_CC_CAU'));
     }
 
     public function index(Request $request)
@@ -81,33 +80,34 @@ class EmployeeController extends DefaultLoginController
 
                     ->addColumn('action', function ($employee) {
                         $btn = '';
-                        //!BTN EDIT
-                        $btn = '<a href="employees/edit/' . $employee->id . '" class="btn-edit" data-editar="Editar">
-                        <span class="material-icons">edit</span></a>';
-                        //!BTN RESET ACCESS
+                        $btn = '<a href="employees/edit/' . $employee->id . '" class="btn-edit" data-editar="Editar"><span class="material-icons">
+                        edit
+                        </span></a>';
+
                         $fnCall = 'resetAccessApp(' . $employee->id . ' )';
-                        $btn .= '<a id="btnResetAccess' .  $employee->id . '" onclick="' . $fnCall . '"  class="btn-reset-access"  data-access="Resetear número de acceso">
-                        <span class="material-icons">refresh</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"  style="display: none;"></span>
-                        </a>';
-                        //!BTN NEW PASSWORD AND VALIDATE 
+                        $btn .= '<a onclick="' . $fnCall . '"  class="btn-reset-access"  data-access="Resetear número de acceso"><span class="material-icons">
+                        refresh
+                        </span></a>';
+
                         $fnCall = 'resetPassword(' . $employee->id . ' )';
-                        $btn .= '<a id="btnResetPass' .  $employee->id . '" onclick="' . $fnCall . '"  class="btn-validate-password" data-validate="Validación y nueva contraseña">
-                        <span class="material-icons">person</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                        </a>';
-                        //!BTN DENY ACCESS
+                        $btn .= '<a onclick="' . $fnCall . '"  class="btn-validate-password" data-validate="Validación y nueva contraseña"><span class="material-icons">
+                        person
+                        </span></a>';
+
                         $fnCall = 'denyAccess(' . $employee->id . ' )';
-                        $btn .= '<a id="btnDenyAccess' .  $employee->id . '" onclick="' . $fnCall . '" class="btn-denegate-access" data-denegate="Denegar accesso">
-                        <span class="material-icons">block</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                        </a>';
-                        //!BTN SYNC A3
+                        $btn .= '<a onclick="' . $fnCall . '" class="btn-denegate-access" data-denegate="Denegar accesso"><span class="material-icons">
+                        block
+                        </span></a>';
+
                         $fnCall = 'syncA3(' . $employee->id . ' , \'only\')';
-                        $btn .= '<a id="btnSyncA3_' .  $employee->id . '" onclick="' . $fnCall . '" class="btn-sincro-a3"  data-sincro="Sincronizar A3">
-                        <span class="material-icons">sync</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                        </a>';
+                        $btn .= '<a id="btnSyncA3_' .  $employee->id . '" onclick="' . $fnCall . '" class="btn-sincro-a3"  data-sincro="Sincronizar A3"><span class="material-icons">
+                        sync
+                        </span></a>';
+                        $btn .= '<button id="btnSubmitLoad_'  .  $employee->id . '" type="submit" class="btn btn-info" style="display: none; background: #00796b !important;">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Realizando sincronización...
+                               </button>';
+
                         return $btn;
                     })
                     ->rawColumns(['action', 'options'])
@@ -319,11 +319,7 @@ class EmployeeController extends DefaultLoginController
                 // Otros datos necesarios para la vista
             ];
 
-            Mail::to($employee->email)
-                 ->cc($this->copycauEmail)
-                 ->send(new RegisteredUser($emailData));
-                 
-                 \Log::debug('CC Emails:', $this->copycauEmail);
+            Mail::to($employee->email)->send(new RegisteredUser($emailData));
 
             return response()->json([
                 'success' => true,
@@ -342,6 +338,7 @@ class EmployeeController extends DefaultLoginController
         ], 500);
     }
 }
+
 
     //! VALIDATE USER AND NEW PASSWORD
 
@@ -374,18 +371,14 @@ class EmployeeController extends DefaultLoginController
 
                 ];
 
-            Mail::to($employee->email)
-                  ->cc($this->copycauEmail)
-                  ->send(new RegisteredUser($emailData));
-                  
-                  \Log::debug('CC Emails:', $this->copycauEmail);
+            Mail::to($employee->email)->send(new RegisteredUser($emailData));
 
             return response()->json([
                 'success' => true,
                 'mensaje' => 'Usuario validado correctamente y correo enviado.'
             ], 200);
         } else {
-         
+            // Considera añadir una respuesta o acción para empleados en categorías excluidas.
             return response()->json(['success' => false, 'mensaje' => 'Categoría de empleado excluida del reseteo de contraseña'], 400);
         }
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -434,7 +427,7 @@ class EmployeeController extends DefaultLoginController
         $idEmployee = (int)$params['employee_id'];
         $this->user = session()->get('user');
 
-        \Log::channel('a3')->info("Iniciado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
+        Log::channel('a3')->info("Iniciado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
         if ($params['type'] == 'full') {
             Artisan::call('a3empleados:cron', []);
         } else {
