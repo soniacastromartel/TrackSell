@@ -12,9 +12,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-
-
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
@@ -115,7 +112,6 @@ Route::get('/admin/profile', 'HomeController@viewProfile')->name('admin.profile'
 Route::put('/editProfile/{id}', 'HomeController@editProfile')->name('editProfile');
 Route::get('/getSales', 'HomeController@getSales')->name('home.getSales');
 Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets');
-
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
 
 //!A3API
