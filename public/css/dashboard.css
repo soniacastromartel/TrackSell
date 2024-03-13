@@ -1,11 +1,14 @@
+.content {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+    background-image: url(/assets/img/background-gradient.png);
+    background-size: cover;
+    background-repeat: no-repeat;
 
-.content{
-margin: 0 !important;
-padding: 0 !important;
-height: 100%;
-background-color: rgb(136, 136, 180);
 }
-.container-fluid{
+
+.container-fluid {
     padding-top: 20px;
 }
 
