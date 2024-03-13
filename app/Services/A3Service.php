@@ -85,8 +85,6 @@ class A3Service
         }
     }
 
-
-
     public function getPages($companyCode, $workplaceCode)
     {
 
