@@ -242,14 +242,13 @@ opacity: 1;
 }
 
 /* ROW GREEN FOR UPDATED USER */
-.user-updated-acc {
+.user-updated-acc,.user-updated-pass{
     color: green ;
 }
-.user-updated-pass{
-    color: green;
-}
-/* Estilo base para rows con tooltip */
-.user-updated-pass:hover::after {
+
+.user-updated-pass:hover::after,
+.user-updated-acc:hover::after ,
+.user-bloqued:hover::after {
     content: attr(data-tooltip); /* Inserta el texto del tooltip */
     position: absolute;
     bottom: 100%; 
@@ -266,32 +265,10 @@ opacity: 1;
     font-size: 12px;
 }
 
-.user-updated-acc:hover::after {
-content: attr(data-tooltip); 
-position: absolute;
-bottom: 100%; 
-left: 50%; 
-transform: translateX(-50%); 
-white-space: nowrap; 
-visibility: hidden; 
-opacity: 0;
-transition: opacity 0.2s, visibility 0.2s; 
-background-color: black; 
-color: white; 
-padding: 5px 10px;
-border-radius: 4px;
-font-size: 12px;
-}
-
-/* Asegurarse de que el tooltip se hace visible solo al hacer hover sobre el elemento */
 .user-updated-pass:hover::after,
-.user-updated-acc:hover::after {
+.user-updated-acc:hover::after,
+.user-bloqued:hover::after  {
     visibility: visible; 
     opacity: 1;
 }
 
-/* Asegúrate de que el elemento padre tenga posición relativa */
-
-tr {
-  
-}
