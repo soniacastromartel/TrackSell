@@ -129,39 +129,44 @@
 
                 ],
                 createdRow: function(row, data, dataIndex) {
-    console.log(data);
-    if (parseInt(data.count_access) === 3) {
-        $(row).addClass('user-bloqued');
-    } else if (parseInt(data.pending_password) === 0) {
-        if (data.updated_at) { 
-            var resetDateTimeString = data.updated_at.split(" GMT")[0];
-            var resetDate = new Date(resetDateTimeString);
-            var currentDate = new Date();
-            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60); 
-            if (differenceInHours <= 24) {
-                $(row).addClass('user-updated-pass');
-            } else {
-                $(row).removeClass('user-updated-pass');
-            }
-        }
-    } else if (parseInt(data.count_access) === 0) {
-        if (data.updated_at) { 
-            var resetDateTimeString = data.updated_at.split(" GMT")[0]; 
-            var resetDate = new Date(resetDateTimeString);
-            var currentDate = new Date();
-            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60); 
-            if (differenceInHours <= 24) {
-                $(row).addClass('user-updated-acc');
-            } else {
-                $(row).removeClass('user-updated-acc');
-            }
-        } else {
-            $(row).removeClass('user-updated-acc');
-        }
-    } else {
-        $(row).removeClass('user-updated-acc');
-    }
-},
+                    console.log(data);
+                    var tooltipMessage = "";
+                    if (parseInt(data.count_access) === 3) {
+                        $(row).addClass('user-bloqued');
+                        tooltipMessage = "Usuario bloqueado";
+                    } else if (parseInt(data.pending_password) === 0) {
+                        if (data.updated_at) {
+                            var resetDateTimeString = data.updated_at.split(" GMT")[0];
+                            var resetDate = new Date(resetDateTimeString);
+                            var currentDate = new Date();
+                            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60);
+                            if (differenceInHours <= 24) {
+                                $(row).addClass('user-updated-pass');
+                                tooltipMessage = "Asignación de nueva contraseña en las últimas 24h";
+                            } else {
+                                $(row).removeClass('user-updated-pass');
+                            }
+                        }
+                    } else if (parseInt(data.count_access) === 0) {
+                        if (data.updated_at) {
+                            var resetDateTimeString = data.updated_at.split(" GMT")[0];
+                            var resetDate = new Date(resetDateTimeString);
+                            var currentDate = new Date();
+                            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60);
+                            if (differenceInHours <= 24) {
+                                $(row).addClass('user-updated-acc');
+                                tooltipMessage = "Reseteo de acceso en las últimas 24h";
+                        } else {
+                            $(row).removeClass('user-updated-acc');
+                        }
+                    } else {
+                        $(row).removeClass('user-updated-acc');
+                    }
+                }
+                if(tooltipMessage) {
+                     $(row).attr('data-tooltip', tooltipMessage);
+                    }
+                  },
 
 
                 search: {
