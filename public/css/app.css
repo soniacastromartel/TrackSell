@@ -55,6 +55,7 @@
   box-sizing: border-box;
 }
 
+
 html {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   line-height: 1.15;
@@ -4270,12 +4271,7 @@ input[type="button"].btn-block {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
-.wrapper {
-   background-image: url("/assets/img/background-gradient.png");
-    background-size: cover;
-    margin: 0px;
-    padding: 0px;
-}
+
 .custom-file-label::after {
   position: absolute;
   top: 0;
