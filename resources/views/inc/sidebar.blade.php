@@ -181,7 +181,7 @@
     </ul>
     
     <div class="versionContainer">
-      <img src="{{ asset('/assets/img/logoIncentivos.png') }}" style="margin:10px; margin-top:40px;">
+    
       <hr>
       <label class="lblVersion"> Versión {{ env('VERSION_WEB') }} </label>
     </div>
