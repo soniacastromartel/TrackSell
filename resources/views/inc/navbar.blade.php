@@ -1,23 +1,32 @@
 <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-transparent">
+<div class="{{ Request::is('home') ? 'navbar-home' : 'navbar' }}" >
+    @if(Request::is('home'))
+    <div class="text-banner">
+        <p style="white-space: nowrap;">
+         <span class="text" style="margin-right:60px;">REHABILITACIÓN</span>
+         <img style="margin-right:500px"; src="{{ asset('/assets/img/banner1.jpg') }}" height="165">
+
+         <span class="text" style="margin-right:60px;">BOMBA MAGNÉTICA</span>
+         <img style="margin-right:500px"; src="{{ asset('/assets/img/banner2.jpg') }}"height="165">
+
+         <span class="text" style="margin-right: 60px;">PLANTILLAS 3D</span>
+         <img style="margin-right:500px"; src="{{ asset('/assets/img/banner3.png') }}" height="165">
+
+         <span class="text" style="margin-right: 60px;"">DIAGNÓSTICO POR IMAGEN</span>
+         <img style="margin-right:500px"; src="{{ asset('/assets/img/banner4.jpg') }}" height="165">
+        </p>
+      </div>
+      @endif
+
     <div class="container-fluid">
         <div class="navbar-wrapper">
-            <div class="navbar-minimize">
-                <button id="minimizeSidebar">
+                <button id="minimizeSidebar" class="{{ Request::is('home') ? 'minimize-sidebar-home' : 'minimize-sidebar' }}">
                     <i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
                     <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
                 </button>
-            </div>
-           
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-        </button>
         <div class="navbar-collapse justify-content-end collapse">
             <form class="navbar-form">
                 <span class="bmd-form-group">
@@ -28,10 +37,11 @@
             </form>
         </div>
         @if ($nDays != '')
-            <div class="alert-cutoff-date alert-warning" role="alert">
-                <i class="material-icons" id="warning">warning</i>
+        <div class="{{ Request::is('home') ? 'alert-cutoff-date-home ' : 'alert-cutoff-date alert-warning' }}" role="alert">
+                <i class="material-icons"  id="{{ Request::is('home') ? 'warning-home' : 'warning ' }}" >warning</i>
                 En {{ $nDays }} días llega próximo corte, 20 de {{ $currentMonth }}
             </div>
         @endif
     </div>
-</nav>
+</div>
+

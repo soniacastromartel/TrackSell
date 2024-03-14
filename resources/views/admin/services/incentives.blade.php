@@ -4,7 +4,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
-
+<link rel="stylesheet" href="{{ asset('/css/background.css') }}">
 <div id="alertErrorServiceIncentive" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertServiceIncentive" class="alert alert-warning" role="alert" style="display: none">

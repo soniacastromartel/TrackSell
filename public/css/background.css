@@ -1,0 +1,10 @@
+.content {
+    background-image: url(/assets/img/background-gradient.png);
+
+    height: 1900px !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.container-fluid{
+   padding-top: 100px;
+}

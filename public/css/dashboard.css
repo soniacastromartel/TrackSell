@@ -1,16 +1,14 @@
 .content {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: 100%;
     background-image: url(/assets/img/background-gradient.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-
+    height: 1200px !important;
 }
 
-.container-fluid {
-    padding-top: 20px;
+.content-with-banner {
+   
+    background-image: url(/assets/img/background-gradient.png);
+    height: 1200px !important;
 }
+
 
 table.dataTable.dataTable_width_auto {
     width: 100%;
@@ -103,7 +101,6 @@ svg.ct-chart-line {
 }
 
 .search-container {
-    margin-top: -30px;
     width: 20%;
     margin: 5px;
 }
