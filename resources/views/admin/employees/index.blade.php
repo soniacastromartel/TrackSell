@@ -4,7 +4,7 @@
     @include('common.alert')
     
     <link rel="stylesheet" href="{{ asset('/css/background.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
 
     <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
@@ -18,12 +18,11 @@
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-4 text-right" id="blockNewTracking">
-                    <a id="btnSyncA3" class="btn btn-raised"><span class="material-icons mr-1">
+                    <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
                             sync
-                        </span> Sincronizar A3</a>
-                    <button id="btnSubmitLoad" type="submit" class="btn btn-raised" style="display: none">
+                        </span> </a>
+                    <button id="btnSubmitLoad" type="submit" class="btn-sincro-all" style="display: none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        {{ __('Realizando sincronización...') }}
                     </button>
                 </div>
             </div>
