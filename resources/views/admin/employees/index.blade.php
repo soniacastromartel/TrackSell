@@ -131,42 +131,39 @@
                 createdRow: function(row, data, dataIndex) {
                     console.log(data);
                     var tooltipMessage = "";
+                    var resetDateTimeString, resetDate, currentDate = new Date();
+                    var differenceInHours;
+
+                    function calculateDifference(resetDateTimeString) {
+                        resetDate = new Date(resetDateTimeString.split(" GMT")[0]);
+                        return Math.abs(currentDate - resetDate) / (3600000); 
+                    }
                     if (parseInt(data.count_access) === 3) {
                         $(row).addClass('user-bloqued');
                         tooltipMessage = "Usuario bloqueado";
-                    } else if (parseInt(data.pending_password) === 0) {
-                        if (data.updated_at) {
-                            var resetDateTimeString = data.updated_at.split(" GMT")[0];
-                            var resetDate = new Date(resetDateTimeString);
-                            var currentDate = new Date();
-                            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60);
+                    } else if (parseInt(data.pending_password) === 0 && data.updated_at) {
+                        differenceInHours = calculateDifference(data.updated_at);
                             if (differenceInHours <= 24) {
                                 $(row).addClass('user-updated-pass');
                                 tooltipMessage = "Asignación de nueva contraseña en las últimas 24h";
-                            } else {
-                                $(row).removeClass('user-updated-pass');
-                            }
                         }
-                    } else if (parseInt(data.count_access) === 0) {
-                        if (data.updated_at) {
-                            var resetDateTimeString = data.updated_at.split(" GMT")[0];
-                            var resetDate = new Date(resetDateTimeString);
-                            var currentDate = new Date();
-                            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60);
+                    } else if (parseInt(data.count_access) === 0  && data.updated_at) {
+                         differenceInHours = calculateDifference(data.updated_at);
                             if (differenceInHours <= 24) {
                                 $(row).addClass('user-updated-acc');
                                 tooltipMessage = "Reseteo de acceso en las últimas 24h";
-                        } else {
-                            $(row).removeClass('user-updated-acc');
                         }
-                    } else {
+                    }
+                    if (!$(row).hasClass('user-updated-pass')) {
+                        $(row).removeClass('user-updated-pass');
+                    }
+                      if (!$(row).hasClass('user-updated-acc')) {
                         $(row).removeClass('user-updated-acc');
                     }
-                }
-                if(tooltipMessage) {
-                     $(row).attr('data-tooltip', tooltipMessage);
+                    if (tooltipMessage) {
+                        $(row).attr('data-tooltip', tooltipMessage);
                     }
-                  },
+                },
 
 
                 search: {
