@@ -3,18 +3,18 @@
 <!-- Navbar -->
 <div id="{{ Request::is('home') ? 'navbar-home' : 'navbar' }}" >
     @if(Request::is('home'))
-    <div class="text-banner">
+    <div id="text-banner-home">
         <p style="white-space: nowrap;">
-         <span class="text" style="margin-right:60px;">REHABILITACIÓN</span>
+         <span id="text-banner" style="margin-right:60px;">REHABILITACIÓN</span>
          <img style="margin-right:500px"; src="{{ asset('/assets/img/banner1.jpg') }}" height="165">
 
-         <span class="text" style="margin-right:60px;">BOMBA MAGNÉTICA</span>
+         <span id="text-banner" style="margin-right:60px;">BOMBA MAGNÉTICA</span>
          <img style="margin-right:500px"; src="{{ asset('/assets/img/banner2.jpg') }}"height="165">
 
-         <span class="text" style="margin-right: 60px;">PLANTILLAS 3D</span>
+         <span id="text-banner" style="margin-right: 60px;">PLANTILLAS 3D</span>
          <img style="margin-right:500px"; src="{{ asset('/assets/img/banner3.png') }}" height="165">
 
-         <span class="text" style="margin-right: 60px;"">DIAGNÓSTICO POR IMAGEN</span>
+         <span id="text-banner" style="margin-right: 60px;"">DIAGNÓSTICO POR IMAGEN</span>
          <img style="margin-right:500px"; src="{{ asset('/assets/img/banner4.jpg') }}" height="165">
         </p>
       </div>
@@ -37,7 +37,7 @@
             </form>
         </div>
         @if ($nDays != '')
-        <div class="{{ Request::is('home') ? 'alert-cutoff-date-home ' : 'alert-cutoff-date alert-warning' }}" role="alert">
+        <div id="{{ Request::is('home') ? 'alert-cutoff-date-home' : 'alert-cutoff-date' }}" role="alert">
                 <i class="material-icons"  id="{{ Request::is('home') ? 'warning-home' : 'warning ' }}" >warning</i>
                 En {{ $nDays }} días llega próximo corte, 20 de {{ $currentMonth }}
             </div>

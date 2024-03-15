@@ -18,8 +18,6 @@
                         <form id="rankingForm" method="POST">
                             @csrf
                             @method('POST')
-
-
                             <div class="calendar-picker">
                                 <label class="label" for="monthYearPicker">Fecha </label>
                                 <div id="monthYearPickerContainer">
@@ -86,26 +84,21 @@
                     <div class="card-header card-header-danger">
                         <h4 class="card-title" id="title-target">Objetivos</h4>
                     </div>
-
                     <div class="card-body">
-
                         <div class="title-venta">
                             <h4 class="card-title">Venta cruzada</h4>
                             <div id="chart_div_vc"></div>
                         </div>
-
                         <div class="title-venta">
                             <h4 class="card-title">Venta privada</h4>
                             <div id="chart_div_vp"></div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row" id="monthlyData">
-
             <div class="col-lg-11">
                 <div class="card">
                     <div class="btn-export">

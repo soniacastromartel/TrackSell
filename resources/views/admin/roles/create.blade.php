@@ -1,15 +1,15 @@
 @extends('layouts.logged')
-
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
 
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card ">
+                <div class="card" style="margin-top: 100px">
                     <div class="card-header card-header-info card-header-text">
                       <div class="card-text">
                         <h4 class="card-title">Nuevo rol</h4>

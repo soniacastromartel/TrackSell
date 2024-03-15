@@ -1,3 +1,5 @@
+
+
 <div class="row" style="margin-bottom:40px; margin-top: 20px;">
   <div class="form-group col-md-3"  style="margin-right:20px;margin-left: 60px;">
     <label for="name">Nombre <span id="obligatory">*</span></label>
@@ -21,19 +23,17 @@
 
 <div class="row mt-2" style="margin-left: 30px;">
     <div class="col text-right">
-        <button id="btnSubmit" type="submit" class="btn btn-success">
-        <span class="material-icons mr-1">
-                            save
-                            </span>    {{ __('Guardar') }}
+        <button id="btnSubmit" type="submit" class="btn-save">
+        <span class="material-icons mr-1">save </span>  
         </button>
-        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+
+        <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          {{ __('Guardando...') }}
+  
         </button>
-        <button id="btnBack" href="/config" class="btn btn-red-icot">
-        <span class="material-icons">
-                            arrow_back
-                            </span> {{ __('Volver') }}
+
+        <button id="btnBack" href="/config" class="btn-return">
+        <span class="material-icons">arrow_back</span> 
         </button>
     </div>
   </div>

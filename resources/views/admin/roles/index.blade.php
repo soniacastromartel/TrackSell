@@ -3,8 +3,8 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/background.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
+
 
 <div id="alertErrorRole" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-4 text-right">
                 <a href="{{ route('roles.create') }}" id="btnNewCenter" class="btn-add" ><span class="material-icons">
-                            add_circle</span></a>
+                add</span></a>
             </div>
         </div>     
         <table class="table table-striped table-bordered roles-datatable">
