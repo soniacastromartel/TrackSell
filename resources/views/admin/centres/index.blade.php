@@ -3,7 +3,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/backgroundWide.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/centres.css') }}">
 
 <div id="alertErrorCentre" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -17,8 +17,8 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg"><span class="material-icons mr-1">
-                            add_circle</span> Nuevo</a>
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn-add" ><span class="material-icons">
+                            add</span></a>
             </div>
         </div>
         @endif

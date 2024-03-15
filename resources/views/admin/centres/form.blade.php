@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{ asset('/css/centres.css') }}">
+
 <div class="row">
 
   <div class="col-xl-6 col-lg-12 column-center">
@@ -87,17 +89,17 @@
 
 <div class="row mr-4 text-right">
   <div class="col-lg-12 ml-4">
-    <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons mr-1">
+    <button id="btnSubmit" type="submit" class="btn-save"> <span class="material-icons">
                             save
-                            </span> {{ __('Guardar') }}</button>
-    <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                            </span></button>
+    <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      {{ __('Guardando...') }}
+ 
     </button>
-    <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
+    <button id="btnBack" href="/config" class="btn-return">
     <span class="material-icons">
                             arrow_back
-                            </span> {{ __('Volver') }}
+                            </span>
     </button>
     <br>
     <label id="lbl" for="image"><span id="obligatory">*</span>Estos campos son requeridos</label>

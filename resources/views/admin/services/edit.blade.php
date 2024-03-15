@@ -5,8 +5,9 @@
 @include('inc.navbar')
 @include('common.alert')
 
+
 <div class="content">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:50px">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card ">

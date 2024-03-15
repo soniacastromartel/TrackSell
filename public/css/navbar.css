@@ -65,16 +65,17 @@
 #alert-cutoff-date{
     position: absolute;
     right: 0;
+    top:20px;
     color: white;
     background-color:var(--red-icot);
     padding: 20px 15px;
-    margin: 10px;
+    margin-right: 20px;
     border-radius: 3px;
     border: 2px;
     font-weight: 600;
     display: flex;
     align-items: center;
-    box-shadow: 0 4px 20px 0 rgba(197, 65, 65, 0.14), 0 7px 10px -5px rgb(186 46 41/ 40%);
+    box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.678), 0 10px 20px -5px rgb(186 46 41 / 50%) !important;
 }
 #warning-home {
     color: var(--red-icot);

@@ -1,10 +1,9 @@
 .content {
     background-image: url(/assets/img/background-gradient.png);
-    height: 1100px !important;
+    height: 1000px !important;
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 
 .btn-add {
     position: relative;
@@ -127,6 +126,7 @@
         opacity: 1;
         }
 
+     
         .btn-save{
             position: relative;   
             background-color: green;

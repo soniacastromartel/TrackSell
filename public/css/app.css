@@ -249,6 +249,7 @@ th {
 }
 
 label {
+  color: var( --gray-dark)!important;
   display: inline-block;
   margin-bottom: 0.5rem;
   
@@ -2173,11 +2174,13 @@ pre code {
 }
 
 .form-control:-ms-input-placeholder {
+
   color: #6c757d;
   opacity: 1;
 }
 
 .form-control::placeholder {
+  
   color: #6c757d;
   opacity: 1;
 }
@@ -2250,6 +2253,7 @@ select.form-control:focus::-ms-value {
 }
 
 .form-control-sm {
+  background-color: white !important;
   height: calc(1.5em + 0.5rem + 2px);
   padding: 0.25rem 0.5rem;
   font-size: 0.7875rem;

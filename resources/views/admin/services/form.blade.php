@@ -1,4 +1,6 @@
-  <div class="row justify-content-end">
+<link rel="stylesheet" href="{{ asset('/css/services.css') }}">
+ 
+ <div class="row justify-content-end">
 
     <div class="col-xl-6 col-lg-12 column-center">
       <div id="containerImg" class="text-center">
@@ -71,19 +73,19 @@
     </div>
 
     <div style="margin-right: 60px;">
-      <div class="row mr-4">
-        <div class="row">
-          <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"> <span class="material-icons mr-1">
+      <div class="row mr-4 text-right">
+        <div class= "col-lg-12 ml-4">
+          <button id="btnSubmit" type="submit" class="btn-save"> <span class="material-icons">
                             save
-                            </span> {{ __('Guardar') }}</button>
-          <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            {{ __('Guardando...') }}
+                            </span> </button>
+          <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
+            <span class="btn-save" role="status" aria-hidden="true"></span>
+          
           </button>
-          <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
+          <button id="btnBack" href="/config" class="btn-return">
           <span class="material-icons">
                             arrow_back
-                            </span> {{ __('Volver') }}
+                            </span>
           </button>
         </div>
       </div>
@@ -153,4 +155,83 @@
       color: #CC0000;
       font-weight: bold;
     }
+    .btn-save{
+            position: relative;   
+            background-color: green;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 40px; 
+            height: 40px;
+            padding: 0; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            }
+
+            .btn-save::after {
+            position: absolute;
+            bottom: 100%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            white-space: nowrap; 
+            visibility: hidden; 
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s; 
+            border-radius: 4px;
+            font-size: 12px;
+            }
+            
+            .btn-save:hover {
+            background-color: white; 
+            color: green;   
+            }
+            
+            .btn-save:hover::after {
+            visibility: visible;
+            opacity: 1;
+            }
+
+            .btn-return{
+                position: relative;   
+                background-color:var(--red-icot);
+                border: none;
+                color: white;
+                cursor: pointer;
+                border-radius: 50%;
+                width: 40px; 
+                height: 40px;
+                padding: 0; 
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+                margin: 10px;
+                }
+    
+                .btn-return::after {
+                position: absolute;
+                bottom: 100%; 
+                left: 50%; 
+                transform: translateX(-50%); 
+                white-space: nowrap; 
+                visibility: hidden; 
+                opacity: 0;
+                transition: opacity 0.2s, visibility 0.2s; 
+                border-radius: 4px;
+                font-size: 12px;
+                }
+                
+                .btn-return:hover {
+                background-color: white; 
+                color:var(--red-icot);   
+                }
+                
+                .btn-return:hover::after {
+                visibility: visible;
+                opacity: 1;
+                }
   </style>

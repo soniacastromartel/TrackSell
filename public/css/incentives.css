@@ -1,0 +1,128 @@
+.content {
+    background-image: url(/assets/img/background-gradient.png);
+    height: 1300px !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+
+.btn-refresh {
+    position: relative;   
+    background-color: orange ;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px; 
+    height: 40px;
+    padding: 0; display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    }
+    .btn-refresh::after {
+    position: absolute;
+    bottom: 100%; 
+    left: 50%;
+    transform: translateX(-50%); 
+    white-space: nowrap; 
+    visibility: hidden; 
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s; 
+    border-radius: 4px;
+    font-size: 12px;
+    }
+    
+    .btn-refresh:hover {
+    background-color: white; 
+    color: orange; 
+    }
+    
+    .btn-refresh:hover::after {
+    visibility: visible;
+    opacity: 1;
+    }
+
+.btn-search {
+    position: relative;
+    background-color: green;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 80px;
+}
+
+.btn-searc::after {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.btn-search:hover {
+    background-color: white;
+    color: green;
+}
+
+.btn-search:hover::after {
+    visibility: visible;
+    opacity: 1;
+}
+
+.btn-delete{
+    position: relative;   
+    background-color: red;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px; 
+    height: 40px;
+    padding: 0; display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    }
+    
+    .btn-delete::after{
+    position: absolute;
+    bottom: 100%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    white-space: nowrap; 
+    visibility: hidden; 
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s; 
+    border-radius: 4px;
+    font-size: 12px;
+    }
+    
+    .btn-delete:hover {
+    background-color: white; 
+    color:red; 
+    }
+    
+    .btn-delete:hover::after {
+    visibility: visible;
+    opacity: 1;
+    }

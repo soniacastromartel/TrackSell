@@ -4,7 +4,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/background.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
 <div id="alertErrorServiceIncentive" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertServiceIncentive" class="alert alert-warning" role="alert" style="display: none">
@@ -41,7 +41,7 @@
 </style>
 <div class="content">
     <div class="container-fluid">
-        <div class="card">
+        <div class="card" style="margin-top:100px ">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Configuración</h4>
             </div>
@@ -71,16 +71,15 @@
                         </div>
                     </div>
                     <div class="mt-2">
-                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                        <button id="btnClear" href="#" class="btn-refresh">
                         <span class="material-icons">
-                            clear_all
-                            </span>    {{ __('Limpiar formulario') }}
+                            refresh
+                            </span>   
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"><span class="material-icons mr-1">
-                            search</span> {{ __('Buscar') }}</button>
-                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                        <button id="btnSubmit" type="submit" class="btn-search"><span class="material-icons">
+                            search</span></button>
+                        <button id="btnSubmitLoad" type="submit" class="btn-search" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            {{ __('Obteniendo datos...') }}
                         </button>
                     </div>
 

@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="{{ asset('/css/modal.css') }}">
 
 
-
 <div class="modal" tabindex="-1" role="dialog" id="modal-validate">
     <input type="hidden" id="id" />
     <input type="hidden" id="validateVal" />

@@ -3,8 +3,7 @@
     @include('inc.navbar')
     @include('common.alert')
     
-    <link rel="stylesheet" href="{{ asset('/css/background.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+ 
     <link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
 
     <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">

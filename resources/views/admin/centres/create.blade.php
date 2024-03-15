@@ -4,9 +4,10 @@
 
 @include('inc.navbar')
 @include('common.alert')
+<link rel="stylesheet" href="{{ asset('/css/centres.css') }}">
 
 <div class="content">
-    <div class="container-fluid">
+    <div class="container-fluid"">
         <div class="row">
             <div class="col-md-12">
                 <div class="card ">

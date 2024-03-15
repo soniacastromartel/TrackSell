@@ -4,7 +4,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/background.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -12,21 +12,20 @@
 
 <div class="content">
     <div class="container-fluid">
-
-        <div class="col-lg-12">
-
-            <!--tarjeta-->
-            <div class="card ">
+        <div class="col-lg-12" style="background-color: rgb(209, 209, 157)">
+            <div class="card " style="margin-top:100px;background-color:pink">
                 <div class="card-header card-header-danger">
                     <h4 class="card-title">Informes</h4>
                 </div>
-                <div class="card-body" style="margin-top: 30px;margin-bottom: 30px;">
+                
+                <div class="card-body" style="background-color:antiquewhite; margin-top: 30px;margin-bottom: 30px;">
 
                     <form id="exportTracking" action="{{ route('tracking.export') }}" method="POST">
 
                         @csrf
                         @method('PUT')
-                        <div class="row" style="justify-content: space-evenly;">
+                        <div class="row" style=" background-color:aquamarine; ">
+
                             <div class="col-md-3">
                                 <div>
                                     <label class="label" for="dateFrom">Fecha desde </label>
@@ -46,11 +45,11 @@
 
 
 
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
+                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
                                                 @if ($user->rol_id != 1)
                                                 @foreach ($centres as $centre)
                                                 @if ($centre->id == $user->centre_id)
@@ -71,9 +70,10 @@
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    
+                                    <div class="form-group col-md-6" style="background-color:lightblue">
                                         <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
+                                            <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @if ($user->rol_id != 1)
                                                     @foreach ($employees as $employee)
@@ -96,7 +96,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select text-uppercase">
-                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
+                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @foreach ($services as $service)
                                                 <option value="{{ $service->id }}" @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="patient_name" id="patient_name" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Paciente" tabindex="-98">
+                                            <select class="selectpicker" name="patient_name" id="patient_name" data-size="7" data-style="btn btn-red-icot btn-round" title=" Paciente" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @foreach ($patients as $patient)
                                                 <option value="{{ $patient->patient_name }}">

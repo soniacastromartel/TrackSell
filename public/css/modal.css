@@ -245,7 +245,6 @@
   width: auto;
   margin: 0.5rem;
   pointer-events: none;
-  border: 2px solid var(--red-icot);
   border-radius: 10px;
 }
 

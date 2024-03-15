@@ -23,8 +23,6 @@ class ServiceController extends Controller
         $this->title = 'Servicios';
         $this->user = session()->get('user');
     }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -69,12 +67,12 @@ class ServiceController extends Controller
                     ->addColumn('action', function ($service) {
                         $btn = '';
                         if (empty($service->cancellation_date)) {
-                            $btn = '<a href="services/edit/' . $service->id . '" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
+                            $btn = '<a href="services/edit/' . $service->id . '" class="btn-edit"><span class="material-icons">
                             edit
-                            </span> Editar</a>';
-                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                            </span></a>';
+                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn-delete"><span class="material-icons">
                             delete
-                            </span> Borrar</a>';
+                            </span></a>';
                         }
                         return $btn;
                     })
@@ -350,9 +348,8 @@ class ServiceController extends Controller
                         $user = session()->get('user');
                         if (empty($service->cancellation_date) && $user->rol_id == 1) {
                             // $fnCall = 'destroyIncentive('.$service->serviceprice_id.' )';
-                            $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btnDeleteServicePrice btn btn-red-icot a-btn-slide-text"><span class="material-icons">
-                        delete
-                        </span> Borrar</a>';
+                            $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btn-delete"><span class="material-icons">
+                        delete</span></a>';
                         }
                         return $btn;
                     })
