@@ -18,7 +18,7 @@
                 @method('POST')
                 <div class="row">
                     <div class="col-lg-12 mt-2">
-                        <div class="card" style="min-height:442px;">
+                        <div class="card" style="min-height:442px;margin-top:100px"">
                             <div class="card-header card-header-danger">
                                 <h4 class="card-title">Servicios</h5>
                             </div>

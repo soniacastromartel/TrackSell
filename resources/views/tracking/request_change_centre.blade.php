@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card ">
+                <div class="card " style="margin-top:100px">
                     <div class="card-header card-header-info card-header-text">
                         <div class="card-text">
                             <h4 class="card-title">Nueva solicitud</h4>

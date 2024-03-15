@@ -10,7 +10,7 @@
 
 <div class="content">
     <div class="container-fluid">
-        <div class="card ">
+        <div class="card "style="margin-top:100px">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Notificaciones</h4>
             </div>

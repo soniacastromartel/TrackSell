@@ -24,31 +24,31 @@
 
                         @csrf
                         @method('PUT')
-                        <div class="row" style=" background-color:aquamarine; ">
 
-                            <div class="col-md-3">
-                                <div>
+                        <div class="informes-container" style=" background-color:aquamarine;">
+
+                            
+
+                            <div class="col-md-3" style="background-color: lightcoral">
+                              
                                     <label class="label" for="dateFrom">Fecha desde </label>
                                     <div class=" input-group ">
                                         <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-control"></input>
                                     </div>
-
-
                                     <br>
                                     <label class="label" for="dateTo">Fecha hasta </label>
                                     <div class=" input-group ">
                                         <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
                                     </div>
-                                </div>
-
+                                
                             </div>
 
 
 
-                            <div class="col-md-3">
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <div class="dropdown bootstrap-select">
+                            <div class="col-md-2" style="background-color:rgb(33, 96, 117);display:flex;flex-direction:column;">
+
+                                    
+                                       
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
                                                 @if ($user->rol_id != 1)
                                                 @foreach ($centres as $centre)
@@ -68,11 +68,10 @@
                                                 @endif
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
-                                        </div>
-                                    </div>
                                     
-                                    <div class="form-group col-md-6" style="background-color:lightblue">
-                                        <div class="dropdown bootstrap-select">
+                                
+                                  
+                                    
                                             <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @if ($user->rol_id != 1)
@@ -89,13 +88,9 @@
                                                     @endif
                                             </select>
                                             <input type="hidden" name="employee" id="employee" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <div class="dropdown bootstrap-select text-uppercase">
+                                     
+                               
+                                      
                                             <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @foreach ($services as $service)
@@ -106,10 +101,10 @@
 
                                             </select>
                                             <input type="hidden" name="service" id="service" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <div class="dropdown bootstrap-select">
+                         
+                              
+                                   
+                                      
                                             <select class="selectpicker" name="patient_name" id="patient_name" data-size="7" data-style="btn btn-red-icot btn-round" title=" Paciente" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @foreach ($patients as $patient)
@@ -118,26 +113,21 @@
                                                 </option>
                                                 @endforeach
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <div class="dropdown bootstrap-select">
-                                            <select class="selectpicker" name="state_id" id="state_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Estado" tabindex="-98">
+                                    
+            
+                                   
+                                            <select class="selectpicker" name="state_id" id="state_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @foreach ($states as $state)
                                                 <option class="text-uppercase" value="{{ $state->texto }}">{{$state->nombre}}</option>
                                                 @endforeach
 
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
+                                  
                             </div>
-                        </div>
-                        <div class="row mt-5 px-5" style="justify-content: space-evenly;">
+                       
+
+                        <div  class="col-md-2"  style="background-color:blueviolet; justify-content: space-evenly;">
                             <div class="col">
                                 <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                                     <span class="material-icons mr-1">
@@ -159,6 +149,9 @@
                                 </button>
                             </div>
                         </div>
+
+                    </div>
+
                     </form>
                 </div>
             </div>
@@ -194,6 +187,10 @@
     </div>
 </div>
 <style>
+    .informes-container{
+        display: flex;
+        justify-content: space-evenly;
+    }
     .myclass {
         text-transform: capitalize;
     }
