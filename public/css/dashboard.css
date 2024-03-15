@@ -3,12 +3,6 @@
     height: 1200px !important;
 }
 
-.content-with-banner {
-   
-    background-image: url(/assets/img/background-gradient.png);
-    height: 1200px !important;
-}
-
 
 table.dataTable.dataTable_width_auto {
     width: 100%;

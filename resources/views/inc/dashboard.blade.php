@@ -6,7 +6,7 @@
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
-<div class="content" style="margin-top: -20px">
+<div class="content" >
     <div class="container-fluid">
         <div class="row">
             <div class="search-container">

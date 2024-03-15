@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
 
 <!-- Navbar -->
-<div class="{{ Request::is('home') ? 'navbar-home' : 'navbar' }}" >
+<div id="{{ Request::is('home') ? 'navbar-home' : 'navbar' }}" >
     @if(Request::is('home'))
     <div class="text-banner">
         <p style="white-space: nowrap;">
