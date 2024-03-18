@@ -1,3 +1,6 @@
+
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
@@ -165,22 +168,7 @@
 </div>
 
 <style>
-  #subLabel{
-    color: var(--red-icot);
-    font-weight: bold !important;
-    font-size: 11px;
-  }
-  #lbl {
-        color: black;
-        font-weight: 800;
-        font-family: 'Helvetica', 'Arial', sans-serif;
-        margin-top: 25px;
-        font-size:12px;
-      }
-
-    #containerBtns{
-      margin-top: 40px;
-    }
+ 
 </style>
 
 <script type="text/javascript">

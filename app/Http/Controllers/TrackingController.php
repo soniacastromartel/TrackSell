@@ -170,31 +170,33 @@ class TrackingController extends Controller
                             $state = substr($state, 0, strpos($state, "_"));
                             if ($tracking->state == env('STATE_PENDING')) { //PENDIENTE
                                 // $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-6" >';
-                                $btn .= '<input style="resize:horizontal; width: 120px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+                                $btn .= '<div class="col-md-12" style="display:flex;justify-content:center; >';
+                                $btn .= '<input style="resize:horizontal; width: 100px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="col-md-2">';
+                                $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
                             }
                             if ($tracking->state == env('STATE_APOINTMENT')) { //CITADOS
                                 // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-6">';
-                                $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+                                $btn .= '<div class="col-md-12" style="display:flex;justify-content:center;" >';
+                                $btn .= '<input style="resize:horizontal; width: 100px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
                                 $btn .= '</div>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-6 px-2">';
+
+                                $btn .= '<div class="col-md-12"  >';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Realizar</a>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="col-md-6">';
+                                
+                               
+                                $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Reiniciar</a>';
-                                $btn .= '</div></div>';
+                                $btn .= '</div>';
                             }
                             if ($tracking->state == env('STATE_SERVICE')) { //REALIZADOS
                                 // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
@@ -385,7 +387,6 @@ class TrackingController extends Controller
         try {
             $tracking = Tracking::find($id);
             $centres = Centre::getCentresActive();
-
             $services = Service::getServicesActive(null, true);
             $employees = Employee::getEmployeesActive();
             $employee = Employee::find($tracking->employee_id);

@@ -4,6 +4,9 @@
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">

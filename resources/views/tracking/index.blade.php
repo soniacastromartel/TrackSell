@@ -1,535 +1,515 @@
 @extends('layouts.logged')
 
 @section('content')
-@include('inc.navbar')
-@include('common.alert')
+    @include('inc.navbar')
+    @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
-<div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
-</div>
-
-
-<div class="content">
-    <div class="container-fluid">
-        <div class="col-lg-12" style="background-color: rgb(209, 209, 157)">
-            <div class="card " style="margin-top:100px;background-color:pink">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title">Informes</h4>
-                </div>
-                
-                <div class="card-body" style="background-color:antiquewhite; margin-top: 30px;margin-bottom: 30px;">
-
-                    <form id="exportTracking" action="{{ route('tracking.export') }}" method="POST">
-
-                        @csrf
-                        @method('PUT')
-
-                        <div class="informes-container" style=" background-color:aquamarine;">
-
-                            
-
-                            <div class="col-md-3" style="background-color: lightcoral">
-                              
-                                    <label class="label" for="dateFrom">Fecha desde </label>
-                                    <div class=" input-group ">
-                                        <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-control"></input>
-                                    </div>
-                                    <br>
-                                    <label class="label" for="dateTo">Fecha hasta </label>
-                                    <div class=" input-group ">
-                                        <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
-                                    </div>
-                                
-                            </div>
+    <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
+    </div>
 
 
-
-                            <div class="col-md-2" style="background-color:rgb(33, 96, 117);display:flex;flex-direction:column;">
-
-                                    
-                                       
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
-                                                @if ($user->rol_id != 1)
-                                                @foreach ($centres as $centre)
-                                                @if ($centre->id == $user->centre_id)
-                                                <option class="text-uppercase" value="{{ $centre->id }}" selected @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
-                                                    {{ $centre->name }}
-                                                </option>
-                                                @endif
-                                                @endforeach
-
-                                                @else
-                                                @foreach ($centres as $centre)
-                                                <option class="text-uppercase" value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
-                                                    {{ $centre->name }}
-                                                </option>
-                                                @endforeach
-                                                @endif
-                                            </select>
-                                            <input type="hidden" name="centre" id="centre" />
-                                    
-                                
-                                  
-                                    
-                                            <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
-                                                <option>SIN SELECCION </option>
-                                                @if ($user->rol_id != 1)
-                                                    @foreach ($employees as $employee)
-                                                    @if ($employee->centre_id== $user-> centre_id)
-                                                    <option value="{{ $employee->id }}">{{ $employee->name}}</option>
-                                                    @endif
-                                                    @endforeach
-
-                                                    @else
-                                                    @foreach ($employees as $employee)
-                                                    <option value="{{ $employee->id }}">{{ $employee->name}}</option>
-                                                    @endforeach
-                                                    @endif
-                                            </select>
-                                            <input type="hidden" name="employee" id="employee" />
-                                     
-                               
-                                      
-                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
-                                                <option>SIN SELECCION </option>
-                                                @foreach ($services as $service)
-                                                <option value="{{ $service->id }}" @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
-                                                    {{ $service->name }}
-                                                </option>
-                                                @endforeach
-
-                                            </select>
-                                            <input type="hidden" name="service" id="service" />
-                         
-                              
-                                   
-                                      
-                                            <select class="selectpicker" name="patient_name" id="patient_name" data-size="7" data-style="btn btn-red-icot btn-round" title=" Paciente" tabindex="-98">
-                                                <option>SIN SELECCION </option>
-                                                @foreach ($patients as $patient)
-                                                <option value="{{ $patient->patient_name }}">
-                                                    {{ $patient->patient_name }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                    
-            
-                                   
-                                            <select class="selectpicker" name="state_id" id="state_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
-                                                <option>SIN SELECCION </option>
-                                                @foreach ($states as $state)
-                                                <option class="text-uppercase" value="{{ $state->texto }}">{{$state->nombre}}</option>
-                                                @endforeach
-
-                                            </select>
-                                  
-                            </div>
-                       
-
-                        <div  class="col-md-2"  style="background-color:blueviolet; justify-content: space-evenly;">
-                            <div class="col">
-                                <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                    <span class="material-icons mr-1">
-                                        clear_all
-                                    </span> {{ __('Limpiar formulario') }}
-                                </button>
-                                <button id="btnSubmitFind" type="submit" class="btn btn-fill btn-success"><span class="material-icons">
-                                        search</span> {{ __('Buscar') }}</button>
-                                <button id="btnSubmitFindLoad" type="submit" class="btn btn-success">
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    {{ __('Obteniendo datos...') }}
-                                </button>
-                                <button id="btnSubmit" type="submit" class="btn btn-dark-black"><span class="material-icons">
-                                        file_download
-                                    </span> {{ __('Exportar') }}</button>
-                                <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    {{ __('Exportando datos...') }}
-                                </button>
-                            </div>
-                        </div>
-
+    <div class="content">
+        <div class="container-fluid">
+            <div class="col-lg-12">
+                <div class="card" style="margin-top:100px; ">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Informes</h4>
                     </div>
 
-                    </form>
+                    <div class="card-body">
+
+                        <form id="exportTracking" action="{{ route('tracking.export') }}" method="POST">
+
+                            @csrf
+                            @method('PUT')
+
+                            <div class="informes-container">
+
+                                <div class="col-md-2">
+
+                                    <label class="label" for="dateFrom">Fecha desde </label>
+                                    <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01"class="form-control"></input>
+
+                                    <label class="label" for="dateTo">Fecha hasta </label>
+                                    <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
+
+
+                                </div>
+
+
+
+                                <div class="picker-container">
+
+                                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                        data-style="btn btn-red-icot" title=" Centro" tabindex="-98">
+                                        @if ($user->rol_id != 1)
+                                            @foreach ($centres as $centre)
+                                                @if ($centre->id == $user->centre_id)
+                                                    <option class="text-uppercase" value="{{ $centre->id }}" selected
+                                                        @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                        {{ $centre->name }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            @foreach ($centres as $centre)
+                                                <option class="text-uppercase" value="{{ $centre->id }}"
+                                                    @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                    {{ $centre->name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <input type="hidden" name="centre" id="centre" />
+                                    <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
+                                        data-style="btn btn-red-icot " title=" Empleado" tabindex="-98">
+                                        <option>SIN SELECCION </option>
+                                        @if ($user->rol_id != 1)
+                                            @foreach ($employees as $employee)
+                                                @if ($employee->centre_id == $user->centre_id)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            @foreach ($employees as $employee)
+                                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <input type="hidden" name="employee" id="employee" />
+
+                                    <select class="selectpicker" name="service_id" id="service_id" data-size="7"
+                                        data-style="btn btn-red-icot" title=" Servicio" tabindex="-98">
+                                        <option>SIN SELECCION </option>
+                                        @foreach ($services as $service)
+                                            <option value="{{ $service->id }}"
+                                                @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
+                                                {{ $service->name }}
+                                            </option>
+                                        @endforeach
+
+                                    </select>
+                                    <input type="hidden" name="service" id="service" />
+
+                                    <select class="selectpicker" name="patient_name" id="patient_name" data-size="7"
+                                        data-style="btn btn-red-icot " title=" Paciente" tabindex="-98">
+                                        <option>SIN SELECCION </option>
+                                        @foreach ($patients as $patient)
+                                            <option value="{{ $patient->patient_name }}">
+                                                {{ $patient->patient_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <select class="selectpicker" name="state_id" id="state_id" data-size="7"
+                                        data-style="btn btn-red-icot " title=" Estado" tabindex="-98">
+                                        <option>SIN SELECCION </option>
+                                        @foreach ($states as $state)
+                                            <option class="text-uppercase" value="{{ $state->texto }}">
+                                                {{ $state->nombre }}</option>
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="btn-container-box">
+                                    <div class="btn-container">
+                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                                            <span class="material-icons mr-1">
+                                                clear_all
+                                            </span> {{ __('Limpiar formulario') }}
+                                        </button>
+                                        <button id="btnSubmitFind" type="submit" class="btn btn-fill btn-success"><span
+                                                class="material-icons">
+                                                search</span> {{ __('Buscar') }}</button>
+                                        <button id="btnSubmitFindLoad" type="submit" class="btn btn-success">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            {{ __('Obteniendo datos...') }}
+                                        </button>
+                                        <button id="btnSubmit" type="submit" class="btn btn-dark-black"><span
+                                                class="material-icons">
+                                                file_download
+                                            </span> {{ __('Exportar') }}</button>
+                                        <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black"
+                                            style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            {{ __('Exportando datos...') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+                <!-- tabla-->
+                <div class="row col-12 right mb-3">
+                    <div class="row" style="margin-bottom: 50px;">
+                        <a href="{{ route('tracking.create') }}" id="btnNewTracking"
+                            class="btn btn-red-icot btn-lg"><span class="material-icons">
+                                add_circle</span> Nuevo Seguimiento</a>
+                    </div>
 
-
-            <!-- tabla-->
-            <div class="row col-12 mb-3 right">
-                <div class="row" style="margin-bottom: 50px;">
-                    <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn btn-red-icot btn-lg"><span class="material-icons">
-                            add_circle</span> Nuevo Seguimiento</a>
                 </div>
-
+                <table class="table-striped table-bordered tracking-datatable table">
+                    <thead class="table-header">
+                        <tr>
+                            <th>Centro Prescriptor</th>
+                            <th>Empleado</th>
+                            <th>H.C.</th>
+                            <th>Paciente</th>
+                            <th>Servicio</th>
+                            <th>Estado</th>
+                            <th>F. Inicio</th>
+                            <th>F. Actualización</th>
+                            <th>F. Cancelación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-            <table class="table  table-striped table-bordered tracking-datatable">
-                <thead class="table-header">
-                    <tr>
-                        <th>Centro Prescriptor</th>
-                        <th>Empleado</th>
-                        <th>H.C.</th>
-                        <th>Paciente</th>
-                        <th>Servicio</th>
-                        <th>Estado</th>
-                        <th>F. Inicio</th>
-                        <th>F. Actualización</th>
-                        <th>F. Cancelación</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
         </div>
     </div>
-</div>
-<style>
-    .informes-container{
-        display: flex;
-        justify-content: space-evenly;
-    }
-    .myclass {
-        text-transform: capitalize;
-    }
-</style>
 
 
+    <script type="text/javascript">
+        var table;
 
-<script type="text/javascript">
-    var table;
-
-    var columnsFilled = [];
-    columnsFilled.push({
-        data: 'centre',
-        name: 'centre'
-    });
-    columnsFilled.push({
-        data: 'employee',
-        name: 'employee',
-        searchable: true
-    });
-    columnsFilled.push({
-        data: 'hc',
-        name: 'hc'
-    });
-    columnsFilled.push({
-        data: 'patient_name',
-        name: 'patient_name'
-    });
-    columnsFilled.push({
-        data: 'service',
-        name: 'service',
-        searchable: true
-    });
-    columnsFilled.push({
-        data: 'state',
-        name: 'state',
-        searchable: true
-    });
-    columnsFilled.push({
-        name: 'started_date',
-        data: 'started_date'
-    });
-    columnsFilled.push({
-        name: 'state_date',
-        data: 'state_date'
-    });
-    columnsFilled.push({
-        name: 'cancellation_date',
-        data: 'cancellation_date'
-    });
-    columnsFilled.push({
-        data: 'action',
-        name: 'action',
-        searchable: true,
-        width: 300
-    });
-
-
-    $(function() {
-
-        setDate();
-        $(".nav-item").each(function() {
-            $(this).removeClass("active");
+        var columnsFilled = [];
+        columnsFilled.push({
+            data: 'centre',
+            name: 'centre'
         });
-        $('#pagesTracking').addClass('show');
-        $('#trackingStarted').addClass('active');
-
-        var state = "{{ collect(request()->segments())->last() }}";
-        state = state.split("_")[1];
-
-        var tableHtml = '';
-
-        tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
-        getTrackingData();
-
-        // Buscar
-        $("#btnSubmitFind").on('click', function(e) {
-            e.preventDefault();
-            //$("#finalValidationForm").attr('action','{{ route("tracking.index_validation_final") }}');
-            $('#btnSubmitFind').hide();
-            $('#btnSubmitFindLoad').show();
-            $('#btnSubmitFindLoad').prop('disabled', true);
-            //$('#centre').val($( "#centre_id option:selected" ).text());
-            getTrackingData();
+        columnsFilled.push({
+            data: 'employee',
+            name: 'employee',
+            searchable: true
+        });
+        columnsFilled.push({
+            data: 'hc',
+            name: 'hc'
+        });
+        columnsFilled.push({
+            data: 'patient_name',
+            name: 'patient_name'
+        });
+        columnsFilled.push({
+            data: 'service',
+            name: 'service',
+            searchable: true
+        });
+        columnsFilled.push({
+            data: 'state',
+            name: 'state',
+            searchable: true
+        });
+        columnsFilled.push({
+            name: 'started_date',
+            data: 'started_date'
+        });
+        columnsFilled.push({
+            name: 'state_date',
+            data: 'state_date'
+        });
+        columnsFilled.push({
+            name: 'cancellation_date',
+            data: 'cancellation_date'
+        });
+        columnsFilled.push({
+            data: 'action',
+            name: 'action',
+            searchable: true,
+            width: 300
         });
 
-        function clearForms() {
+
+        $(function() {
+
             setDate();
-            $('select#centre_id').val('');
-            $('select#state_id').val('');
-            $('select#employee_id').val('');
-            $('select#service_id').val('');
-            $('select#patient_name').val('');
-            $('select#centre_id').selectpicker("refresh");
-            $('select#state_id').selectpicker("refresh");
-            $('select#employee_id').selectpicker("refresh");
-            $('select#service_id').selectpicker("refresh");
-            $('select#patient_name').selectpicker("refresh");
-            $('input[type="search"]').val('');
-            // $('input[type="search"]').selectpicker("refresh");
-            //table.ajax.draw();
-            table.search('').draw();
-            table.ajax.reload();
-        }
+            $(".nav-item").each(function() {
+                $(this).removeClass("active");
+            });
+            $('#pagesTracking').addClass('show');
+            $('#trackingStarted').addClass('active');
 
+            var state = "{{ collect(request()->segments())->last() }}";
+            state = state.split("_")[1];
 
-        $("#btnClear").on('click', function(e) {
+            var tableHtml = '';
 
-            e.preventDefault();
-            clearForms();
-        });
-    });
+            tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
+            getTrackingData();
 
+            // Buscar
+            $("#btnSubmitFind").on('click', function(e) {
+                e.preventDefault();
+                //$("#finalValidationForm").attr('action','{{ route('tracking.index_validation_final') }}');
+                $('#btnSubmitFind').hide();
+                $('#btnSubmitFindLoad').show();
+                $('#btnSubmitFindLoad').prop('disabled', true);
+                //$('#centre').val($( "#centre_id option:selected" ).text());
+                getTrackingData();
+            });
 
-    //FIXME este método no se está usando al parecer
-    function updateDateTracking(state, trackingId, back) {
-        $('#alertErrorTrackingDate').hide();
-        var trackingDate = $("#tracking_date_" + trackingId).val();
-        $.ajax({
-            url: 'updateState/' + state + '/' + trackingId + '/' + trackingDate + '/' + back,
-            type: 'get',
-            success: function(response, textStatus, jqXHR) {
-                // if success, HTML response is expected, so replace current
-                table.columns.adjust().draw();
-                return;
-                if (textStatus === 'success') {
-                    //$("div.alert-success").show();
-                    //alert(response.mensaje);
-                    window.location = response.url;
-                }
-            },
-            error: function(xhr, status, error) {
-                var response = JSON.parse(xhr.responseText);
-                $('#alertErrorTrackingDate').text(response.mensaje);
-                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
-                $('#btnSubmitLoad').hide();
-                $('#btnSubmitFindLoad').hide();
-                $('#btnSubmitFind').show();
+            function clearForms() {
+                setDate();
+                $('select#centre_id').val('');
+                $('select#state_id').val('');
+                $('select#employee_id').val('');
+                $('select#service_id').val('');
+                $('select#patient_name').val('');
+                $('select#centre_id').selectpicker("refresh");
+                $('select#state_id').selectpicker("refresh");
+                $('select#employee_id').selectpicker("refresh");
+                $('select#service_id').selectpicker("refresh");
+                $('select#patient_name').selectpicker("refresh");
+                $('input[type="search"]').val('');
+                // $('input[type="search"]').selectpicker("refresh");
+                //table.ajax.draw();
+                table.search('').draw();
+                table.ajax.reload();
             }
 
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error' + jqXHR.responseText);
 
+            $("#btnClear").on('click', function(e) {
+
+                e.preventDefault();
+                clearForms();
+            });
         });
-    }
 
-    function setDate() {
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        var startDay = 21;
 
-        day = day >= 10 ? day : '0' + day;
-        month = month >= 10 ? month : '0' + month;
-        var dateTo = year + '-' + month + '-' + day;
-        console.log(month);
-
-        switch (month) {
-            case '01':
-                previousMonth = (day < 21) ? 12 : 1;
-                year = (day < 21) ? year - 1 : year;
-                break;
-            default:
-                previousMonth = (day < 21) ? month - 1 : month;
-                break;
-        }
-        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth; 
-        var dateFrom = year + '-' + previousMonth + '-' + startDay;
-        document.getElementById("date_from").value = dateFrom;
-        document.getElementById("date_to").value = dateTo;
-    }
-
-    function getTrackingData() {
-        if ($.fn.dataTable.isDataTable('.tracking-datatable')) {
-            table = $('.tracking-datatable').DataTable();
-        } else {
-            table = $('.tracking-datatable').DataTable({
-                order: [7, "desc"],
-                processing: true,
-                serverSide: true,
-                language: {
-                    "url": "{{ asset('dataTables/Spanish.json') }}"
-                },
-                ajax: {
-                    url: '{{route("tracking.index")}}',
-                    type: "POST",
-                    data: function(d) {
-                        d._token = "{{ csrf_token() }}",
-                            d.centre_id = $('#centre_id option:selected').val(),
-                            d.employee = $('#employee_id option:selected').text(),
-                            d.patient = $('#patient_name option:selected').val(),
-                            d.service = $('#service_id option:selected').text(),
-                            d.state = $('#state_id option:selected').text(),
-                            date1 = $('#date_from').val().replaceAll('-', '/');
-                        date2 = $('#date_to').val().replaceAll('-', '/');
-                        d.dateFrom = (date1),
-                            d.dateTo = (date2),
-                            d.search = $('input[type="search"]').val()
-                    },
-                    dataSrc: function(json) {
-                        $('#btnSubmitFind').show();
-                        $('#btnSubmit').show();
-                        $('#btnSubmitLoad').hide();
-                        $('#btnSubmitFindLoad').hide();
-
-                        return json.data;
+        //FIXME este método no se está usando al parecer
+        function updateDateTracking(state, trackingId, back) {
+            $('#alertErrorTrackingDate').hide();
+            var trackingDate = $("#tracking_date_" + trackingId).val();
+            $.ajax({
+                url: 'updateState/' + state + '/' + trackingId + '/' + trackingDate + '/' + back,
+                type: 'get',
+                success: function(response, textStatus, jqXHR) {
+                    // if success, HTML response is expected, so replace current
+                    table.columns.adjust().draw();
+                    return;
+                    if (textStatus === 'success') {
+                        //$("div.alert-success").show();
+                        //alert(response.mensaje);
+                        window.location = response.url;
                     }
                 },
-                // autoWidth:true,
-                columns: columnsFilled,
-                columnDefs: [{
-                        targets: 3,
-                        className: 'myclass'
-                        // render:function(data, type, row){
-                        //     d= data.split('')[0].toUpperCase() + data.slice(1)
-                        //     var d = data.toLowerCase();
-                        //     return d;
-                        // }
-
-                    },
-                    {
-                        targets: [6, 7, 8],
-                        // data: "cancellation_date",
-                        type: "date",
-                        render: function(data, type, row) {
-
-                            if (data != null) {
-                                var datetime = moment(data, 'YYYY-M-D');
-                                var displayString = moment(datetime).format('D-M-YYYY');
-
-                                if (type === 'display' || type === 'filter') {
-                                    return displayString;
-                                } else {
-                                    return datetime; // for sorting
-                                }
-                            } else {
-                                return null;
-                            }
-
-                        }
-                    },
-                    {
-                        width: "10%",
-                        targets: 0
-                    },
-                    {
-                        width: "15%",
-                        targets: [1, 3, 4]
-                    },
-                    {
-                        width: "5%",
-                        targets: 2
-                    },
-
-                    {
-                        width: "5%",
-                        targets: 5
-                    },
-                    {
-                        width: "5%",
-                        targets: [6, 7, 8]
-                    },
-                    {
-                        targets: -1,
-                        width: '30%'
-                    },
-                    {
-                        targets: '_all',
-                        className: 'dt-body-center',
-                    }
-
-                ],
-                search: {
-                    "regex": true,
-                    "smart": true
-                },
-                initComplete: function() {
-                    this.api().columns().every(function() {
-                        var column = this;
-                    });
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    $('#alertErrorTrackingDate').text(response.mensaje);
+                    $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
+                    $('#btnSubmitLoad').hide();
+                    $('#btnSubmitFindLoad').hide();
+                    $('#btnSubmitFind').show();
                 }
+
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                alert('Error' + jqXHR.responseText);
+
             });
         }
-        table.columns.adjust().draw();
-    }
 
+        function setDate() {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            var startDay = 21;
 
+            day = day >= 10 ? day : '0' + day;
+            month = month >= 10 ? month : '0' + month;
+            var dateTo = year + '-' + month + '-' + day;
+            console.log(month);
 
-    // <!--Export-->
-    $("#btnSubmit").on('click', function(e) {
-        e.preventDefault();
-        $('#btnSubmit').hide();
-        $('#btnSubmitLoad').show();
-        $('#btnSubmitLoad').prop('disabled', true);
-        $('#centre').val($("#centre_id option:selected").text());
-        $('#employee').val($("#employee_id option:selected").text());
-        $('#service').val($("#service_id option:selected").text());
-        $('#patient_name').val($("#patient_name option:selected").val());
-        $('#trackingState').val($("#state_id option:selected").val());
-
-        params = {};
-        params["_token"] = "{{ csrf_token() }}";
-        params["centre"] = $('#centre').val();
-        params["employee"] = $('#employee').val();
-        params["service"] = $('#service').val();
-        params["patient_name"] = $('#patient_name').val();
-        params["trackingState"] = $("#state_id option:selected").val();
-        params["date_from"] = $('#date_from').val();
-        params["date_to"] = $('#date_to').val();
-
-
-        $.ajax({
-            url: $("#exportTracking").attr('action'),
-            type: 'post',
-            data: params,
-            // dataType: 'binary',
-            xhrFields: {
-                'responseType': 'blob'
-            },
-            success: function(data, textStatus, jqXHR) {
-                // if success, HTML response is expected, so replace current
-                if (textStatus === 'success') {
-                    $('#btnSubmitLoad').hide();
-                    $('#btnSubmit').show();
-
-                    var link = document.createElement('a'),
-                        filename = 'tracking.xls';
-                    link.href = URL.createObjectURL(data);
-                    link.download = filename;
-                    link.click();
-                }
+            switch (month) {
+                case '01':
+                    previousMonth = (day < 21) ? 12 : 1;
+                    year = (day < 21) ? year - 1 : year;
+                    break;
+                default:
+                    previousMonth = (day < 21) ? month - 1 : month;
+                    break;
             }
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error' + jqXHR.responseText);
+            previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth;
+            var dateFrom = year + '-' + previousMonth + '-' + startDay;
+            document.getElementById("date_from").value = dateFrom;
+            document.getElementById("date_to").value = dateTo;
+        }
+
+        function getTrackingData() {
+            if ($.fn.dataTable.isDataTable('.tracking-datatable')) {
+                table = $('.tracking-datatable').DataTable();
+            } else {
+                table = $('.tracking-datatable').DataTable({
+                    order: [7, "desc"],
+                    processing: true,
+                    serverSide: true,
+                    language: {
+                        "url": "{{ asset('dataTables/Spanish.json') }}"
+                    },
+                    ajax: {
+                        url: '{{ route('tracking.index') }}',
+                        type: "POST",
+                        data: function(d) {
+                            d._token = "{{ csrf_token() }}",
+                                d.centre_id = $('#centre_id option:selected').val(),
+                                d.employee = $('#employee_id option:selected').text(),
+                                d.patient = $('#patient_name option:selected').val(),
+                                d.service = $('#service_id option:selected').text(),
+                                d.state = $('#state_id option:selected').text(),
+                                date1 = $('#date_from').val().replaceAll('-', '/');
+                            date2 = $('#date_to').val().replaceAll('-', '/');
+                            d.dateFrom = (date1),
+                                d.dateTo = (date2),
+                                d.search = $('input[type="search"]').val()
+                        },
+                        dataSrc: function(json) {
+                            $('#btnSubmitFind').show();
+                            $('#btnSubmit').show();
+                            $('#btnSubmitLoad').hide();
+                            $('#btnSubmitFindLoad').hide();
+
+                            return json.data;
+                        }
+                    },
+                    // autoWidth:true,
+                    columns: columnsFilled,
+                    columnDefs: [{
+                            targets: 3,
+                            className: 'myclass'
+                            // render:function(data, type, row){
+                            //     d= data.split('')[0].toUpperCase() + data.slice(1)
+                            //     var d = data.toLowerCase();
+                            //     return d;
+                            // }
+
+                        },
+                        {
+                            targets: [6, 7, 8],
+                            // data: "cancellation_date",
+                            type: "date",
+                            render: function(data, type, row) {
+
+                                if (data != null) {
+                                    var datetime = moment(data, 'YYYY-M-D');
+                                    var displayString = moment(datetime).format('D-M-YYYY');
+
+                                    if (type === 'display' || type === 'filter') {
+                                        return displayString;
+                                    } else {
+                                        return datetime; // for sorting
+                                    }
+                                } else {
+                                    return null;
+                                }
+
+                            }
+                        },
+                        {
+                            width: "10%",
+                            targets: 0
+                        },
+                        {
+                            width: "15%",
+                            targets: [1, 3, 4]
+                        },
+                        {
+                            width: "5%",
+                            targets: 2
+                        },
+
+                        {
+                            width: "5%",
+                            targets: 5
+                        },
+                        {
+                            width: "5%",
+                            targets: [6, 7, 8]
+                        },
+                        {
+                            targets: -1,
+                            width: '30%'
+                        },
+                        {
+                            targets: '_all',
+                            className: 'dt-body-center',
+                        }
+
+                    ],
+                    search: {
+                        "regex": true,
+                        "smart": true
+                    },
+                    initComplete: function() {
+                        this.api().columns().every(function() {
+                            var column = this;
+                        });
+                    }
+                });
+            }
+            table.columns.adjust().draw();
+        }
 
 
+
+        // <!--Export-->
+        $("#btnSubmit").on('click', function(e) {
+            e.preventDefault();
+            $('#btnSubmit').hide();
+            $('#btnSubmitLoad').show();
+            $('#btnSubmitLoad').prop('disabled', true);
+            $('#centre').val($("#centre_id option:selected").text());
+            $('#employee').val($("#employee_id option:selected").text());
+            $('#service').val($("#service_id option:selected").text());
+            $('#patient_name').val($("#patient_name option:selected").val());
+            $('#trackingState').val($("#state_id option:selected").val());
+
+            params = {};
+            params["_token"] = "{{ csrf_token() }}";
+            params["centre"] = $('#centre').val();
+            params["employee"] = $('#employee').val();
+            params["service"] = $('#service').val();
+            params["patient_name"] = $('#patient_name').val();
+            params["trackingState"] = $("#state_id option:selected").val();
+            params["date_from"] = $('#date_from').val();
+            params["date_to"] = $('#date_to').val();
+
+
+            $.ajax({
+                url: $("#exportTracking").attr('action'),
+                type: 'post',
+                data: params,
+                // dataType: 'binary',
+                xhrFields: {
+                    'responseType': 'blob'
+                },
+                success: function(data, textStatus, jqXHR) {
+                    // if success, HTML response is expected, so replace current
+                    if (textStatus === 'success') {
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmit').show();
+
+                        var link = document.createElement('a'),
+                            filename = 'tracking.xls';
+                        link.href = URL.createObjectURL(data);
+                        link.download = filename;
+                        link.click();
+                    }
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                alert('Error' + jqXHR.responseText);
+
+
+            });
         });
-    });
-</script>
+    </script>
 
 @endsection

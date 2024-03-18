@@ -7,11 +7,11 @@
 
     <div class="content">
         <div>
-            <div class="card">
+            <div class="card" style="margin-top: 100px;">
                 <div class="card-header card-header-danger">
                     <h4 class="card-title">Perfil Usuarios</h4>
                 </div>
-                <div class="col-lg-10 mx-auto">
+                <div class="col-lg-10 mx-auto" >
                     <div class="card-body">
                         <div class="col-11 mx-auto">
                         <form id=editEmployee action="{{ route('editProfile', $employee->id) }}" method="POST">

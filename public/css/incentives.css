@@ -1,10 +1,9 @@
 .content {
-    background-image: url(/assets/img/background-gradient.png);
-    height: 1300px !important;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
+    background-image: url(/assets/img/background-gradient-xl.png);
+   
 
+
+}
 
 
 .btn-refresh {

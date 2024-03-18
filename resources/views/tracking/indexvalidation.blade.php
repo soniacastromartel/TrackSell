@@ -1,8 +1,9 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -15,7 +16,7 @@
             @csrf
             @method('POST')
             <div class="row">
-                <div class="col-lg-8 p-0">
+                <div class="col-lg-8 p-0"   >
                     <div class="col-lg-9 ">
                         <div class="card card-info text-white ml-4 mt-0">
                             <div class="card-header">
@@ -23,7 +24,7 @@
                                 <span style="font-size:16px; vertical-align:super; font-weight:bold; color: var(--red-icot)">Funcionamiento</span>
                             </div>
                             <div class="card-body py-0 mb-3">
-                                <div class="row">
+                                <div class="row" >
                                     <div class="col-md-3">
                                         <h5 class="card-title" style="font-size:18px !important;">Calcular</h5>
                                     </div>
@@ -64,11 +65,15 @@
                 <div class="card-header card-header-danger">
                     <h4 class="card-title">Seguimiento</h4>
                 </div>
-                <div class="card-body row justify-between">
-                    <div class="col-md-6" style="margin-top:35px;">
-                        <div class="row m-0" >
-                            <div class="col-md-4 dropdown bootstrap-select mb-2" style="margin-right: 25px;">
-                                <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Cod Empresa" tabindex="-98">
+                <div class="card-container" >
+
+                    <div class="col-md-6">
+
+                        <div class="row" style=" padding:20px; background-color: lightcoral">
+
+                            <div class="col-md-4" style="margin-right: 60px;">
+
+                                <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
                                     <option value="">SIN CODIGO </option>
                                     @foreach ($a3business as $a3business)
                                     <option value="{{$a3business->code_business}}">{{ $a3business->code_business .'-'. $a3business->name_business}}</option>
@@ -80,8 +85,12 @@
                                 <input type="hidden" name="monthYear" id="monthYear" />
                             </div>
                         </div>
-                        <div class="col-md-12 input-group px-3" style="margin-top:35px;">
-                            <button id="btnClear" href="#" class="ml-2 btn btn-fill btn-warning">
+
+                        <div class="row" style=" padding:20px; background-color:rgb(43, 110, 43)">
+
+                            <div class="btn-container" style= " width:100%; background-color: yellow">
+
+                            <button id="btnClear" href="#" class="btn btn-fill btn-warning" >
                                 <span class="material-icons mr-1">clear_all</span>
                                 {{ __('Limpiar formulario') }}
                             </button>
@@ -97,10 +106,16 @@
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Obteniendo datos...') }}
                             </button>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="col-md-12 input-group date px-3 actions-container" style="padding-top: 15px;">
+
+                    <div class="col-md-6" style="background-color: rgb(156, 47, 47);">
+                        <div class="row" style=" padding:20px; background-color: lightcoral">
+                       
+                        <div class="btn-container" style= "width:100%;display:flex; justify-content:flex-end; background-color: yellow" >
+                        
                         <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-dark-black">
                             <span class="material-icons mr-1">file_download</span>{{ __('Exportar') }}</button>
                             <button id="btnExportLoad" type="submit" class="btn btn-grey" style="display: none">
@@ -120,6 +135,8 @@
                                 {{ __('Validando datos...') }}
                             </button>
                         </div>
+                    </div>
+                        
                 </div>
                 
                 </div>
@@ -143,25 +160,6 @@
         </table>
     </div>
 </div>
-<style>
-    .tracking-validation-datatable tr>:nth-child(6) {
-        color: #959ba3;
-    }
-
-    .month-picker-open-button {
-        margin-right: 15px;
-    }
-
-    .actions-container {
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        height: 100%;
-    }
-    /* table.dataTable.dataTable_width_auto {
-        width: 100%; 
-    } */
-</style>
 
 <script type="text/javascript">
     var table;
