@@ -13,6 +13,12 @@
 
 
 <style>
+   
+
+.content {
+    background-image: url(/assets/img/background-continue.png) !important;
+}
+
     .file-upload {
         margin: 0 10px 0 25px;
     }
@@ -46,11 +52,12 @@
                 <h4 class="card-title">Configuración</h4>
             </div>
             <div class="card-body">
-                <div class="row col-md-12 mb-3 justify-between">
-                    <div class="row col-lg-8 col-md-5">
-                        <div class="form-group col-md-4">
+                <div class="row" style="background-color: yellow">
+                  
+
+                        <div class="form-group col-md-2">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
+                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot " title=" Seleccione Centro" tabindex="-98">
     
                                     @foreach ($centres as $centre)
                                     <option value="{{$centre->id}}">{{$centre->name}}</option>
@@ -59,9 +66,9 @@
                             </div>
                         </div>
     
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-2" style="background-color: blue" >
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
+                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot " title=" Seleccione Servicio" tabindex="-98">
     
                                     @foreach ($services as $service)
                                     <option value="{{  $service->id  }}">{{$service->name}}</option>
@@ -69,7 +76,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                   
                     <div class="mt-2">
                         <button id="btnClear" href="#" class="btn-refresh">
                         <span class="material-icons">

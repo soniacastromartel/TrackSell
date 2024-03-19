@@ -3,8 +3,8 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
 
+<link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
 
 <div id="alertErrorRole" class="alert alert-danger" role="alert" style="display: none">
 </div>

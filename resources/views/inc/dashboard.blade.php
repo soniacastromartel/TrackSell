@@ -628,3 +628,12 @@
         });
     });
 </script>
+<style>
+ 
+ .content {
+    background-image: url(/assets/img/background-continue.png) !important;
+
+    background-position: center center !important;
+}
+
+</style>
