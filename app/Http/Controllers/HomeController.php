@@ -36,7 +36,6 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-
     {   
         $this->user = session()->get('user');
         $rol = Role::find($this->user->rol_id);
@@ -121,7 +120,7 @@ class HomeController extends Controller
     public function profile() 
     {
         $employee = Auth::user();
-        $rol_id = $employee['rol_id'];
+        $rol_id = $employee['rol_id'] ?? null; 
         $rol_id = 1; 
         session()->reflash();
         switch ($rol_id) {

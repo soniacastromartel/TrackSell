@@ -1,21 +1,8 @@
-<link href="{{ asset('/css/sidebar.css')}}" rel="stylesheet">
-
-
-<!-- Body sideBar -->
 
 <div class="sidebar" data-color="danger" data-background-color="grey" {{-- data-image="../assets/img/sidebar-1.jpg"--}}>
-
-  <!--
-      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
-      Tip 2: you can also add an image using data-image tag
-  -->
-
-  <!-- Logo ICOT sideBar -->
   <div class="sidebar-wrapper d-flex flex-column">
-    <img class="img-logo-sidebar" src="{{ asset('assets/img/LOGOICOT.png') }}";>
+    <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
 
-    <!-- PROFILE sideBar  -->
     <ul class="nav">
       <li id="userInfo" class="nav-item ">
         <a class="nav-link collapsed" data-toggle="collapse" href="#profileEmployee" aria-expanded="false">
@@ -24,7 +11,6 @@
             <b class="caret"></b>
           </p>
         </a>
-        <!-- Profile : "Mis Datos" -->
         <div class="collapse" id="profileEmployee">
           <ul class="nav">
             <li id="menuProfile" class="nav-item ">
@@ -33,7 +19,6 @@
                 <span class="sidebar-normal"> Mis datos </span>
               </a>
             </li>
-            <!-- Profile : "Cerrar sesión" -->
             <li class="nav-item">
               <a class="nav-link" href="{{route('logout')}}" onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
@@ -50,14 +35,13 @@
 
       <hr>
 
-      <!-- HOME sideBar -->
       <li class="nav-item active" id="menuHome">
-        <a class="nav-link" href="{{route('home')}}">
+        <a class="nav-link"href="{{route('home')}}">
           <i class="material-icons">home</i>
           <p style="font-weight: bold"> Home </p>
         </a>
       </li>
-      <!-- CONFIGURACIÓN sideBar -->
+
       <li id="menuConfig" class="nav-item ">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesConfig" aria-expanded="false">
           <i class="material-icons">settings</i>
@@ -65,39 +49,34 @@
             <b class="caret"></b>
           </p>
         </a>
-        <div class="collapse" id="pagesConfig">
+        <div class="collapse" id="pagesConfig" style="">
           <ul class="nav">
-            <li id="adminRole" class="nav-item">
+            <li id="adminRole" class="nav-item ">
               <a class="nav-link" href="{{route('roles.index')}}">
                 <i class="material-icons">admin_panel_settings</i>
                 <span class="sidebar-normal"> Roles </span>
               </a>
             </li>
-            <li id="adminUser" class="nav-item">
+            <li id="adminUser" class="nav-item ">
               <a class="nav-link" href="{{route('employees.index')}}">
                 <i class="material-icons">supervisor_account</i>
                 <span class="sidebar-normal"> Empleados </span>
               </a>
             </li>
-            <li id="pending_employee" class="nav-item">
-              <a class="nav-link" href="{{route('employees.indexPending')}}">
-                <i class="material-icons">block</i>
-                <span class="sidebar-normal"> Pendientes de Validar </span>
-              </a>
-            </li>
-            <li id="adminCentre" class="nav-item">
+           
+            <li id="adminCentre" class="nav-item ">
               <a class="nav-link" href="{{route('centres.index')}}">
                 <i class="material-icons">business</i>
                 <span class="sidebar-normal"> Centros </span>
               </a>
             </li>
-            <li id="adminService" class="nav-item">
+            <li id="adminService" class="nav-item ">
               <a class="nav-link" href="{{route('services.index')}}">
                 <i class="material-icons">hotel</i>
                 <span class="sidebar-normal"> Servicios </span>
               </a>
             </li>
-            <li id="adminServiceIncentive" class="nav-item">
+            <li id="adminServiceIncentive" class="nav-item ">
               <a class="nav-link" href="{{route('services.incentives')}}">
                 <i class="material-icons">money</i>
                 <span class="sidebar-normal"> Precios & Incentivos </span>
@@ -105,7 +84,7 @@
             </li>
         </div>
       </li>
-      <!-- SEGUIMIENTO sideBar -->
+
       <li class="nav-item ">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesTracking" aria-expanded="false">
           <i class="material-icons">remove_red_eye</i>
@@ -113,7 +92,7 @@
             <b class="caret"></b>
           </p>
         </a>
-        <div class="collapse" id="pagesTracking">
+        <div class="collapse" id="pagesTracking" style="">
           <ul class="nav">
             <li id="trackingStarted" class="nav-item ">
               <a class="nav-link" href="{{route('tracking.index')}}">
@@ -142,7 +121,7 @@
           </ul>
         </div>
       </li>
-      <!-- INFORMES sideBar -->
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesReport" aria-expanded="false">
           <i class="material-icons">insert_drive_file</i>
@@ -170,7 +149,7 @@
             <li id="centerLeague" class="nav-item">
               <a class="nav-link" href="{{route('centerLeague')}}">
                 <i class="material-icons">
-                  emoji_events
+                emoji_events
                 </i>
                 <span class="sidebar-normal"> Liga de Centros </span>
               </a>
@@ -179,7 +158,7 @@
           </ul>
         </div>
       </li>
-      <!-- NOTIFICACIONES sideBar -->
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification" aria-expanded="false">
           <i class="material-icons">notifications</i>
@@ -198,29 +177,11 @@
           </ul>
         </div>
       </li>
-      <!-- SARA PRUEBA -->
-      {{-- <li class="nav-item">
-        <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification" aria-expanded="false">
-          <i class="material-icons">notifications</i>
-          <p style="font-weight: bold"> Sara Prueba
-            <b class="caret"></b>
-          </p>
-        </a>
-        <div class="collapse" id="pagesNotification">
-          <ul class="nav">
-            <li id="supervisorNotificationsIndex" class="nav-item">
-              <a class="nav-link" href="{{route('sara.index')}}">
-                <i class="material-icons">mail</i>
-                <span class="sidebar-normal"> Avisos de supervisor sara prueba</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </li> --}}
-      
+
     </ul>
-    <!-- VERSION sideBar -->
+    
     <div class="versionContainer">
+    
       <hr>
       <label class="lblVersion"> Versión {{ env('VERSION_WEB') }} </label>
     </div>
@@ -228,3 +189,30 @@
   <div class="sidebar-background"></div>
 </div>
 
+<style>
+  #userData {
+    font-weight: 900;
+  }
+
+  hr {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .lblVersion {
+    bottom: 50px;
+    width: 100%;
+    color: var(--red-icot);
+    text-align: center !important;
+    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    vertical-align: bottom;
+  }
+
+  .versionContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+  }
+</style>
