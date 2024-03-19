@@ -3,7 +3,6 @@
 <div class="sidebar" data-color="danger" data-background-color="grey" {{-- data-image="../assets/img/sidebar-1.jpg"--}}>
   <div class="sidebar-wrapper d-flex flex-column">
     <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
-    <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
 
     <ul class="nav">
       <li id="userInfo" class="nav-item ">
@@ -38,7 +37,6 @@
       <hr>
 
       <li class="nav-item active" id="menuHome">
-        <a class="nav-link"href="{{route('home')}}">
         <a class="nav-link"href="{{route('home')}}">
           <i class="material-icons">home</i>
           <p style="font-weight: bold"> Home </p>

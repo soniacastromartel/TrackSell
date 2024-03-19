@@ -1,7 +1,6 @@
 <?php
 
 use Adldap\Laravel\Facades\Adldap;
-use Adldap\Laravel\Facades\Adldap;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;

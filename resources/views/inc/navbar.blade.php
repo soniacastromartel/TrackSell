@@ -45,3 +45,99 @@
     </div>
 </div>
 
+<style>
+   
+#navbar-home{
+    position: relative;
+    background-color:  var(--red-icot) !important;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+}
+
+
+#navbar {
+    background-color:  transparent !important;
+    height: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+#text-banner-home{
+    display: inline-block;
+    padding-left: 100%;
+    animation: text-banner 50s linear infinite;
+    color: white;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 2px;
+    font-weight: 900;
+}
+#text-banner{
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 40px !important;
+    font-weight: 900 !important;
+}
+
+@keyframes text-banner {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+.minimize-sidebar-home {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    background: none !important;
+    border: none !important;
+    color: white !important;
+}
+.minimize-sidebar {
+    position: absolute !important;
+    padding-top: 50px !important;
+    background: none !important;
+    border: none !important;
+    color: var(--red-icot) !important;
+}
+#alert-cutoff-date-home{
+    position: absolute;
+    right: 0;
+    color: var(--red-icot);
+    background-color: white;
+    padding: 20px 15px;
+    margin: 10px;
+    border-radius: 3px;
+    border: 2px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.678), 0 10px 20px -5px rgb(186 46 41 / 50%) !important;
+}
+#alert-cutoff-date{
+    position: absolute;
+    right: 0;
+    top:20px;
+    color: white;
+    background-color:var(--red-icot);
+    padding: 20px 15px;
+    margin-right: 20px;
+    border-radius: 3px;
+    border: 2px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.678), 0 10px 20px -5px rgb(186 46 41 / 50%) !important;
+}
+#warning-home {
+    color: var(--red-icot);
+    font-size: 20px;
+    padding-right: 1rem;
+}
+#warning {
+    color: white;
+    font-size: 20px;
+    padding-right: 1rem;
+}
+
+</style>
+
