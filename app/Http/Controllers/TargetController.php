@@ -77,7 +77,7 @@ class TargetController extends Controller
                 Storage::delete(['example_target_input.xls']);
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            return redirect('calculateIncentive')->with('error', 'Error de formato de fichero a importar');
+            return redirect('calculateIncentive')->with('error',$e->getMessage());
         } catch (\Exception $e) {
             return redirect('calculateIncentive')->with('error', $e->getMessage());
         } catch (SheetNotFoundException $e) {

@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Auth;
 use Illuminate\Http\Request;
 // use Adldap\Laravel\Facades\Adldap;
-
 use DataTables;
 use App\Tracking;
 use App\Centre;
@@ -81,10 +79,8 @@ class TrackingController extends Controller
                 $nextMonth = substr($params['dateTo'], -5,  2);
                 $year         = substr($params['dateFrom'], 0, strpos($params['dateFrom'], '/'));
                 $nextYear  = substr($params['dateTo'], 0, strpos($params['dateTo'], '/'));
-
                 $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . $beforeDay;
                 $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
-
                 $query = Tracking::getTrackings();
                 $trackings = $query
                     //->orderByRaw($orderBy)
@@ -161,14 +157,15 @@ class TrackingController extends Controller
                         if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) {
 
                             $state = Service::getStateService($tracking->state);
-
+                            //TODO -EDIT BUTTON
                             $btn .= '<div class="col-md-12">';
                             $btn .= '<a href="edit/' . $state . '/' . $tracking->id . '" class="btn btn-warning a-btn-slide-text btn-sm">Editar</a>';
                             $btn .= '</div>';
+                            //TODO - DATE
                             $trackingDate =  date('Y-m-d');
-
                             $state = substr($state, 0, strpos($state, "_"));
-                            if ($tracking->state == env('STATE_PENDING')) { //PENDIENTE
+                            //!PENDIENTE
+                            if ($tracking->state == env('STATE_PENDING')) { 
                                 // $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-12" style="display:flex;justify-content:center; >';
                                 $btn .= '<input style="resize:horizontal; width: 100px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -176,10 +173,13 @@ class TrackingController extends Controller
                                 $btn .= '</div>';
                                 $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
+                                //TODO - BUTTON CITAR
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
-                            }
-                            if ($tracking->state == env('STATE_APOINTMENT')) { //CITADOS
+
+
+                            } //!CITADOS
+                            if ($tracking->state == env('STATE_APOINTMENT')) { 
                                 // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-12" style="display:flex;justify-content:center;" >';
                                 $btn .= '<input style="resize:horizontal; width: 100px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -196,9 +196,9 @@ class TrackingController extends Controller
                                 $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Reiniciar</a>';
-                                $btn .= '</div>';
-                            }
-                            if ($tracking->state == env('STATE_SERVICE')) { //REALIZADOS
+                                $btn .= '</div></div>';
+                            } //!REALIZADOS
+                            if ($tracking->state == env('STATE_SERVICE')) { 
                                 // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -214,8 +214,8 @@ class TrackingController extends Controller
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
-                            }
-                            if ($tracking->state == env('STATE_INVOICED')) { //FACTURADOS
+                            }//!FACTURADOS
+                            if ($tracking->state == env('STATE_INVOICED')) { 
                                 // $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-4">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -426,7 +426,6 @@ class TrackingController extends Controller
                 'patient_name'       => 'required'
             ]);
 
-
             if ($validator->fails()) {
                 \Log::debug($validator->errors());
                 return redirect()->action('TrackingController@index')
@@ -521,10 +520,8 @@ class TrackingController extends Controller
         }
     }
 
-    /** 
-     * Metodo validar seguimiento, listado Validar RRHH
-     * 
-     */
+    //? MÉTODO VALIDAR SEGUIIENTO, LISTADO VALIDAR RRHH
+  
     public function updatePaidState(Request $request)
     {
         try {
@@ -546,9 +543,8 @@ class TrackingController extends Controller
                 ];
                 $paramUpdateVal = ['paid_date' => null];
             }
-
-
-            /** Contemplar casos de baja, antes de fecha fin de corte */
+            
+    //?CONTEMPLAR CASOS DE BAJA , ANDES DE FECHA FIN DE CORTE
             $tIds = explode('-', $paramsRequest['trackingIds']);
             $validateFechas = null;
             foreach ($tIds as $tId) {

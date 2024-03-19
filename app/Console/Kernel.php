@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         'app\Console\Commands\A3EmpleadosCron',
         'app\Console\Commands\A3Download',
         'app\Console\Commands\UpdateOldPendingServicesCron',
+        //
     ];
 
     /**
@@ -30,7 +31,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('a3:download');
         $schedule->command('a3empleados:cron');
         //TODO - DEFINE HOW TO INVOCATE THIS COMMAND
-        $schedule->command('services:update_old_pending_services')->weekly();
+        $schedule->command('services:update_old_pending_services')->daily();
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use Adldap\Laravel\Facades\Adldap;
+use Adldap\Laravel\Facades\Adldap;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
@@ -15,6 +16,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
+    //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
     Route::get('/admin/employees/history/{id}', 'EmployeeController@history')->name('employees.history.index');
     Route::get('/admin/employees/edit/{id}', 'EmployeeController@edit')->name('employees.edit');
@@ -26,12 +28,15 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/admin/employees/syncA3', 'EmployeeController@syncA3')->name('employees.syncA3');
     Route::post('/admin/employees/resetPassword', 'EmployeeController@resetPassword')->name('employees.resetPassword');
     //!Centress
+    Route::post('/admin/employees/resetPassword', 'EmployeeController@resetPassword')->name('employees.resetPassword');
+    //!Centress
     Route::get('/admin/centres', 'CentreController@index')->name('centres.index');
     Route::get('/admin/centres/create', 'CentreController@create')->name('centres.create');
     Route::get('/admin/centres/edit/{id}', 'CentreController@edit')->name('centres.edit');
     Route::post('/admin/centres/store', 'CentreController@store')->name('centres.store');
     Route::put('/admin/centres/update/{id}', 'CentreController@update')->name('centres.update');
     Route::get('/admin/centres/destroy/{id}', 'CentreController@destroy')->name('centres.destroy');
+    //! Services
     //! Services
     Route::get('/admin/services', 'ServiceController@index')->name('services.index');
     Route::any('/admin/incentives', 'ServiceController@incentives')->name('services.incentives');
@@ -44,6 +49,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/admin/services/exportServices', 'ServiceController@exportServicesIncentivesActives')->name('services.exportServicesIncentivesActives');
     Route::get('/calculateServices', 'ServiceController@calculateServices')->name('calculateServices');
     Route::post('/getSaledServices', 'ServiceController@getSaledServices')->name('services.getSaledServices');
+    //! Tracking 
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
     Route::get('/tracking/create', 'TrackingController@create')->name('tracking.create');
@@ -71,6 +77,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/confirmRequest', 'TrackingController@confirmRequest')->name('tracking.confirmRequest');
     // Route::post('/tracking/discountStatistics', 'TrackingController@discountStats')->name('tracking.discountStats');
     //!Target
+    //!Target
     Route::get('/calculateIncentive', 'TargetController@index')->name('calculateIncentive');
     Route::post('/target/import', 'TargetController@import')->name('target.import');
     Route::post('/target/importSales', 'TargetController@importSales')->name('target.importSales');
@@ -82,16 +89,20 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/target/incentivesReportView', 'TargetController@incentivesReportView')->name('target.incentivesReportView');
     Route::post('/target/incentivesSummaryView', 'TargetController@incentivesSummaryView')->name('target.incentivesSummaryView');
     //!Ranking
+    //!Ranking
     Route::get('/calculateRanking', 'RankingController@index')->name('calculateRanking');
     Route::post('/ranking/calculateRankings', 'RankingController@calculateRankings')->name('ranking.calculateRankings');
+    //!League
     //!League
     Route::get('/centerLeague', 'LeagueController@index')->name('centerLeague');
     Route::post('/league/generateLeague', 'LeagueController@generateLeague')->name('league.generateLeague');
     Route::post('/league/details', 'LeagueController@detailsCentreLeague')->name('league.detailsCentreLeague');
     //!Notifications
+    //!Notifications
     Route::any('/notifications/index', 'NotificationController@index')->name('notifications.index');
 });
 
+//!AMDMIN Roles
 //!AMDMIN Roles
 Route::middleware(['check-admin-permission'])->group(function () {
     Route::get('/admin/roles', 'RoleController@index')->name('roles.index');
@@ -104,6 +115,7 @@ Route::middleware(['check-admin-permission'])->group(function () {
 });
 
 //! User
+//! User
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/admin/profile', 'HomeController@viewProfile')->name('admin.profile');
@@ -112,6 +124,7 @@ Route::get('/getSales', 'HomeController@getSales')->name('home.getSales');
 Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets');
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
 
+//!A3API
 //!A3API
 Route::prefix('a3api')->group(function() {
     Route::get('/a3', 'A3Controller@index')->name('a3');

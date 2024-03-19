@@ -1,11 +1,11 @@
-@extends('layouts.logged')
 
+@extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
 
-<div class="modal" tabindex="-1" role="dialog" id="modal-validate">
+  <div class="modal" tabindex="-1" role="dialog" id="modal-validate">
   <input type="hidden" id="idEmployee"/>
   <input type="hidden" id="nameEmployee"/>
   <input type="hidden" id="emailEmployee"/>

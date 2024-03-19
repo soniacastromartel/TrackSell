@@ -1,6 +1,8 @@
 
+
 <div class="sidebar" data-color="danger" data-background-color="grey" {{-- data-image="../assets/img/sidebar-1.jpg"--}}>
   <div class="sidebar-wrapper d-flex flex-column">
+    <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
     <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
 
     <ul class="nav">
@@ -37,6 +39,7 @@
 
       <li class="nav-item active" id="menuHome">
         <a class="nav-link"href="{{route('home')}}">
+        <a class="nav-link"href="{{route('home')}}">
           <i class="material-icons">home</i>
           <p style="font-weight: bold"> Home </p>
         </a>
@@ -63,6 +66,7 @@
                 <span class="sidebar-normal"> Empleados </span>
               </a>
             </li>
+           
            
             <li id="adminCentre" class="nav-item ">
               <a class="nav-link" href="{{route('centres.index')}}">
@@ -179,6 +183,7 @@
       </li>
 
     </ul>
+    
     
     <div class="versionContainer">
       <img src="{{ asset('/assets/img/logoIncentivos.png') }}" style="margin:10px; margin-top:40px;">

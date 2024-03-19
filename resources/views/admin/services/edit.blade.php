@@ -1,7 +1,5 @@
 @extends('layouts.logged')
-
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
 

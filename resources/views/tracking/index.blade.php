@@ -1,5 +1,4 @@
 @extends('layouts.logged')
-
 @section('content')
     @include('inc.navbar')
     @include('common.alert')
@@ -314,35 +313,38 @@
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error' + jqXHR.responseText);
 
-            });
-        }
+        });
+    }
+    function setDate() {
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1; 
+    var year = date.getFullYear();
+    var startDay = 20;
 
-        function setDate() {
-            var date = new Date();
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-            var startDay = 21;
+    day = day < 10 ? '0' + day : day;
+    month = month < 10 ? '0' + month : month;
 
-            day = day >= 10 ? day : '0' + day;
-            month = month >= 10 ? month : '0' + month;
-            var dateTo = year + '-' + month + '-' + day;
-            console.log(month);
+    var dateTo = year + '-' + month + '-' + day; 
 
-            switch (month) {
-                case '01':
-                    previousMonth = (day < 21) ? 12 : 1;
-                    year = (day < 21) ? year - 1 : year;
-                    break;
-                default:
-                    previousMonth = (day < 21) ? month - 1 : month;
-                    break;
-            }
-            previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth;
-            var dateFrom = year + '-' + previousMonth + '-' + startDay;
-            document.getElementById("date_from").value = dateFrom;
-            document.getElementById("date_to").value = dateTo;
-        }
+    var previousMonth = month; 
+    var previousYear = year;
+
+    if (month === '01' && day < 21) {
+        previousMonth = '12';
+        previousYear = year - 1; 
+
+    } else {
+        previousMonth = parseInt(month, 10); 
+        previousMonth = (day < 21) ? previousMonth - 1 : previousMonth; 
+        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString(); 
+    }
+
+    var dateFrom = previousYear + '-' + previousMonth + '-' + startDay; 
+
+    document.getElementById("date_from").value = dateFrom;
+    document.getElementById("date_to").value = dateTo;
+}
 
         function getTrackingData() {
             if ($.fn.dataTable.isDataTable('.tracking-datatable')) {

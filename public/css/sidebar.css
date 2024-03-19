@@ -1,0 +1,31 @@
+
+.img-logo-sidebar{
+background-color: var(--white-icot);
+padding: 13px;
+}
+#userData {
+    font-weight: 900;
+  }
+
+  hr {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .lblVersion {
+    bottom: 50px;
+    width: 100%;
+    color: var(--red-icot);
+    text-align: center !important;
+    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    vertical-align: bottom;
+  }
+
+  .versionContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+  }
+ 

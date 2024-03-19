@@ -143,7 +143,7 @@ return [
                 |
                 */
 
-                'hosts' => explode(' ', env('LDAP_HOSTS', '192.124.80.14')),
+                'hosts' => explode(' ', env('LDAP_HOSTS', '10.2.112.17')),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -198,8 +198,8 @@ return [
                 |
                 */
 
-                'username' => env('LDAP_USERNAME', 'intranet@grupoicot.net'),
-                'password' => env('LDAP_PASSWORD', 'OverDover.1'),
+                'username' => env('LDAP_USERNAME', 'administrador@grupoicot.net'),
+                'password' => env('LDAP_PASSWORD', 'Penta4Hexa'),
 
                 /*
                 |--------------------------------------------------------------------------
