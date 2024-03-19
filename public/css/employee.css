@@ -1,3 +1,9 @@
+.content {
+    background-image: url(/assets/img/background-continue.png) !important;
+    background-position: center center !important;
+    background-repeat: repeat-y !important;
+   
+}
 #category {
     text-transform: lowercase;
 }
@@ -271,4 +277,43 @@ opacity: 1;
     visibility: visible; 
     opacity: 1;
 }
+.btn-sincro-all{
+    position: relative;
+    background-color: var(--red-icot)!important;
+    border: none;
+    color: white !important;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 80px;
+    }
+    .btn-sincro-all::after{
+        position: absolute;
+        bottom: 100%; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        white-space: nowrap; 
+        visibility: hidden; 
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0.2s;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        }
+
+        .btn-sincro-all:hover {
+            background-color: white !important; 
+            color:var(--red-icot) !important;
+            }
+
+            .btn-sincro-all:hover::after {
+            visibility: visible;
+            opacity: 1;
+            }
 

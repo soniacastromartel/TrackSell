@@ -2,15 +2,15 @@
 @section('content')
     @include('inc.navbar')
     @include('common.alert')
-    
- 
+
+
+
     <link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
 
     <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
     </div>
     <div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
     </div>
-
     <div class="content">
         <div class="container-fluid">
             <div class="row col-md-12 mb-3">
@@ -42,32 +42,18 @@
             </table>
         </div>
     </div>
-
-
     <script type="text/javascript">
         var table
         $(function() {
-    <script type="text/javascript">
-        var table
-        $(function() {
-
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
             $('#pagesConfig').addClass('show');
             $('#adminUser').addClass('active');
-            $(".nav-item").each(function() {
-                $(this).removeClass("active");
-            });
-            $('#pagesConfig').addClass('show');
-            $('#adminUser').addClass('active');
-
-            table = $('.employees-datatable').DataTable({
             table = $('.employees-datatable').DataTable({
                 order: [
                     [1, "asc"]
                 ],
-                processing: false,
                 processing: false,
                 responsive: true,
                 serverSide: true,
@@ -82,7 +68,6 @@
                     }
                 },
                 columnDefs: [{
-                columnDefs: [{
                         targets: '_all',
                         visible: true,
                         className: 'dt-body-center'
@@ -96,19 +81,11 @@
                         data: "category",
                         render: function(data, type, row) {
                             if (data != null) {
-
-                        targets: 4,
-                        data: "category",
-                        render: function(data, type, row) {
-                            if (data != null) {
-
                                 return data.toUpperCase();
-
                                 // return data.split(' ')[1];
                             } else {
                                 return data;
                             }
-
                         }
                     }
                 ],
@@ -142,7 +119,6 @@
                         orderable: true,
                         searchable: true
                     },
-
                 ],
                 createdRow: function(row, data, dataIndex) {
     console.log(data);
@@ -178,8 +154,6 @@
         $(row).removeClass('user-updated-acc');
     }
 },
-
-
                 search: {
                     "regex": true,
                     "smart": true,
@@ -196,30 +170,18 @@
                                     .search(val ? '^' + val + '$' : '', true, false)
                                     .draw();
                             });
-
                     });
                 }
             });
-                    });
-                }
-            });
-
             $("#btnSyncA3").on('click', function() {
                 syncA3(null, 'full');
             });
         });
-            $("#btnSyncA3").on('click', function() {
-                syncA3(null, 'full');
-            });
-        });
-
-
         function resetAccessApp(employeeId, back) {
             $('#alertChangeEmployee').hide();
             $('#alertErrorChangeEmployee').hide();
             $('#btnResetAccess' + employeeId + ' .material-icons').hide();
             $('#btnResetAccess' + employeeId + ' .spinner-border').show();
-
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["employee_id"] = employeeId;
@@ -244,50 +206,12 @@
                     $('#btnResetAccess' + employeeId + ' .material-icons').show();
                     $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
                 }
-        function resetAccessApp(employeeId, back) {
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
-            $('#btnResetAccess' + employeeId + ' .material-icons').hide();
-            $('#btnResetAccess' + employeeId + ' .spinner-border').show();
-
-            params = {};
-            params["_token"] = "{{ csrf_token() }}";
-            params["employee_id"] = employeeId;
-            $.ajax({
-                url: "{{ route('employees.resetAccessApp') }}",
-                type: 'post',
-                data: params,
-                success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
-                    if (textStatus === 'success') {
-                        $('#alertChangeEmployee').text(response.mensaje);
-                        $('#alertChangeEmployee').show().delay(2000).slideUp(300);
-                        table.ajax.reload();
-                        $('#btnResetAccess' + employeeId + ' .material-icons').show();
-                        $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    var response = JSON.parse(xhr.responseText);
-                    $('#alertErrorChangeEmployee').text(response.mensaje);
-                    $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
-                    $('#btnResetAccess' + employeeId + ' .material-icons').show();
-                    $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
-                }
-
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error cargando servicios');
                 $('#btnResetAccess' + employeeId + ' .material-icons').show();
                 $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
             });
         }
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error cargando servicios');
-                $('#btnResetAccess' + employeeId + ' .material-icons').show();
-                $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
-            });
-        }
-
         function resetPassword(employeeId, back) {
             $('#alertChangeEmployee').hide();
             $('#alertErrorChangeEmployee').hide();
@@ -316,46 +240,13 @@
                     $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
                     $('#btnResetPass' + employeeId + ' .material-icons').show();
                     $('#btnResetPass' + employeeId + ' .spinner-border').hide();
-
                 }
-        function resetPassword(employeeId, back) {
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
-            $('#btnResetPass' + employeeId + ' .material-icons').hide();
-            $('#btnResetPass' + employeeId + ' .spinner-border').show();
-            params = {};
-            params["_token"] = "{{ csrf_token() }}";
-            params["employee_id"] = employeeId;
-            $.ajax({
-                url: "{{ route('employees.resetPassword') }}",
-                type: 'post',
-                data: params,
-                success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
-                    if (textStatus === 'success') {
-                        $('#alertChangeEmployee').text(response.mensaje);
-                        $('#alertChangeEmployee').show().delay(2000).slideUp(300);
-                        table.ajax.reload();
-                        $('#btnResetPass' + employeeId + ' .material-icons').show();
-                        $('#btnResetPass' + employeeId + ' .spinner-border').hide();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    var response = JSON.parse(xhr.responseText);
-                    $('#alertErrorChangeEmployee').text(response.mensaje);
-                    $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
-                    $('#btnResetPass' + employeeId + ' .material-icons').show();
-                    $('#btnResetPass' + employeeId + ' .spinner-border').hide();
-
-                }
-
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error cargando servicios');
                 $('#btnResetPass' + employeeId + ' .material-icons').show();
                 $('#btnResetPass' + employeeId + ' .spinner-border').hide();
             });
         }
-
         function denyAccess(employeeId, back) {
             $('#alertChangeEmployee').hide();
             $('#alertErrorChangeEmployee').hide();
@@ -385,76 +276,20 @@
                     $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                     $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
                 }
-
-
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error cargando servicios');
                 $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                 $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
             });
-
         }
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error cargando servicios');
-                $('#btnResetPass' + employeeId + ' .material-icons').show();
-                $('#btnResetPass' + employeeId + ' .spinner-border').hide();
-            });
-        }
-
-        function denyAccess(employeeId, back) {
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
-            $('#btnDenyAccess' + employeeId + ' .material-icons').hide();
-            $('#btnDenyAccess' + employeeId + ' .spinner-border').show();
-            params = {};
-            params["_token"] = "{{ csrf_token() }}";
-            params["employee_id"] = employeeId;
-            $.ajax({
-                url: "{{ route('employees.denyAccessApp') }}",
-                type: 'post',
-                data: params,
-                success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
-                    if (textStatus === 'success') {
-                        $('#alertChangeEmployee').text(response.mensaje);
-                        $('#alertChangeEmployee').show().delay(2000).slideUp(300);
-                        table.ajax.reload();
-                        $('#btnDenyAccess' + employeeId + ' .material-icons').show();
-                        $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    var response = JSON.parse(xhr.responseText);
-                    $('#alertErrorChangeEmployee').text(response.mensaje);
-                    $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300)();
-                    $('#btnDenyAccess' + employeeId + ' .material-icons').show();
-                    $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
-                }
-
-
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error cargando servicios');
-                $('#btnDenyAccess' + employeeId + ' .material-icons').show();
-                $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
-            });
-
-        }
-
         function syncA3(employeeId, type) {
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["employee_id"] = employeeId;
             params["type"] = type;
-        function syncA3(employeeId, type) {
-            params = {};
-            params["_token"] = "{{ csrf_token() }}";
-            params["employee_id"] = employeeId;
-            params["type"] = type;
-
             if (employeeId == null) {
                 $('#btnSyncA3').hide();
                 $('#btnSubmitLoad').show();
-
             } else {
                 $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').show();
@@ -483,68 +318,13 @@
                     timeOutAlert($('#alertErrorChangeEmployee'), response);
                     window.location = response.url;
                 }
-            if (employeeId == null) {
-                $('#btnSyncA3').hide();
-                $('#btnSubmitLoad').show();
-
-            } else {
-                $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
-                $('#btnSyncA3_' + employeeId + ' .spinner-border').show();
-            }
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
-            $.ajax({
-                url: "{{ route('employees.syncA3') }}",
-                type: 'post',
-                data: params,
-                success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
-                    if (textStatus === 'success') {
-                        if (type == 'only') {
-                            $('#btnSyncA3_' + employeeId + ' .material-icons').show();
-                            $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
-                        } else {
-                            $('#btnSubmitLoad').hide();
-                            $('#btnSyncA3').show();
-                        }
-                        table.ajax.reload();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    var response = JSON.parse(xhr.responseText);
-                    timeOutAlert($('#alertErrorChangeEmployee'), response);
-                    window.location = response.url;
-                }
-
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 timeOutAlert($('#alertErrorChangeEmployee'), jqXHR.responseText);
             });
         }
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                timeOutAlert($('#alertErrorChangeEmployee'), jqXHR.responseText);
-            });
-        }
-
-
-        function timeOutAlert($alert, $message) {
-            $alert.text($message);
-            $alert.show().delay(2000).slideUp(300);
-        }
-    </script>
-
         function timeOutAlert($alert, $message) {
             $alert.text($message);
             $alert.show().delay(2000).slideUp(300);
         }
     </script>
 @endsection
- 
-<style>
-.content {
-    background-image: url(/assets/img/background-continue.png) !important;
-    background-position: center center !important;
-    background-repeat: repeat-y !important;
-   
-}
-
-    </style>
