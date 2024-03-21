@@ -3,25 +3,25 @@
     @include('inc.navbar')
     @include('common.alert')
 
-
-
     <link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
 
     <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
     </div>
     <div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
     </div>
+
     <div class="content">
         <div class="container-fluid">
             <div class="row col-md-12 mb-3">
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-4 text-right" id="blockNewTracking">
-                    <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
+                    <a id="btnSyncA3" class="btn btn-raised"><span class="material-icons mr-1">
                             sync
-                        </span> </a>
-                    <button id="btnSubmitLoad" type="submit" class="btn-sincro-all" style="display: none">
+                        </span> Sincronizar A3</a>
+                    <button id="btnSubmitLoad" type="submit" class="btn btn-raised" style="display: none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        {{ __('Realizando sincronización...') }}
                     </button>
                 </div>
             </div>
@@ -42,14 +42,18 @@
             </table>
         </div>
     </div>
+
+
     <script type="text/javascript">
         var table
         $(function() {
+
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
             $('#pagesConfig').addClass('show');
             $('#adminUser').addClass('active');
+
             table = $('.employees-datatable').DataTable({
                 order: [
                     [1, "asc"]
@@ -81,11 +85,14 @@
                         data: "category",
                         render: function(data, type, row) {
                             if (data != null) {
+
                                 return data.toUpperCase();
+
                                 // return data.split(' ')[1];
                             } else {
                                 return data;
                             }
+
                         }
                     }
                 ],
@@ -119,41 +126,46 @@
                         orderable: true,
                         searchable: true
                     },
+
                 ],
                 createdRow: function(row, data, dataIndex) {
-    console.log(data);
-    if (parseInt(data.count_access) === 3) {
-        $(row).addClass('user-bloqued');
-    } else if (parseInt(data.pending_password) === 0) {
-        if (data.updated_at) { 
-            var resetDateTimeString = data.updated_at.split(" GMT")[0];
-            var resetDate = new Date(resetDateTimeString);
-            var currentDate = new Date();
-            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60); 
-            if (differenceInHours <= 24) {
-                $(row).addClass('user-updated-pass');
-            } else {
-                $(row).removeClass('user-updated-pass');
-            }
-        }
-    } else if (parseInt(data.count_access) === 0) {
-        if (data.updated_at) { 
-            var resetDateTimeString = data.updated_at.split(" GMT")[0]; 
-            var resetDate = new Date(resetDateTimeString);
-            var currentDate = new Date();
-            var differenceInHours = Math.abs(currentDate - resetDate) / (1000 * 60 * 60); 
-            if (differenceInHours <= 24) {
-                $(row).addClass('user-updated-acc');
-            } else {
-                $(row).removeClass('user-updated-acc');
-            }
-        } else {
-            $(row).removeClass('user-updated-acc');
-        }
-    } else {
-        $(row).removeClass('user-updated-acc');
-    }
-},
+                    console.log(data);
+                    var tooltipMessage = "";
+                    var resetDateTimeString, resetDate, currentDate = new Date();
+                    var differenceInHours;
+
+                    function calculateDifference(resetDateTimeString) {
+                        resetDate = new Date(resetDateTimeString.split(" GMT")[0]);
+                        return Math.abs(currentDate - resetDate) / (3600000); 
+                    }
+                    if (parseInt(data.count_access) === 3) {
+                        $(row).addClass('user-bloqued');
+                        tooltipMessage = "Usuario bloqueado";
+                    } else if (parseInt(data.pending_password) === 0 && data.updated_at) {
+                        differenceInHours = calculateDifference(data.updated_at);
+                            if (differenceInHours <= 24) {
+                                $(row).addClass('user-updated-pass');
+                                tooltipMessage = "Asignación de nueva contraseña en las últimas 24h";
+                        }
+                    } else if (parseInt(data.count_access) === 0  && data.updated_at) {
+                         differenceInHours = calculateDifference(data.updated_at);
+                            if (differenceInHours <= 24) {
+                                $(row).addClass('user-updated-acc');
+                                tooltipMessage = "Reseteo de acceso en las últimas 24h";
+                        }
+                    }
+                    if (!$(row).hasClass('user-updated-pass')) {
+                        $(row).removeClass('user-updated-pass');
+                    }
+                      if (!$(row).hasClass('user-updated-acc')) {
+                        $(row).removeClass('user-updated-acc');
+                    }
+                    if (tooltipMessage) {
+                        $(row).attr('data-tooltip', tooltipMessage);
+                    }
+                },
+
+
                 search: {
                     "regex": true,
                     "smart": true,
@@ -170,18 +182,23 @@
                                     .search(val ? '^' + val + '$' : '', true, false)
                                     .draw();
                             });
+
                     });
                 }
             });
+
             $("#btnSyncA3").on('click', function() {
                 syncA3(null, 'full');
             });
         });
+
+
         function resetAccessApp(employeeId, back) {
             $('#alertChangeEmployee').hide();
             $('#alertErrorChangeEmployee').hide();
             $('#btnResetAccess' + employeeId + ' .material-icons').hide();
             $('#btnResetAccess' + employeeId + ' .spinner-border').show();
+
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["employee_id"] = employeeId;
@@ -206,12 +223,14 @@
                     $('#btnResetAccess' + employeeId + ' .material-icons').show();
                     $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
                 }
+
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error cargando servicios');
                 $('#btnResetAccess' + employeeId + ' .material-icons').show();
                 $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
             });
         }
+
         function resetPassword(employeeId, back) {
             $('#alertChangeEmployee').hide();
             $('#alertErrorChangeEmployee').hide();
@@ -240,13 +259,16 @@
                     $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
                     $('#btnResetPass' + employeeId + ' .material-icons').show();
                     $('#btnResetPass' + employeeId + ' .spinner-border').hide();
+
                 }
+
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error cargando servicios');
                 $('#btnResetPass' + employeeId + ' .material-icons').show();
                 $('#btnResetPass' + employeeId + ' .spinner-border').hide();
             });
         }
+
         function denyAccess(employeeId, back) {
             $('#alertChangeEmployee').hide();
             $('#alertErrorChangeEmployee').hide();
@@ -276,20 +298,26 @@
                     $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                     $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
                 }
+
+
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error cargando servicios');
                 $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                 $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
             });
+
         }
+
         function syncA3(employeeId, type) {
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["employee_id"] = employeeId;
             params["type"] = type;
+
             if (employeeId == null) {
                 $('#btnSyncA3').hide();
                 $('#btnSubmitLoad').show();
+
             } else {
                 $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').show();
@@ -318,10 +346,13 @@
                     timeOutAlert($('#alertErrorChangeEmployee'), response);
                     window.location = response.url;
                 }
+
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 timeOutAlert($('#alertErrorChangeEmployee'), jqXHR.responseText);
             });
         }
+
+
         function timeOutAlert($alert, $message) {
             $alert.text($message);
             $alert.show().delay(2000).slideUp(300);
