@@ -21,6 +21,7 @@
 
     .file-upload {
         margin: 0 10px 0 25px;
+      
     }
 
     .file-upload input.upload {
@@ -44,6 +45,10 @@
         width: 250px;
         margin-left: 25px;
     }
+
+   
+
+
 </style>
 <div class="content">
     <div class="container-fluid">
@@ -52,12 +57,12 @@
                 <h4 class="card-title">Configuración</h4>
             </div>
             <div class="card-body">
-                <div class="row" style="background-color: yellow">
-                  
-
-                        <div class="form-group col-md-2">
+                <div class="row" style="background-color: yellow; display:flex; justify-content:space-around">
+                       
+                        <div class="btn-container" style="background-color: rgb(57, 65, 68);display:flex;width:80%;"> 
+                        <div class="form-group col-md-2" style="background-color: lightblue">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot " title=" Seleccione Centro" tabindex="-98">
+                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot " title=" Centro" tabindex="-98">
     
                                     @foreach ($centres as $centre)
                                     <option value="{{$centre->id}}">{{$centre->name}}</option>
@@ -67,8 +72,9 @@
                         </div>
     
                         <div class="form-group col-md-2" style="background-color: blue" >
+
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot " title=" Seleccione Servicio" tabindex="-98">
+                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot " title="Servicio" tabindex="-98">
     
                                     @foreach ($services as $service)
                                     <option value="{{  $service->id  }}">{{$service->name}}</option>
@@ -76,16 +82,22 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
                    
-                    <div class="mt-2">
+                    <div class="btn-box" style="background-color:coral;">
+                       
                         <button id="btnClear" href="#" class="btn-refresh">
                         <span class="material-icons">
                             refresh
                             </span>   
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn-search"><span class="material-icons">
-                            search</span></button>
-                        <button id="btnSubmitLoad" type="submit" class="btn-search" style="display: none">
+                    
+                        <button id="btnSubmit" type="submit" class="btn-searcher">
+                        <span class="material-icons">
+                            search
+                        </span>
+                    </button>
+                        <button id="btnSubmitLoad" type="submit" class="btn-searcher" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         </button>
                     </div>

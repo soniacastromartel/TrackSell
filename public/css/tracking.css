@@ -4,12 +4,7 @@
 .col-md-2{
 margin:10px;
 }
-.content {
-    background-image: url(/assets/img/background-gradient.png);
-    height: 2050px !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-}
+
 
 .col-md-6{
     display:flex;
