@@ -26508,6 +26508,9 @@ select.bs-select-hidden,
 select.selectpicker {
   display: none !important;
 }
+.selectpicker{
+  margin:100px !important;
+}
 
 .bootstrap-select>.dropdown-toggle {
   padding-right: 25px;

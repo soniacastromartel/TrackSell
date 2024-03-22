@@ -1,18 +1,4 @@
 
-#category {
-    text-transform: lowercase;
-}
-
-#btnSyncA3 {
-    font-weight: 900;
-    font-size: large;
-    background-color: #eeeeee;
-    color: var(--red-icot);
-}
-td.upper {
-    text-transform: lowercase;
-}
-
 /* EDIT BUTTON */
 
 .btn-edit {

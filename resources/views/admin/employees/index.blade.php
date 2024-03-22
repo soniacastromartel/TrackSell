@@ -16,12 +16,11 @@
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-4 text-right" id="blockNewTracking">
-                    <a id="btnSyncA3" class="btn btn-raised"><span class="material-icons mr-1">
+                    <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
                             sync
-                        </span> Sincronizar A3</a>
-                    <button id="btnSubmitLoad" type="submit" class="btn btn-raised" style="display: none">
+                        </span> </a>
+                    <button id="btnSubmitLoad" type="submit" class="btn-sincro-all" style="display: none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        {{ __('Realizando sincronización...') }}
                     </button>
                 </div>
             </div>
@@ -362,9 +361,25 @@
 
 <style>
     .content {
-  background-image: url(/assets/img/background-continue.png) !important;
+    
+ background-size: 1000px;
+  background-image: url(/assets/img/background_continue.png) !important;
   background-position: center center !important;
-  background-repeat: repeat-y !important;
+
+}
+
+#category {
+    text-transform: lowercase;
+}
+
+#btnSyncA3 {
+    font-weight: 900;
+    font-size: large;
+    background-color: #eeeeee;
+    color: var(--red-icot);
+}
+td.upper {
+    text-transform: lowercase;
 }
 
 

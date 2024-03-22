@@ -16,7 +16,9 @@
    
 
 .content {
-    background-image: url(/assets/img/background-continue.png) !important;
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-size: 1600px;
+    background-position: center center !important;
 }
 
     .file-upload {
@@ -57,10 +59,10 @@
                 <h4 class="card-title">Configuración</h4>
             </div>
             <div class="card-body">
-                <div class="row" style="background-color: yellow; display:flex; justify-content:space-around">
+                <div class="row" style=" display:flex; justify-content:space-between">
                        
-                        <div class="btn-container" style="background-color: rgb(57, 65, 68);display:flex;width:80%;"> 
-                        <div class="form-group col-md-2" style="background-color: lightblue">
+                        <div class="btn-container" style="display:flex; width:80%;"> 
+                        <div class="form-group col-md-2">
                             <div class="dropdown bootstrap-select">
                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot " title=" Centro" tabindex="-98">
     
@@ -71,7 +73,7 @@
                             </div>
                         </div>
     
-                        <div class="form-group col-md-2" style="background-color: blue" >
+                        <div class="form-group col-md-2" >
 
                             <div class="dropdown bootstrap-select">
                                 <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot " title="Servicio" tabindex="-98">
@@ -84,7 +86,7 @@
                         </div>
                     </div>
                    
-                    <div class="btn-box" style="background-color:coral;">
+                    <div class="btn-box">
                        
                         <button id="btnClear" href="#" class="btn-refresh">
                         <span class="material-icons">

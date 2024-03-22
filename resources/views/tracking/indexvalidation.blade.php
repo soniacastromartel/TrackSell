@@ -69,7 +69,7 @@
 
                     <div class="col-md-6">
 
-                        <div class="row" style=" padding:20px; background-color: lightcoral">
+                        <div class="row" style=" padding:20px;">
 
                             <div class="col-md-4" style="margin-right: 60px;">
 
@@ -86,9 +86,9 @@
                             </div>
                         </div>
 
-                        <div class="row" style=" padding:20px; background-color:rgb(43, 110, 43)">
+                        <div class="row" style=" padding:20px;">
 
-                            <div class="btn-container" style= " width:100%; background-color: yellow">
+                            <div class="btn-container" style= " width:100%;">
 
                             <button id="btnClear" href="#" class="btn btn-fill btn-warning" >
                                 <span class="material-icons mr-1">clear_all</span>
@@ -111,10 +111,10 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" style="background-color: rgb(156, 47, 47);">
-                        <div class="row" style=" padding:20px; background-color: lightcoral">
+                    <div class="col-md-6">
+                        <div class="row" style=" padding:20px;">
                        
-                        <div class="btn-container" style= "width:100%;display:flex; justify-content:flex-end; background-color: yellow" >
+                        <div class="btn-container" style= "width:100%;display:flex; justify-content:flex-end; " >
                         
                         <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-dark-black">
                             <span class="material-icons mr-1">file_download</span>{{ __('Exportar') }}</button>
@@ -560,3 +560,13 @@
 </script>
 
 @endsection
+
+<style>
+    .main-panel {
+        background-image: url(/assets/img/background_continue.png) !important;
+        background-position: center center !important;
+        background-size: 1000px;
+    }
+    
+    
+        </style>

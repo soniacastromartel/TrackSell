@@ -42,9 +42,9 @@
 
                                     </div>
 
-                                    <div class="form-group col-md-4" style="justify-content: right;">
+                                    <div class="form-group col-md-2" style="justify-content: right;">
                                         <div class="dropdown bootstrap-select" style="margin-bottom: 50px;">
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
+                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot" title=" Centro" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @if ($user->rol_id != 1)
                                                 @foreach ($centres as $centre)
@@ -55,7 +55,7 @@
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
                                         <div class="dropdown bootstrap-select text-uppercase">
-                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
+                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot" title=" Servicio" tabindex="-98">
                                                 <option>TODOS</option>
                                                 @foreach ($services as $service)
                                                 <option value="{{ $service->id }}">
@@ -249,3 +249,13 @@
     }
 </script>
 @endsection
+
+<style>
+
+    .main-panel {
+        background-image: url(/assets/img/background_continue.png) !important;
+        background-position: center center !important;
+        background-size: 1000px;
+    }
+    
+        </style>

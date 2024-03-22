@@ -253,3 +253,12 @@
     });
 </script>
 @endsection
+<style>
+.main-panel {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+}
+
+
+    </style>

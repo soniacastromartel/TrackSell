@@ -218,12 +218,14 @@
 
 @endsection
 
+
+
 <style>
 
-.content {
-    background-image: url(/assets/img/background-continue.png) !important;
-
-    background-position: center center !important;
-}
-
-</style>
+    .content {
+        background-image: url(/assets/img/background_continue.png) !important;
+        background-position: center center !important;
+        background-size: 1000px;
+    }
+    
+        </style>

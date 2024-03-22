@@ -150,8 +150,8 @@
 <style> 
 
 .content {
-    background-image: url(/assets/img/background-continue.png) !important;
-
+    background-image:url( /assets/img/background_continue.png) !important;
+    background-size: 1600px;
     background-position: center center !important;
 }
 </style>

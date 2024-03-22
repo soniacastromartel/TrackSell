@@ -3,6 +3,7 @@
 
 <link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 
+
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
@@ -33,7 +34,7 @@
                             </div>
 
                             <div class="btn-search-container">
-                                <div class="dropdown bootstrap-select">
+       
                                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
                                         data-style="btn btn-red-icot" title="Centro" tabindex="-98">
                                         @if (isset($employee) && $employee->rol_id != 1)
@@ -48,7 +49,7 @@
                                         @endif
                                     </select>
                                     <input type="hidden" name="centre" id="centre" />
-                                </div>
+                                
 
                             </div>
                             <div class="btn-clear-container">
@@ -630,8 +631,9 @@
 </script>
 <style>
  .content {
-    background-image: url(/assets/img/background-continue.png) !important;
+    background-image: url(/assets/img/background_continue.png) !important;
     background-position: center center !important;
+    background-size: 1000px;
 }
 
 
