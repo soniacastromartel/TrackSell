@@ -1,0 +1,165 @@
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+}
+
+
+table.dataTable.dataTable_width_auto {
+    width: 100%;
+}
+
+svg.ct-chart-bar,
+svg.ct-chart-line {
+    overflow: visible;
+}
+
+.ct-label.ct-label.ct-horizontal.ct-end {
+    position: relative;
+    justify-content: flex-end;
+    text-align: right;
+    transform-origin: 100% 0;
+    transform: translate(-100%) rotate(0deg);
+    white-space: nowrap;
+}
+
+.card-header-table {
+    width: 100%;
+    margin-top: 0px !important;
+}
+
+.sales-datatable {
+    table-layout: fixed;
+    width: 100% !important;
+}
+
+.sales-datatable td,
+.sales-datatable th {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+#DataTables_Table_0_paginate>ul.pagination {
+    margin: 16px 0 !important;
+}
+
+#typeRanking {
+    margin-bottom: 0px;
+    margin-right: 10px;
+    margin-left: 100px;
+    display: inline-block;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 700;
+    color: black;
+}
+
+#btn-radio-refresh {
+    display: flex;
+    justify-content: space-between;
+    color: var(--red-icot);
+}
+
+#monthly {
+    margin-right: 15px;
+    color: var(--red-icot);
+}
+
+#annual {
+    margin-right: 15px;
+    color: var(--red-icot);
+}
+
+#separator {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+#selected-label {
+    color: var(--red-icot);
+    font-weight: bold;
+}
+
+.employee-info {
+    padding-left: 15px;
+    margin-top: 50px;
+}
+
+.employee-info span {
+    color: var(--red-icot);
+}
+
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.search-container {
+    width: 20%;
+    margin: 5px;
+}
+
+.card-search {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: aqua;
+}
+
+.calendar-picker {
+    padding: 14.5%;
+}
+
+.btn-search-container {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.btn-radio-container {
+    background-color:lightcoral;
+
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.objetives-container {
+    margin-top: -30px;
+    width: 70%;
+    margin: 5px;
+}
+
+.btn-export {
+    background-color: aqua;
+    position: absolute;
+    right: 0;
+    margin-top: 10px;
+}
+
+.custom-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding: 5px;
+        margin: 10px;
+        background-color: red;
+        color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .custom-select option {
+        background-color: white;
+        color: black;
+    }
+
+    /* Este estilo no funcionará en todos los navegadores */
+    .custom-select option:hover {
+        background-color: red !important;
+        color: white;
+    }

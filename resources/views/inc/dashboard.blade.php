@@ -2,12 +2,12 @@
 
 
 <link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
-
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
-<div class="content" >
+<div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="search-container">
@@ -34,31 +34,33 @@
                             </div>
 
                             <div class="btn-search-container">
-       
-                                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                        data-style="btn btn-red-icot" title="Centro" tabindex="-98">
-                                        @if (isset($employee) && $employee->rol_id != 1)
-                                            <option value="{{ $employee->centre_id }}" selected>{{ $employee->centre }}
-                                            </option>
-                                        @endif
 
-                                        @if (isset($employee) && $employee->rol_id == 1)
-                                            @foreach ($centres as $centre)
-                                                <option value="{{ $centre->id }}">{{ $centre->name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <input type="hidden" name="centre" id="centre" />
-                                
+                                <select class="custom-select" name="centre_id" id="centre_id" data-size="7"
+                                    data-style="btn btn-red-icot" title="Centro" tabindex="-98" >
+                                    @if (isset($employee) && $employee->rol_id != 1)
+                                        <option value="{{ $employee->centre_id }}" selected>{{ $employee->centre }}
+                                        </option>
+                                    @endif
+
+                                    @if (isset($employee) && $employee->rol_id == 1)
+                                        @foreach ($centres as $centre)
+                                            <option value="{{ $centre->id }}">{{ $centre->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <input type="hidden" name="centre" id="centre" />
+
 
                             </div>
-                            <div class="btn-clear-container">
-                                <button id="btnClear" href="#" class="btn btn-fill btn-warning"
-                                    data-clear="Limpiar formulario">
-                                    <span class="material-icons">
-                                        refresh
-                                    </span>
+
+                            <div class="btn-clear-container" style="background-color:lightblue">
+                                <button id="btnClear" class="btn-refresh">Limpiar Formulario<span id=icon-refresh
+                                        class="material-icons">refresh</span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                                        style="display: none;"></span>
                                 </button>
+
+
                             </div>
 
                             <div class="btn-radio-container">
@@ -103,13 +105,13 @@
             <div class="col-lg-11">
                 <div class="card">
                     <div class="btn-export">
-                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-dark-black"><span
-                                class="material-icons">
-                                file_download
-                            </span></button>
-                        <button id="btnSubmitLoad" type="submit" style="display: none;">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            {{ __('Obteniendo datos...') }}
+
+                    
+        <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export class="material-icons">file_download</span>
+        <button id="btnSubmitLoad" type="submit" style="display: none;">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        </button>
+
                     </div>
 
                     <div class="card-header card-header-danger">
@@ -545,8 +547,8 @@
                 columnDefs: [{
                         targets: idDataTable == '.sales-month-datatable' ? [2, 3] : [3, 4],
                         render: $.fn.dataTable.render.number('.', ',',
-                                2
-                                ) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
+                            2
+                        ) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
                     },
 
                 ],
@@ -629,167 +631,3 @@
         });
     });
 </script>
-<style>
- .content {
-    background-image: url(/assets/img/background_continue.png) !important;
-    background-position: center center !important;
-    background-size: 1000px;
-}
-
-
-table.dataTable.dataTable_width_auto {
-    width: 100%;
-}
-
-svg.ct-chart-bar,
-svg.ct-chart-line {
-    overflow: visible;
-}
-
-.ct-label.ct-label.ct-horizontal.ct-end {
-    position: relative;
-    justify-content: flex-end;
-    text-align: right;
-    transform-origin: 100% 0;
-    transform: translate(-100%) rotate(0deg);
-    white-space: nowrap;
-}
-
-.card-header-table {
-    width: 100%;
-    margin-top: 0px !important;
-}
-
-.sales-datatable {
-    table-layout: fixed;
-    width: 100% !important;
-}
-
-.sales-datatable td,
-.sales-datatable th {
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-
-#DataTables_Table_0_paginate>ul.pagination {
-    margin: 16px 0 !important;
-}
-
-#typeRanking {
-    margin-bottom: 0px;
-    margin-right: 10px;
-    margin-left: 100px;
-    display: inline-block;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: 700;
-    color: black;
-}
-
-#btn-radio-refresh {
-    display: flex;
-    justify-content: space-between;
-    color: var(--red-icot);
-}
-
-#monthly {
-    margin-right: 15px;
-    color: var(--red-icot);
-}
-
-#annual {
-    margin-right: 15px;
-    color: var(--red-icot);
-}
-
-#separator {
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-#selected-label {
-    color: var(--red-icot);
-    font-weight: bold;
-}
-
-.employee-info {
-    padding-left: 15px;
-    margin-top: 50px;
-}
-
-.employee-info span {
-    color: var(--red-icot);
-}
-
-
-.row {
-    display: flex;
-    justify-content: center;
-}
-
-.search-container {
-    width: 20%;
-    margin: 5px;
-}
-
-.card-search {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.calendar-picker {
-    padding: 14.5%;
-}
-
-.btn-search-container {
-    display: flex;
-    width: 100%;
-    margin-top: 25%;
-    margin-bottom: 5%;
-}
-
-#btnClear {
-    position: absolute;
-    right: 5px;
-}
-
-#btnClear::after {
-    content: attr(data-clear);
-    position: absolute;
-    bottom: 100%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s, visibility 0.2s;
-    background-color: black;
-    color: white;
-    padding: 5px 10px;
-}
-
-#btnClear:hover::after {
-    visibility: visible;
-    opacity: 1;
-}
-
-.btn-radio-container {
-    padding-top: 65px;
-    margin: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.objetives-container {
-    margin-top: -30px;
-    width: 70%;
-    margin: 5px;
-}
-
-.btn-export {
-    position: absolute;
-    right: 0;
-    margin-top: 10px;
-}
-
-</style>

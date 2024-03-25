@@ -5,7 +5,7 @@
 <h1> Buttons </h1>
 
 
-<button id="btn" class="btn-refresh">Limpiar Formulario<span id=icon-refresh class="material-icons">refresh</span>
+<button id="btnClear" class="btn-refresh">Limpiar Formulario<span id=icon-refresh class="material-icons">refresh</span>
 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"  style="display: none;"></span> 
 </button>
   

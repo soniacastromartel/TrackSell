@@ -76,15 +76,15 @@ button:focus {
     border: 1px solid var(--sucess);
    }   
 
-#btn, #btnSubmit,#btnSubmitFind,#btnCalculate,#btnValidate{
+#btnClear, #btnSubmit,#btnSubmitFind,#btnCalculate,#btnValidate{
     display: flex;
     align-items: center;
     justify-content: right;
     text-decoration: none;
-    padding: 7px 30px;
+    padding: 12px 30px;
     font-size: 1.1rem;
     position: relative;
-    margin:32px;   
+    margin:10px;   
     border: none;
     border-radius: 50px;
     color: white;
@@ -94,7 +94,7 @@ button:focus {
 
 .btn-refresh{
     padding-left: 60px !important;
-    background-color: var(--orange);
+    background-color: var(--orange) !important;
  
 }
 .btn-refresh:hover{
