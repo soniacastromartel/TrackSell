@@ -360,7 +360,32 @@ class EmployeeController extends DefaultLoginController
             $excludeCategories = array_map('strtoupper', $excludeCategories);
             $employee = Employee::findOrFail($request->employee_id);
 
-            if (!in_array($employee->category, $excludeCategories)) {
+            if (in_array(strtoupper($employee->category), $excludeCategories)) {
+                $employee->validated = 1;
+                $employee->save();
+
+                if (!empty($employee->email)) {
+                    $emailData = [
+                        'subject' => 'Validación de cuenta',
+                        'view' => 'emails.template_validateExcludeCategory',
+                    ];
+
+                Mail::to($employee->email)
+                ->cc($this->copycauEmail)
+                ->send(new RegisteredUser($emailData));
+
+                 \Log::debug('CC Emails:', $this->copycauEmail);
+
+                 $employee->updated_at = now();
+                 $employee->save();
+
+                }
+                return response()->json([
+                   'success' => true,
+                   'mensaje' => 'Usuario validado correctamente y correo enviado'
+                ], 200);
+
+            } else {
                 $employee->password = 'abc.1234';
                 $hashedPassword = Hash::make($employee->password);
                 $employee->password = $hashedPassword;
@@ -385,15 +410,13 @@ class EmployeeController extends DefaultLoginController
                     $employee->updated_at = now();
                     $employee->save();
                 }
-
+            
                 return response()->json([
                     'success' => true,
                     'mensaje' => 'Usuario validado correctamente y correo enviado.'
                 ], 200);
-            } else {
-
-                return response()->json(['success' => false, 'mensaje' => 'Categoría de empleado excluida del reseteo de contraseña'], 400);
             }
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['success' => false, 'mensaje' => 'Empleado no encontrado'], 404);
         } catch (\Illuminate\Database\QueryException $e) {
