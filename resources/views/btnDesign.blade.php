@@ -1,5 +1,6 @@
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <h1> Buttons </h1>
@@ -29,8 +30,15 @@
     <button id="btnValidateLoad" type="submit"style="display: none">
     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     </button>
-
-
+    
+    <button id="btnValidate" type="button" class="btn-pay-all">Pagar Todos<span id=icon-pay class="material-icons">arrow_drop_down</span>
+        <button id="btnValidateLoad" type="submit"style="display: none">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        </button>
+    
+        <span class="material-symbols-outlined">
+            calendar_month
+            </span>
      
 
 

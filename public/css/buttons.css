@@ -3,8 +3,10 @@ button:focus {
 }
 button:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #ffffff; /* Un claro indicador de foco */
+    box-shadow: 0 0 0 2px #ffffff; 
 }
+    
+
 
      #icon-export{
     position: absolute;
@@ -79,30 +81,31 @@ button:focus {
 #btnClear, #btnSubmit,#btnSubmitFind,#btnCalculate,#btnValidate{
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content:center;
     text-decoration: none;
-    padding: 12px 30px;
+    
     font-size: 1.1rem;
     position: relative;
     margin:10px;   
     border: none;
     border-radius: 50px;
     color: white;
- 
+    width: 230px;
+    height:45px; 
 
 }
+
 
 .btn-refresh{
     padding-left: 60px !important;
     background-color: var(--orange) !important;
- 
 }
 .btn-refresh:hover{
     box-shadow: 8px 8px 15px rgba(245, 118, 0, 0.63);
 }
 
 .btn-export{
-    padding-left: 60px !important;
+    padding-left: 120px !important;
     background-color: var(--gray-dark);
 }
 .btn-export:hover{
@@ -127,29 +130,24 @@ button:focus {
 
 .btn-pay-all{
     padding-left: 60px!important;
-    background-color: var(--success);
+    background-color: var(--success); 
 }
 .btn-pay-all:hover{
     box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
 }
 
 
-
-
-#btn-select {
-    display: flex;
-    align-items: center;
-    justify-content: right;
-    text-decoration: none;
-    padding: 7px 30px;
-    font-size: 1.1rem;
+.icon-container {
     position: relative;
-    margin:32px;   
-    border: none;
-    border-radius: 50px;
-    color: white;
-    background-color: var(--red-icot);
- 
-
-
+    display: flex;
+    justify-content: center;
+    width: 230px;
 }
+
+
+.btn-export-container {
+    position: absolute;
+    right: 0;
+    margin-top:0;
+    z-index: 20;
+    }

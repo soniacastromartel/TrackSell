@@ -1,79 +1,59 @@
 @extends('layouts.app')
 @section('content')
-@include('common.alert')
+    @include('common.alert')
 
 
-        <div class="bodyLogin">
+    <div class="bodyLogin">
 
         <link href="{{ asset('css/login.css') }}" rel="stylesheet">
         <div class="fadeInDown">
             @if ($message = Session::get('error'))
-            <div class="alert alert-danger">
-                <p>{{ $message }}</p>
-            </div>
+                <div class="alert alert-danger">
+                    <p>{{ $message }}</p>
+                </div>
             @endif
-            @if ($nDays != "")
-            <div class="alert alert-timeout alert-danger animacion" style="position:relative; left:10px;" role="alert">
-                En {{$nDays}} días llega próximo corte, 20 de {{$currentMonth}}
-            </div>
+            @if ($nDays != '')
+                <div class="alert alert-timeout alert-danger animacion" style="position:relative; left:10px;" role="alert">
+                    En {{ $nDays }} días llega próximo corte, 20 de {{ $currentMonth }}
+                </div>
             @endif
-            <div id="formContent" style="background-color: var(--red-icot);display:flex;flex-direction:column; justify-content:center; align-items:center; margin-top:50px;box-shadow: 10px 10px 10px 10px rgba(0,0.5,0.5,0.5);">
+            <div id="formContent">
                 <!-- Tabs Titles -->
 
                 <!-- Icon -->
                 <div class="fadeInFirst">
-                    <img src="{{ asset('assets/img/LogoICOTblanco.png') }}"  id="icon" /> 
-                    <img src="{{ asset('assets/img/logoIncentivosBlanco.png') }}" width="300px"/>
-                    <img src="{{ asset('assets/img/logo-arrow.png') }}" width="100px" style="position: absolute; top:290px; right:50px;"/>
+                    <img src="{{ asset('assets/img/LogoICOTblanco.png') }}" id="icon" width="400px" />
+                    <img src="{{ asset('assets/img/logoIncentivosBlanco.png') }}" width="300px" />
+                    <img src="{{ asset('assets/img/logo-arrow.png') }}" width="100px"
+                        style="position: absolute; top:330px; right:50px;" />
                 </div>
 
                 <!-- Login Form -->
-                <form class="mt-2" method="POST" action="{{ route('login') }}" style="width: 350px">
+                <form class="formPost" method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <input id="username" type="text" class="fadeIn second @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autofocus placeholder="Nombre de usuario">
+                    <input id="username" type="text" class="fadeIn second @error('username') is-invalid @enderror"
+                        name="username" value="{{ old('username') }}" required autofocus placeholder="Nombre de usuario">
                     @error('username')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
                     @enderror
 
-                    <input id="password" type="password" class="fadeIn third @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Contraseña">
+                    <input id="password" type="password" class="fadeIn third @error('password') is-invalid @enderror"
+                        name="password" required autocomplete="current-password" placeholder="Contraseña">
                     @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
                     @enderror
 
-                    <input type="submit" class="fadeIn fourth btn btn-red-icot" id="btnSubmit" value="Entrar" style="border: 1px solid white">
+                    <input type="submit" class="fadeIn fourth btn btn-red-icot" id="btnSubmit" value="Entrar"
+                        style="border: 1px solid white">
                 </form>
 
             </div>
         </div>
 
     </div>
-
 @endsection
-
-<style>
-    #btnSubmit {
-        font-weight: 900;
-        margin-top: 16px;
-    }
-  .bodyLogin {
-    display: flex;
-    justify-content: center;
-    width: 100vw ; 
-    height: 100vh; 
-    margin:0px;
-    padding: 0px ;
-    background-image: url(/assets/img/background-login.png);
-    background-size: cover;
- 
-
-}
-
-    #icon {
-        padding: 80px;
-    }
-</style>
