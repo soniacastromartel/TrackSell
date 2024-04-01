@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use DB;
@@ -14,8 +13,6 @@ class Employee extends Authenticatable
 {
     use Notifiable, HasApiTokens;
     //use Notifiable;
-
-    //
     //protected $primaryKey = 'id';
     // protected $guarded = ['login'];
     protected $hidden = [
@@ -169,7 +166,9 @@ class Employee extends Authenticatable
         }
         return $resultado;
     }
+    
     //TODO -- METODO scopeUpdatingUnlock
+
     public function scopeUpdatingUnlockRequest($query, $username)
     {
         $employee = Employee::where(['username' => $username]);

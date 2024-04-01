@@ -20,7 +20,7 @@ class Service extends Model
         'image'
     ];
     
-    public function service_price()
+    public function servicePrice()
     {
         $this->belongsTo(ServicePrice::class);
     }
