@@ -294,7 +294,6 @@ class EmployeeController extends DefaultLoginController
     }
 
     //! RESERT COUNT ACCESS
-
     public function resetAccessApp(Request $request)
     {
         try {
@@ -309,16 +308,18 @@ class EmployeeController extends DefaultLoginController
                 ], 404);
             }
 
-            if (empty($employee->email)) { // Verificar si el empleado no tiene correo electrónico
-                return response()->json([
-                    'success' => false,
-                    'errors'  => 'El empleado no tiene un correo electrónico registrado.'
-                ], 400);
-            }
-
+            // Se procede con el reseteo de acceso independientemente del estado del correo electrónico
             $resultado = Employee::updatingAccess($idEmployee, 0);
 
-            if ($resultado) {
+            if (!$resultado) {
+                return response()->json([
+                    'success' => false,
+                    'mensaje' => 'Error al resetear el contador de accesos'
+                ], 500);
+            }
+
+            // Verificar si el empleado tiene correo electrónico antes de enviar el correo
+            if (!empty($employee->email)) {
                 $emailData = [
                     'subject' => 'Reseteo de Acceso',
                     'view' => 'emails.template_unlockAccount',
@@ -329,19 +330,18 @@ class EmployeeController extends DefaultLoginController
                     ->send(new RegisteredUser($emailData));
 
                 \Log::debug('CC Emails:', $this->copycauEmail);
-
-                $employee->updated_at = now();
-                $employee->save();
-                return response()->json([
-                    'success' => true,
-                    'mensaje' => 'Se ha reseteado el contador de accesos y enviado el correo electrónico.'
-                ], 200);
             } else {
-                return response()->json([
-                    'success' => false,
-                    'mensaje' => 'Error al resetear el contador de accesos'
-                ], 500);
+                \Log::info('Reseteo de acceso realizado, empleado sin correo electrónico registrado.', ['employee_id' => $idEmployee]);
             }
+
+            // Actualizar la fecha de la última modificación del empleado
+            $employee->updated_at = now();
+            $employee->save();
+
+            return response()->json([
+                'success' => true,
+                'mensaje' => 'Se ha reseteado el contador de accesos' . (empty($employee->email) ? ', no se envió correo electrónico por falta de registro.' : ' y enviado el correo electrónico.')
+            ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'success' => false,
@@ -349,6 +349,7 @@ class EmployeeController extends DefaultLoginController
             ], 500);
         }
     }
+
 
     //! VALIDATE USER AND NEW PASSWORD
 
@@ -359,14 +360,32 @@ class EmployeeController extends DefaultLoginController
             $excludeCategories = array_map('strtoupper', $excludeCategories);
             $employee = Employee::findOrFail($request->employee_id);
 
-            if (empty($employee->email)) {
-                return response()->json([
-                    'success' => false,
-                    'errors'  => 'El empleado no tiene un correo electrónico registrado.'
-                ], 400);
-            }
+            if (in_array(strtoupper($employee->category), $excludeCategories)) {
+                $employee->validated = 1;
+                $employee->save();
 
-            if (!in_array($employee->category, $excludeCategories)) {
+                if (!empty($employee->email)) {
+                    $emailData = [
+                        'subject' => 'Validación de cuenta',
+                        'view' => 'emails.template_validateExcludeCategory',
+                    ];
+
+                Mail::to($employee->email)
+                ->cc($this->copycauEmail)
+                ->send(new RegisteredUser($emailData));
+
+                 \Log::debug('CC Emails:', $this->copycauEmail);
+
+                 $employee->updated_at = now();
+                 $employee->save();
+
+                }
+                return response()->json([
+                   'success' => true,
+                   'mensaje' => 'Usuario validado correctamente y correo enviado'
+                ], 200);
+
+            } else {
                 $employee->password = 'abc.1234';
                 $hashedPassword = Hash::make($employee->password);
                 $employee->password = $hashedPassword;
@@ -375,31 +394,29 @@ class EmployeeController extends DefaultLoginController
                 $employee->pending_password = 0;
                 $employee->save();
 
-                $emailData = [
-                    'subject' => 'Asignación de nueva contraseña',
-                    'view' => 'emails.template_newPassword',
-                    'username' => $employee->username,
+                if (!empty($employee->email)) {
+                    $emailData = [
+                        'subject' => 'Asignación de nueva contraseña',
+                        'view' => 'emails.template_newPassword',
+                        'username' => $employee->username,
+                    ];
 
-                ];
+                    Mail::to($employee->email)
+                        ->cc($this->copycauEmail)
+                        ->send(new RegisteredUser($emailData));
 
-                Mail::to($employee->email)
-                    ->cc($this->copycauEmail)
-                    ->send(new RegisteredUser($emailData));
+                    \Log::debug('CC Emails:', $this->copycauEmail);
 
-                \Log::debug('CC Emails:', $this->copycauEmail);
-                
-
-                $employee->updated_at = now();
-                $employee->save();
-
+                    $employee->updated_at = now();
+                    $employee->save();
+                }
+            
                 return response()->json([
                     'success' => true,
                     'mensaje' => 'Usuario validado correctamente y correo enviado.'
                 ], 200);
-            } else {
-
-                return response()->json(['success' => false, 'mensaje' => 'Categoría de empleado excluida del reseteo de contraseña'], 400);
             }
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['success' => false, 'mensaje' => 'Empleado no encontrado'], 404);
         } catch (\Illuminate\Database\QueryException $e) {
