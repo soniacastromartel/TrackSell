@@ -382,7 +382,7 @@ class EmployeeController extends DefaultLoginController
                 }
                 return response()->json([
                    'success' => true,
-                   'mensaje' => 'Usuario validado correctamente y correo enviado'
+                   'mensaje' => 'Usuario validado correctamente' . (empty($employee->email) ? ', no se envió correo electrónico por falta de registro.' : ' y enviado el correo electrónico.')
                 ], 200);
 
             } else {
@@ -413,7 +413,7 @@ class EmployeeController extends DefaultLoginController
             
                 return response()->json([
                     'success' => true,
-                    'mensaje' => 'Usuario validado correctamente y correo enviado.'
+                    'mensaje' => 'Usuario validado correctamente' . (empty($employee->email) ? ', no se envió correo electrónico por falta de registro.' : ' y enviado el correo electrónico.')
                 ], 200);
             }
 
