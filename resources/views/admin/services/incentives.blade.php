@@ -3,8 +3,9 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
 
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
 <div id="alertErrorServiceIncentive" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertServiceIncentive" class="alert alert-warning" role="alert" style="display: none">
@@ -42,17 +43,17 @@
                     </div>
                    
                     <div class="form-group col-md-4" style="display:flex;justify-content:end;align-items:center;">
-                        <button id="btnClear" href="#" class="btn-refresh">
+                        <button id="btnClearRefresh" href="#" class="btn-refresh-circle">
                         <span class="material-icons">
                             refresh
                             </span>   
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn-searcher">
+                        <button id="btnSubmitSearch" type="submit" class="btn-search-circle">
                         <span class="material-icons">
                             search
                         </span>
                     </button>
-                        <button id="btnSubmitLoad" type="submit" class="btn-searcher" style="display: none">
+                        <button id="btnSubmitLoadSearch" type="submit" class="btn-search-circle" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -154,7 +155,7 @@
             $('.services-datatable').DataTable().search('').draw();
             $('.services-datatable').DataTable().ajax.reload();
         }
-        $("#btnClear").on('click', function(e) {
+        $("#btnClearRefresh").on('click', function(e) {
             e.preventDefault();
             clearForms();
         });
@@ -183,11 +184,11 @@
         });
 
 
-        $("#btnSubmit").on('click', function(e) {
+        $("#btnSubmitSearch").on('click', function(e) {
             e.preventDefault();
-            $('#btnSubmit').hide();
-            $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
+            $('#btnSubmitSearch').hide();
+            $('#btnSubmitLoadSearch').show();
+            $('#btnSubmitLoadSearch').prop('disabled', true);
             getServiceIncentives();
         });
 
@@ -272,8 +273,8 @@
                         d.service = $("#service_id option:selected").val()
                     },
                     dataSrc: function(json) {
-                        $('#btnSubmit').show();
-                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmitSearch').show();
+                        $('#btnSubmitLoadSearch').hide();
                         return json.data;
                     }
                 },
@@ -336,8 +337,8 @@
 
                 $('#alertErrorServiceIncentive').text(response.mensaje);
                 $('#alertErrorServiceIncentive').show();
-                $('#btnSubmitLoad').hide();
-                $('#btnSubmit').show();
+                $('#btnSubmitLoadSearch').hide();
+                $('#btnSubmitSearch').show();
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {

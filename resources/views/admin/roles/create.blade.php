@@ -11,10 +11,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card" style="margin-top: 100px">
-                    <div class="card-header card-header-info card-header-text">
-                      <div class="card-text">
+                    <div class="card-header card-header-danger">
+                    
                         <h4 class="card-title">Nuevo rol</h4>
-                      </div>
+                  
                     </div>
                     <div class="card-body ">
                         <form id="createRole" action="{{ route('roles.store') }}" method="POST">
@@ -39,10 +39,10 @@
         $('#pagesConfig').addClass('show');
         $('#adminRole').addClass('active');
 
-        $("#btnSubmit").on('click', function(){
-            $('#btnSubmit').hide();
-            $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
+        $("#btnSubmitSave").on('click', function(){
+            $('#btnSubmitSave').hide();
+            $('#btnSubmitLoadSave').show();
+            $('#btnSubmitLoadSave').prop('disabled', true);
             $("#createRole").submit();
         });
         $("#btnBack").on('click', function(){

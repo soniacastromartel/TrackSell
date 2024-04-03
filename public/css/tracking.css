@@ -6,52 +6,25 @@
 }
 
 /* index.blade.php */
-.btn-add {
-    position: relative;
-    background-color: var(--red-icot);
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
+
+.date-informes-container,
+.date-solicitud-container{
+    margin-left: 80px;
+    padding-top: 20px;
+    background-image: url(/assets/img/calendarImage.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 80px;
-}
-.btn-add::after {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s, visibility 0.2s;
-    background-color: black;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
+    align-items: center;
+    
 }
 
-.btn-add:hover {
-    background-color: white;
-    color: var(--red-icot);
-}
-
-.btn-add:hover::after {
-    visibility: visible;
-    opacity: 1;
-}
-.card-header-danger {
-    border-radius: 50px !important;
-  }
 
 .form-date{
+    position: relative !important;
     background-color: var(--info) !important;
     width: 230px;
     height: 45px;
@@ -65,58 +38,39 @@
     padding-left: 20px;
 }
 
-.informes-container {
-    display:flex ;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.date-informes-container{
-    width: 20%;
+.icon-container{
+    position: relative; 
+    display: flex;
 }
 
-.picker-btn-container{
- width: 100%;
+
+.informes-container,
+.solicitud-container {
+    display:flex ;
+    flex-direction: row;
+   
 }
+
+
+
+.picker-btn-container{
+   width: 100%;
+   display: flex;
+}
+
 .picker-container{
     width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-direction: column;
 }
-
 
 .btn-container{
     display:flex;
-     align-items: center;
+    flex-direction: column;
     justify-content: flex-end;
-    height: 100px !important;
-  
+ 
+
 }
-
-.bootstrap-select .btn {
-    width: 230px;
-    height: 45px;
-    margin: 20px;
-    border: none !important;
-    background-color: var(--red-icot);
-    border-radius: 50px;
-    color: white;
-    display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .dropdown-menu {
-    border-radius: 20px;
-  }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -147,18 +101,9 @@
 
 
 
-
-
-
-
-
 /*form_change_centre.blade.php*/
 
-.request-container{
-    display:flex ;
-    flex-direction: row;
-    justify-content: space-between;
-}
+
 
 
 .tracking-validation-datatable tr>:nth-child(6) {

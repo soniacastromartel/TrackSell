@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('/css/centres.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <div class="row">
 
@@ -89,10 +90,10 @@
 
 <div class="row mr-4 text-right">
   <div class="col-lg-12 ml-4">
-    <button id="btnSubmit" type="submit" class="btn-save"> <span class="material-icons">
+    <button id="btnSubmitSave" type="submit" class="btn-save"> <span class="material-icons">
                             save
                             </span></button>
-    <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
+    <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none">
       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
  
     </button>

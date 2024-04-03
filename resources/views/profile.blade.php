@@ -41,7 +41,7 @@
                                         readonly>
                                 </div>
                             </div>
-                            <div class="col-lg-11 mx-auto">
+                            <div class="col-lg-10 mx-auto" style="margin-top:50px;">
                                 <!--- Accion solo permitida para admin -->
                                 <div class="row">
                                     <select class="selectpicker" name="rol_id" id="rol_id" data-size="7"

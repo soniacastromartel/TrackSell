@@ -3,7 +3,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
-
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
 
 <div class="content">
@@ -11,10 +11,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card" style="margin-top:100px">
-                    <div class="card-header card-header-info card-header-text">
-                      <div class="card-text">
+                    <div class="card-header card-header-danger">
                         <h4 class="card-title">Modificar rol</h4>
-                      </div>
                     </div>
                     <div class="card-body ">
                         <form id="editRole" action="{{ route('roles.update', $role->id) }}" method="POST">

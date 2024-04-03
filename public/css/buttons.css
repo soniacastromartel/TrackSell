@@ -6,6 +6,12 @@ button:focus {
   box-shadow: 0 0 0 2px #ffffff;
 }
 
+/*CARD HEADER*/
+
+.card-header-danger {
+  border-radius: 50px !important;
+}
+
 /*INPUT*/
 .form-control{
   border-radius: 50px !important;
@@ -33,6 +39,90 @@ button:focus {
 .dropdown-menu .inner {
   color: black;
 }
+
+/*BUTTONS CIRCLE*/
+
+.btn-search-circle {
+  position: relative ;
+  background-color: green;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.btn-search-circle::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-search-circle:hover {
+  background-color: white;
+  color: green;
+}
+
+.btn-search-circle:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+.btn-refresh-circle {
+  position: relative;   
+  background-color: orange ;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  padding: 0; display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  }
+  .btn-refresh-circle::after {
+  position: absolute;
+  bottom: 100%; 
+  left: 50%;
+  transform: translateX(-50%); 
+  white-space: nowrap; 
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s; 
+  border-radius: 4px;
+  font-size: 12px;
+  }
+  
+  .btn-refresh-circle:hover {
+  background-color: white; 
+  color: orange; 
+  }
+  
+  .btn-refresh-circle:hover::after {
+  visibility: visible;
+  opacity: 1;
+  }
+
 
 /* ICONS */
 #icon-export {
@@ -105,9 +195,41 @@ button:focus {
   border: 1px solid var(--sucess);
 }
 
+#icon-send {
+  position: absolute;
+  left: 0;
+  top: calc(50% - 20px);
+  background-color: white !important;
+  color: var(--green) !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--green);
+  cursor: pointer;
+}
+
 #icon-date {
   position: absolute;
   right: 20px;
+  top: calc(50% - 20px);
+  background-color: white !important;
+  color: var(--info) !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--info);
+  cursor: pointer;
+}
+
+#icon-date-left {
+  position: absolute;
+  left: 10px;
   top: calc(50% - 20px);
   background-color: white !important;
   color: var(--info) !important;
@@ -168,7 +290,15 @@ button:focus {
   background-color: var(--green);
 }
 
+.btn-send {
+  padding-left: 60px !important;
+  background-color: var(--green);
+}
+
 .btn-search:hover {
+  box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
+}
+.btn-send:hover {
   box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
 }
 
@@ -221,7 +351,7 @@ button:focus {
   margin-top: 80px;
 }
 
-/*CIRCLE BUTTONS */
+
 
 /* ADD BUTTON */
 
@@ -521,10 +651,8 @@ button:focus {
             opacity: 1;
             }
 
-  
-
-
   /* BTN DELETE */ 
+
 .btn-delete {
   position: relative;
   background-color: red;
@@ -566,7 +694,6 @@ button:focus {
 }
 
 /*BUTTON SAVE & RETURN */
-
 
      
 .btn-save{

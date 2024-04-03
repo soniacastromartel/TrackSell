@@ -1,3 +1,5 @@
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
@@ -27,126 +29,139 @@
 
                             <div class="informes-container">
 
-                                <div class="date-informes-container" style="background-color: lightgreen">
+                                <div class="date-informes-container">
+                                    <label class="label" for="dateFrom" style="padding: 10px" >Fecha desde </label>
+                                    <div class="icon-container">
+                                        <input type="date" id="date_from" name="date_from" max="3000-12-31"
+                                            min="1000-01-01"class="form-date">
+                                        <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+                                    </div>
+                                    </input>
 
-                                    <label class="label" for="dateFrom">Fecha desde </label>
-                                    <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01"class="form-date"></input>
 
-                                    <label class="label" for="dateTo">Fecha hasta </label>
-                                    <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-date"></input>
 
+                                    <label class="label" for="dateTo" style="padding: 10px" >Fecha hasta </label>
+                                    <div class="icon-container">
+                                        <input type="date" id="date_to" name="date_to" max="3000-12-31"
+                                            min="1000-01-01" class="form-date">
+                                        <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+                                    </div>
+                                    </input>
 
                                 </div>
 
 
                                 <div class="picker-btn-container">
-                                <div class="picker-container">
 
-                                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                        data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
-                                        @if ($user->rol_id != 1)
-                                            @foreach ($centres as $centre)
-                                                @if ($centre->id == $user->centre_id)
-                                                    <option class="text-uppercase" value="{{ $centre->id }}" selected
+                                    <div class="picker-container">
+
+                                        <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                            data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
+                                            @if ($user->rol_id != 1)
+                                                @foreach ($centres as $centre)
+                                                    @if ($centre->id == $user->centre_id)
+                                                        <option class="text-uppercase" value="{{ $centre->id }}" selected
+                                                            @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                            {{ $centre->name }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                @foreach ($centres as $centre)
+                                                    <option class="text-uppercase" value="{{ $centre->id }}"
                                                         @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
                                                         {{ $centre->name }}
                                                     </option>
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            @foreach ($centres as $centre)
-                                                <option class="text-uppercase" value="{{ $centre->id }}"
-                                                    @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
-                                                    {{ $centre->name }}
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <input type="hidden" name="centre" id="centre" />
+                                        <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
+                                            data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
+                                            <option>SIN SELECCION </option>
+                                            @if ($user->rol_id != 1)
+                                                @foreach ($employees as $employee)
+                                                    @if ($employee->centre_id == $user->centre_id)
+                                                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                @foreach ($employees as $employee)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <input type="hidden" name="employee" id="employee" />
+
+                                        <select class="selectpicker" name="service_id" id="service_id" data-size="7"
+                                            data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
+                                            <option>SIN SELECCION </option>
+                                            @foreach ($services as $service)
+                                                <option value="{{ $service->id }}"
+                                                    @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
+                                                    {{ $service->name }}
                                                 </option>
                                             @endforeach
-                                        @endif
-                                    </select>
-                                    <input type="hidden" name="centre" id="centre" />
-                                    <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
-                                        data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
-                                        <option>SIN SELECCION </option>
-                                        @if ($user->rol_id != 1)
-                                            @foreach ($employees as $employee)
-                                                @if ($employee->centre_id == $user->centre_id)
-                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                                @endif
+
+                                        </select>
+                                        <input type="hidden" name="service" id="service" />
+
+                                        <select class="selectpicker" name="patient_name" id="patient_name" data-size="7"
+                                            data-style="btn btn-red-icot btn-round" title=" Paciente" tabindex="-98">
+                                            <option>SIN SELECCION </option>
+                                            @foreach ($patients as $patient)
+                                                <option value="{{ $patient->patient_name }}">
+                                                    {{ $patient->patient_name }}
+                                                </option>
                                             @endforeach
-                                        @else
-                                            @foreach ($employees as $employee)
-                                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                        </select>
+                                        <select class="selectpicker" name="state_id" id="state_id" data-size="7"
+                                            data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
+                                            <option>SIN SELECCION </option>
+                                            @foreach ($states as $state)
+                                                <option class="text-uppercase" value="{{ $state->texto }}">
+                                                    {{ $state->nombre }}</option>
                                             @endforeach
-                                        @endif
-                                    </select>
-                                    <input type="hidden" name="employee" id="employee" />
-
-                                    <select class="selectpicker" name="service_id" id="service_id" data-size="7"
-                                        data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
-                                        <option>SIN SELECCION </option>
-                                        @foreach ($services as $service)
-                                            <option value="{{ $service->id }}"
-                                                @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
-                                                {{ $service->name }}
-                                            </option>
-                                        @endforeach
-
-                                    </select>
-                                    <input type="hidden" name="service" id="service" />
-
-                                    <select class="selectpicker" name="patient_name" id="patient_name" data-size="7"
-                                        data-style="btn btn-red-icot btn-round" title=" Paciente" tabindex="-98">
-                                        <option>SIN SELECCION </option>
-                                        @foreach ($patients as $patient)
-                                            <option value="{{ $patient->patient_name }}">
-                                                {{ $patient->patient_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <select class="selectpicker" name="state_id" id="state_id" data-size="7"
-                                        data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
-                                        <option>SIN SELECCION </option>
-                                        @foreach ($states as $state)
-                                            <option class="text-uppercase" value="{{ $state->texto }}">
-                                                {{ $state->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="btn-container-box">
-
-                                    <div class="btn-container">
-                                        <button id="btnClear" href="#" class="btn-refresh">
-                                            Limpiar Formulario
-                                            <span id=icon-refresh class="material-icons">
-                                                refresh
-                                            </span> 
-                                        </button>
-
-                                        <button id="btnSubmitFind" type="submit" class="btn-search">
-                                            Buscar 
-                                            <span id=icon-search class="material-icons">
-                                                search
-                                            </span>
-                                        </button>
-                                        
-                                        <button id="btnSubmitFindLoad" type="submit" class="btn-search" style="display: none" >
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
-
-                                        <button id="btnSubmit" type="submit" class="btn-export">
-                                            Exportar
-                                            <span id=icon-export class="material-icons">file_download</span>
-                                        </button>
-
-                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
+                                        </select>
                                     </div>
-                                </div>
 
-                            </div>
+                                    <div class="btn-container-box">
+
+                                        <div class="btn-container">
+                                            <button id="btnClear" href="#" class="btn-refresh">
+                                                Limpiar Formulario
+                                                <span id=icon-refresh class="material-icons">
+                                                    refresh
+                                                </span>
+                                            </button>
+
+                                            <button id="btnSubmitFind" type="submit" class="btn-search">
+                                                Buscar
+                                                <span id=icon-search class="material-icons">
+                                                    search
+                                                </span>
+                                            </button>
+
+                                            <button id="btnSubmitFindLoad" type="submit" class="btn-search"
+                                                style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+
+                                            <button id="btnSubmit" type="submit" class="btn-export">
+                                                Exportar
+                                                <span id=icon-export class="material-icons">file_download</span>
+                                            </button>
+
+                                            <button id="btnSubmitLoad" type="submit" class="btn-export"
+                                                style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
 
                             </div>
                         </form>
@@ -155,8 +170,8 @@
                 <!-- tabla-->
                 <div class="row col-12 right mb-3">
                     <div class="row" style="margin-bottom: 50px;">
-                        <a href="{{ route('tracking.create') }}" id="btnNewTracking"
-                            class="btn-add"><span class="material-icons">add</span></a>
+                        <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn-add"><span
+                                class="material-icons">add</span></a>
                     </div>
 
                 </div>
@@ -253,14 +268,14 @@
             // Buscar
             $("#btnSubmitFind").on('click', function(e) {
                 e.preventDefault();
-               
+
                 //$("#finalValidationForm").attr('action','{{ route('tracking.index_validation_final') }}');
                 $('#btnSubmitFind').hide();
                 $('#btnSubmitFindLoad').show();
                 $('#btnSubmitFindLoad').prop('disabled', true);
                 //$('#centre').val($( "#centre_id option:selected" ).text());
                 getTrackingData();
-                
+
             });
 
             function clearForms() {
@@ -320,38 +335,39 @@
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error' + jqXHR.responseText);
 
-        });
-    }
-    function setDate() {
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1; 
-    var year = date.getFullYear();
-    var startDay = 20;
+            });
+        }
 
-    day = day < 10 ? '0' + day : day;
-    month = month < 10 ? '0' + month : month;
+        function setDate() {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            var startDay = 20;
 
-    var dateTo = year + '-' + month + '-' + day; 
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
 
-    var previousMonth = month; 
-    var previousYear = year;
+            var dateTo = year + '-' + month + '-' + day;
 
-    if (month === '01' && day < 21) {
-        previousMonth = '12';
-        previousYear = year - 1; 
+            var previousMonth = month;
+            var previousYear = year;
 
-    } else {
-        previousMonth = parseInt(month, 10); 
-        previousMonth = (day < 21) ? previousMonth - 1 : previousMonth; 
-        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString(); 
-    }
+            if (month === '01' && day < 21) {
+                previousMonth = '12';
+                previousYear = year - 1;
 
-    var dateFrom = previousYear + '-' + previousMonth + '-' + startDay; 
+            } else {
+                previousMonth = parseInt(month, 10);
+                previousMonth = (day < 21) ? previousMonth - 1 : previousMonth;
+                previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString();
+            }
 
-    document.getElementById("date_from").value = dateFrom;
-    document.getElementById("date_to").value = dateTo;
-}
+            var dateFrom = previousYear + '-' + previousMonth + '-' + startDay;
+
+            document.getElementById("date_from").value = dateFrom;
+            document.getElementById("date_to").value = dateTo;
+        }
 
         function getTrackingData() {
             if ($.fn.dataTable.isDataTable('.tracking-datatable')) {

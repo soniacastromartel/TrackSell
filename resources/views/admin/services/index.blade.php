@@ -4,6 +4,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/services.css') }}">
 <div class="content">
     <div class="container-fluid">
@@ -145,12 +146,3 @@
 
 @endsection
 
-<style> 
-
-.content {
-  background-image: url(/assets/img/background_continue.png) !important;
-  background-position: center center !important;
-  background-size: 1000px;
-}
-
-</style>

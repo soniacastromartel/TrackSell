@@ -1,23 +1,29 @@
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
-<div class="request-container">
+<div class="solicitud-container" style="background-color: yellow">
 
-    <div class="col-md-2">
+    <div class="date-solicitud-container" style="background-color:aqua">
 
         <label for="name" class="label">Fecha inicio</label>
         <input type="date" id="start_date" name="start_date" max="3000-12-31" min="1000-01-01" value=""
-            class="form-control"></input>
+            class="form-date"></input>
 
         <label for="name" class="label">Fecha fin</label>
         <input type="date" id="end_date" name="end_date" max="3000-12-31" min="1000-01-01" value=""
-            class="form-control"></input>
+            class="form-date"></input>
 
-        <label class="label" for="observations">Observaciones</label>
-        <input type="text" class="form-control" id="observations" name="observations" />
+       
 
     </div>
 
-    <div class="picker-container">
+    <div class="observaciones-continer" style="background-color: rgb(163, 163, 224)">
+
+    <label class="label" for="observations">Observaciones</label>
+    <input type="text" class="form-control" id="observations" name="observations" />
+
+    </div>
+
+    <div class="picker-container" style="background-color: lightcoral">
 
         <select class="selectpicker" name="centre_origin_id" id="centre_origin_id" data-size="7"
             data-style="btn btn-red-icot" title="Centro Origen" tabindex="-98">
@@ -51,18 +57,18 @@
 
         <div class="btn-container">
 
-            <button id="btnClear" href="#" class="btn btn-lg-fill btn-warning">
-                <span class="material-icons mr-1">clear_all</span>{{ __('Limpiar formulario') }}
+            <button id="btnClear" href="#" class="btn-refresh">Limpiar Formulario
+                <span id=icon-refresh class="material-icons">refresh</span>
             </button>
 
-            <button id="btnSubmit" type="button" class="btn btn-fill btn-success">
-                <span class="material-icons mr-1">publish</span>{{ __('Enviar') }}</button>
+            <button id="btnSubmit" type="button" class="btn-send">
+                <span id=icon-send class="material-icons">publish</span>{{ __('Enviar') }}</button>
             <button id="btnSubmitLoad" type="button" class="btn btn-fill btn-success" style="display: none">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 {{ __('Enviando...') }}
             </button>
-            <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
-                <span class="material-icons mr-1">arrow_back</span>{{ __('Volver') }}
+            <button id="btnBack" href="/config" class="btn-return">
+                <span class="material-icons">arrow_back</span>
             </button>
         </div>
     </div>

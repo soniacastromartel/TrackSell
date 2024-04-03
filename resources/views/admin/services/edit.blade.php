@@ -9,10 +9,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card ">
-                    <div class="card-header card-header-info card-header-text">
-                      <div class="card-text">
+                    <div class="card-header card-header-danger">
                         <h4 class="card-title">Modificar servicio</h4>
-                      </div>
                     </div>
                     <div class="card-body ">
                         <form id="editService" action="{{ route('services.update', $service->id) }}" method="POST" enctype="multipart/form-data">
@@ -35,7 +33,7 @@
         $('#pagesConfig').addClass('show');
         $('#adminService').addClass('active')
         
-        $("#btnSubmit").on('click', function(){
+        $("#btnSubmitSave").on('click', function(){
             $("#editService").submit();
         });
         $("#btnBack").on('click', function(){

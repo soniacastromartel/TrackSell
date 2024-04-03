@@ -1,5 +1,8 @@
 
 
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
+
 <div class="row" style="margin-bottom:40px; margin-top: 20px;">
   <div class="form-group col-md-3"  style="margin-right:20px;margin-left: 60px;">
     <label for="name">Nombre <span id="obligatory">*</span></label>
@@ -23,11 +26,11 @@
 
 <div class="row mt-2" style="margin-left: 30px;">
     <div class="col text-right">
-        <button id="btnSubmit" type="submit" class="btn-save">
+        <button id="btnSubmitSave" type="submit" class="btn-save">
         <span class="material-icons mr-1">save </span>  
         </button>
 
-        <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
+        <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
   
         </button>
