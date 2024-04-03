@@ -3,16 +3,17 @@
 @include('inc.navbar')
 @include('common.alert')
 
-
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
+
 <div id="alertErrorRole" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertRole" class="alert alert-success" role="alert" style="display: none">
 </div>
 
 <div class="content">
-    <div class="container-fluid">
-        <div class="row col-md-12 mb-3 ">
+    <div class="container-fluid" >
+        <div class="row col-md-12 mb-3">
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
@@ -144,13 +145,5 @@
 </script>
 
 @endsection
-<style>
 
-    .main-panel {
-        background-image: url(/assets/img/background_continue.png) !important;
-        background-position: center center !important;
-        background-size: 1000px;
-    }
-    
-        </style>
 

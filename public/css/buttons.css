@@ -1,153 +1,732 @@
 button:focus {
-    outline: none;
+  outline: none;
 }
 button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #ffffff; 
-}
-    
-
-
-     #icon-export{
-    position: absolute;
-    left: 0;
-    background-color: white;
-    color : var(--gray-dark);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--gray-dark);
-   } 
-
-   #icon-refresh{
-    position: absolute;
-    left: 0;
-    background-color: white;
-    color : var(--orange);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--orange);
-   } 
-
-   #icon-search{
-    position: absolute;
-    left: 0;
-    background-color: white;
-    color : var(--green);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--green);
-   } 
-   
-   #icon-calculate{
-    position: absolute;
-    left: 0;
-    background-color: white;
-    color : var(--primary);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--primary);
-   }   
-
-   #icon-pay{
-    position: absolute;
-    left: 0;
-    background-color: white;
-    color : var(--success);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--sucess);
-   }   
-
-#btnClear, #btnSubmit,#btnSubmitFind,#btnCalculate,#btnValidate{
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    text-decoration: none;
-    
-    font-size: 1.1rem;
-    position: relative;
-    margin:10px;   
-    border: none;
-    border-radius: 50px;
-    color: white;
-    width: 230px;
-    height:45px; 
-
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff;
 }
 
-
-.btn-refresh{
-    padding-left: 60px !important;
-    background-color: var(--orange) !important;
-}
-.btn-refresh:hover{
-    box-shadow: 8px 8px 15px rgba(245, 118, 0, 0.63);
+/*INPUT*/
+.form-control{
+  border-radius: 50px !important;
 }
 
-.btn-export{
-    padding-left: 120px !important;
-    background-color: var(--gray-dark);
-}
-.btn-export:hover{
-    box-shadow: 8px 8px 15px rgba(36, 35, 35, 0.63);
+ /* BUTTON SELECTPICKER  */
+
+.bootstrap-select .btn {
+  width: 230px;
+  height: 45px;
+  margin: 20px;
+  border: none !important;
+  background-color: var(--red-icot);
+  border-radius: 50px;
+  color: white;
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
-.btn-search{
-    padding-left: 60px!important;
-    background-color: var(--green);
-}
-.btn-search:hover{
-    box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
+.dropdown-menu {
+  border-radius: 20px;
 }
 
-.btn-calculate{
-    padding-left: 60px!important;
-    background-color: var(--primary);
-}
-.btn-calculate:hover{
-    box-shadow: 8px 8px 15px rgba(28, 146, 201, 0.63);
+.dropdown-menu .inner {
+  color: black;
 }
 
-.btn-pay-all{
-    padding-left: 60px!important;
-    background-color: var(--success); 
-}
-.btn-pay-all:hover{
-    box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
+/* ICONS */
+#icon-export {
+  position: absolute;
+  left: 0;
+  background-color: white;
+  color: var(--gray-dark);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gray-dark);
 }
 
+#icon-refresh {
+  position: absolute;
+  left: 0;
+  background-color: white;
+  color: var(--orange);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--orange);
+}
+
+#icon-search {
+  position: absolute;
+  left: 0;
+  background-color: white;
+  color: var(--green);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--green);
+}
+
+#icon-calculate {
+  position: absolute;
+  left: 0;
+  background-color: white;
+  color: var(--primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--primary);
+}
+
+#icon-pay {
+  position: absolute;
+  left: 0;
+  background-color: white;
+  color: var(--success);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--sucess);
+}
+
+#icon-date {
+  position: absolute;
+  right: 20px;
+  top: calc(50% - 20px);
+  background-color: white !important;
+  color: var(--info) !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--info);
+  cursor: pointer;
+}
+
+/* BUTTONS */
+
+#btnClear,
+#btnSubmit,
+#btnSubmitFind,
+#btnSubmitLoad,
+#btnSubmitFindLoad,
+#btnCalculate,
+#btnValidate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.1rem;
+  position: relative;
+  margin: 10px;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  width: 230px;
+  height: 45px;
+}
+
+
+.btn-refresh {
+  padding-left: 60px !important;
+  background-color: var(--orange) !important;
+}
+
+.btn-refresh:hover {
+  box-shadow: 8px 8px 15px rgba(245, 118, 0, 0.63);
+}
+
+.btn-export {
+  padding-left: 120px !important;
+  background-color: var(--gray-dark);
+}
+
+.btn-export:hover {
+  box-shadow: 8px 8px 15px rgba(36, 35, 35, 0.63);
+}
+
+.btn-search {
+  padding-left: 60px !important;
+  background-color: var(--green);
+}
+
+.btn-search:hover {
+  box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
+}
+
+.btn-calculate {
+  padding-left: 60px !important;
+  background-color: var(--primary);
+}
+
+.btn-calculate:hover {
+  box-shadow: 8px 8px 15px rgba(28, 146, 201, 0.63);
+}
+
+.btn-pay-all {
+  padding-left: 60px !important;
+  background-color: var(--success);
+}
+
+.btn-pay-all:hover {
+  box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
+}
 
 .icon-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    width: 230px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 230px;
 }
 
-
 .btn-export-container {
-    position: absolute;
-    right: 0;
-    margin-top:0;
-    z-index: 20;
+  position: absolute;
+  right: 0;
+  margin-top: 0;
+  z-index: 20;
+}
+
+.btn-add {
+  position: relative;
+  background-color: var(--red-icot);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
+}
+
+/*CIRCLE BUTTONS */
+
+/* ADD BUTTON */
+
+.btn-add::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-add:hover {
+  background-color: white;
+  color: var(--red-icot);
+}
+
+.btn-add:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* EDIT BUTTON */
+
+.btn-edit {
+  position: relative;
+  background-color: orange;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.btn-edit::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-edit:hover {
+  background-color: white;
+  color: orange;
+}
+
+.btn-edit:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* BTN RESET */ 
+
+.btn-reset-access{
+  position: relative;   
+  background-color: green;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  padding: 0; display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  }
+  .btn-reset-access::after {
+  content: attr(data-access); 
+  position: absolute;
+  bottom: 100%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  white-space: nowrap; 
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s; 
+  background-color: black; 
+  color: white; 
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  }
+  
+  .btn-reset-access:hover {
+  background-color: white; 
+  color: green;   
+  }
+  
+  .btn-reset-access:hover::after {
+  visibility: visible;
+  opacity: 1;
+  }
+
+/* BUTTON VALIDATE-PASSWORD */ 
+
+.btn-validate-password{
+  position: relative;   
+  background-color: blue;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  padding: 0; display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  }
+  
+  .btn-validate-password::after{
+  content: attr(data-validate); 
+  position: absolute;
+  bottom: 100%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  white-space: nowrap; 
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  background-color: black; 
+  color: white; 
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  }
+  
+  .btn-validate-password:hover {
+  background-color: white; 
+  color:blue; 
+  }
+  
+  .btn-validate-password:hover::after {
+  visibility: visible;
+  opacity: 1;
+  }
+  
+  /* BUTTON DENEGATE ACCESS */ 
+  
+  .btn-denegate-access{
+  position: relative;   
+  background-color: red;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  padding: 0; display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  }
+  
+  .btn-denegate-access::after{
+  content: attr(data-denegate); 
+  position: absolute;
+  bottom: 100%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  white-space: nowrap; 
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s; 
+  background-color: black; 
+  color: white; 
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  }
+  
+  .btn-denegate-access:hover {
+  background-color: white; 
+  color:red; 
+  }
+  
+  .btn-denegate-access:hover::after {
+  visibility: visible;
+  opacity: 1;
+  }
+  
+  /* BUTTON SINCRO A3 */ 
+  
+  .btn-sincro-a3{
+  position: relative;   
+  background-color: teal;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  padding: 0; display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  }
+  
+  .btn-sincro-a3::after{
+  content: attr(data-sincro); 
+  position: absolute;
+  bottom: 100%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  white-space: nowrap; 
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s; 
+  background-color: black; 
+  color: white; 
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  }
+  
+  .btn-sincro-a3:hover {
+  background-color: white; 
+  color:teal; 
+  }
+  
+  .btn-sincro-a3:hover::after {
+  visibility: visible;
+  opacity: 1;
+  }
+
+    /* BUTTON SINCRO ALL A3 */ 
+
+    #btnSyncA3 {
+      font-weight: 900;
+      font-size: large;
+      background-color: #eeeeee;
+      color: var(--red-icot);
+  }
+
+  .btn-sincro-all{
+    position: relative;
+    background-color: var(--red-icot)!important;
+    border: none;
+    color: white !important;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 80px;
     }
+    .btn-sincro-all::after{
+        position: absolute;
+        bottom: 100%; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        white-space: nowrap; 
+        visibility: hidden; 
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0.2s;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        }
+
+        .btn-sincro-all:hover {
+            background-color: white !important; 
+            color:var(--red-icot) !important;
+            }
+
+            .btn-sincro-all:hover::after {
+            visibility: visible;
+            opacity: 1;
+            }
+
+  
+
+
+  /* BTN DELETE */ 
+.btn-delete {
+  position: relative;
+  background-color: red;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.btn-delete::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-delete:hover {
+  background-color: white;
+  color: red;
+}
+
+.btn-delete:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*BUTTON SAVE & RETURN */
+
+
+     
+.btn-save{
+  position: relative;   
+  background-color: green;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  padding: 0; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  }
+
+  .btn-save::after {
+  position: absolute;
+  bottom: 100%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  white-space: nowrap; 
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s; 
+  border-radius: 4px;
+  font-size: 12px;
+  }
+  
+  .btn-save:hover {
+  background-color: white; 
+  color: green;   
+  }
+  
+  .btn-save:hover::after {
+  visibility: visible;
+  opacity: 1;
+  }
+
+  .btn-return{
+      position: relative;   
+      background-color:var(--red-icot);
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 40px; 
+      height: 40px;
+      padding: 0; 
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+      margin: 10px;
+      }
+
+      .btn-return::after {
+      position: absolute;
+      bottom: 100%; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      white-space: nowrap; 
+      visibility: hidden; 
+      opacity: 0;
+      transition: opacity 0.2s, visibility 0.2s; 
+      border-radius: 4px;
+      font-size: 12px;
+      }
+      
+      .btn-return:hover {
+      background-color: white; 
+      color:var(--red-icot);   
+      }
+      
+      .btn-return:hover::after {
+      visibility: visible;
+      opacity: 1;
+      }
+
+      /*BUTTON SAVE AND RETURN */
+
+      .btn-save{
+        position: relative;   
+        background-color: green;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 40px; 
+        height: 40px;
+        padding: 0; 
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        }
+
+        .btn-save::after {
+        position: absolute;
+        bottom: 100%; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        white-space: nowrap; 
+        visibility: hidden; 
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0.2s; 
+        border-radius: 4px;
+        font-size: 12px;
+        }
+        
+        .btn-save:hover {
+        background-color: white; 
+        color: green;   
+        }
+        
+        .btn-save:hover::after {
+        visibility: visible;
+        opacity: 1;
+        }
+
+        .btn-return{
+            position: relative;   
+            background-color:var(--red-icot);
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 40px; 
+            height: 40px;
+            padding: 0; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            }
+
+            .btn-return::after {
+            position: absolute;
+            bottom: 100%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            white-space: nowrap; 
+            visibility: hidden; 
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s; 
+            border-radius: 4px;
+            font-size: 12px;
+            }
+            
+            .btn-return:hover {
+            background-color: white; 
+            color:var(--red-icot);   
+            }
+            
+            .btn-return:hover::after {
+            visibility: visible;
+            opacity: 1;
+            }

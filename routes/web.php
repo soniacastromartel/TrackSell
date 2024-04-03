@@ -72,7 +72,9 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/getRequestChanges', 'TrackingController@getRequestChanges')->name('tracking.getRequestChanges');
     Route::post('/tracking/confirmRequest', 'TrackingController@confirmRequest')->name('tracking.confirmRequest');
     // Route::post('/tracking/discountStatistics', 'TrackingController@discountStats')->name('tracking.discountStats');
+
     //!Target
+    Route::get('/incentives-report-download', 'IncentivesReportController@download')->name('target.incentivesReportDownload');
     Route::get('/calculateIncentive', 'TargetController@index')->name('calculateIncentive');
     Route::post('/target/import', 'TargetController@import')->name('target.import');
     Route::post('/target/importSales', 'TargetController@importSales')->name('target.importSales');
@@ -87,13 +89,13 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/calculateRanking', 'RankingController@index')->name('calculateRanking');
     Route::post('/ranking/calculateRankings', 'RankingController@calculateRankings')->name('ranking.calculateRankings');
     //!League
+    Route::get('/league/export', 'LeagueController@exportLeague')->name('league.exportLeague');
     Route::get('/centerLeague', 'LeagueController@index')->name('centerLeague');
     Route::post('/league/generateLeague', 'LeagueController@generateLeague')->name('league.generateLeague');
     Route::post('/league/details', 'LeagueController@detailsCentreLeague')->name('league.detailsCentreLeague');
     //!Notifications
     Route::any('/notifications/index', 'NotificationController@index')->name('notifications.index');
 });
-
 
 //!AMDMIN Roles
 Route::middleware(['check-admin-permission'])->group(function () {
@@ -106,7 +108,6 @@ Route::middleware(['check-admin-permission'])->group(function () {
     Route::get('/admin/employees/validation', 'EmployeeController@indexPending')->name('employees.indexPending');
 });
 
-
 //! User
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('profile');
@@ -115,7 +116,6 @@ Route::put('/editProfile/{id}', 'HomeController@editProfile')->name('editProfile
 Route::get('/getSales', 'HomeController@getSales')->name('home.getSales');
 Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets');
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
-
 
 //!A3API
 Route::prefix('a3api')->group(function() {

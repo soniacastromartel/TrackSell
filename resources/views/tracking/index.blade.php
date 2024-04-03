@@ -4,6 +4,7 @@
     @include('common.alert')
 
     <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
     <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
     </div>
@@ -26,23 +27,23 @@
 
                             <div class="informes-container">
 
-                                <div class="col-md-2">
+                                <div class="date-informes-container" style="background-color: lightgreen">
 
                                     <label class="label" for="dateFrom">Fecha desde </label>
-                                    <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01"class="form-control"></input>
+                                    <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01"class="form-date"></input>
 
                                     <label class="label" for="dateTo">Fecha hasta </label>
-                                    <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
+                                    <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-date"></input>
 
 
                                 </div>
 
 
-
+                                <div class="picker-btn-container">
                                 <div class="picker-container">
 
                                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                        data-style="btn btn-red-icot" title=" Centro" tabindex="-98">
+                                        data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
                                         @if ($user->rol_id != 1)
                                             @foreach ($centres as $centre)
                                                 @if ($centre->id == $user->centre_id)
@@ -63,7 +64,7 @@
                                     </select>
                                     <input type="hidden" name="centre" id="centre" />
                                     <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
-                                        data-style="btn btn-red-icot " title=" Empleado" tabindex="-98">
+                                        data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
                                         <option>SIN SELECCION </option>
                                         @if ($user->rol_id != 1)
                                             @foreach ($employees as $employee)
@@ -80,7 +81,7 @@
                                     <input type="hidden" name="employee" id="employee" />
 
                                     <select class="selectpicker" name="service_id" id="service_id" data-size="7"
-                                        data-style="btn btn-red-icot" title=" Servicio" tabindex="-98">
+                                        data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
                                         <option>SIN SELECCION </option>
                                         @foreach ($services as $service)
                                             <option value="{{ $service->id }}"
@@ -93,7 +94,7 @@
                                     <input type="hidden" name="service" id="service" />
 
                                     <select class="selectpicker" name="patient_name" id="patient_name" data-size="7"
-                                        data-style="btn btn-red-icot " title=" Paciente" tabindex="-98">
+                                        data-style="btn btn-red-icot btn-round" title=" Paciente" tabindex="-98">
                                         <option>SIN SELECCION </option>
                                         @foreach ($patients as $patient)
                                             <option value="{{ $patient->patient_name }}">
@@ -102,45 +103,51 @@
                                         @endforeach
                                     </select>
                                     <select class="selectpicker" name="state_id" id="state_id" data-size="7"
-                                        data-style="btn btn-red-icot " title=" Estado" tabindex="-98">
+                                        data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
                                         <option>SIN SELECCION </option>
                                         @foreach ($states as $state)
                                             <option class="text-uppercase" value="{{ $state->texto }}">
                                                 {{ $state->nombre }}</option>
                                         @endforeach
-
                                     </select>
-
                                 </div>
 
-
                                 <div class="btn-container-box">
+
                                     <div class="btn-container">
-                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                            <span class="material-icons mr-1">
-                                                clear_all
-                                            </span> {{ __('Limpiar formulario') }}
+                                        <button id="btnClear" href="#" class="btn-refresh">
+                                            Limpiar Formulario
+                                            <span id=icon-refresh class="material-icons">
+                                                refresh
+                                            </span> 
                                         </button>
-                                        <button id="btnSubmitFind" type="submit" class="btn btn-fill btn-success"><span
-                                                class="material-icons">
-                                                search</span> {{ __('Buscar') }}</button>
-                                        <button id="btnSubmitFindLoad" type="submit" class="btn btn-success">
+
+                                        <button id="btnSubmitFind" type="submit" class="btn-search">
+                                            Buscar 
+                                            <span id=icon-search class="material-icons">
+                                                search
+                                            </span>
+                                        </button>
+                                        
+                                        <button id="btnSubmitFindLoad" type="submit" class="btn-search" style="display: none" >
                                             <span class="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
                                         </button>
-                                        <button id="btnSubmit" type="submit" class="btn btn-dark-black"><span
-                                                class="material-icons">
-                                                file_download
-                                            </span> {{ __('Exportar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black"
-                                            style="display: none">
+
+                                        <button id="btnSubmit" type="submit" class="btn-export">
+                                            Exportar
+                                            <span id=icon-export class="material-icons">file_download</span>
+                                        </button>
+
+                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true"></span>
-                                            {{ __('Exportando datos...') }}
                                         </button>
                                     </div>
                                 </div>
+
+                            </div>
+
                             </div>
                         </form>
                     </div>
@@ -149,8 +156,7 @@
                 <div class="row col-12 right mb-3">
                     <div class="row" style="margin-bottom: 50px;">
                         <a href="{{ route('tracking.create') }}" id="btnNewTracking"
-                            class="btn btn-red-icot btn-lg"><span class="material-icons">
-                                add_circle</span> Nuevo Seguimiento</a>
+                            class="btn-add"><span class="material-icons">add</span></a>
                     </div>
 
                 </div>
@@ -175,7 +181,6 @@
             </div>
         </div>
     </div>
-
 
     <script type="text/javascript">
         var table;
@@ -248,12 +253,14 @@
             // Buscar
             $("#btnSubmitFind").on('click', function(e) {
                 e.preventDefault();
+               
                 //$("#finalValidationForm").attr('action','{{ route('tracking.index_validation_final') }}');
                 $('#btnSubmitFind').hide();
                 $('#btnSubmitFindLoad').show();
                 $('#btnSubmitFindLoad').prop('disabled', true);
                 //$('#centre').val($( "#centre_id option:selected" ).text());
                 getTrackingData();
+                
             });
 
             function clearForms() {
@@ -460,8 +467,6 @@
             table.columns.adjust().draw();
         }
 
-
-
         // <!--Export-->
         $("#btnSubmit").on('click', function(e) {
             e.preventDefault();
@@ -507,23 +512,10 @@
                     }
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error' + jqXHR.responseText);
-
+                alert('Error' + jqXHR.responseText)
 
             });
         });
     </script>
 
 @endsection
-<style>
-    .content {
-     
-}
- .main-panel{
-    background-image: url(/assets/img/background_continue.png) !important;
-        background-position: center center !important;
-        background-size: 1000px;
-  
- }
-
-</style>

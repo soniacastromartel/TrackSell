@@ -16273,6 +16273,7 @@
   .card.card-rotate.bg-rose .back,
   .card.card-rotate.bg-rose .front {
     background: linear-gradient(60deg, #ec407a, #d81b60);
+
   }
   
   .card .card-header-primary .card-icon,
@@ -24245,6 +24246,7 @@
     width: 10px;
     height: 10px;
   }
+  
   
   .jvectormap-zoomin {
     top: 10px;

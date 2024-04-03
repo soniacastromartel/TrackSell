@@ -4,7 +4,8 @@
     @include('common.alert')
 
     <link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    
     <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
     </div>
     <div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
@@ -359,28 +360,3 @@
     </script>
 @endsection
 
-<style>
-    .content {
-    
- background-size: 1000px;
-  background-image: url(/assets/img/background_continue.png) !important;
-  background-position: center center !important;
-
-}
-
-#category {
-    text-transform: lowercase;
-}
-
-#btnSyncA3 {
-    font-weight: 900;
-    font-size: large;
-    background-color: #eeeeee;
-    color: var(--red-icot);
-}
-td.upper {
-    text-transform: lowercase;
-}
-
-
-</style>

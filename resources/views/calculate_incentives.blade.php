@@ -192,8 +192,6 @@
                                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                 {{ __('Obteniendo datos...') }}
                                             </button>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -554,7 +552,6 @@
             $("#importTargetForm").attr('enctype', "multipart/form-data");
             $('#btnImportTargets').hide();
             $('#targetInputFileLoad').show();
-
             $('#yearTarget').val($("#yearTargetPicker").val());
             $("#importTargetForm").submit();
         });
@@ -567,8 +564,6 @@
             $('#targetInputFileLoad').show();
             $("#importTargetForm").submit();
         });
-
-
 
         /**
          * Exportar Seguimiento de Objetivos
@@ -629,8 +624,6 @@
 
             });
         });
-
-
 
         function drawTable(idDataTable) {
             $('#centre').val($("#centre_id option:selected").text());

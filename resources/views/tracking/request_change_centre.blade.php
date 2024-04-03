@@ -1,11 +1,7 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
-
-<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
-
 
 <div class="content">
     <div class="container-fluid">
@@ -19,14 +15,11 @@
                     </div>
                     <div class="card-body ">
                         <form id="createRequestChangeCentre" action="{{ route('tracking.saveRequest') }}" method="POST">
-
                             @csrf
                             @method('POST')
                             @include('tracking.form_change_centre')
                         </form>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -254,11 +247,11 @@
 </script>
 @endsection
 <style>
-.main-panel {
+    .content {
     background-image: url(/assets/img/background_continue.png) !important;
     background-position: center center !important;
-    background-size: 1000px;
+    background-size: 1000px;  
+    background-repeat: repeat;
+    height: 110vh;
 }
-
-
-    </style>
+</style>

@@ -1,57 +1,16 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
 <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
+
 <div id="alertErrorServiceIncentive" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertServiceIncentive" class="alert alert-warning" role="alert" style="display: none">
 </div>
 
 
-
-<style>
-   
-
-.content {
-    background-image: url(/assets/img/background_continue.png) !important;
-    background-size: 1600px;
-    background-position: center center !important;
-}
-
-    .file-upload {
-        margin: 0 10px 0 25px;
-      
-    }
-
-    .file-upload input.upload {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        padding: 0;
-        z-index: 10;
-        font-size: 20px;
-        cursor: pointer;
-        height: 36px;
-        opacity: 0;
-        filter: alpha(opacity=0);
-    }
-
-    #fileuploadurl {
-        border: none;
-        font-size: 12px;
-        padding-left: 0;
-        width: 250px;
-        margin-left: 25px;
-    }
-
-   
-
-
-</style>
 <div class="content">
     <div class="container-fluid">
         <div class="card" style="margin-top:100px ">
@@ -59,13 +18,11 @@
                 <h4 class="card-title">Configuración</h4>
             </div>
             <div class="card-body">
-                <div class="row" style=" display:flex; justify-content:space-between">
-                       
-                        <div class="btn-container" style="display:flex; width:80%;"> 
-                        <div class="form-group col-md-2">
+                <div class="row col-md-12 mb-3 justify-between">
+                    <div class="row col-lg-8 col-md-5">
+                        <div class="form-group col-md-4">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot " title=" Centro" tabindex="-98">
-    
+                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
                                     @foreach ($centres as $centre)
                                     <option value="{{$centre->id}}">{{$centre->name}}</option>
                                     @endforeach
@@ -73,11 +30,9 @@
                             </div>
                         </div>
     
-                        <div class="form-group col-md-2" >
-
+                        <div class="form-group col-md-4">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot " title="Servicio" tabindex="-98">
-    
+                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Servicio" tabindex="-98">
                                     @foreach ($services as $service)
                                     <option value="{{  $service->id  }}">{{$service->name}}</option>
                                     @endforeach
@@ -86,14 +41,12 @@
                         </div>
                     </div>
                    
-                    <div class="btn-box">
-                       
+                    <div class="form-group col-md-4" style="display:flex;justify-content:end;align-items:center;">
                         <button id="btnClear" href="#" class="btn-refresh">
                         <span class="material-icons">
                             refresh
                             </span>   
                         </button>
-                    
                         <button id="btnSubmit" type="submit" class="btn-searcher">
                         <span class="material-icons">
                             search
@@ -103,9 +56,7 @@
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         </button>
                     </div>
-
                 </div>
-
         </div>
 
     </div>

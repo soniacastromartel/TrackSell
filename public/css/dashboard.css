@@ -41,93 +41,59 @@ svg.ct-chart-line {
 #DataTables_Table_0_paginate > ul.pagination {
   margin: 16px 0 !important;
 }
-.label{
+.label {
   margin-top: 20px;
   margin: 10px;
 }
 
-#monthYearPickerContainer{
+#monthYearPickerContainer {
   display: flex;
   justify-content: center;
-  position: relative  !important;
- 
+  position: relative !important;
 }
 
-#yearPickerContainer{
+#yearPickerContainer {
   display: flex;
   justify-content: center;
-  position: relative  !important;
+  position: relative !important;
 }
 
-#monthYearPicker{
-   background-color: var(--info) !important;
-    width: 230px; 
-    height:45px; 
-    margin: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    border: none;
-    border-radius: 50px; 
-    padding-left: 20px; 
-}
-
-#monthYearPicker:hover{
-  box-shadow: 8px 8px 15px rgba(23, 94, 187, 0.63);
-}
-#yearPicker {
+#monthYearPicker {
   background-color: var(--info) !important;
-  width: 230px; 
-  height:45px; 
+  width: 230px;
+  height: 45px;
   margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: center;
   border: none;
-  border-radius: 50px; 
-  padding-left: 20px; 
+  border-radius: 50px;
+  padding-left: 20px;
 }
 
-#icon-date{
-    position: absolute;
-    right: 20px; 
-    top: calc(50% - 20px); 
-    background-color: white !important;
-    color:var(--info) !important;;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--info) ;
-    cursor: pointer; 
+#monthYearPicker:hover {
+  box-shadow: 8px 8px 15px rgba(23, 94, 187, 0.63);
 }
 
-.bootstrap-select .btn {
-width: 230px; 
-height:45px; 
-margin:20px;  
-border: none !important;
-background-color: var(--red-icot); 
-border-radius: 50px; 
-color: white; 
+#yearPicker {
+  background-color: var(--info) !important;
+  width: 230px;
+  height: 45px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  border: none;
+  border-radius: 50px;
+  padding-left: 20px;
 }
 
-.dropdown-menu {
-border-radius: 20px; 
-}
-
-.dropdown-menu .inner {
-color: black; 
-}
-
-.btn-clear-container{
-    padding: 10px;
-    display: flex;
-    justify-content: center;
+.btn-clear-container {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 #typeRanking {
@@ -146,7 +112,6 @@ color: black;
   color: var(--red-icot);
 }
 
-
 #separator {
   margin-bottom: 0;
   padding-bottom: 0;
@@ -157,9 +122,9 @@ color: black;
   font-weight: bold;
 }
 
-.row-container{
+.row-container {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 
 .btn-radio-container {
@@ -172,36 +137,32 @@ color: black;
   text-align: center;
 }
 
-.card{
+.card {
   margin-top: 20px !important;
   box-shadow: 8px 8px 15px rgba(36, 35, 35, 0.63);
 }
+
+.card-title {
+}
+
 
 .card-search {
   height: 400px;
   padding: 10px;
 }
 
-.card-objetives{
+.card-objetives {
   height: 400px;
   padding: 10px;
 }
 
 .search-container {
-
 }
 
 .objetives-container {
   min-width: 80%;
-
 }
 
 .ranking-container {
   width: 100%;
 }
-
-
-
-
-
-

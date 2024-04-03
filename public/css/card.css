@@ -1,17 +1,13 @@
 .card-header{
   
-    background:  var(--white)!important;
-    margin-top: 20px !important;
+
   
 }
 
 
 .card-title {
-    color: var(--red-icot) !important;
-    font-family: "Nunito Sans", sans-serif !important;
-    font-size: 20px !important;
-    font-weight: 900 !important;
-    margin-left:20px;
+
+
 
 }
 

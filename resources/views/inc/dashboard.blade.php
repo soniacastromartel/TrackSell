@@ -1,21 +1,17 @@
 @include('common.alert')
-<link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/card.css') }}">
-
 
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
 <div class="content">
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding-top:150px;">
         <div class="row-container">
             <div class="search-container">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header card-header-danger">
                         <h4 class="card-title">Búsqueda</h4>
                     </div>
                     <div class="card-search">
@@ -23,9 +19,7 @@
                             @csrf
                             @method('POST')
                             <div class="calendar-picker">
-
                                 <div id="monthYearPickerContainer">
-
                                     <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
                                     <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                     <input type="hidden" name="monthYear" id="monthYear" />
@@ -42,7 +36,6 @@
                                     <option value="{{ $employee->centre_id }}" selected>{{ $employee->centre }}
                                     </option>
                                 @endif
-
                                 @if (isset($employee) && $employee->rol_id == 1)
                                     @foreach ($centres as $centre)
                                         <option value="{{ $centre->id }}">{{ $centre->name }}</option>
@@ -57,10 +50,7 @@
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                                         style="display: none;"></span>
                                 </button>
-
-
                             </div>
-
                             <div class="btn-radio-container">
                                 <div class="form-check">
                                     <label class="form-check-label" id="selected-label">
@@ -77,21 +67,20 @@
                             </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="objetives-container">
                 <div id="employee-info" class="card">
-                    <div class="card-header">
+                    <div class="card-header card-header-danger">
                         <h4 class="card-title" id="title-target">Objetivos</h4>
                     </div>
                     <div class="card-objetives">
                         <div class="title-venta">
-                            <h4 class="card-title">Venta cruzada</h4>
+                            <h4 class="card-title" style="margin-left: 20px;">Venta cruzada</h4>
                             <div id="chart_div_vc"></div>
                         </div>
                         <div class="title-venta">
-                            <h4 class="card-title">Venta privada</h4>
+                            <h4 class="card-title" style="margin-left: 20px;">Venta privada</h4>
                             <div id="chart_div_vp"></div>
                         </div>
                     </div>
@@ -103,16 +92,15 @@
             <div class="ranking-container">
                 <div class="card">
                     <div class="btn-export-container">
-                         <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
+                        <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
                                 class="material-icons">file_download</span>
                             <button id="btnSubmitLoad" type="submit" style="display: none;">
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span class="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true"></span>
                             </button>
                     </div>
-
-                    <div class="card-header">
+                    <div class="card-header card-header-danger">
                         <h4 class="card-title" id="title-sales">Ranking Mensual</h4>
-
                     </div>
                     <div class="card-header-table">
                         <table class="table-striped table-bordered sales-month-datatable col-lg-12 table">
@@ -131,20 +119,18 @@
                 </div>
             </div>
         </div>
-
-
         <div class="row-container" id="annualData">
             <div class="ranking-container">
                 <div class="card">
                     <div class="btn-export-container">
                         <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
-                               class="material-icons">file_download</span>
-                           <button id="btnSubmitLoad" type="submit" style="display: none;">
-                               <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                           </button>
-                   </div>
-
-                    <div class="card-header">
+                                class="material-icons">file_download</span>
+                            <button id="btnSubmitLoad" type="submit" style="display: none;">
+                                <span class="spinner-border spinner-border-sm" role="status"
+                                    aria-hidden="true"></span>
+                            </button>
+                    </div>
+                    <div class="card-header card-header-danger">
                         <h4 class="card-title" id="title-ranking">Ranking Anual</h4>
                     </div>
                     <div class="card-header-table">

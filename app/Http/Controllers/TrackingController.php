@@ -159,7 +159,7 @@ class TrackingController extends Controller
                             $state = Service::getStateService($tracking->state);
                             //TODO -EDIT BUTTON
                             $btn .= '<div class="col-md-12">';
-                            $btn .= '<a href="edit/' . $state . '/' . $tracking->id . '" class="btn btn-warning a-btn-slide-text btn-sm">Editar</a>';
+                            $btn .= '<a href="edit/' . $state . '/' . $tracking->id . '" class="btn btn-warning a-btn-slide-text btn-sm btn-round">Editar</a>';
                             $btn .= '</div>';
                             //TODO - DATE
                             $trackingDate =  date('Y-m-d');
@@ -174,7 +174,7 @@ class TrackingController extends Controller
                                 $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 //TODO - BUTTON CITAR
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Citar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Citar</a>';
                                 $btn .= '</div></div>';
 
 
@@ -186,16 +186,13 @@ class TrackingController extends Controller
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
                                 $btn .= '</div>';
                                 $btn .= '</div>';
-
                                 $btn .= '<div class="col-md-12"  >';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Realizar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Realizar</a>';
                                 $btn .= '</div>';
-                                
-                               
                                 $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Reiniciar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">Reiniciar</a>';
                                 $btn .= '</div></div>';
                             } //!REALIZADOS
                             if ($tracking->state == env('STATE_SERVICE')) { 
@@ -229,7 +226,7 @@ class TrackingController extends Controller
                                 $btn .= '</div>';
                                 $btn .= '<div class="col-md-6">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Realizar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">Realizar</a>';
                                 $btn .= '</div></div>';
                             }
                         }

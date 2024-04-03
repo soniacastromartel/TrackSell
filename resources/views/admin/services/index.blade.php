@@ -3,8 +3,8 @@
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
-<link rel="stylesheet" href="{{ asset('/css/services.css') }}">
 
+<link rel="stylesheet" href="{{ asset('/css/services.css') }}">
 <div class="content">
     <div class="container-fluid">
         @if ($user -> rol_id == 1)
@@ -12,8 +12,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('services.create') }}" id="btnNewCenter" class="btn-add" ><span class="material-icons">
-                            add</span></a>
+                <a href="{{ route('services.create') }}" id="btnNewCenter" class="btn-add" ><span class="material-icons">add</span></a>
             </div>
         </div>   
         @endif
@@ -35,7 +34,6 @@
 </div> 
   
 @include('common.modal')
-
 
 <script type="text/javascript">
 
@@ -150,8 +148,9 @@
 <style> 
 
 .content {
-    background-image:url( /assets/img/background_continue.png) !important;
-    background-size: 1600px;
-    background-position: center center !important;
+  background-image: url(/assets/img/background_continue.png) !important;
+  background-position: center center !important;
+  background-size: 1000px;
 }
+
 </style>

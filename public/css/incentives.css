@@ -1,3 +1,56 @@
+
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+}
+.bootstrap-select .btn {
+    width: 230px;
+    height: 45px;
+    margin: 20px;
+    border: none !important;
+    background-color: var(--red-icot);
+    border-radius: 50px;
+    color: white;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+    .file-upload {
+        margin: 0 10px 0 25px;
+      
+    }
+
+    .file-upload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        z-index: 10;
+        font-size: 20px;
+        cursor: pointer;
+        height: 36px;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+    #fileuploadurl {
+        border: none;
+        font-size: 12px;
+        padding-left: 0;
+        width: 250px;
+        margin-left: 25px;
+    }
+
+   
+  
+.card-header-danger {
+  border-radius: 50px !important; 
+}
+
+
 .btn-refresh {
     position: relative;   
     background-color: orange ;
