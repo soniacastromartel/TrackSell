@@ -1,9 +1,10 @@
 @extends('layouts.logged')
-
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -191,14 +192,8 @@ function confirmRequest(state, id) {
         }
 </script>
 @endsection
-<style>
 
-.main-panel {
-    background-image: url(/assets/img/background_continue.png) !important;
-    background-position: center center !important;
-    background-size: 1000px;
-}
 
-    </style>
+
 
 

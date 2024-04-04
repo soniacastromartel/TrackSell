@@ -2,18 +2,22 @@
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
+
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card " style="margin-top:100px">
+
                     <div class="card-header card-header-danger">
                     
                             <h4 class="card-title">Nueva solicitud</h4>
                      
                     </div>
+
                     <div class="card-body ">
                         <form id="createRequestChangeCentre" action="{{ route('tracking.saveRequest') }}" method="POST">
                             @csrf
@@ -27,10 +31,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card ">
-                    <div class="card-header card-header-info card-header-text">
-                        <div class="card-text">
+                    <div class="card-header card-header-danger">
                             <h4 class="card-title">Solicitudes</h4>
-                        </div>
                     </div>
                     <div class="card-body ">
                         <table class="table table-bordered request-changes-datatable">
@@ -245,14 +247,6 @@
         });
 
     });
+    
 </script>
 @endsection
-<style>
-    .content {
-    background-image: url(/assets/img/background_continue.png) !important;
-    background-position: center center !important;
-    background-size: 1000px;  
-    background-repeat: repeat;
-    height: 110vh;
-}
-</style>

@@ -1,29 +1,38 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
-<div class="solicitud-container" style="background-color: yellow">
+<div class="solicitud-container">
 
-    <div class="date-solicitud-container" style="background-color:aqua">
+    <div class="date-solicitud-container">
 
-        <label for="name" class="label">Fecha inicio</label>
+        <label for="name" class="label" style="padding: 10px" >Fecha inicio</label>
+        <div class="icon-container">
         <input type="date" id="start_date" name="start_date" max="3000-12-31" min="1000-01-01" value=""
-            class="form-date"></input>
+            class="form-date">
+            <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+        </div>
+        </input>
 
-        <label for="name" class="label">Fecha fin</label>
+        <label for="name" class="label" style="padding: 10px" >Fecha fin</label>
+        <div class="icon-container">
         <input type="date" id="end_date" name="end_date" max="3000-12-31" min="1000-01-01" value=""
-            class="form-date"></input>
-
-       
-
+            class="form-date">
+            <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+        </div>
+    </input>
     </div>
 
-    <div class="observaciones-continer" style="background-color: rgb(163, 163, 224)">
+
+    <div class="observaciones-container">
+
 
     <label class="label" for="observations">Observaciones</label>
     <input type="text" class="form-control" id="observations" name="observations" />
 
     </div>
 
-    <div class="picker-container" style="background-color: lightcoral">
+    <div class="picker-container">
 
         <select class="selectpicker" name="centre_origin_id" id="centre_origin_id" data-size="7"
             data-style="btn btn-red-icot" title="Centro Origen" tabindex="-98">
@@ -65,11 +74,12 @@
                 <span id=icon-send class="material-icons">publish</span>{{ __('Enviar') }}</button>
             <button id="btnSubmitLoad" type="button" class="btn btn-fill btn-success" style="display: none">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                {{ __('Enviando...') }}
             </button>
+            <div class="btn-back-container">
             <button id="btnBack" href="/config" class="btn-return">
                 <span class="material-icons">arrow_back</span>
             </button>
+        </div>
         </div>
     </div>
 </div>

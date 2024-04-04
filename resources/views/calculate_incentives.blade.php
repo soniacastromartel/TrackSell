@@ -3,6 +3,10 @@
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -10,7 +14,7 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-8">
                 <div class="card card-info text-white mb-4 ml-4 p-0 mt-0">
                     <div class="card-header">
                         <i class="material-icons" style="color: var(--red-icot)">info</i>
@@ -30,7 +34,7 @@
                         <h5 class="card-title font-size-18">- <strong>Incentivos: </strong>Indicar en formulario centro / empleado / fecha
                             según se requiera y hacer click en botón <span style="color:var(--red-icot);font-weight: bolder;"> <span class="material-icons">file_download</span>Exportar</span>
                             <h5>
-                                <h5 class="text-right" style="color:grey;font-size:14px;">* Tenga en cuenta que el fichero a importar debe
+                            <h5 class="text-right" style="color:grey;font-size:14px;">* Tenga en cuenta que el fichero a importar debe
                                     tener extensión .xls</h5>
                     </div>
                 </div>
@@ -43,38 +47,42 @@
                 @method('POST')
                 <div class="row">
                     <div class="col-lg-4 mt-2">
-                        <div class="card" style="min-height:442px;">
+                        <div class="card">
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Objetivos</h5>
                             </div>
 
                             <div class="card-body">
-                                <div class="row" style="margin-top: 30px;margin-left: 120px;margin-bottom: 30px;">
+                                <div class="row" style="display:flex;justify-content:center;">
                                     <div class="col-sm-7" style="margin-left: 16px;">
                                         <label class="label">Año <span class="obligatory">*</span> </label>
-                                        <div class="input-group date">
+                                        <div id="yearPickerContainer">
+                                        <div id="yearPicker">
                                             <input id="yearTargetPicker" class='form-control' type="text" placeholder="yyyy" />
+                                            <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                             <input type="hidden" name="yearTarget" id="yearTarget" />
                                         </div>
+                                    </div>
+
                                     </div>
                                     @if ($user->rol_id != 1)
                                     <span class="m-5"></span>
                                     @endif
                                     @if ($user->rol_id == 1)
-                                    <div class="form-group col-sm-7" style="padding-top: 30px;">
-                                        <div id="btnImportTargets" class="file-upload btn btn-block btn-outline-corporate">
-                                            <span class="material-icons mr-1">upload</span>{{ __('Importar Objetivos') }}
+                                    <div class="form-group col-sm-7">
+                                        <div id="btnImportTargets" class="file-upload btn-import">
+                                            <span id="icon-import" class="material-icons">upload</span>{{ __('Importar Objetivos') }}
                                             <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
                                         </div>
-                                        <button id="targetInputFileLoad" type="submit" class="file-upload btn btn-success" style="display: none">
+                                        <button id="targetInputFileLoad" type="submit" class="btn-import" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Importando datos...') }}
                                         </button>
                                     </div>
                                     @endif
                                     <div class="form-group col-sm-7">
-                                        <div id="btnImportSales" class="file-upload btn btn-block btn-red-icot">
-                                            <span class="material-icons mr-1">upload</span>{{ __('Importar Venta Privada') }}
+                                        <div id="btnImportSales" class="file-upload btn-import">
+                                            <span id="icon-import" class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
                                             <input type="file" name="targetInputSalesFile" id="targetInputSalesFile" class="upload" />
                                         </div>
                                     </div>
@@ -82,8 +90,8 @@
                                     <span class="m-3"></span>
                                     @endif
                                     <div class="form-group col-sm-7">
-                                        <button id="btnTracingTargets" class="file-upload btn btn-block btn-success">
-                                            <span class="material-icons mr-1">download</span>{{ __('Descargar Seguimiento') }}
+                                        <button id="btnTracingTargets" class="file-upload btn-export">
+                                            <span id="icon-export" class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
                                         </button>
                                     </div>
 
@@ -93,17 +101,20 @@
                     </div>
 
                     <div class="col-lg-8">
-                        <div class="card" style="min-height:398px;">
+                        <div class="card">
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Incentivos</h5>
                             </div>
-                            <div class="card-body" style="margin-top: 30px;">
+                            <div class="card-body">
 
-                                <div class="row" style="margin-left: 60px; margin-right: 60px">
-                                    <div class="form-group col-4 mt-5">
+                                <div class="row" style=" background-color:aquamarine;">
+                                    <div class="date-container-incentive" style="background-color: lightpink" >
+                                        
                                         <label class="label">Fecha <span class="obligatory">*</span> </label>
-                                        <div class="form-group input-group date">
+                                        
+                                        <div id="monthYearPickerContainer">
                                             <input type="hidden" name="monthYear" id="monthYear" />
+                                            <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                             <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
                                         </div>
                                     </div>
@@ -154,11 +165,11 @@
                                     </div>
 
                                 </div>
-                                <hr class="mt-4">
-                                <div class="row" style="display: flex;justify-content: space-evenly;">
-                                    <div class="form-group">
-                                        <button id="btnClear" href="#" class="myBtn btn  btn-warning">
-                                            <span class="material-icons">clear_all</span>{{ __('Limpiar formulario') }}
+                                <hr class="mt-4" >
+                                <div class="row" style="background-color:lightblue; display: flex;justify-content: space-evenly;">
+                                    <div class="form-group" style="background-color:lightcoral" >
+                                        <button id="btnClear" href="#" class="btn-refresh">
+                                            <span class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
                                         </button>
                                         <button id="btnSubmit" type="submit" class="myBtn btn btn-dark-black">
                                             <span class="material-icons">file_download</span>
@@ -532,7 +543,9 @@
         var date = new Date();
         var textMonthYear = setDate(date);
         $('#monthYearPicker').val(textMonthYear);
-        $('#monthYearPicker').MonthPicker();
+        $('#monthYearPicker').MonthPicker({
+            ShowIcon:false
+        });
 
         $('#yearTargetPicker').val(date.getFullYear());
         $('#yearTargetPicker').datepicker({

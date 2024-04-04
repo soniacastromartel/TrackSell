@@ -1,9 +1,13 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
 @extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -67,11 +71,11 @@
                 </div>
                 <div class="card-container" >
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="padding:20px;" >
 
                         <div class="row" style=" padding:20px;">
 
-                            <div class="col-md-4" style="margin-right: 60px;">
+                            <div class="col-md-4">
 
                                 <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
                                     <option value="">SIN CODIGO </option>
@@ -80,50 +84,51 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="input-group date">
-                                <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
+
+                                <div id="monthYearPickerContainer">
+                                <input id="monthYearPicker"  type="text" placeholder="yyyy/mm" />
+                                <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                 <input type="hidden" name="monthYear" id="monthYear" />
                             </div>
+
+
                         </div>
 
                         <div class="row" style=" padding:20px;">
 
-                            <div class="btn-container" style= " width:100%;">
+                            <div class="btn-container" style= "">
 
-                            <button id="btnClear" href="#" class="btn btn-fill btn-warning" >
-                                <span class="material-icons mr-1">clear_all</span>
+                            <button id="btnClear" href="#" class="btn-refresh" >
+                                <span id="icon-refresh" class="material-icons">refresh</span>
                                 {{ __('Limpiar formulario') }}
                             </button>
-                            <button id="btnCalculate" type="button" class="btn btn-fill btn-grey" >
-                            <span class="material-icons mr-2">calculate</span>{{ __('Calcular') }}</button>
+                            <button id="btnCalculate" type="button" class="btn-calculate" >
+                            <span id="icon-calculate" class="material-icons">calculate</span>{{ __('Calcular') }}</button>
                             <button id="btnCalculateLoad" type="button" class="btn btn-fill btn-grey" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Calculando datos...') }}
                             </button>
-                            <button id="btnSubmit" type="submit" class="btn btn-success">
-                            <span class="material-icons mr-1">search</span>{{ __('Buscar') }}</button>
+                            <button id="btnSubmit" type="submit" class="btn-search">
+                            <span id="icon-search" class="material-icons">search</span>{{ __('Buscar') }}</button>
                             <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Obteniendo datos...') }}
                             </button>
                             </div>
-
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="row" style=" padding:20px;">
-                       
-                        <div class="btn-container" style= "width:100%;display:flex; justify-content:flex-end; " >
-                        
-                        <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-dark-black">
-                            <span class="material-icons mr-1">file_download</span>{{ __('Exportar') }}</button>
+                        <div class="btn-container" style= "width:100%;display:flex; justify-content:flex-end;">
+                        <button id="btnExport" type="button" class="btn-export">
+                            <span id="icon-export" class="material-icons">file_download</span>{{ __('Exportar') }}</button>
                             <button id="btnExportLoad" type="submit" class="btn btn-grey" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Exportando datos...') }}
                             </button>
-                            <button id="btnValidate" type="button" class="ml-2 btn btn-fill btn-success">
-                            <span class="material-icons mr-2">paid</span>{{ __('Pagar todos') }}</button>
+                            <button id="btnValidate" type="button" class="btn-pay-all">
+                            <span id="icon-pay" class="material-icons">paid</span>{{ __('Pagar todos') }}</button>
                             <button id="btnValidateLoad" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{ __('Validando datos...') }}
@@ -212,7 +217,10 @@
         var date = new Date();
         var textMonthYear =  setDate(date);
         $('#monthYearPicker').val(textMonthYear);
-        $('#monthYearPicker').MonthPicker();
+    
+        $('#monthYearPicker').MonthPicker({
+                ShowIcon: false
+            });
 
         function getEmployeeIncentives() {
             if ($.fn.dataTable.isDataTable('.tracking-validation-datatable')) {
@@ -561,12 +569,3 @@
 
 @endsection
 
-<style>
-    .main-panel {
-        background-image: url(/assets/img/background_continue.png) !important;
-        background-position: center center !important;
-        background-size: 1000px;
-    }
-    
-    
-        </style>

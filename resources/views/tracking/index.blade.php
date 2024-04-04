@@ -11,25 +11,24 @@
     <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
     </div>
 
-
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <div class="card" style="margin-top:100px; ">
+                <div class="card" style="margin-top:100px">
                     <div class="card-header card-header-danger">
+
                         <h4 class="card-title">Informes</h4>
+
                     </div>
 
                     <div class="card-body">
-
                         <form id="exportTracking" action="{{ route('tracking.export') }}" method="POST">
-
                             @csrf
                             @method('PUT')
-
                             <div class="informes-container">
 
                                 <div class="date-informes-container">
+
                                     <label class="label" for="dateFrom" style="padding: 10px" >Fecha desde </label>
                                     <div class="icon-container">
                                         <input type="date" id="date_from" name="date_from" max="3000-12-31"
@@ -38,8 +37,6 @@
                                     </div>
                                     </input>
 
-
-
                                     <label class="label" for="dateTo" style="padding: 10px" >Fecha hasta </label>
                                     <div class="icon-container">
                                         <input type="date" id="date_to" name="date_to" max="3000-12-31"
@@ -47,7 +44,6 @@
                                         <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
                                     </div>
                                     </input>
-
                                 </div>
 
 
@@ -167,14 +163,15 @@
                         </form>
                     </div>
                 </div>
+                
                 <!-- tabla-->
-                <div class="row col-12 right mb-3">
-                    <div class="row" style="margin-bottom: 50px;">
+            
+                    <div class="btn-add-container">
                         <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn-add"><span
                                 class="material-icons">add</span></a>
                     </div>
 
-                </div>
+              
                 <table class="table-striped table-bordered tracking-datatable table">
                     <thead class="table-header">
                         <tr>
