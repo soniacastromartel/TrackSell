@@ -90,7 +90,7 @@
                                     <span class="m-3"></span>
                                     @endif
                                     <div class="form-group col-sm-7">
-                                        <button id="btnTracingTargets" class="file-upload btn-export">
+                                        <button id="btnTracingTargets" class="file-upload ">
                                             <span id="icon-export" class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
                                         </button>
                                     </div>
@@ -179,7 +179,7 @@
                                             {{ __('Obteniendo datos...') }}
                                         </button>
                                         <button id="btnIncentivesPreview" class="myBtn btn btn-grey">
-                                            <span class="material-icons mr-1">visibility</span>{{ __('Ver Incentivos') }}
+                                            <span class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
                                         </button>
                                         <button id="btnIncentivesLoad" type="submit" class="file-upload btn btn-dark-black" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
