@@ -5,15 +5,19 @@
   height: 140vh !important;
 }
 
+/*VIEW : traking/index,requestChange,calculateServices*/
+
 .informes-container,
-.solicitud-container {
+.solicitud-container,
+.service-container {
   display: flex;
   flex-direction: row;
   min-height: 420px;
 }
 
 .date-informes-container,
-.date-solicitud-container {
+.date-solicitud-container,
+.date-services-container {
   margin-left: 80px;
   padding-top: 50px;
   background-image: url(/assets/img/calendarImage.png);

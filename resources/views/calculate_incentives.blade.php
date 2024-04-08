@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
-
+<link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
@@ -46,8 +46,8 @@
                 @csrf
                 @method('POST')
                 <div class="row">
-                    <div class="col-lg-4 mt-2">
-                        <div class="card">
+                    <div class="col-lg-3">
+                        <div class="card" style="height:400px;">
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Objetivos</h5>
                             </div>
@@ -69,7 +69,7 @@
                                     <span class="m-5"></span>
                                     @endif
                                     @if ($user->rol_id == 1)
-                                    <div class="form-group col-sm-7">
+                               
                                         <div id="btnImportTargets" class="file-upload btn-import">
                                             <span id="icon-import" class="material-icons">upload</span>{{ __('Importar Objetivos') }}
                                             <input type="file" name="targetInputFile" id="targetInputFile" class="upload" />
@@ -78,37 +78,36 @@
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                             {{ __('Importando datos...') }}
                                         </button>
-                                    </div>
+                                
                                     @endif
-                                    <div class="form-group col-sm-7">
+                      
                                         <div id="btnImportSales" class="file-upload btn-import">
                                             <span id="icon-import" class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
                                             <input type="file" name="targetInputSalesFile" id="targetInputSalesFile" class="upload" />
                                         </div>
-                                    </div>
+                            
                                     @if ($user->rol_id != 1)
                                     <span class="m-3"></span>
                                     @endif
-                                    <div class="form-group col-sm-7">
-                                        <button id="btnTracingTargets" class="file-upload ">
+                          
+                                        <button id="btnTracingTargets" class="file-upload btn-import">
                                             <span id="icon-export" class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
                                         </button>
-                                    </div>
-
+             
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-8">
-                        <div class="card">
+                    <div class="col-lg-9">
+                        <div class="card" style="height:400px;">
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Incentivos</h5>
                             </div>
                             <div class="card-body">
 
-                                <div class="row" style=" background-color:aquamarine;">
-                                    <div class="date-container-incentive" style="background-color: lightpink" >
+                                <div class="row" style="display:flex;justify-content:space-evenly">
+                                    <div class="date-container-incentive">
                                         
                                         <label class="label">Fecha <span class="obligatory">*</span> </label>
                                         
@@ -119,10 +118,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-8">
-                                        <div class="form-group col-md-10 mx-auto">
-                                            <div class="dropdown bootstrap-select">
-                                                <label class="label" for="centre_origin_id">Centro <span class="obligatory">*</span></label>
+                                    <div class="row">
+                                        <div class="form-group col-md-6 mx-auto">
+                                          
                                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
                                                     @if ($user->rol_id != 1)
                                                     @foreach ($centres as $centre)
@@ -138,12 +136,11 @@
                                                     @endif
                                                 </select>
                                                 <input type="hidden" name="centre" id="centre" />
-                                            </div>
+                                           
                                         </div>
                                         <br>
-                                        <div class="form-group col-md-10 mx-auto">
-                                            <div class="dropdown bootstrap-select">
-                                                <label class="label">Empleado <span class="obligatory">*</span></label>
+                                        <div class="form-group col-md-6 mx-auto">
+                                            
                                                 <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                     @if ($user->rol_id != 1)
@@ -160,49 +157,58 @@
                                                     @endif
                                                 </select>
                                                 <input type="hidden" name="employee" id="employee" />
-                                            </div>
+                                          
                                         </div>
                                     </div>
 
                                 </div>
-                                <hr class="mt-4" >
-                                <div class="row" style="background-color:lightblue; display: flex;justify-content: space-evenly;">
-                                    <div class="form-group" style="background-color:lightcoral" >
+                                <hr class="mt-4">
+                                <div class="row" style="display: flex;justify-content: space-evenly;">
+                                    <div class="form-group" >
+                                        <div class="row" style="display: flex;justify-content:center;padding:10px;">
                                         <button id="btnClear" href="#" class="btn-refresh">
-                                            <span class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
+                                            <span id="icon-refresh" class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
                                         </button>
-                                        <button id="btnSubmit" type="submit" class="myBtn btn btn-dark-black">
-                                            <span class="material-icons">file_download</span>
+                                        <button id="btnSubmit" type="submit" class="btn-export">
+                                            <span id="icon-export" class="material-icons">file_download</span>
                                             {{ __('Exportar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn  btn-dark-black" style="display: none">
+                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
+                                
                                         </button>
-                                        <button id="btnIncentivesPreview" class="myBtn btn btn-grey">
-                                            <span class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
+
+                                      </div>
+                                      <div class="row" style="padding:10px;">
+                                        <button id="btnIncentivesPreview" class="btn-watch">
+                                            <span id="icon-watch" class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
                                         </button>
-                                        <button id="btnIncentivesLoad" type="submit" class="file-upload btn btn-dark-black" style="display: none">
+                                        <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
                                         </button>
-                                        <button id="btnSummaryPreview" class="myBtn btn btn-grey">
-                                            <span class="material-icons mr-1">visibility</span>{{ __('Ver Resumen') }}
+
+                                        <button id="btnSummaryPreview" class="btn-watch">
+                                            <span id="icon-watch" class="material-icons">visibility</span>{{ __('Ver Resumen') }}
                                         </button>
-                                        <button id="btnSummaryLoad" type="submit" class="file-upload btn btn-dark-black" style="display: none">
+
+                                        <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
                                         </button>
+
+                                   
+
                                         @if ($user->rol_id != 1)
-                                        <button id="btnTargetsPreview" class="myBtn btn btn-grey">
+                                        <button id="btnTargetsPreview" class="btn-watch">
                                             @else
-                                            <button id="btnTargetsPreview" class="myBtn btn btn-grey" disabled="disabled">
+                                            <button id="btnTargetsPreview" class="btn-watch" disabled="disabled">
                                                 @endif
-                                                <span class="material-icons mr-1">visibility</span>{{ __('Ver Objetivos') }}
+                                                <span id="icon-watch" class="material-icons">visibility</span>{{ __('Ver Objetivos') }}
                                             </button>
-                                            <button id="btnTargetsLoad" type="submit" class="file-upload btn btn-dark-black" style="display: none">
+                                            <button id="btnTargetsLoad" type="submit" class="file-upload btn-watch" style="display: none">
                                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                {{ __('Obteniendo datos...') }}
+                                               
                                             </button>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -299,82 +305,7 @@
     </div>
 </div>
 <style>
-    #centreName {
-        display: block;
-        text-align: center;
-        font-weight: bold;
-        font-size: xx-large;
-        font-family: monospace;
-        color: white;
-        border: 2px solid var(--red-icot);
-        background-color: var(--red-icot);
-    }
-
-    .ui-datepicker-calendar {
-        display: none;
-    }
-
-    .myBtn {
-        margin: 25px;
-    }
-
-    .file-upload {
-        margin: 0 10px 0 25px;
-
-    }
-
-    .file-upload input.upload {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        padding: 0;
-        z-index: 10;
-        font-size: 20px;
-        cursor: pointer;
-        height: 36px;
-        opacity: 0;
-        filter: alpha(opacity=0);
-        background-color: var(--red-icot);
-    }
-
-    #fileuploadurl {
-        border: none;
-        font-size: 12px;
-        padding-left: 0;
-        width: 250px;
-    }
-
-    .ui-datepicker-calendar {
-        display: none;
-    }
-
-
-
-    table.dataTable.dataTable_width_auto {
-        width: 100% !important;
-    }
-
-    .card-header-table {
-        width: 100%;
-        margin-top: 0px !important;
-    }
-
-    .incentives-datatable {
-        table-layout: fixed;
-        width: 100% !important;
-    }
-
-    .incentives-datatable td,
-    .incentives-datatable th {
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-
-    #DataTables_Table_0_paginate>ul.pagination {
-        margin: 16px 0 !important;
-    }
+    
 </style>
 
 <script type="text/javascript">

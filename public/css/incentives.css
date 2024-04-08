@@ -7,7 +7,8 @@
   }
   
 
-.card {
+
+.incentive-logo {
     background-image: url(/assets/img/logoPreciosIncentivos.png);
     background-repeat: no-repeat;
     background-size: contain;
@@ -31,3 +32,77 @@
 }
 
 
+#centreName {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: xx-large;
+    font-family: monospace;
+    color: white;
+    border: 2px solid var(--red-icot);
+    background-color: var(--red-icot);
+}
+
+.ui-datepicker-calendar {
+    display: none;
+}
+
+
+
+.file-upload {
+    margin: 0 10px 0 25px;
+
+}
+
+.file-upload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+    font-size: 20px;
+    cursor: pointer;
+    height: 36px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    background-color: var(--red-icot);
+}
+
+#fileuploadurl {
+    border: none;
+    font-size: 12px;
+    padding-left: 0;
+    width: 250px;
+}
+
+.ui-datepicker-calendar {
+    display: none;
+}
+
+
+
+table.dataTable.dataTable_width_auto {
+    width: 100% !important;
+}
+
+.card-header-table {
+    width: 100%;
+    margin-top: 0px !important;
+}
+
+.incentives-datatable {
+    table-layout: fixed;
+    width: 100% !important;
+}
+
+.incentives-datatable td,
+.incentives-datatable th {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+#DataTables_Table_0_paginate>ul.pagination {
+    margin: 16px 0 !important;
+}

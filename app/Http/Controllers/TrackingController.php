@@ -1226,7 +1226,7 @@ class TrackingController extends Controller
                             // $btn .= '</div>';
                             $btn .= '<div class="col-md-2" >';
                             $fnCall = 'updateValidation(' . $detailedSale->employee_id . ', \'' . $trackingIds . '\', ' . $detailedSale->total_super_incentive . ',' . $detailedSale->is_supervisor . ' , 1)';
-                            $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">NO PAGAR</a>';
+                            $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">NO PAGAR</a>';
                             $btn .= '</div>';
                             $btn .= '</div>';
                         } else {
@@ -1238,7 +1238,7 @@ class TrackingController extends Controller
                             $btn .= '</div>';
                             $btn .= '<div class="col-md-2" >';
                             $fnCall = 'updateValidation(' . $detailedSale->employee_id . ', \'' . $trackingIds . '\', ' . $detailedSale->total_super_incentive . ',' . $detailedSale->is_supervisor . ' , 0)';
-                            $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Pagar</a>';
+                            $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Pagar</a>';
                             $btn .= '</div>';
                             $btn .= '</div>';
                         }

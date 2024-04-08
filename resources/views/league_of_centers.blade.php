@@ -1,20 +1,24 @@
-@extends('layouts.logged')
 
+@extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 
 <div id="alertErrorLeague" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
 <div class="content">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:100px" >
         <div class="row">
             <div class="col-lg-12">
-
-                <div class="card ">
+                <div class="card">
                     <div class="card-header card-header-info card-header-text">
-                        <div class="card-text">
+                        <div class="card-text" style="border-radius: 50px" >
                             <h4 class="card-title">Informes</h4>
                         </div>
                         <i class="material-icons" id="icInfo" style="color: var(--red-icot)">info</i>
@@ -22,7 +26,6 @@
                     </div>
                     <div class="card-body">
                         <form id="leagueForm" method="POST">
-
                             @csrf
                             @method('POST')
                             <div class="row">
@@ -34,7 +37,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3 centre_picker">
+                                <div class="form-group col-md-2 centre_picker">
                                     <div class="dropdown bootstrap-select">
                                         <select class="selectpicker" name="centre_id" id="centre_id_picker" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
 
@@ -46,29 +49,41 @@
                                         <input type="hidden" name="centre" id="centre" />
                                     </div>
                                 </div>
-                                <div id="monthYearPickerContainer" class="col-md-2">
+                          
+                                <div id="monthYearPickerContainer">
                                     <div class="input-group date mt-2">
                                         <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
+                                        <span id="icon-date" class="material-symbols-outlined">calendar_month</span>
                                         <input type="hidden" name="monthYear" id="monthYear" />
                                     </div>
                                 </div>
-                                <div id="yearPickerContainer" class="form-group date col-md-1">
+                                <div id="yearPickerContainer">
+                                    <div class="input-group date mt-2">
                                     <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
+                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                 </div>
+                                </div>
+                     
+                       
 
-                                <div class="col-lg-6" style="text-align:right">
-                                    <button id="btnSubmit" type="submit" class="btn btn-success"><span class="material-icons">
+                                <div class="col-lg-5" style="display:flex;flex-direction:column;align-items:flex-end"; >
+
+                                    <button id="btnSubmit" type="submit" class="btn-search">
+                                        <span id="icon-search" class="material-icons">
                                             search</span> {{ __('Buscar') }}</button>
-                                    <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                                    <button id="btnSubmitLoad" type="submit" class="btn-search" style="display: none">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                        {{ __('Obteniendo datos...') }}
                                     </button>
-                                    <button id="btnSubmitExport" type="submit" class="btn btn-dark-black"><span class="material-icons">
+
+                                    <button id="btnSubmitExport" type="submit" class="btn-export">
+                                        <span id="icon-export" class="material-icons">
                                             file_download
                                         </span> {{ __('Exportar') }}</button>
-                                    <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                        <span class="material-icons">clear_all
-                                        </span> {{ __('Limpiar') }}
+
+
+                                    <button id="btnClear" href="#" class="btn-refresh">
+                                        <span id="icon-refresh" class="material-icons">refresh
+                                        </span> {{ __('Limpiar Formulario') }}
                                     </button>
                                 </div>
                             </div>
@@ -110,17 +125,13 @@
     </div>
 </div>
 <style>
-    .month-picker-open-button {
-        vertical-align: middle !important;
-    }
+
 
     button.ui-datepicker-trigger {
         border: none !important;
     }
 
-    .ui-datepicker-calendar {
-        display: none;
-    }
+ 
 
     #centreName {
         display: block;
@@ -153,6 +164,7 @@
 
     .card .card-header {
         width: unset;
+        
     }
 </style>
 
@@ -361,7 +373,7 @@
             $('#monthYearPicker').val(textMonthYear);
             // Default functionality.
             $('#monthYearPicker').MonthPicker({
-                ShowIcon: true,
+                ShowIcon: false,
             });
         }
 

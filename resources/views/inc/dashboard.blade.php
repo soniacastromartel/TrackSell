@@ -1,4 +1,6 @@
+
 @include('common.alert')
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
@@ -30,6 +32,7 @@
                                     <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                 </div>
                             </div>
+                            
                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
                                 data-style="btn btn-red-icot" title="Centro" tabindex="-98">
                                 @if (isset($employee) && $employee->rol_id != 1)

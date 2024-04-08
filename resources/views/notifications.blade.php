@@ -1,16 +1,19 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
-<div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
-</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
+
+<div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none"></div>
 
 
 <div class="content">
-    <div class="container-fluid">
-        <div class="card "style="margin-top:100px">
+    <div class="container-fluid" style="margin-top:100px" >
+        <div class="card">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Notificaciones</h4>
             </div>
@@ -19,21 +22,22 @@
                     <div class="col-md-2">
                         <div class="mt-2 input-group date">
                             <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
+                            <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                             <input type="hidden" name="monthYear" id="monthYear" />
                         </div>
                     </div>
 
                     <div class="row align-content-end">
-                        <button id="btnClear" href="#" class="btn btn-fill btn-warning button-size">
-                        <span class="material-icons">
-                            clear_all
+                        <button id="btnClear" href="#" class="btn-refresh">
+                        <span id="icon-refresh" class="material-icons">
+                            refresh
                             </span>   {{ __('Limpiar formulario') }}
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success button-size"><span class="material-icons">
+                        <button id="btnSubmit" type="submit" class="btn-search"><span id="icon-search" class="material-icons">
                             search</span> {{ __('Buscar') }}</button>
-                        <button id="btnSubmitLoad" type="submit" class="btn" style="display: none">
+                        <button id="btnSubmitLoad" type="submit" class="btn-search" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            {{ __('Obteniendo datos...') }}
+            
                         </button>
                     </div>
 
@@ -180,7 +184,9 @@
 
     $('#monthYearPicker').val(textMonthYear);
     // Default functionality.
-    $('#monthYearPicker').MonthPicker();
+    $('#monthYearPicker').MonthPicker({
+        ShowIcon: false,
+    });
     $('#monthPicker').datepicker($.datepicker.regional["es"]);
 }
 
@@ -301,11 +307,6 @@
         table.columns.adjust().draw();
     }
 </script>
-<style>
-    .button-size {
-        height: 39px;
-    }
-   
-</style>
+
 
 @endsection

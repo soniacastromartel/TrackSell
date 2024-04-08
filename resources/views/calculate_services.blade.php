@@ -1,9 +1,11 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <div id="alertServicesCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -23,27 +25,35 @@
                                 <h4 class="card-title">Servicios</h5>
                             </div>
 
-                            <div class="card-body" style="margin-top: 30px;margin-bottom: 30px;">
-                                <div class="row" style="justify-content: space-evenly;">
+                            <div class="card-body">
+                                <div class="service-container" >
 
-                                    <div class="form-group col-md-3">
+                                    <div class="date-services-container">
                                         <div>
-                                            <label class="label" for="dateFrom">Fecha desde </label>
-                                            <div class=" input-group " style="margin-bottom: 50px;">
-                                                <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-control"></input>
+                                            <label class="label" for="dateFrom" style="padding: 10px" >Fecha desde </label>
+                                            <div class="icon-container">
+                                                <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01" class="form-date">
+                                                <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
                                             </div>
+                                            </input>
+                                          
 
 
-                                            <label class="label" for="dateTo">Fecha hasta </label>
-                                            <div class=" input-group ">
-                                                <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-control"></input>
+                                            <label class="label" for="dateTo" style="padding: 10px" >Fecha hasta </label>
+                                            <div class="icon-container">
+                                                <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-date">
+                                                <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
                                             </div>
+                                            </input>
+                                           
                                         </div>
 
                                     </div>
 
-                                    <div class="form-group col-md-2" style="justify-content: right;">
-                                        <div class="dropdown bootstrap-select" style="margin-bottom: 50px;">
+                                    <div class="picker-btn-container">
+
+                                    <div class="picker-container">
+                                       
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot" title=" Centro" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                 @if ($user->rol_id != 1)
@@ -53,7 +63,7 @@
                                                 @endif
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
-                                        </div>
+                                       
                                         <div class="dropdown bootstrap-select text-uppercase">
                                             <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot" title=" Servicio" tabindex="-98">
                                                 <option>TODOS</option>
@@ -67,33 +77,37 @@
                                             <input type="hidden" name="service" id="service" />
                                         </div>
 
-
-
                                     </div>
-                                </div>
-                                <div class="row mt-5 px-5" style="justify-content: right; margin-right: 80px;">
-                                    <div class="">
-                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-                                            <span class="material-icons mr-1">
-                                                clear_all
-                                            </span> {{ __('Limpiar formulario') }}
+                            
+                                    <div class="btn-container-box">
+                                        <div class="btn-container">
+
+                                        <button id="btnClear" href="#" class="btn-refresh">
+                                            <span id="icon-refresh" class="material-icons">refresh</span> {{ __('Limpiar formulario') }}
                                         </button>
-                                        <button id="btnSubmitFind" type="submit" class="btn btn-fill btn-success"><span class="material-icons">
-                                                search</span> {{ __('Buscar') }}</button>
-                                                <button id="btnSubmitFindLoad" type="submit" class="btn btn-success" style="display: none">
+
+                                        <button id="btnSubmitFind" type="submit" class="btn-search">
+                                            <span id="icon-search" class="material-icons">search</span> {{ __('Buscar') }}</button>
+                                                <button id="btnSubmitFindLoad" type="submit" class="btn-search" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
+                            
                                         </button>
-                                        <button id="btnSubmit" type="submit" class="btn btn-dark-black"><span class="material-icons">
+                                        <button id="btnSubmit" type="submit" class="btn-export">
+                                            <span id="icon-export"  class="material-icons">
                                                 file_download
                                             </span> {{ __('Exportar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
+                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Exportando datos...') }}
+                                           
                                         </button>
                                     </div>
+                                  </div>
+
                                 </div>
+
                             </div>
+
+
                         </div>
                     </div>
 

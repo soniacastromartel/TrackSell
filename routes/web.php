@@ -52,10 +52,10 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/store', 'TrackingController@store')->name('tracking.store');
     Route::get('/tracking/edit/{state}/{id}', 'TrackingController@edit')->name('tracking.edit');
     Route::put('/tracking/update/{state}/{id}', 'TrackingController@update')->name('tracking.update');
-    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}','TrackingController@updateState')->name('tracking.updateState');
-    Route::post('/tracking/updatePaidState','TrackingController@updatePaidState')->name('tracking.updatePaidState');
-    Route::get('/tracking/refreshServices/{centre_id}','TrackingController@refreshServices')->name('tracking.refreshServices');
-    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}','TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
+    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}', 'TrackingController@updateState')->name('tracking.updateState');
+    Route::post('/tracking/updatePaidState', 'TrackingController@updatePaidState')->name('tracking.updatePaidState');
+    Route::get('/tracking/refreshServices/{centre_id}', 'TrackingController@refreshServices')->name('tracking.refreshServices');
+    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}', 'TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
     Route::get('/tracking/exportForm', 'TrackingController@exportForm')->name('tracking.exportForm');
     Route::post('/tracking/export', 'TrackingController@export')->name('tracking.export');
     Route::get('/tracking/deleteForm', 'TrackingController@deleteForm')->name('tracking.deleteForm');
@@ -72,14 +72,13 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/getRequestChanges', 'TrackingController@getRequestChanges')->name('tracking.getRequestChanges');
     Route::post('/tracking/confirmRequest', 'TrackingController@confirmRequest')->name('tracking.confirmRequest');
     // Route::post('/tracking/discountStatistics', 'TrackingController@discountStats')->name('tracking.discountStats');
-
     //!Target
-    Route::get('/incentives-report-download', 'IncentivesReportController@download')->name('target.incentivesReportDownload');
     Route::get('/calculateIncentive', 'TargetController@index')->name('calculateIncentive');
     Route::post('/target/import', 'TargetController@import')->name('target.import');
     Route::post('/target/importSales', 'TargetController@importSales')->name('target.importSales');
     Route::post('/target/importIncentive', 'TargetController@importIncentive')->name('target.importIncentive');
-    Route::post('/target/calculateTargets', 'TargetController@calculateTargets')->name('target.calculateTargets');
+    Route::post('/target/calculateIncentives', 'TargetController@calculateIncentives')->name('target.calculateIncentives');
+    Route::post('/target/incentivesReportDownload', 'TargetController@incentivesReportDownload')->name('target.incentivesReportDownload');
     Route::post('/target/tracingTargets', 'TargetController@tracingTargets')->name('target.tracingTargets');
     Route::post('/target/targetReportDownload', 'TargetController@targetsReportDownload')->name('target.targetsReportDownload');
     Route::post('/target/targetReportView', 'TargetController@targetsReportView')->name('target.targetsReportView');
@@ -118,7 +117,7 @@ Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets')
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
 
 //!A3API
-Route::prefix('a3api')->group(function() {
+Route::prefix('a3api')->group(function () {
     Route::get('/a3', 'A3Controller@index')->name('a3');
     Route::get('/centres/{companyCode}', 'A3Controller@getCentres')->name('centres');
     Route::get('/employees/{companyCode}/{workplaceCode}/{pagenumber}', 'A3Controller@getEmployees')->name('employees');
@@ -132,7 +131,7 @@ Route::prefix('a3api')->group(function() {
     Route::get('/token', 'A3Controller@getAuthCode')->name('code');
 });
 
-Route::get('/btnDesign',[BtnController::class, 'returnView']);
+Route::get('/btnDesign', [BtnController::class, 'returnView']);
 
 // Route::fallback(function () {
 //     return response()->json(['error' => 'No encontrado'], 404);

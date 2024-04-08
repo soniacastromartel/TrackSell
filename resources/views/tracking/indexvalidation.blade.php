@@ -104,15 +104,15 @@
                             </button>
                             <button id="btnCalculate" type="button" class="btn-calculate" >
                             <span id="icon-calculate" class="material-icons">calculate</span>{{ __('Calcular') }}</button>
-                            <button id="btnCalculateLoad" type="button" class="btn btn-fill btn-grey" style="display: none">
+                            <button id="btnCalculateLoad" type="button" class="btn-calculate" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Calculando datos...') }}
+                          
                             </button>
                             <button id="btnSubmit" type="submit" class="btn-search">
                             <span id="icon-search" class="material-icons">search</span>{{ __('Buscar') }}</button>
                             <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Obteniendo datos...') }}
+                              
                             </button>
                             </div>
                         </div>
@@ -123,21 +123,21 @@
                         <div class="btn-container" style= "width:100%;display:flex; justify-content:flex-end;">
                         <button id="btnExport" type="button" class="btn-export">
                             <span id="icon-export" class="material-icons">file_download</span>{{ __('Exportar') }}</button>
-                            <button id="btnExportLoad" type="submit" class="btn btn-grey" style="display: none">
+                            <button id="btnExportLoad" type="submit" class="btn-export" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Exportando datos...') }}
+                          
                             </button>
                             <button id="btnValidate" type="button" class="btn-pay-all">
                             <span id="icon-pay" class="material-icons">paid</span>{{ __('Pagar todos') }}</button>
                             <button id="btnValidateLoad" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Validando datos...') }}
+                            
                             </button>
-                            <button id="btnUnvalidate" type="button" class="ml-2 btn btn-fill btn-red-icot">
-                            <span class="material-icons mr-2">restart_alt</span>{{ __('Deshacer Pagar todos') }}</button>
+                            <button id="btnUnvalidate" type="button" class="btn-deshacer-pagar">
+                            <span id="icon-deshacer" class="material-icons">restart_alt</span>{{ __('Deshacer Pagar todos') }}</button>
                             <button id="btnUnvalidateLoad" type="submit" class="btn btn-red-icot" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Validando datos...') }}
+                        
                             </button>
                         </div>
                     </div>
