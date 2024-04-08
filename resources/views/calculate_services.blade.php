@@ -125,7 +125,10 @@
     var table;
 
     var columnsFilled = [];
-    
+    columnsFilled.push({
+        data: 'centre',
+        name: 'centre'
+    });
     columnsFilled.push({
         data: 'service',
         name: 'service',
@@ -140,6 +143,7 @@
         name: 'total',
         data: 'total'
     });
+ 
   
 
     $(function() {
@@ -167,8 +171,6 @@
     function drawTable() {
             $('#centre').val($("#centre_id option:selected").text());
             $('#service').val($("#service_id option:selected").text());
-
-
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["centre"] = $('#centre').val();
@@ -223,12 +225,9 @@
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
         var startDay = 21;
-
-
         day = day >= 10 ? day : '0' + day;
         month = month >= 10 ? month : '0' + month;
         var dateTo = year + '-' + month + '-' + day;
-
         var previousMonth = 0;
         if (month != 1 && day < 21) {
             previousMonth = month - 1;
