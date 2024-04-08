@@ -11,6 +11,7 @@ use Auth;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ServicesIncentivesExport;
+use App\Tracking;
 
 class ServiceController extends Controller
 {
@@ -432,6 +433,13 @@ class ServiceController extends Controller
     public function calculateServices()
     {
         try {
+            $trackingId = 1; // El ID del seguimiento que te interesa
+$tracking = Tracking::with('service')->find($trackingId);
+
+// Accediendo al servicio relacionado y a sus campos
+echo $tracking->service->name; // Nombre del servicio relacionado
+// Accede a otros campos del servicio como sea necesario
+
             $this->user = session()->get('user');
             $this->centreId = $this->user['centre_id'];
             $title = 'Dinámica de Servicios';
@@ -440,13 +448,17 @@ class ServiceController extends Controller
                 $services = Service::getServicesActive($this->centreId, true, false);
                 $centres = Centre::getCentreByField($this->centreId);
             } else {
-                $services = Service::getServicesActive();
+                $services = Service::with('trackings')->get();
                 $centres = Centre::getCentresActive();
             }
             $disabledService = false;
 
             return view('calculate_services', [
-                'title'            => $title, 'centres'         => $centres, 'services'        => $services, 'disabledService' => $disabledService, 'user'      => $this->user
+                'title'=> $title, 
+                'centres'=> $centres, 
+                'services'=> $services, 
+                'disabledService' => $disabledService, 
+                'user'=> $this->user
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -460,7 +472,7 @@ class ServiceController extends Controller
      * Function to to retrieve a list of services sold during a  period, and (optionally) filtered by center ID
      */
 
-    public function getSaledServices(Request $request)
+    public function getSalesServices(Request $request)
     {
         try {
             if (!$request->ajax()) {

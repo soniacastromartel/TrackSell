@@ -13,17 +13,39 @@ class Service extends Model
         'name',
         'description',
         'url',
-        'centre_id',
+        'centre_id', //no existe centre_id en la tabla de services
         'category_id',
         'cancellation_date',
         'alias_img',
         'image'
     ];
+
+
+
+        public function servicePrice()
+        {
+            return $this->hasMany(ServicePrice::class, 'service_id', 'id');
+        }
+        
+        public function getTrakingServices() 
+        {
+            return $this->hasMany(Tracking::class,'service_id', 'id');
+        }
     
-    public function servicePrice()
-    {
-        $this->belongsTo(ServicePrice::class);
-    }
+
+  
+    
+   
+        //necesito la tabla de service_price  para obtenr el centre_id 
+        // necesito price 
+        // service_id para la relacion 
+        
+
+    //necesito la tabla de trakings para ver el empleado que vendió mi servicio 
+    // fecha de validación para la filtración por fecha
+    // employee_id para ver el empleado 
+    // se relaciona con el service_id que esta en la tabla de servicios 
+
 
     public function scopeGetServicesActive($query, $centre_id = null, $basic = false, $orderDif = false, $groupBy= false) {
         $whereFields = "";

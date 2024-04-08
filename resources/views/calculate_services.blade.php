@@ -44,18 +44,28 @@
 
                                     <div class="form-group col-md-4" style="justify-content: right;">
                                         <div class="dropdown bootstrap-select" style="margin-bottom: 50px;">
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
-                                                <option>SIN SELECCION </option>
+                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
                                                 @if ($user->rol_id != 1)
                                                 @foreach ($centres as $centre)
-                                                <option value="{{ $centre->id }}" selected>{{ $centre->name }}</option>
+                                                @if ($centre->id == $user->centre_id)
+                                                <option class="text-uppercase" value="{{ $centre->id }}" selected @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                    {{ $centre->name }}
+                                                </option>
+                                                @endif
+                                                @endforeach
+
+                                                @else
+                                                @foreach ($centres as $centre)
+                                                <option class="text-uppercase" value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                    {{ $centre->name }}
+                                                </option>
                                                 @endforeach
                                                 @endif
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
                                         <div class="dropdown bootstrap-select text-uppercase">
-                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
+                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Servicio" tabindex="-98">
                                                 <option>TODOS</option>
                                                 @foreach ($services as $service)
                                                 <option value="{{ $service->id }}">
@@ -190,7 +200,7 @@
                     "url": "{{ asset('dataTables/Spanish.json') }}"
                 },
                 ajax: {
-                    url: '{{route("services.getSaledServices")}}',
+                    url: '{{route("services.getSalesServices")}}',
                     type: "POST",
                     data: params,
                     dataSrc: function(json) {
@@ -247,5 +257,49 @@
         document.getElementById("date_to").value = dateTo;
 
     }
+
+    $("#btnSubmitFind").click(function(e) {
+    e.preventDefault();
+    var centreId = $("#centre_id").val();
+    var dateFrom = $("#date_from").val();
+    var dateTo = $("#date_to").val();
+    
+    $.ajax({
+        url: '{{ route("services.getSalesServices") }}',
+        type: 'POST',
+        data: {
+            centre_id: centreId,
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            console.log(response.services);
+            updateTable(response.services); // Actualizar la tabla con los servicios vendidos
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+});
+
+function updateTable(services) {
+    // Primero, limpia el cuerpo actual de la tabla
+    $('.services-datatable tbody').empty();
+
+    // Luego, agrega los nuevos registros
+    services.forEach(function(service) {
+        var row = `<tr>
+            <td>${service.service}</td>
+            <td>${service.price}</td>
+            <td>${service.total}</td>
+        </tr>`;
+        $('.services-datatable tbody').append(row);
+    });
+
+    // Puedes necesitar reinicializar la tabla o realizar cualquier acción posterior necesaria aquí
+}
+
+
 </script>
 @endsection
