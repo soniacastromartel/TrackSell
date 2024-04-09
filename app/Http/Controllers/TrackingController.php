@@ -154,8 +154,8 @@ class TrackingController extends Controller
 
                     ->addColumn('action', function ($tracking) {
                         $btn = '';
-                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) {
-
+                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) 
+                        {
                             $state = Service::getStateService($tracking->state);
                             //TODO -EDIT BUTTON
                             $btn .= '<div class="col-md-12">';
@@ -176,9 +176,8 @@ class TrackingController extends Controller
                                 //TODO - BUTTON CITAR
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
-
-
-                            } //!CITADOS
+                            } 
+                            //!CITADOS
                             if ($tracking->state == env('STATE_APOINTMENT')) { 
                                 // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
@@ -195,7 +194,8 @@ class TrackingController extends Controller
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Reiniciar</a>';
                                 $btn .= '</div></div>';
-                            } //!REALIZADOS
+                            } 
+                            //!REALIZADOS
                             if ($tracking->state == env('STATE_SERVICE')) { 
                                 // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
@@ -212,7 +212,8 @@ class TrackingController extends Controller
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Citar</a>';
                                 $btn .= '</div></div>';
-                            }//!FACTURADOS
+                            }
+                            //!FACTURADOS
                             if ($tracking->state == env('STATE_INVOICED')) { 
                                 // $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-4">';

@@ -27,11 +27,29 @@ class Service extends Model
             return $this->hasMany(ServicePrice::class, 'service_id', 'id');
         }
         
-        public function getTrakingServices() 
+        public function trackings() 
         {
             return $this->hasMany(Tracking::class,'service_id', 'id');
         }
     
+
+        public static function getCompletedServices($dateFrom, $dateTo, $centreId = null)
+    {
+        $services = Service::query()
+            ->select('services.name as serviceName', 'service_prices.price', 'centres.name as centreName', 'employees.name as employeeName')
+            ->join('service_prices', 'services.id', '=', 'service_prices.service_id')
+            ->join('trackings', 'services.id', '=', 'trackings.service_id')
+            ->join('centres', 'trackings.centre_id', '=', 'centres.id')
+            ->join('employees', 'trackings.employee_id', '=', 'employees.id')
+            ->where('trackings.validation_done', 1)
+            ->whereBetween('trackings.validation_date', [$dateFrom, $dateTo]);
+
+        if ($centreId) {
+            $services->where('centres.id', $centreId);
+        }
+
+        return $services->get();
+    }
 
   
     

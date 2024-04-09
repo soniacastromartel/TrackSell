@@ -11,7 +11,9 @@ use Auth;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ServicesIncentivesExport;
+use App\ServicePrice;
 use App\Tracking;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class ServiceController extends Controller
 {
@@ -430,43 +432,33 @@ class ServiceController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function calculateServices()
-    {
-        try {
-            $trackingId = 1; // El ID del seguimiento que te interesa
-$tracking = Tracking::with('service')->find($trackingId);
+   
+     public function calculateServices(Request $request)
+     {
 
-// Accediendo al servicio relacionado y a sus campos
-echo $tracking->service->name; // Nombre del servicio relacionado
-// Accede a otros campos del servicio como sea necesario
+         try {
 
-            $this->user = session()->get('user');
-            $this->centreId = $this->user['centre_id'];
-            $title = 'Dinámica de Servicios';
+             $dateFrom = $request->input('date_from');
+             $dateTo = $request->input('date_to');
+             $price = ServicePrice::table('price')->get();
+             $centreId = Centre::table('name')->get(); 
+             $services = Service::getCompletedServices($dateFrom, $dateTo, $centreId);
+          
 
-            if (isset($this->centreId) && $this->centreId != null) {
-                $services = Service::getServicesActive($this->centreId, true, false);
-                $centres = Centre::getCentreByField($this->centreId);
-            } else {
-                $services = Service::with('trackings')->get();
-                $centres = Centre::getCentresActive();
-            }
-            $disabledService = false;
-
-            return view('calculate_services', [
-                'title'=> $title, 
-                'centres'=> $centres, 
-                'services'=> $services, 
-                'disabledService' => $disabledService, 
-                'user'=> $this->user
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => 'false',
-                'errors'  => $e->getMessage(),
-            ], 400);
-        }
-    }
+ 
+             return view('calculate_services', [
+                 'services' => $services,
+                 'price'=>$price,
+                 'centre' => $centreId
+             ]);
+         } catch (\Exception $e) {
+             // Considera loguear el error aquí para un diagnóstico más fácil
+             return response()->json([
+                 'success' => false,
+                 'errors' => $e->getMessage(),
+             ], 400);
+         }
+     }
 
     /**
      * Function to to retrieve a list of services sold during a  period, and (optionally) filtered by center ID
@@ -505,6 +497,7 @@ echo $tracking->service->name; // Nombre del servicio relacionado
             return response()->json([
                 'success' => 'false',
                 'errors'  => $e->getMessage(),
-            ], 400);        }
+            ], 400);      
+          }
     }
 }

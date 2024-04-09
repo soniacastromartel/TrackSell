@@ -336,21 +336,19 @@
 
         });
     }
+
+
     function setDate() {
     var date = new Date();
     var day = date.getDate();
     var month = date.getMonth() + 1; 
     var year = date.getFullYear();
     var startDay = 20;
-
     day = day < 10 ? '0' + day : day;
     month = month < 10 ? '0' + month : month;
-
     var dateTo = year + '-' + month + '-' + day; 
-
     var previousMonth = month; 
     var previousYear = year;
-
     if (month === '01' && day < 21) {
         previousMonth = '12';
         previousYear = year - 1; 

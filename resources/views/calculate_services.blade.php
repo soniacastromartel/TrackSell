@@ -1,5 +1,4 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
@@ -13,9 +12,9 @@
         <div class="col-lg-12">
 
 
-            <form id="servicesForm" method="POST">
+            <form id="servicesForm" method="GET">
                 @csrf
-                @method('POST')
+                @method('GET')
                 <div class="row">
                     <div class="col-lg-12 mt-2">
                         <div class="card" style="min-height:442px;">
@@ -120,186 +119,207 @@
                             <th>Servicio</th>
                             <th>Precio</th>
                             <th>Total</th>
+                            <th>Centro</th>
+                            <th>Empleado</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    var table;
 
-    var columnsFilled = [];
-    
-    columnsFilled.push({
-        data: 'service',
-        name: 'service',
-        searchable: true
-    });
-    columnsFilled.push({
-        data: 'price',
-        name: 'price',
-        searchable: true
-    });
-    columnsFilled.push({
-        name: 'total',
-        data: 'total'
-    });
-  
+var table;
 
-    $(function() {
+var columnsFilled = [];
 
-        setDate();
-        $(".nav-item").each(function() {
-            $(this).removeClass("active");
-        });
-
-        $('#servicesData').hide();
-
-
-        // Buscar
-        $("#btnSubmitFind").on('click', function(e) {
-            e.preventDefault();
-            $('#btnSubmitFind').hide();
-            $('#btnSubmitFindLoad').show();
-            $('#btnSubmitFindLoad').prop('disabled', true);
-            drawTable();
-            $('#servicesData').show();
-        });
-
-    });
-
-    function drawTable() {
-            $('#centre').val($("#centre_id option:selected").text());
-            $('#service').val($("#service_id option:selected").text());
-
-
-            params = {};
-            params["_token"] = "{{ csrf_token() }}";
-            params["centre"] = $('#centre').val();
-            // params["service"] = $('#service').val();
-            params['dateTo'] = $('#date_to').val();
-            params['dateFrom'] = $('#date_from').val();
-
-            console.log(params);
-            // params["monthYear"] = $('#monthYear').val();
-
-        if ($.fn.dataTable.isDataTable('.services-datatable')) {
-            table = $('.services-datatable').DataTable();
-        } else {
-            table = $('.services-datatable').DataTable({
-                // order: [7, "desc"],
-                processing: true,
-                serverSide: true,
-                language: {
-                    "url": "{{ asset('dataTables/Spanish.json') }}"
-                },
-                ajax: {
-                    url: '{{route("services.getSalesServices")}}',
-                    type: "POST",
-                    data: params,
-                    dataSrc: function(json) {
-                        if (json == null) {
-                            return [];
-                        } else {
-                            return json.data;
-                        }
-                    }
-                },
-                columns: columnsFilled,
-                search: {
-                    "regex": true,
-                    "smart": true
-                },
-                initComplete: function() {
-                    this.api().columns().every(function() {
-                        var column = this;
-                    });
-                }
-            });
-        }
-        table.columns.adjust().draw();
-    }
-
-
-    function setDate() {
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        var startDay = 21;
-
-
-        day = day >= 10 ? day : '0' + day;
-        month = month >= 10 ? month : '0' + month;
-        var dateTo = year + '-' + month + '-' + day;
-
-        var previousMonth = 0;
-        if (month != 1 && day < 21) {
-            previousMonth = month - 1;
-        } else if (month != 1 && day >= 21) {
-            previousMonth = month;
-        } else if (month == 1 && day < 21) {
-            previousMonth = 12
-            year = year - 1;
-        } else if (month == 1 && day >= 21) {
-            previousMonth = 01;
-        }
-        // previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
-        var dateFrom = year + '-' + previousMonth + '-' + startDay;
-
-        document.getElementById("date_from").value = dateFrom;
-        document.getElementById("date_to").value = dateTo;
-
-    }
-
-    $("#btnSubmitFind").click(function(e) {
-    e.preventDefault();
-    var centreId = $("#centre_id").val();
-    var dateFrom = $("#date_from").val();
-    var dateTo = $("#date_to").val();
-    
-    $.ajax({
-        url: '{{ route("services.getSalesServices") }}',
-        type: 'POST',
-        data: {
-            centre_id: centreId,
-            dateFrom: dateFrom,
-            dateTo: dateTo,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-            console.log(response.services);
-            updateTable(response.services); // Actualizar la tabla con los servicios vendidos
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
+columnsFilled.push({
+    data: 'service',
+    name: 'service',
+    searchable: true
+});
+columnsFilled.push({
+    data: 'price',
+    name: 'price',
+    searchable: true
+});
+columnsFilled.push({
+    name: 'total',
+    data: 'total'
+});
+columnsFilled.push({
+    data: 'centre',
+    name: 'centre'
+});
+columnsFilled.push({
+    data: 'employee',
+    name: 'employee',
 });
 
-function updateTable(services) {
-    // Primero, limpia el cuerpo actual de la tabla
-    $('.services-datatable tbody').empty();
+$(function() {
 
-    // Luego, agrega los nuevos registros
-    services.forEach(function(service) {
-        var row = `<tr>
-            <td>${service.service}</td>
-            <td>${service.price}</td>
-            <td>${service.total}</td>
-        </tr>`;
-        $('.services-datatable tbody').append(row);
+    setDate();
+    $(".nav-item").each(function() {
+        $(this).removeClass("active");
     });
 
-    // Puedes necesitar reinicializar la tabla o realizar cualquier acción posterior necesaria aquí
+    $('#servicesData').hide();
+
+
+    // Buscar
+    $("#btnSubmitFind").on('click', function(e) {
+        e.preventDefault();
+        $('#btnSubmitFind').hide();
+        $('#btnSubmitFindLoad').show();
+        $('#btnSubmitFindLoad').prop('disabled', true);
+        drawTable();
+        $('#servicesData').show();
+    });
+
+});
+
+function drawTable() {
+        $('#centre').val($("#centre_id option:selected").text());
+        $('#service').val($("#service_id option:selected").text());
+
+
+        params = {};
+        params["_token"] = "{{ csrf_token() }}";
+        params["centre"] = $('#centre').val();
+        // params["service"] = $('#service').val();
+        params['dateTo'] = $('#date_to').val();
+        params['dateFrom'] = $('#date_from').val();
+
+        console.log(params);
+        // params["monthYear"] = $('#monthYear').val();
+
+    if ($.fn.dataTable.isDataTable('.services-datatable')) {
+        table = $('.services-datatable').DataTable();
+    } else {
+        table = $('.services-datatable').DataTable({
+            // order: [7, "desc"],
+            processing: true,
+            serverSide: true,
+            language: {
+                "url": "{{ asset('dataTables/Spanish.json') }}"
+            },
+            ajax: {
+                url: '{{route("services.getSalesServices")}}',
+                type: "GET",
+                data: params,
+                dataSrc: function(json) {
+                    if (json == null) {
+                        return [];
+                    } else {
+                        return json.data;
+                    }
+                }
+            },
+            columns: columnsFilled,
+            search: {
+                "regex": true,
+                "smart": true
+            },
+            initComplete: function() {
+                this.api().columns().every(function() {
+                    var column = this;
+                });
+            }
+        });
+    }
+    table.columns.adjust().draw();
 }
 
+
+function setDate() {
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var startDay = 21;
+
+
+    day = day >= 10 ? day : '0' + day;
+    month = month >= 10 ? month : '0' + month;
+    var dateTo = year + '-' + month + '-' + day;
+
+    var previousMonth = 0;
+    if (month != 1 && day < 21) {
+        previousMonth = month - 1;
+    } else if (month != 1 && day >= 21) {
+        previousMonth = month;
+    } else if (month == 1 && day < 21) {
+        previousMonth = 12
+        year = year - 1;
+    } else if (month == 1 && day >= 21) {
+        previousMonth = 01;
+    }
+    // previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
+    var dateFrom = year + '-' + previousMonth + '-' + startDay;
+
+    document.getElementById("date_from").value = dateFrom;
+    document.getElementById("date_to").value = dateTo;
+
+}
+
+function initDataTable() {
+    table = $('.services-datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{route("services.getSalesServices")}}',
+            type: "GET",
+            data: function(d) {
+                d._token = "{{ csrf_token() }}";
+                d.centre = $('#centre_id').val();
+                d.dateFrom = $('#date_from').val();
+                d.dateTo = $('#date_to').val();
+            }
+        },
+        columns: [
+            { data: 'service', name: 'service' },
+            { data: 'price', name: 'price' },
+            { data: 'total', name: 'total' },
+            { data: 'centre', name: 'centre' },
+            { data: 'employee', name: 'employee' }
+        ],
+        language: { "url": "{{ asset('dataTables/Spanish.json') }}" }
+    });
+}
+
+// Llama a la inicialización de DataTable al cargar la página
+initDataTable();
+
+// Actualizar la tabla con nuevos datos
+function updateTable() {
+    table.ajax.reload(); // Recargar los datos de DataTables
+}
+
+// Configurar la fecha al cargar
+setDate();
+
+// Buscar y actualizar la tabla
+$("#btnSubmitFind").on('click', function(e) { 
+    e.preventDefault();
+    $('#btnSubmitFind').hide();
+    $('#btnSubmitFindLoad').show().prop('disabled', true);
+    
+    // Actualización de la tabla aquí
+    updateTable();
+    
+    $('#servicesData').show();
+    $('#btnSubmitFindLoad').hide();
+    $('#btnSubmitFind').show();
+
+
+
+
+
+});
 
 </script>
 @endsection
