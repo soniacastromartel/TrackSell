@@ -296,7 +296,6 @@
             table.ajax.reload();
         }
 
-
         $("#btnClear").on('click', function(e) {
 
             e.preventDefault();

@@ -21,9 +21,16 @@ class ServicePrice extends Model
         'user_cancellation_date'
     ];
 
+    //!RELATIONS
+     public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+     
      /**
      * The users that belong to the role.
      */
+    
     public function price()
     {
         return $this->hasMany('ServicePrice::class');

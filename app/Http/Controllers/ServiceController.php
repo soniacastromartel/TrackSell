@@ -432,34 +432,39 @@ class ServiceController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
+
+    //!FUNCIÓN PARA DINÁMICA DE SERVICIOS
    
-     public function calculateServices(Request $request)
-     {
+    public function calculateServices()
+    {
+        try {
+            $this->user = session()->get('user');
+            $this->centreId = $this->user['centre_id'];
+            $title = 'Dinámica de Servicios';
 
-         try {
+            if (isset($this->centreId) && $this->centreId != null) {
+                $services = Service::getServicesActive($this->centreId, true, false);
+                $centres = Centre::getCentreByField($this->centreId);
+            } else {
+                $services = Service::getServicesActive();
+                $centres = Centre::getCentresActive();
+            }
+            $disabledService = false;
 
-             $dateFrom = $request->input('date_from');
-             $dateTo = $request->input('date_to');
-             $price = ServicePrice::table('price')->get();
-             $centreId = Centre::table('name')->get(); 
-             $services = Service::getCompletedServices($dateFrom, $dateTo, $centreId);
-          
-
- 
-             return view('calculate_services', [
-                 'services' => $services,
-                 'price'=>$price,
-                 'centre' => $centreId
-             ]);
-         } catch (\Exception $e) {
-             // Considera loguear el error aquí para un diagnóstico más fácil
-             return response()->json([
-                 'success' => false,
-                 'errors' => $e->getMessage(),
-             ], 400);
-         }
-     }
-
+            return view('calculate_services', [
+                'title'            => $title, 
+                'centres'         => $centres,
+                 'services'        => $services, 
+                 'disabledService' => $disabledService, 
+                 'user'      => $this->user
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => 'false',
+                'errors'  => $e->getMessage(),
+            ], 400);
+        }
+    }
     /**
      * Function to to retrieve a list of services sold during a  period, and (optionally) filtered by center ID
      */
@@ -473,10 +478,17 @@ class ServiceController extends Controller
 
             $params = $request->all();
             $centreId = $params['centre_id'];
+         
             $initPeriod = $params['dateFrom'];
             $endPeriod = $params['dateTo'];
 
-            $servicesQuery = Service::select('services.name', 'service_prices.price', DB::raw('COUNT(trackings.id) as total'))
+            $servicesQuery = Service::select(
+               
+                'services.name',
+                'service_prices.price', 
+               DB::raw('COUNT(trackings.id) as total'),
+               )
+      
                 ->join('service_prices', 'services.id', '=', 'service_prices.service_id')
                 ->join('trackings', 'services.id', '=', 'trackings.service_id')
                 ->whereBetween('trackings.validation_date', [$initPeriod, $endPeriod])
@@ -490,8 +502,7 @@ class ServiceController extends Controller
             $services = $servicesQuery->get();
 
             return response()->json([
-                'success' => true,
-                'services' => $services,
+                "data" => $services 
             ]);
         } catch (\Exception $e) {
             return response()->json([

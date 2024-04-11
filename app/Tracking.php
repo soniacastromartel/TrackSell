@@ -46,6 +46,22 @@ class Tracking extends Model
         'state_date',
         'discount'
     ];
+    
+    //!RELATIONS
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+    public function centre()
+    {
+        return $this->belongsTo(Centre::class);
+    }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
 
     public function scopeGetPatients()
     {

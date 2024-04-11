@@ -1,8 +1,8 @@
+
 @extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
-
 
 <div id="alertServicesCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -12,9 +12,9 @@
         <div class="col-lg-12">
 
 
-            <form id="servicesForm" method="GET">
+            <form id="servicesForm" method="POST">
                 @csrf
-                @method('GET')
+                @method('POST')
                 <div class="row">
                     <div class="col-lg-12 mt-2">
                         <div class="card" style="min-height:442px;">
@@ -43,28 +43,18 @@
 
                                     <div class="form-group col-md-4" style="justify-content: right;">
                                         <div class="dropdown bootstrap-select" style="margin-bottom: 50px;">
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
-                                                @if ($user->rol_id != 1)
+                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
+                                                <option>SIN SELECCION </option>
+                                             
                                                 @foreach ($centres as $centre)
-                                                @if ($centre->id == $user->centre_id)
-                                                <option class="text-uppercase" value="{{ $centre->id }}" selected @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
-                                                    {{ $centre->name }}
-                                                </option>
-                                                @endif
+                                                <option value="{{ $centre->id }}" selected>{{ $centre->name }}</option>
                                                 @endforeach
-
-                                                @else
-                                                @foreach ($centres as $centre)
-                                                <option class="text-uppercase" value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
-                                                    {{ $centre->name }}
-                                                </option>
-                                                @endforeach
-                                                @endif
+                                         
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
                                         <div class="dropdown bootstrap-select text-uppercase">
-                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Servicio" tabindex="-98">
+                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
                                                 <option>TODOS</option>
                                                 @foreach ($services as $service)
                                                 <option value="{{ $service->id }}">
@@ -109,6 +99,10 @@
 
                 </div>
             </form>
+
+        
+
+
         </div>
 
         <div class="row" id="servicesData">
@@ -116,16 +110,16 @@
                 <table class="table table-striped table-bordered services-datatable col-lg-12">
                     <thead class="table-header">
                         <tr>
+                            <th>Centro</th>
                             <th>Servicio</th>
                             <th>Precio</th>
                             <th>Total</th>
-                            <th>Centro</th>
-                            <th>Empleado</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
@@ -134,8 +128,13 @@
 <script type="text/javascript">
 
 var table;
-
 var columnsFilled = [];
+columnsFilled.push({
+    data: 'centre_name', // Nombre del centro
+    name: 'centre_name',
+    searchable: true
+});
+
 
 columnsFilled.push({
     data: 'service',
@@ -151,24 +150,15 @@ columnsFilled.push({
     name: 'total',
     data: 'total'
 });
-columnsFilled.push({
-    data: 'centre',
-    name: 'centre'
-});
-columnsFilled.push({
-    data: 'employee',
-    name: 'employee',
-});
+
 
 $(function() {
-
     setDate();
+
     $(".nav-item").each(function() {
         $(this).removeClass("active");
     });
-
     $('#servicesData').hide();
-
 
     // Buscar
     $("#btnSubmitFind").on('click', function(e) {
@@ -182,144 +172,94 @@ $(function() {
 
 });
 
-function drawTable() {
-        $('#centre').val($("#centre_id option:selected").text());
-        $('#service').val($("#service_id option:selected").text());
 
+ function clearForms() {
+            setDate();
+            $('select#centre_id').val('');
+            $('select#service_id').val('');
+            $('select#centre_id').selectpicker("refresh");
+            $('select#employee_id').selectpicker("refresh");
+            $('select#service_id').selectpicker("refresh");
+            $('input[type="search"]').val('');
+            table.search('').draw();
+            table.ajax.reload();
+        }
+        
+        $("#btnClear").on('click', function(e) {
 
-        params = {};
-        params["_token"] = "{{ csrf_token() }}";
-        params["centre"] = $('#centre').val();
-        // params["service"] = $('#service').val();
-        params['dateTo'] = $('#date_to').val();
-        params['dateFrom'] = $('#date_from').val();
+            e.preventDefault();
+            clearForms();
+        });
+ 
+        function drawTable() {
+    var centreId = $('#centre').val(); // Cambiado para usar el valor del ID
+    var serviceId = $('#service_id').val(); // Cambiado para usar el valor del ID
 
-        console.log(params);
-        // params["monthYear"] = $('#monthYear').val();
+    // Esta configuración reemplaza a 'params' para ajustarse a la espera de DataTables
+    var ajaxData = function(d) {
+        d._token = "{{ csrf_token() }}";
+        d.centre_id = centreId; 
+        d.service_id = serviceId; 
+        d.dateTo = $('#date_to').val();
+        d.dateFrom = $('#date_from').val();
+    };
 
-    if ($.fn.dataTable.isDataTable('.services-datatable')) {
-        table = $('.services-datatable').DataTable();
-    } else {
+    if (!$.fn.dataTable.isDataTable('.services-datatable')) {
         table = $('.services-datatable').DataTable({
-            // order: [7, "desc"],
             processing: true,
             serverSide: true,
-            language: {
-                "url": "{{ asset('dataTables/Spanish.json') }}"
-            },
             ajax: {
                 url: '{{route("services.getSalesServices")}}',
-                type: "GET",
-                data: params,
-                dataSrc: function(json) {
-                    if (json == null) {
-                        return [];
-                    } else {
-                        return json.data;
-                    }
-                }
+                type: "POST",
+                data: ajaxData // Aquí usamos la función definida
             },
-            columns: columnsFilled,
+            columns: columnsFilled, // Asegúrate de que esta configuración coincide con los datos devueltos
             search: {
                 "regex": true,
                 "smart": true
             },
-            initComplete: function() {
-                this.api().columns().every(function() {
-                    var column = this;
-                });
+            language: {
+                "url": "{{ asset('dataTables/Spanish.json') }}" 
             }
         });
+    } else {
+        table.ajax.reload();
     }
-    table.columns.adjust().draw();
 }
+
+
 
 
 function setDate() {
     var date = new Date();
     var day = date.getDate();
-    var month = date.getMonth() + 1;
+    var month = date.getMonth() + 1; 
     var year = date.getFullYear();
-    var startDay = 21;
+    var startDay = 20;
+    day = day < 10 ? '0' + day : day;
+    month = month < 10 ? '0' + month : month;
+    var dateTo = year + '-' + month + '-' + day; 
+    var previousMonth = month; 
+    var previousYear = year;
+    if (month === '01' && day < 21) {
+        previousMonth = '12';
+        previousYear = year - 1; 
 
-
-    day = day >= 10 ? day : '0' + day;
-    month = month >= 10 ? month : '0' + month;
-    var dateTo = year + '-' + month + '-' + day;
-
-    var previousMonth = 0;
-    if (month != 1 && day < 21) {
-        previousMonth = month - 1;
-    } else if (month != 1 && day >= 21) {
-        previousMonth = month;
-    } else if (month == 1 && day < 21) {
-        previousMonth = 12
-        year = year - 1;
-    } else if (month == 1 && day >= 21) {
-        previousMonth = 01;
+    } else {
+        previousMonth = parseInt(month, 10); 
+        previousMonth = (day < 21) ? previousMonth - 1 : previousMonth; 
+        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString(); 
     }
-    // previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
-    var dateFrom = year + '-' + previousMonth + '-' + startDay;
+
+    var dateFrom = previousYear + '-' + previousMonth + '-' + startDay; 
 
     document.getElementById("date_from").value = dateFrom;
-    document.getElementById("date_to").value = dateTo;
-
-}
-
-function initDataTable() {
-    table = $('.services-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: '{{route("services.getSalesServices")}}',
-            type: "GET",
-            data: function(d) {
-                d._token = "{{ csrf_token() }}";
-                d.centre = $('#centre_id').val();
-                d.dateFrom = $('#date_from').val();
-                d.dateTo = $('#date_to').val();
-            }
-        },
-        columns: [
-            { data: 'service', name: 'service' },
-            { data: 'price', name: 'price' },
-            { data: 'total', name: 'total' },
-            { data: 'centre', name: 'centre' },
-            { data: 'employee', name: 'employee' }
-        ],
-        language: { "url": "{{ asset('dataTables/Spanish.json') }}" }
-    });
-}
-
-// Llama a la inicialización de DataTable al cargar la página
-initDataTable();
-
-// Actualizar la tabla con nuevos datos
-function updateTable() {
-    table.ajax.reload(); // Recargar los datos de DataTables
-}
-
-// Configurar la fecha al cargar
-setDate();
-
-// Buscar y actualizar la tabla
-$("#btnSubmitFind").on('click', function(e) { 
-    e.preventDefault();
-    $('#btnSubmitFind').hide();
-    $('#btnSubmitFindLoad').show().prop('disabled', true);
-    
-    // Actualización de la tabla aquí
-    updateTable();
-    
-    $('#servicesData').show();
-    $('#btnSubmitFindLoad').hide();
-    $('#btnSubmitFind').show();
+    document.getElementById("date_to").value = dateTo; 
+  }
 
 
 
 
-
-});
 
 </script>
 @endsection
