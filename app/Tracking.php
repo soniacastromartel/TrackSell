@@ -61,7 +61,9 @@ class Tracking extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+   
 
+  
 
     public function scopeGetPatients()
     {

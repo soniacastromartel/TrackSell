@@ -30,11 +30,6 @@ class Service extends Model
         return $this->hasMany(Tracking::class);
     }
 
-    // NO PUEDO TRAERME EMPLOYEE Y CENTRE YA QUE NO EXISTE REALCIOON CON SERVICES 
-    //necesito la tabla de trakings para ver el empleado que vendió mi servicio 
-    // fecha de validación para la filtración por fecha
-    // employee_id para ver el empleado 
-    // se relaciona con el service_id que esta en la tabla de servicios 
 
     //!FUNCIÓN DINÁMICA DE SERVICIOS
 
@@ -44,14 +39,9 @@ class Service extends Model
             $query->whereBetween('validation_date', [$dateFrom, $dateTo])
                   ->where('validation_done',1)
                   ->with('centre', 'employee');
-        }])->get();
+        }]);
     }
-
-
-
-
-
-
+ 
 
 
 

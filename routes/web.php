@@ -47,6 +47,8 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/admin/services/exportServices', 'ServiceController@exportServicesIncentivesActives')->name('services.exportServicesIncentivesActives');
     Route::get('/calculateServices', 'ServiceController@calculateServices')->name('services.calculateServices');
     Route::post('/getSalesServices', 'ServiceController@getSalesServices')->name('services.getSalesServices');
+    Route::get('/calculateServicesPrueba', 'ServiceController@calculateServicesPrueba')->name('calculateServicesPrueba');
+    Route::get('/calculateServicesCentre', 'ServiceController@filterByCentre')->name('services.filter');
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
     Route::get('/tracking/create', 'TrackingController@create')->name('tracking.create');
