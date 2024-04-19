@@ -13,8 +13,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
-
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
@@ -47,8 +45,10 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/admin/services/exportServices', 'ServiceController@exportServicesIncentivesActives')->name('services.exportServicesIncentivesActives');
     Route::get('/calculateServices', 'ServiceController@calculateServices')->name('services.calculateServices');
     Route::post('/getSalesServices', 'ServiceController@getSalesServices')->name('services.getSalesServices');
-    Route::get('/calculateServicesPrueba', 'ServiceController@calculateServicesPrueba')->name('calculateServicesPrueba');
-    Route::get('/calculateServicesCentre', 'ServiceController@filterByCentre')->name('services.filter');
+    Route::get('/calculateServicesPrueba', 'ServiceController@showAllServicesAndByCentre')->name('calculateServicesPrueba');
+    //Route::get('/calculateServicesCentre', 'ServiceController@showGetCountAllServicesByCentre')->name('services.calculateAllServicesByCentre');
+    //Route::get('/calculateAllServices', 'ServiceController@showGetCountAllServices')->name('services.calculateAllServices');
+
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
     Route::get('/tracking/create', 'TrackingController@create')->name('tracking.create');
@@ -117,7 +117,6 @@ Route::get('/admin/profile', 'HomeController@viewProfile')->name('admin.profile'
 Route::put('/editProfile/{id}', 'HomeController@editProfile')->name('editProfile');
 Route::get('/getSales', 'HomeController@getSales')->name('home.getSales');
 Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets');
-
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
 
 //!A3API

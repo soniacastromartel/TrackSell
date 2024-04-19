@@ -512,82 +512,48 @@ class ServiceController extends Controller
         }
     }
 
-
     //!PRUEBA VIEW SOLO HTML 
 
-    public function calculateServicesPrueba()
+    public function showAllServicesAndByCentre(Request $request)
     {
-        $centreId = request('centre_id');
-
-        $services = Service::with(['servicePrice' => function ($query) {
-            
-            $query->whereNull('cancellation_date');
-         }, 'tracking' => function ($query) {
-             $query->where('validation_done', 1)->with(['centre']);
-        }])
-            ->whereHas('servicePrice', function ($query) {
-                $query->whereNull('cancellation_date');
-            })
-            ->get();
-
-        $centres = Centre::all();
+        $centreId = $request->input('centre_id');
+        $serviceId = $request->input('service_id'); // Captura el service_id seleccionado desde el input
+        $services = Service::getCountAllServices($serviceId)->get(); 
+        $centres = Centre::getCentresActive();
+        $servicesCountCentre = Service::getCountServicesByCentre($centreId)
+                                     ->orderBy('service_name')   
+                                     ->get();
 
         return view('calculateServicesPrueba', [
-
-            'services' => $services, 
-            'centres' => $centres, 
-            'centre_id' => $centreId]);
-    }
-
-
-    public function getCountOfServicesByCentre($centreId) {
-              return Tracking::where('validation_done', 1)
-                       ->where('centre_id', $centreId)
-
-                       ->select('service_id', DB::raw('COUNT(*) as total'))
-                       ->groupBy('service_id')
-                       ->get();
-                   
-    }
-    
-
-    public function filterByCentre(Request $request)
-    {
-        $centreId = $request->centre_id;
-
-        $services = Service::with(['servicePrice' => function ($query) use ($centreId) {
-
-            $query->where('centre_id', $centreId)
-                ->whereNull('cancellation_date');
-        }, 'tracking' => function ($query) use ($centreId) {
-            $query->where('validation_done', 1)
-                ->where('centre_id', $centreId)
-                ->with(['centre']);
-        }])
-            ->whereHas('servicePrice', function ($query) use ($centreId) {
-                $query->where('centre_id', $centreId)
-                    ->whereNull('cancellation_date');
-            })
-            ->get();
-   
-
-        $centres = Centre::all()->map(function ($centre) use ($centreId) {
-            $centre->selected = ($centre->id == $centreId);
-            return $centre;
-        });
-
-    // $serviceCountQuery = Tracking::countValidatedServices($centreId);
-    // dd($serviceCountQuery->toSql(), $serviceCountQuery->getBindings()); // Debugging SQL
-
-     $serviceCount = $this->getCountOfServicesByCentre($centreId);
-
-        return view('calculateServicesPrueba', [
-
             'services' => $services,
-            'centres' => $centres,
+            'service_id' => $serviceId,
             'centre_id' => $centreId,
-            'serviceCount' => $serviceCount
-
+            'centres' => $centres,
+            'servicesCountCentre' => $servicesCountCentre
+           
         ]);
     }
+
+
+    // public function showGetCountAllServicesByCentre(Request $request)
+    // {
+    
+   
+       
+    //     $centres = Centre::getCentresActive();
+   
+    //     // $services = Service::whereHas('tracking', function ($query) use ($centreId) {
+    //     //     $query->where('centre_id', $centreId)
+    //     //           ->where('validation_done', 1)
+    //     //           ->whereNull('cancellation_date');
+    //     // })->get();  
+    
+    //     return view('calculateServicesPrueba', [
+    //          'centres' => $centres,
+    //         // 'services' => $services,
+    //         'centre_id' => $centreId,
+    //         'servicesCountCentre' => $servicesCountCentre
+    //     ]);
+   
+    // }
 }

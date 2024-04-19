@@ -27,12 +27,18 @@ class ServicePrice extends Model
         return $this->belongsTo(Service::class);
     }
      
-     /**
-     * The users that belong to the role.
-     */
     
     public function price()
     {
         return $this->hasMany('ServicePrice::class');
+    }
+
+    //!FUNCTIONS
+    // en esta función recogesmos los precios activos de cada servicio
+    public function scopeGetPricesActive($query,$serviceId, $centreId)
+    {
+        return $query->where('service_id', $serviceId)
+                     ->where('centre_id', $centreId)
+                     ->whereNull('cancellation_date');
     }
 }

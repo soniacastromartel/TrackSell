@@ -2,7 +2,14 @@
 
 namespace App;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
+
+\DB::listen(function ($query) {
+    Log::info("Query: " . $query->sql);
+    Log::info("Bindings: " . implode(", ", $query->bindings));
+});
 
 class Service extends Model
 {
@@ -18,6 +25,8 @@ class Service extends Model
         'image'
     ];
 
+
+    
     //!RELATIONS
 
     public function servicePrice()
@@ -32,17 +41,44 @@ class Service extends Model
 
 
     //!FUNCIÓN DINÁMICA DE SERVICIOS
-
-    public function scopeGetCalculateServices($query,$dateFrom, $dateTo)
+    public function scopeGetCountAllServices($query, $serviceId)
     {
-        return $this->with(['servicePrice', 'tracking' => function ($query) use ($dateFrom, $dateTo) {
-            $query->whereBetween('validation_date', [$dateFrom, $dateTo])
-                  ->where('validation_done',1)
-                  ->with('centre', 'employee');
-        }]);
+        return $query->join('trackings', 'services.id', '=', 'trackings.service_id')
+                     ->join('service_prices', 'services.id', '=', 'service_prices.service_id')
+                     ->join('centres', 'trackings.centre_id', '=', 'centres.id')
+                     ->where('trackings.validation_done', 1)
+                     ->where('services.id', $serviceId) // Asume que $serviceId es proporcionado por el controlador
+                     ->whereNull('service_prices.cancellation_date')
+                     ->whereNull('trackings.cancellation_date')
+                     ->whereNull('centres.cancellation_date')
+                     ->select('services.id', 'services.name', 'centres.name as centre_name', 'service_prices.price', DB::raw('COUNT(*) as total'))
+                     ->groupBy('services.id', 'services.name', 'centres.id', 'service_prices.price');
+    }
+    
+    
+    public function scopeGetCountServicesByCentre($query, $centreId)
+    {
+        return $query->select(
+            'centres.name as centre_name', 
+            'services.name as service_name', 
+            'service_prices.price as price', 
+            DB::raw('COUNT(*) as total')
+        )
+        ->join('trackings', 'services.id', '=', 'trackings.service_id')
+        ->join('service_prices', 'services.id', '=', 'service_prices.service_id')
+        ->join('centres', 'trackings.centre_id', '=', 'centres.id') 
+        ->where('trackings.validation_done', 1)
+        ->where('trackings.centre_id', $centreId)
+        ->whereNull('service_prices.cancellation_date')
+        ->whereNull('trackings.cancellation_date')
+        ->whereNull('centres.cancellation_date') 
+        ->groupBy('services.id', 'services.name', 'centres.name')
+        ->orderBy('service_name', 'asc');
+        
+ 
+      
     }
  
-
 
 
     public function scopeGetServicesActive($query, $centre_id = null, $basic = false, $orderDif = false, $groupBy = false)

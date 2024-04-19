@@ -140,7 +140,7 @@
             </li>
 
             <li id="calculateService" class="nav-item">
-              <a class="nav-link" href="{{route('services.calculateServices')}}">
+              <a class="nav-link" href="{{route('services.calculateAllServices')}}">
                 <i class="material-icons">track_changes</i>
                 <span class="sidebar-normal"> Dinámica de Servicios </span>
               </a>

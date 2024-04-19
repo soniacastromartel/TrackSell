@@ -284,7 +284,13 @@ class TrackingController extends Controller
 
 
             return view('tracking.index', [
-                'title' => $title, 'mensaje' => '',  'centres'  => $centres,  'states'   => $states, 'employees'  => $employees, 'services'  => $services, 'patients'  => $patients,
+                'title' => $title, 
+                'mensaje' => '', 
+                'centres'  => $centres,  
+                'states'   => $states, 
+                'employees'  => $employees, 
+                'services'  => $services, 
+                'patients'  => $patients,
                 'user'      => $this->user,
 
             ]);
@@ -312,7 +318,12 @@ class TrackingController extends Controller
             $discounts = Discount::whereNull('cancellation_date')->get();
 
             return view('tracking.create', [
-                'title'            => $title, 'centres'         => $centres, 'services'        => $services, 'employees'       => $employees, 'disabledService' => $disabledService, 'discounts'       => $discounts
+                'title' => $title, 
+                'centres' => $centres,
+                 'services' => $services,
+                  'employees' => $employees, 
+                  'disabledService' => $disabledService,
+                   'discounts'  => $discounts
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar formulario de nuevo seguimiento, contacte con el administrador');
@@ -402,7 +413,16 @@ class TrackingController extends Controller
             $discounts = Discount::whereNull('cancellation_date')->get();
 
             return view('tracking.edit', [
-                'title'           => 'Modificar recomendación', 'tracking'        => $tracking, 'centres'         => $centres, 'services'        => $services, 'employees'       => $employees, 'state'           => $state, 'employee'        => $employee, 'tracking_date'   => $tracking[$state], 'discounts'       => $discounts, 'disabledService' => $disabledService
+                 'title' => 'Modificar recomendación',
+                 'tracking' => $tracking, 
+                 'centres'  => $centres, 
+                 'services' => $services, 
+                 'employees' => $employees,
+                 'state'  => $state,
+                 'employee'  => $employee, 
+                 'tracking_date'=> $tracking[$state], 
+                 'discounts'  => $discounts, 
+                 'disabledService' => $disabledService
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento para editar, contacte con el administrador');
@@ -740,7 +760,10 @@ class TrackingController extends Controller
             $employees = Employee::getEmployeesActive();
 
             return view('tracking.delete', [
-                'title'    => 'Borrar Seguimiento', 'centres'  => $centres, 'services' => $services, 'employees' => $employees
+                'title' => 'Borrar Seguimiento', 
+                'centres'  => $centres,
+                 'services' => $services,
+                  'employees' => $employees
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar formulario borrar seguimientos , contacte con el administrador');
