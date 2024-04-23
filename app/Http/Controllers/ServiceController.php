@@ -517,43 +517,32 @@ class ServiceController extends Controller
     public function showAllServicesAndByCentre(Request $request)
     {
         $centreId = $request->input('centre_id');
-        $serviceId = $request->input('service_id'); // Captura el service_id seleccionado desde el input
-        $services = Service::getCountAllServices($serviceId)->get(); 
+        $serviceId = $request->input('service_id'); 
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $services = Service::getServicesActiveFilter();
         $centres = Centre::getCentresActive();
-        $servicesCountCentre = Service::getCountServicesByCentre($centreId)
-                                     ->orderBy('service_name')   
-                                     ->get();
+        $servicesCount = Service::getCountAllServices($serviceId, $startDate, $endDate)->get()
+        ->map(function ($item) {
+            // Calculamos el total por centro 
+            $item->total_price_per_centre = $item->price * $item->cantidad;
+            return $item;
+        });
+  
+        $totalServices = $servicesCount->sum('cantidad');
+        $grandTotal = $servicesCount->sum('total_price_per_centre');
+        $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)->get();
+
 
         return view('calculateServicesPrueba', [
             'services' => $services,
             'service_id' => $serviceId,
             'centre_id' => $centreId,
             'centres' => $centres,
-            'servicesCountCentre' => $servicesCountCentre
-           
+            'servicesCountCentre' => $servicesCountCentre,
+            'servicesCount' => $servicesCount,
+            'totalServices' => $totalServices,
+            'grandTotal' => $grandTotal,
         ]);
     }
-
-
-    // public function showGetCountAllServicesByCentre(Request $request)
-    // {
-    
-   
-       
-    //     $centres = Centre::getCentresActive();
-   
-    //     // $services = Service::whereHas('tracking', function ($query) use ($centreId) {
-    //     //     $query->where('centre_id', $centreId)
-    //     //           ->where('validation_done', 1)
-    //     //           ->whereNull('cancellation_date');
-    //     // })->get();  
-    
-    //     return view('calculateServicesPrueba', [
-    //          'centres' => $centres,
-    //         // 'services' => $services,
-    //         'centre_id' => $centreId,
-    //         'servicesCountCentre' => $servicesCountCentre
-    //     ]);
-   
-    // }
 }

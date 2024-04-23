@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\A3CenterSaraController;
+use App\Service;
 use Illuminate\Support\Arr;
 Route::get('/', function () {
     return redirect('login');
