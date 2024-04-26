@@ -36,63 +36,73 @@ class Service extends Model
 
     public function scopeGetCountAllServices($query, $serviceId, $startDate, $endDate)
     {
-        return $query
-            ->join('trackings', 'services.id', '=', 'trackings.service_id')
-            ->join('centres', 'trackings.centre_id', '=', 'centres.id')
-            ->join('service_prices', function ($join) {
-                $join->on('services.id', '=', 'service_prices.service_id')
-                     ->on('trackings.centre_id', '=', 'service_prices.centre_id');
-            })
-            ->join('employees', 'trackings.employee_id', '=', 'employees.id')
-            ->where('trackings.validation_done', 1)
-            ->where('services.id', $serviceId)
-            ->whereBetween('trackings.started_date', [$startDate, $endDate])
-            ->whereBetween('trackings.validation_date', [$startDate, $endDate])
-            ->whereNull('service_prices.cancellation_date')
-            ->whereNull('trackings.cancellation_date')
-            ->whereNull('centres.cancellation_date')
-            ->select(
-                'services.name as service_name',
-                'centres.name as centre_name',
-                'service_prices.price as price',
-                'employees.name as employee_name',
-                'employees.category as employee_category',
-
-                DB::raw('COUNT(*) as cantidad')
-            )
-            ->groupBy('services.name', 'centres.name', 'service_prices.price', 'employees.name')
-            ->orderBy('cantidad', 'desc');  
+        $query->join('trackings', 'services.id', '=', 'trackings.service_id')
+              ->join('centres', 'trackings.centre_id', '=', 'centres.id')
+              ->join('service_prices', function ($join) {
+                  $join->on('services.id', '=', 'service_prices.service_id')
+                       ->on('trackings.centre_id', '=', 'service_prices.centre_id');
+              })
+              ->join('employees', 'trackings.employee_id', '=', 'employees.id')
+              ->where('trackings.validation_done', 1)
+              ->where('services.id', $serviceId);
+    
+        // Conditional date range filtering
+        if ($startDate && $endDate) {
+            $query->whereBetween('trackings.started_date', [$startDate, $endDate]);
+        }
+    
+        $query->whereNull('service_prices.cancellation_date')
+              ->whereNull('trackings.cancellation_date')
+              ->whereNull('centres.cancellation_date')
+              ->select(
+                  'services.name as service_name',
+                  'centres.name as centre_name',
+                  'service_prices.price as price',
+                  'employees.name as employee_name',
+                  'employees.category as employee_category',
+                  'trackings.started_date',
+                  'trackings.validation_date as end_date',
+                  DB::raw('COUNT(*) as cantidad')
+              )
+              ->groupBy('services.name', 'centres.name', 'service_prices.price', 'employees.name', 'trackings.started_date', 'trackings.validation_date')
+              ->orderBy('cantidad', 'desc');
+    
+        return $query;
     }
     
-
-
-    public function scopeGetCountServicesByCentre($query, $centreId,$startDate,$endDate)
+    public function scopeGetCountServicesByCentre($query, $centreId, $startDate, $endDate)
     {
-        return $query->select(
+        $query->select(
             'centres.name as centre_name',
             'services.name as service_name',
             'service_prices.price as price',
-            DB::raw('COUNT(*) as total')
+            'trackings.started_date',
+            'trackings.validation_date as end_date',
+            DB::raw('COUNT(trackings.id) as total')  // Cambiado para contar específicamente los seguimientos
         )
-            ->join('trackings', 'services.id', '=', 'trackings.service_id')
-            //función que faltaba para hacer el filtrado correctamente.
-            ->join('service_prices', function ($join) use ($centreId) {
-                $join->on('services.id', '=', 'service_prices.service_id')
-                    ->where('service_prices.centre_id', '=', $centreId);
-            })
-
-            ->join('centres', 'trackings.centre_id', '=', 'centres.id')
-            ->where('trackings.validation_done', 1)
-            ->where('trackings.centre_id', $centreId)
-            ->whereBetween('trackings.started_date', [$startDate, $endDate])
-            ->whereBetween('trackings.validation_date', [$startDate, $endDate])
-            ->whereNull('service_prices.cancellation_date')
-            ->whereNull('trackings.cancellation_date')
-            ->whereNull('centres.cancellation_date')
-            ->groupBy('services.id', 'services.name', 'centres.name')
-            ->orderBy('total', 'desc'); 
-          
+        ->join('trackings', 'services.id', '=', 'trackings.service_id', 'left')  // Cambio a left join si necesario
+        ->join('centres', 'trackings.centre_id', '=', 'centres.id', 'left')
+        ->join('service_prices', function ($join) use ($centreId) {
+            $join->on('services.id', '=', 'service_prices.service_id')
+                 ->where('service_prices.centre_id', '=', $centreId);
+        }, 'left')  // Cambio a left join si se espera mostrar servicios sin precios específicos
+    
+        ->where('trackings.validation_done', 1)
+        ->where('trackings.centre_id', $centreId);
+    
+        if ($startDate && $endDate) {
+            $query->whereBetween('trackings.started_date', [$startDate, $endDate]);
+        }
+    
+        $query->whereNull('service_prices.cancellation_date')
+              ->whereNull('trackings.cancellation_date')
+              ->whereNull('centres.cancellation_date')
+              ->groupBy('services.id', 'services.name', 'centres.name')  // Incluido el precio en el agrupamiento
+              ->orderBy('total', 'desc');
+    
+        return $query;
     }
+    
     // funcion anterior que no salia el filtrado 
 
     // public function scopeGetCountServicesByCentre($query, $centreId)

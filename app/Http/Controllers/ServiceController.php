@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service;
 use App\Centre;
+use App\Charts\CentreServicesGraph;
 use DataTables;
 use DB;
 use Auth;
@@ -14,6 +15,7 @@ use App\Exports\ServicesIncentivesExport;
 use App\ServicePrice;
 use App\Tracking;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class ServiceController extends Controller
 {
@@ -532,6 +534,12 @@ class ServiceController extends Controller
         $totalServices = $servicesCount->sum('cantidad');
         $grandTotal = $servicesCount->sum('total_price_per_centre');
         $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)->get();
+        $labels = $servicesCountCentre->pluck('centre_name');
+    $values = $servicesCountCentre->pluck('total');
+
+    $chart = new CentreServicesGraph();
+    $chart->labels($labels)->dataset('Services by Centre', 'bar', $values);
+    $chart->setup($labels, $values);
 
 
         return view('calculateServicesPrueba', [
@@ -543,6 +551,8 @@ class ServiceController extends Controller
             'servicesCount' => $servicesCount,
             'totalServices' => $totalServices,
             'grandTotal' => $grandTotal,
+            'chart' => $chart
+           
         ]);
     }
 }
