@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Service;
 use App\Centre;
 use App\Charts\CentreServicesGraph;
+use App\Exports\DinamicServicesExport;
 use DataTables;
 use DB;
 use Auth;
@@ -524,22 +525,29 @@ class ServiceController extends Controller
         $endDate = $request->input('end_date');
         $services = Service::getServicesActiveFilter();
         $centres = Centre::getCentresActive();
-        $servicesCount = Service::getCountAllServices($serviceId, $startDate, $endDate)->get()
+        $selectedCentre = Centre::find($centreId);
+        $selectedService = Service::find($serviceId);
+        $servicesCount = Service::getCountAllServices($serviceId, $startDate, $endDate)
+        ->get()
         ->map(function ($item) {
-            // Calculamos el total por centro 
+            //! Calculamos el total por centro 
             $item->total_price_per_centre = $item->price * $item->cantidad;
             return $item;
-        });
-  
-        $totalServices = $servicesCount->sum('cantidad');
+        })->sortByDesc('cantidad');
+        $totalServices = $servicesCount->sum('cantidad');                          
         $grandTotal = $servicesCount->sum('total_price_per_centre');
-        $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)->get();
-        $labels = $servicesCountCentre->pluck('centre_name');
-    $values = $servicesCountCentre->pluck('total');
+        $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
+                                      ->get();
 
-    $chart = new CentreServicesGraph();
-    $chart->labels($labels)->dataset('Services by Centre', 'bar', $values);
-    $chart->setup($labels, $values);
+        //?datos para la grafica por centro 
+        $labelsCentre = $servicesCountCentre->pluck('service_name')->all();
+        $dataCentre = $servicesCountCentre->pluck('total')->all();
+        //?datos para la grafica por servicio
+        $labelsService = $servicesCount->pluck('centre_name')->all();
+        $dataService = $servicesCount->pluck('cantidad');
+        //?datos para la grafica por todos los servicios
+        $labelsServiceAll = $servicesCount->pluck('service_name')->all();
+        $dataServiceAll = $servicesCount->pluck('cantidad')->all();
 
 
         return view('calculateServicesPrueba', [
@@ -547,12 +555,35 @@ class ServiceController extends Controller
             'service_id' => $serviceId,
             'centre_id' => $centreId,
             'centres' => $centres,
+            'selectedCentre' => $selectedCentre,
+            'selectedService' => $selectedService,
             'servicesCountCentre' => $servicesCountCentre,
             'servicesCount' => $servicesCount,
             'totalServices' => $totalServices,
             'grandTotal' => $grandTotal,
-            'chart' => $chart
+            'labelsCentre' => $labelsCentre,
+            'dataCentre' => $dataCentre,
+            'labelsService' => $labelsService,
+            'dataService' => $dataService,
+            'labelsServiceAll' => $labelsServiceAll,
+            'dataServiceAll' => $dataServiceAll,
+        
            
         ]);
     }
+
+
+    public function exportDinamicServices(Request $request)
+    {
+        // Obtener datos para la exportación
+        $data = $this->getDataForExport(); // Implementa esta función según necesites
+        // Crear la exportación y descargar
+        $export = new DinamicServicesExport($data);
+        return $export->download();
+    }
+
+
+
+
+
 }

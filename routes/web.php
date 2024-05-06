@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\A3CenterSaraController;
+use App\Http\Controllers\ChartController;
 use App\Service;
 use Illuminate\Support\Arr;
 Route::get('/', function () {
@@ -47,6 +48,9 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/calculateServices', 'ServiceController@calculateServices')->name('services.calculateServices');
     Route::post('/getSalesServices', 'ServiceController@getSalesServices')->name('services.getSalesServices');
     Route::get('/calculateServicesPrueba', 'ServiceController@showAllServicesAndByCentre')->name('calculateServicesPrueba');
+    //?Exportar dinámica de servicios
+    Route::get('/export-services', 'ServiceController@exportDinamicServices')->name('export.services');
+
     //Route::get('/calculateServicesCentre', 'ServiceController@showGetCountAllServicesByCentre')->name('services.calculateAllServicesByCentre');
     //Route::get('/calculateAllServices', 'ServiceController@showGetCountAllServices')->name('services.calculateAllServices');
 
