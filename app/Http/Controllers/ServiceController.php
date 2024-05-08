@@ -572,15 +572,21 @@ class ServiceController extends Controller
         ]);
     }
 
+//TODO Documento excel de DinamicServices
+// public function exportDinamicServices(Request $request)
+// {
+//     // Fetch and prepare your data here based on request parameters
+//     $data = Service::all(); // Example, modify based on actual needs
 
-    public function exportDinamicServices(Request $request)
-    {
-        // Obtener datos para la exportación
-        $data = $this->getDataForExport(); // Implementa esta función según necesites
-        // Crear la exportación y descargar
-        $export = new DinamicServicesExport($data);
-        return $export->download();
-    }
+//     return Excel::download(new DinamicServicesExport($data), 'services.xlsx');
+// }
+
+
+public function exportDinamicServices(Request $request)
+{
+
+    return (new DinamicServicesExport($request))->download('services.xlsx');
+}
 
 
 

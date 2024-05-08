@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -53,7 +53,14 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="resetSelectors()">Refrescar datos</button>
+               <form action="{{ route('export.services')}}" method="GET">
+                <input type="hidden" name="service_id" value="{{ $service_id ?? '' }}">
+                <input type="hidden" name="centre_id" value="{{ $centre_id ?? '' }}">
+                <input type="hidden" name="start_date" value="{{ $start_date ?? '' }}">
+                <input type="hidden" name="end_date" value="{{ $end_date ?? '' }}">
                 <button type="submit" class="btn btn-primary">Exportar Documento</button>
+               </form>
+
             </div>
             <form id="serviceForm" action="{{ route('calculateServicesPrueba') }}" method="GET">
                 <input type="hidden" name="centre_id" value="{{ $centre_id }}">
