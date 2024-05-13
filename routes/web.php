@@ -49,10 +49,9 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/getSalesServices', 'ServiceController@getSalesServices')->name('services.getSalesServices');
     Route::get('/calculateServicesPrueba', 'ServiceController@showAllServicesAndByCentre')->name('calculateServicesPrueba');
     //?Exportar dinámica de servicios
-    Route::get('/export/services', 'ServiceController@exportDinamicServices')->name('export.services');
+    Route::get('/export/services', 'ServiceController@exportDinamicServices')->name('export.all-services');
 
-    //Route::get('/calculateServicesCentre', 'ServiceController@showGetCountAllServicesByCentre')->name('services.calculateAllServicesByCentre');
-    //Route::get('/calculateAllServices', 'ServiceController@showGetCountAllServices')->name('services.calculateAllServices');
+   
 
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
