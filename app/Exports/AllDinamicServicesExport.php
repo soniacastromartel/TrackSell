@@ -89,14 +89,8 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
                     'CATEGORÍA' => $item->employee_category
                 ];
             }
-            elseif(!empty($this->request->input('centre_id'))) {
-                $extendedData += [
-                    'PRECIO' => '',
-                    'REALIZADOS' => '',
-                    'TOTAL' => '',
-                  
-                ];
-            }
+            
+            return $extendedData;
         });
         $this->totalServices = $totalServices;
         $this->grandTotal = $grandTotal;
@@ -107,14 +101,14 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
 
     public function headings(): array
     {
-        $headings = ['SERVICIOS', '', '', '', '', '', 'TOTAL'];
+        $allServicesHeading = ['SERVICIOS', '', '', '', '', '', 'TOTAL'];
 
         if (!empty($this->request->input('service_id'))) {
-            $headings = array_merge($headings, ['SERVICIOS', '', '', '', '', '', 'TOTAL', 'CENTRO', '', 'EMPLEADO', '', '', '', 'CATEGORÍA']);
+            $allServicesHeading = ['SERVICIOS', '', '', '', '', '', 'TOTAL', 'CENTRO', '', 'EMPLEADO', '', '', '', 'CATEGORÍA'];
         } elseif (!empty($this->request->input('centre_id'))) {
-            $headings = array_merge($headings, ['SERVICIOS', '', '', '', '', '', 'PRECIO', 'REALIZADOS', 'TOTAL']);
+                $allServicesHeading = ['SERVICIOS', '', '', '', '', '', 'PRECIO', 'REALIZADOS', 'TOTAL'];
         }
-        return $headings;
+        return $allServicesHeading;
     }
 
     public function registerEvents(): array
