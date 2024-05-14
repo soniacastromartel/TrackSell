@@ -51,7 +51,8 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
     {
         $serviceId = $this->request->input('service_id');
         $centreId = $this->request->input('centre_id');
-        if ($this->startDate && $this->endDate) {
+
+        if (!empty($serviceId)) {
             $query = Service::getCountAllServices($serviceId, $this->startDate, $this->endDate);
         } else if (!empty($centreId)) {
             // If centre_id is provided but not the date range
@@ -61,6 +62,7 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
             $query = Service::getCountAllServices($serviceId);
         }
 
+        
         $results = $query->get()->sortByDesc('cantidad');
         $totalServices = $results->sum('cantidad');
         $grandTotal = $results->sum(function($item) {
@@ -75,11 +77,10 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
                 'NULL3' => '',
                 'NULL4' => '',
                 'NULL5' => '',
-                'TOTAL' => $item->cantidad,
             ];
-
-            if (!empty($this->request->input('service_id'))) {
+            if (empty($this->request->input('service_id'))) {
                 $extendedData += [
+                    'TOTAL' => $item->cantidad,
                     'CENTRO' => $item->centre_name,
                     'NULL6' => '',
                     'EMPLEADO' => $item->employee_name,
@@ -89,7 +90,27 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
                     'CATEGORÍA' => $item->employee_category
                 ];
             }
-            
+
+            if (!empty($this->request->input('service_id'))) {
+                $extendedData += [
+                    'TOTAL' => $item->cantidad,
+                    'CENTRO' => $item->centre_name,
+                    'NULL6' => '',
+                    'EMPLEADO' => $item->employee_name,
+                    'NULL7' => '',
+                    'NULL8' => '',
+                    'NULL9' => '',
+                    'CATEGORÍA' => $item->employee_category
+                ];
+            }
+            if (!empty($this->request->input('centre_id'))) {
+                $extendedData += [
+                    'PRECIO' => $item->price . '€',
+                    'REALIZADOS'=> $item->total,
+                    'TOTAL PRECIO' => $item->price * $item->total . '€',
+                    'CENTRO' => $item->centre_name,
+                ];
+            }
             return $extendedData;
         });
         $this->totalServices = $totalServices;
@@ -105,8 +126,9 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
 
         if (!empty($this->request->input('service_id'))) {
             $allServicesHeading = ['SERVICIOS', '', '', '', '', '', 'TOTAL', 'CENTRO', '', 'EMPLEADO', '', '', '', 'CATEGORÍA'];
+            
         } elseif (!empty($this->request->input('centre_id'))) {
-                $allServicesHeading = ['SERVICIOS', '', '', '', '', '', 'PRECIO', 'REALIZADOS', 'TOTAL'];
+                $allServicesHeading = ['SERVICIOS', '', '', '', '', '','PRECIO', 'REALIZADOS', 'TOTAL PRECIO','CENTRO'];
         }
         return $allServicesHeading;
     }
@@ -115,15 +137,42 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
+            
+                //!condicion general por fechas 
+                $worksheet = $event->sheet->getDelegate(); // Obtiene el objeto worksheet.
+                $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
+                $highestColumn = $worksheet->getHighestColumn(); // Obtiene la última columna con datos.
+                $event->sheet->insertNewRowBefore(1, 1);
+                $fechaTexto = isset($this->startDate) && isset($this->endDate) ? "Fechas: {$this->startDate} - {$this->endDate}" : "Fechas no disponibles";
+                $event->sheet->setCellValue("A1", $fechaTexto);
+                $event->sheet->mergeCells("A1:R1");
+                $event->sheet->mergeCells("A1:{$highestColumn}1");
+                $event->sheet->getStyle("A1:R1")->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'color' => ['argb' => 'AEB6BF']
+                    ],
+                ]);
+                $event->sheet->getStyle("A2:R2")->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'color' => ['argb' => 'AEB6BF']
+                    ],
+                ]);
+
+                 //! si es servicio
                 if (!empty($this->request->input('service_id'))) {
-                    $event->sheet->insertNewRowBefore(1, 1);
-                    $event->sheet->insertNewRowBefore(1, 2);
-                    $event->sheet->mergeCells("A1:G1");
-                    $event->sheet->setCellValue("A1", "Fechas: {$this->startDate} - {$this->endDate}");
-                    $event->sheet->setCellValue("A2", "Total: " . $this->totalServices);
-                    $event->sheet->setCellValue("A3", "Grand Total: " . $this->grandTotal . '€');
-                    $worksheet = $event->sheet->getDelegate();
-                    $highestRow = $worksheet->getHighestRow();
+                    $event->sheet->insertNewRowBefore(1,1);
+                    $event->sheet->insertNewRowBefore(1,1);
+                    $event->sheet->setCellValue("A1", "Total Realizados: " . $this->totalServices);
+                    $event->sheet->setCellValue("A2", "Grand Total: " . $this->grandTotal . '€');
+                 
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
                         $event->sheet->mergeCells("H{$row}:I{$row}");
@@ -132,67 +181,36 @@ class AllDinamicServicesExport implements FromCollection, WithHeadings, WithEven
                         $event->sheet->mergeCells("S{$row}:T{$row}");
                         $event->sheet->mergeCells("U{$row}:V{$row}");
                     }
-                    $event->sheet->getStyle("A1:G1")->applyFromArray([
+                    $event->sheet->getStyle("A1:R1")->applyFromArray([
                         'font' => [
                             'bold' => true,
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FFFF00']
+                            'color' => ['argb' => '66FF99']
                         ],
                     ]);
-                    $event->sheet->getStyle("A2:G2")->applyFromArray([
+                    $event->sheet->getStyle("A2:R2")->applyFromArray([
                         'font' => [
                             'bold' => true,
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FFFF00']
+                            'color' => ['argb' => '00FF80']
+
                         ],
                     ]);
-                } else if ($this->startDate && $this->endDate) {
-                    $event->sheet->insertNewRowBefore(1, 1);
-                    $event->sheet->mergeCells("A1:G1");
-                    $event->sheet->setCellValue("A1", "Fechas: {$this->startDate} - {$this->endDate}");
-                    $event->sheet->getStyle("A2:G2")->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FFFF00']
-                        ],
-                    ]);
-                    $event->sheet->getStyle("A1")->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FFFF00']
-                        ],
-                    ]);
+                   
+                   //!para el resto de condiciones, en este caso por centro
                 } else {
+                    
                     $worksheet = $event->sheet->getDelegate(); // Obtiene el objeto worksheet.
                     $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
-                    // Combinar las celdas de cada fila para la columna "SERVICIOS".
+    
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
-                        //   $event->sheet->mergeCells("H{$row}:I{$row}");
-                        // $event->sheet->mergeCells("J{$row}:M{$row}");
-                        // $event->sheet->mergeCells("N{$row}:R{$row}");
                     }
 
-                    // Aplicar estilos a las celdas combinadas
-                    $event->sheet->getStyle("A1:C{$highestRow}")->applyFromArray([
-                        'font' => ['bold' => true],
-                    ]);
-
-                    // No se necesita combinar la columna "TOTAL REALIZADOS", pero aplicamos estilo de negrita.
-                    $event->sheet->getStyle("A1:G1")->applyFromArray([
-                        'font' => ['bold' => true],
-                        'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['argb' => 'FFFF00']]
-                    ]);
                 }
             },
         ];

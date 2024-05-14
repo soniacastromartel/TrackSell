@@ -50,9 +50,6 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/calculateServicesPrueba', 'ServiceController@showAllServicesAndByCentre')->name('calculateServicesPrueba');
     //?Exportar dinámica de servicios
     Route::get('/export/services', 'ServiceController@exportDinamicServices')->name('export.all-services');
-
-   
-
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
     Route::get('/tracking/create', 'TrackingController@create')->name('tracking.create');
