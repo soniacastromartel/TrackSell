@@ -45,6 +45,9 @@
 
                             <div class="col-md-6">
                                 <div class="row">
+                                     
+                                    
+
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
@@ -68,6 +71,11 @@
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
                                     </div>
+
+
+
+
+
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
@@ -351,15 +359,12 @@
     if (month === '01' && day < 21) {
         previousMonth = '12';
         previousYear = year - 1; 
-
     } else {
         previousMonth = parseInt(month, 10); 
         previousMonth = (day < 21) ? previousMonth - 1 : previousMonth; 
         previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString(); 
     }
-
     var dateFrom = previousYear + '-' + previousMonth + '-' + startDay; 
-
     document.getElementById("date_from").value = dateFrom;
     document.getElementById("date_to").value = dateTo;
 }
@@ -478,8 +483,6 @@
         table.columns.adjust().draw();
     }
 
-
-
     // <!--Export-->
     $("#btnSubmit").on('click', function(e) {
         e.preventDefault();
@@ -501,7 +504,6 @@
         params["trackingState"] = $("#state_id option:selected").val();
         params["date_from"] = $('#date_from').val();
         params["date_to"] = $('#date_to').val();
-
 
         $.ajax({
             url: $("#exportTracking").attr('action'),

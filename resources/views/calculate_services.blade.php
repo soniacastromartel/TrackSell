@@ -126,6 +126,7 @@
 </div>
 
 <script type="text/javascript">
+<<<<<<< HEAD
 
 var table;
 var columnsFilled = [];
@@ -157,6 +158,24 @@ $(function() {
 
     $(".nav-item").each(function() {
         $(this).removeClass("active");
+=======
+    var table;
+
+    var columnsFilled = [];
+    columnsFilled.push({
+        data: 'centre',
+        name: 'centre'
+    });
+    columnsFilled.push({
+        data: 'service',
+        name: 'service',
+        searchable: true
+    });
+    columnsFilled.push({
+        data: 'price',
+        name: 'price',
+        searchable: true
+>>>>>>> e95e8d338a91482815023bba7800abbfc1848ab8
     });
     $('#servicesData').hide();
 
@@ -169,6 +188,11 @@ $(function() {
         drawTable();
         $('#servicesData').show();
     });
+<<<<<<< HEAD
+=======
+ 
+  
+>>>>>>> e95e8d338a91482815023bba7800abbfc1848ab8
 
 });
 
@@ -257,8 +281,84 @@ function setDate() {
     document.getElementById("date_to").value = dateTo; 
   }
 
+<<<<<<< HEAD
 
 
+=======
+    function drawTable() {
+            $('#centre').val($("#centre_id option:selected").text());
+            $('#service').val($("#service_id option:selected").text());
+            params = {};
+            params["_token"] = "{{ csrf_token() }}";
+            params["centre"] = $('#centre').val();
+            // params["service"] = $('#service').val();
+            params['dateTo'] = $('#date_to').val();
+            params['dateFrom'] = $('#date_from').val();
+
+            console.log(params);
+            // params["monthYear"] = $('#monthYear').val();
+
+        if ($.fn.dataTable.isDataTable('.services-datatable')) {
+            table = $('.services-datatable').DataTable();
+        } else {
+            table = $('.services-datatable').DataTable({
+                // order: [7, "desc"],
+                processing: true,
+                serverSide: true,
+                language: {
+                    "url": "{{ asset('dataTables/Spanish.json') }}"
+                },
+                ajax: {
+                    url: '{{route("services.getSaledServices")}}',
+                    type: "POST",
+                    data: params,
+                    dataSrc: function(json) {
+                        if (json == null) {
+                            return [];
+                        } else {
+                            return json.data;
+                        }
+                    }
+                },
+                columns: columnsFilled,
+                search: {
+                    "regex": true,
+                    "smart": true
+                },
+                initComplete: function() {
+                    this.api().columns().every(function() {
+                        var column = this;
+                    });
+                }
+            });
+        }
+        table.columns.adjust().draw();
+    }
+
+
+    function setDate() {
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var startDay = 21;
+        day = day >= 10 ? day : '0' + day;
+        month = month >= 10 ? month : '0' + month;
+        var dateTo = year + '-' + month + '-' + day;
+        var previousMonth = 0;
+        if (month != 1 && day < 21) {
+            previousMonth = month - 1;
+        } else if (month != 1 && day >= 21) {
+            previousMonth = month;
+        } else if (month == 1 && day < 21) {
+            previousMonth = 12
+            year = year - 1;
+        } else if (month == 1 && day >= 21) {
+            previousMonth = 01;
+        }
+        // previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
+        var dateFrom = year + '-' + previousMonth + '-' + startDay;
+>>>>>>> e95e8d338a91482815023bba7800abbfc1848ab8
 
 
 </script>
