@@ -33,7 +33,7 @@ class Service extends Model
 
     //!FUNCIÓN DINÁMICA DE SERVICIOS
 
-    public function scopeGetCountAllServices($query, $serviceId = null, $startDate = null, $endDate = null)
+    public function scopeGetCountAllServices($query, $serviceId = null, $centreId = null, $startDate = null, $endDate = null)
     {
         $query->join('trackings', 'services.id', '=', 'trackings.service_id')
               ->join('centres', 'trackings.centre_id', '=', 'centres.id')
@@ -47,8 +47,12 @@ class Service extends Model
         // Filtrar por serviceId solo si se proporciona
         if (!is_null($serviceId)) {
             $query->where('services.id', $serviceId);
-        
         }
+
+      if (!is_null($centreId)) {
+        $query->where('trackings.centre_id', $centreId);
+    }
+        
         // Filtrar por rango de fechas si ambos se proporcionan
         if (!is_null($startDate) && !is_null($endDate)) {
             $query->whereBetween('trackings.started_date', [$startDate, $endDate]);
@@ -69,7 +73,9 @@ class Service extends Model
               );
               if (!is_null($serviceId)) {
                 $query->groupBy('centres.name', 'services.name', 'service_prices.price', 'employees.name');
-            } else {
+            } 
+            
+            else {
                 // Si no se especifica service_id, agrupar solo por centro y servicio
                 $query->groupBy('services.name');
             }

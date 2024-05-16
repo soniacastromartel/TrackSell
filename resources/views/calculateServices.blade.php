@@ -29,7 +29,7 @@
 
             <div class="centre-container">
                 <h3>Centro</h3>
-                <form action="{{ route('calculateServicesPrueba') }}" method="GET">
+                <form action="{{ route('calculateServices') }}" method="GET">
 
                     <input type="hidden" name="service_id" value="{{ $service_id }}">
 
@@ -49,7 +49,7 @@
             <div class="service-container">
                 <h3>Servicios</h3>
 
-                <form id="centreForm" action="{{ route('calculateServicesPrueba') }}" method="GET">
+                <form id="centreForm" action="{{ route('calculateServices') }}" method="GET">
                     <input type="hidden" name="centre_id" value="{{ $centre_id }}">
                     <select class="selectpicker" data-style="btn btn-red-icot btn-round" id="service_id"
                         name="service_id" onchange="this.form.submit()">
@@ -65,7 +65,7 @@
             </div>
 
             <div class="filter-container">
-                <form id="serviceForm" action="{{ route('calculateServicesPrueba') }}" method="GET">
+                <form id="serviceForm" action="{{ route('calculateServices') }}" method="GET">
 
                     <input type="hidden" name="centre_id" value="{{ $centre_id }}">
                     <input type="hidden" name="service_id" value="{{ $service_id }}">
@@ -103,6 +103,39 @@
         </div>
 
     </div>
+    @if (!empty($service_id) && !empty($centre_id))
+    <div class="card">
+        <div class="chart-container">
+            <div>Servicio por Centro</div>
+            <div>
+                <canvas id="chartCentreService" width="1550" height="500"></canvas>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            @if (request('start_date') && request('end_date'))
+                <tr class="row-service" style="background-color: var(--red-icot);color:white;">
+                    <th colspan="5">Fecha : {{ request('start_date') }} / {{ request('end_date') }}</th>
+                </tr>
+            @endif
+            <tr class="row-service">
+                <th>SERVICIOS</th>
+                <th>CENTRO</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+
+                <tr>
+                    <td>{{ $selectedService->name }}</td>
+                    <td>{{ $selectedCentre->name }}</td>
+                    <td>{{ $totalServices }}</td>
+                </tr>
+         
+        </tbody>
+    </table>
+@endif
 
     @if (empty($service_id) && empty($centre_id))
         <div class="card">
@@ -122,7 +155,7 @@
                 @endif
                 <tr class="row-service">
                     <th>SERVICIOS</th>
-                    <th>TOTAL REALIZADOS</th>
+                    <th>TOTAL</th>
                 </tr>
             </thead>
             <tbody>
@@ -298,6 +331,9 @@
         const dataService = JSON.parse('@json($dataService)');
         const labelsServiceAll = JSON.parse('@json($labelsServiceAll)');
         const dataServiceAll = JSON.parse('@json($dataServiceAll)');
+        const labelsCentreService = JSON.parse('@json($labelsCentreService)');
+        const dataCentreService = JSON.parse('@json($dataCentreService)');
+
 
 
         try {
@@ -404,7 +440,40 @@
 
         } catch (error) {
             console.error('Error creating chartService:', error);
+        } 
+      //  Centre & Service
+        try {
+            var ctxCentreService = document.getElementById('chartCentreService').getContext('2d');
+            var chartCentreService = new Chart(ctxCentreService, {
+                type: 'bar',
+                data: {
+                    labels: [labelsCentreService],
+                    datasets: [{
+                        label: 'Cantidad de Servicios por Centro',
+                        data: dataCentreService,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error creating chartCentre:', error);
         }
+
     });
 
     function resetSelectors() {

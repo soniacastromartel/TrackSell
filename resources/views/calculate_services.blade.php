@@ -1,4 +1,4 @@
-
+{{-- 
 @extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
@@ -262,4 +262,4 @@ function setDate() {
 
 
 </script>
-@endsection
+@endsection --}}
