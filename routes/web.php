@@ -14,10 +14,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-<<<<<<< HEAD
 
-=======
->>>>>>> e95e8d338a91482815023bba7800abbfc1848ab8
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
