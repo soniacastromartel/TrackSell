@@ -304,7 +304,6 @@
             table.ajax.reload();
         }
 
-
         $("#btnClear").on('click', function(e) {
 
             e.preventDefault();
@@ -344,6 +343,8 @@
 
         });
     }
+
+
     function setDate() {
     var date = new Date();
     var day = date.getDate();
