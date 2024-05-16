@@ -617,7 +617,7 @@ class ServiceController extends Controller
         Log::info('Received start date: ' . $request->input('start_date'));
         Log::info('Received end date: ' . $request->input('end_date'));
         $export = new DinamicServicesExport($request,$selectedCentre, $selectedService, $totalServices);
-        return $export->download('all-services.xlsx');
+        return $export->download('all-services.xls');
     }
     
 }
