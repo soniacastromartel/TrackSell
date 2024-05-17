@@ -597,27 +597,26 @@ class ServiceController extends Controller
 
     public function exportDinamicServices(Request $request)
 
-    {   
-        $centreId = $request->input('centre_id');
-        $serviceId = $request->input('service_id');
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
-        ->get()
-        ->map(function ($item) {
-            $item->total_price_per_centre = $item->price * $item->cantidad;
-            return $item;
-        })->sortByDesc('cantidad');
-        $totalServices = $servicesCount->sum('cantidad');
-        $centreId = $request->input('centre_id');
-        $serviceId = $request->input('service_id');
-        $selectedCentre = Centre::find($centreId);
-        $selectedService = Service::find($serviceId);
-      
-        Log::info('Received start date: ' . $request->input('start_date'));
-        Log::info('Received end date: ' . $request->input('end_date'));
-        $export = new DinamicServicesExport($request,$selectedCentre, $selectedService, $totalServices);
-        return $export->download('all-services.xls');
+    {
+        try {
+            $centreId = $request->input('centre_id');
+            $serviceId = $request->input('service_id');
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+            $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->get()
+                ->map(function ($item) {
+                    $item->total_price_per_centre = $item->price * $item->cantidad;
+                    return $item;
+                })->sortByDesc('cantidad');
+            $totalServices = $servicesCount->sum('cantidad');
+            $centreId = $request->input('centre_id');
+            $serviceId = $request->input('service_id');
+            $selectedCentre = Centre::find($centreId);
+            $selectedService = Service::find($serviceId);
+            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices), 'all-services.xls',  \Maatwebsite\Excel\Excel::XLS);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->with('error', 'Ha ocurrido un error al exportar, contacte con el administrador');
+        }
     }
-    
 }

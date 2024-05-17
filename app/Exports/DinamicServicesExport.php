@@ -2,33 +2,14 @@
 
 namespace App\Exports;
 
-use App\Exports\Sheets\CentreSheet;
 use App\Exports\Sheets\DinamicServicesSheet\CentreSheet as DinamicServicesSheetCentreSheet;
 use App\Exports\Sheets\DinamicServicesSheet\ServiceAndCentreSheet as DinamicServicesSheetServiceAndCentreSheet;
 use App\Exports\Sheets\DinamicServicesSheet\ServiceSheet as DinamicServicesSheetServiceSheet;
-use App\Exports\Sheets\ServiceAndCentreSheet;
-use App\Exports\Sheets\ServiceSheet;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Chart\{
-    Axis,
-    Chart,
-    DataSeries,
-    DataSeriesValues,
-    Layout,
-    Legend,
-    PlotArea,
-    Title
-};
-use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\Exportable;
-
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Service;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Events\AfterSheet;
