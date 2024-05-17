@@ -439,12 +439,28 @@ button:focus {
   margin-top: 80px;
   margin: 20px;
 }
-
+.header-btn-add {
+  position: relative;
+  background-color: var(--red-icot);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
+  margin-top: 120px;
+}
 
 
 /* ADD BUTTON */
 
-.btn-add::after {
+.btn-add, .header-btn-add::after {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -460,12 +476,12 @@ button:focus {
   font-size: 12px;
 }
 
-.btn-add:hover {
+.btn-add,.header-btn-add:hover {
   background-color: white;
   color: var(--red-icot);
 }
 
-.btn-add:hover::after {
+.btn-add,.header-btn-add:hover::after {
   visibility: visible;
   opacity: 1;
 }
@@ -698,6 +714,7 @@ button:focus {
       font-size: large;
       background-color: #eeeeee;
       color: var(--red-icot);
+      margin-top: 120px;
   }
 
   .btn-sincro-all{

@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\A3CenterSaraController;
-use App\Http\Controllers\BtnController;
+use App\Http\Controllers\ChartController;
+use App\Service;
 use Illuminate\Support\Arr;
 
 Route::get('/', function () {
@@ -14,6 +15,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
@@ -44,8 +46,11 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/admin/services/destroy/{id}', 'ServiceController@destroy')->name('services.destroy');
     Route::post('/admin/services/destroyIncentive', 'ServiceController@destroyIncentive')->name('services.destroyIncentive');
     Route::get('/admin/services/exportServices', 'ServiceController@exportServicesIncentivesActives')->name('services.exportServicesIncentivesActives');
-    Route::get('/calculateServices', 'ServiceController@calculateServices')->name('calculateServices');
-    Route::post('/getSaledServices', 'ServiceController@getSaledServices')->name('services.getSaledServices');
+    Route::get('/calculateServices', 'ServiceController@calculateServices')->name('services.calculateServices');
+    Route::post('/getSalesServices', 'ServiceController@getSalesServices')->name('services.getSalesServices');
+    Route::get('/calculateServices', 'ServiceController@showAllServicesAndByCentre')->name('calculateServices');
+    //?Exportar dinámica de servicios
+    Route::get('/export/services', 'ServiceController@exportDinamicServices')->name('export.all-services');
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
     Route::get('/tracking/create', 'TrackingController@create')->name('tracking.create');

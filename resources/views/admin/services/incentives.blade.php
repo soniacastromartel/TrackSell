@@ -130,17 +130,13 @@
         data: 'bonus_obj2',
         name: 'bonus_obj2'
     });
-    // columnsFilled.push({
-    //     data: 'cancellation_date',
-    //     name: 'cancellation_date'
-    // });
+
     columnsFilled.push({
         data: 'action',
         name: 'action'
     });
 
     $(function() {
-
         $(".nav-item").each(function() {
             $(this).removeClass("active");
         });
@@ -159,17 +155,16 @@
             e.preventDefault();
             clearForms();
         });
-
         $("#btnConfirmRequest").on('click', function(event) {
             destroyIncentive();
         });
-        
+
+        //al parecer esta función no se está usando . la url da un error.
         getServiceIncentives();
         $("#targetInputIncentiveFile").on('change', function() {
             document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
             $("#importTargetForm").attr('action', '{{ route("target.importIncentive") }}');
             $("#importTargetForm").attr('enctype', "multipart/form-data");
-
             $('#btnImportIncentives').hide();
             $('#targetInputFileLoad').show();
             $("#importTargetForm").submit();
@@ -246,6 +241,7 @@
         });
     }
 
+
     function getServiceIncentives() {
 
         if ($.fn.dataTable.isDataTable('.services-datatable')) {
@@ -268,8 +264,8 @@
                     type: "POST",
                     data: function(d) {
                         d.centre = $('#centre_id option:selected').val(),
-                            d._token = "{{ csrf_token() }}",
-                            d.search = $('input[type="search"]').val()
+                        d._token = "{{ csrf_token() }}",
+                        d.search = $('input[type="search"]').val()
                         d.service = $("#service_id option:selected").val()
                     },
                     dataSrc: function(json) {

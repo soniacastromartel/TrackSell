@@ -18,7 +18,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn-add" ><span class="material-icons">
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="header-btn-add" ><span class="material-icons">
                             add</span></a>
             </div>
         </div>

@@ -58,7 +58,7 @@
               <b class="caret"></b>
             </p>
           </a>
-          <div class="collapse" id="pagesConfig" style="">
+          <div class="collapse" id="pagesConfig">
             <ul class="nav">
               <li id="adminRole" class="nav-item ">
                 <a class="nav-link"  href="{{route('roles.index')}}">
@@ -94,7 +94,7 @@
               <b class="caret"></b>
             </p>
           </a>
-          <div class="collapse" id="pagesTracking" style="">
+          <div class="collapse" id="pagesTracking">
             <ul class="nav">
               <li id="trackingStarted" class="nav-item ">
                 <a class="nav-link" href="{{route('tracking.index','started')}}">
@@ -114,13 +114,13 @@
                   <span class="sidebar-normal"> Realizar servicios </span>
                 </a>
               </li>
-              <li id="trackingInvoiced" class="nav-item ">
+              <li id="trackingInvoiced" class="nav-item">
                 <a class="nav-link" href="{{route('tracking.index','invoiced')}}">
                   <i class="material-icons">euro</i>
                   <span class="sidebar-normal"> Facturar </span>
                 </a>
               </li>
-              <li id="trackingValidate" class="nav-item ">
+              <li id="trackingValidate" class="nav-item">
                 <a class="nav-link" href="{{route('tracking.index','validation')}}">
                   <i class="material-icons">check</i>
                   <span class="sidebar-normal"> Validar </span>
@@ -142,7 +142,7 @@
               <b class="caret"></b>
             </p>
           </a>
-          <div class="collapse" id="pagesReport" style="">
+          <div class="collapse" id="pagesReport">
             <ul class="nav">
               <li id="exportRecommendation" class="nav-item">
                 <a class="nav-link" href="{{route('tracking.exportForm')}}">
