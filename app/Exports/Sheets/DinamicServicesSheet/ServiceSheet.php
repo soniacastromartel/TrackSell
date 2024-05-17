@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class ServiceSheet implements FromCollection, WithHeadings, WithEvents
 {
@@ -90,13 +91,14 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                     $event->sheet->mergeCells("B{$row}:E{$row}");
                     $event->sheet->mergeCells("F{$row}:I{$row}");
                 }
+                $event->sheet->getStyle('A')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
                 $event->sheet->getStyle("A1:I1")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => 'AEB6BF']
+                        'color' => ['argb' => 'FFAEB6BF']
                         //TODO gris
                     ],
                 ]);
@@ -106,7 +108,7 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => '52BE80']
+                        'color' => ['argb' => 'FF52BE80']
                     ],
                 ]);
                 $event->sheet->getStyle("A3:I3")->applyFromArray([
@@ -115,7 +117,7 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => 'FCF3CF']
+                        'color' => ['argb' => 'FFFCF3CF']
                     ],
                 ]);
                 $event->sheet->getStyle("A4:I4")->applyFromArray([
@@ -124,7 +126,7 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => 'E74C3C']
+                        'color' => ['argb' => 'FFE74C3C']
 
                     ],
                 ]);
@@ -134,7 +136,7 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => '27AE60']
+                        'color' => ['argb' => 'FF27AE60']
 
                     ],
                 ]);
@@ -144,7 +146,7 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => '64A8FF']
+                        'color' => ['argb' => 'FF64A8FF']
                         //?Azul
                     ],
                 ]);

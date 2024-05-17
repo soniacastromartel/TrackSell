@@ -7,7 +7,6 @@
 <html>
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -122,6 +121,7 @@
             <tr class="row-service">
                 <th>SERVICIOS</th>
                 <th>CENTRO</th>
+                <th>REALIZADOS</th>
                 <th>TOTAL</th>
             </tr>
         </thead>
@@ -131,6 +131,7 @@
                     <td>{{ $selectedService->name }}</td>
                     <td>{{ $selectedCentre->name }}</td>
                     <td>{{ $totalServices }}</td>
+                    <td>{{ $grandTotal }}€</td>
                 </tr>
          
         </tbody>
@@ -155,6 +156,7 @@
                 @endif
                 <tr class="row-service">
                     <th>SERVICIOS</th>
+                    <th>REALIZADOS</th>
                     <th>TOTAL</th>
                 </tr>
             </thead>
@@ -163,6 +165,7 @@
                     <tr>
                         <td>{{ $service->service_name }}</td>
                         <td>{{ $service->cantidad }}</td>
+                        <td>{{ $service->price * $service->cantidad }}€</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -610,13 +610,18 @@ class ServiceController extends Controller
                     return $item;
                 })->sortByDesc('cantidad');
             $totalServices = $servicesCount->sum('cantidad');
+            $grandTotal = $servicesCount->sum('total_price_per_centre');
             $centreId = $request->input('centre_id');
             $serviceId = $request->input('service_id');
             $selectedCentre = Centre::find($centreId);
             $selectedService = Service::find($serviceId);
-            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices), 'all-services.xls',  \Maatwebsite\Excel\Excel::XLS);
+            ob_end_clean();
+             ob_start();
+            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices,$grandTotal), 'all-services.xls');
         } catch (\Illuminate\Database\QueryException $e) {
             return back()->with('error', 'Ha ocurrido un error al exportar, contacte con el administrador');
         }
     }
 }
+
+

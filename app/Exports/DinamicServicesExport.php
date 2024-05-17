@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+
 
 class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipleSheets, WithEvents
 {
@@ -27,7 +29,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
     private $grandTotal;
 
 
-    public function __construct(Request $request, $selectedCentre, $selectedService, $totalServices)
+    public function __construct(Request $request, $selectedCentre, $selectedService, $totalServices,$grandTotal)
     {
         $this->request = $request;
         $this->startDate = $request->input('start_date');
@@ -35,6 +37,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
         $this->selectedCentre = $selectedCentre;
         $this->selectedService = $selectedService;
         $this->totalServices = $totalServices;
+        $this->grandTotal = $grandTotal;
     }
 
     public function sheets(): array
@@ -42,11 +45,12 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
         $sheets = [];
 
         if (!empty($this->request->input('service_id')) && !empty($this->request->input('centre_id'))) {
-            $sheets[] = new DinamicServicesSheetServiceAndCentreSheet($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices);
+            $sheets[] = new DinamicServicesSheetServiceAndCentreSheet($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices, $this->grandTotal);
             $sheets[] = new DinamicServicesSheetCentreSheet($this->request);
             $sheets[] = new DinamicServicesSheetServiceSheet($this->request);
+            
         } else {
-            $sheets[] = new DinamicServicesExport($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices);
+            $sheets[] = new DinamicServicesExport($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices,$this->grandTotal);
         }
 
         return $sheets;
@@ -85,19 +89,21 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                     'NULL3' => '',
                     'NULL4' => '',
                     'NULL5' => '',
-                    'TOTAL' => $item->cantidad,
+                    'REALIZADOS' => $item->cantidad,
+                    'NULL6' => '',
+                    'TOTAL'=> $item->price * $item->cantidad . '€',
                 ];
             }
 
             if (!empty($this->request->input('service_id'))) {
                 $extendedData = [
                     'CENTRO' => $item->centre_name,
-                    'NULL16' => '',
+                    'NULL7' => '',
                     'TOTAL' => $item->cantidad,
                     'EMPLEADO' => $item->employee_name,
-                    'NULL7' => '',
                     'NULL8' => '',
                     'NULL9' => '',
+                    'NULL10' => '',
                     'CATEGORÍA' => $item->employee_category
                 ];
             }
@@ -129,7 +135,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
     public function headings(): array
     {
         if (empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
-            $heading = ['SERVICIOS', '', '', '', '', '', 'TOTAL'];
+            $heading = ['SERVICIOS', '', '', '', '', '', 'REALIZADOS','','TOTAL'];
             return $heading;
         }
 
@@ -151,7 +157,6 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                 if (empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
 
                     //!si no hay servicio ni centro
-
                     $event->sheet->insertNewRowBefore(1, 1);
                     $fechaTexto = isset($this->startDate) && isset($this->endDate) ? "Fechas: {$this->startDate} / {$this->endDate}" :  "Fechas: Historial completo";
                     $event->sheet->setCellValue("A1", $fechaTexto);
@@ -159,24 +164,27 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                     $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
+                        $event->sheet->mergeCells("G{$row}:H{$row}");
                     }
-                    $event->sheet->getStyle("A1:G1")->applyFromArray([
+                    $event->sheet->getStyle('G')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                    $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                    $event->sheet->getStyle("A1:I1")->applyFromArray([
                         'font' => [
                             'bold' => true,
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'AEB6BF']
+                            'color' => ['argb' => 'FFAEB6BF']
                             //TODO gris
                         ],
                     ]);
-                    $event->sheet->getStyle("A2:G2")->applyFromArray([
+                    $event->sheet->getStyle("A2:I2")->applyFromArray([
                         'font' => [
                             'bold' => true,
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => '64A8FF']
+                            'color' => ['argb' => 'FF64A8FF']
                             //?Azul
                         ],
                     ]);
@@ -192,17 +200,20 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                     $event->sheet->setCellValue("A2", "Centro: " . ($centreName ? $centreName : "Todos los centros"));
                     $worksheet = $event->sheet->getDelegate(); // Obtiene el objeto worksheet.
                     $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
+                
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
                         $event->sheet->mergeCells("H{$row}:I{$row}");
                     }
+                    $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                    $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
                     $event->sheet->getStyle("A1:J1")->applyFromArray([
                         'font' => [
                             'bold' => true,
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'AEB6BF']
+                            'color' => ['argb' => 'FFAEB6BF']
                         ],
                     ]);
                     $event->sheet->getStyle("A2:J2")->applyFromArray([
@@ -211,7 +222,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => '52BE80']
+                            'color' => ['argb' => 'FF52BE80']
                         ],
                     ]);
                     $event->sheet->getStyle("A3:J3")->applyFromArray([
@@ -220,7 +231,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => '64A8FF']
+                            'color' => ['argb' => 'FF64A8FF']
                         ],
                     ]);
                 }
@@ -252,7 +263,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'AEB6BF']
+                            'color' => ['argb' => 'FFAEB6BF']
                             //TODO gris
                         ],
                     ]);
@@ -262,7 +273,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FCF3CF']
+                            'color' => ['argb' => 'FFFCF3CF']
                         ],
                     ]);
                     $event->sheet->getStyle("A3:L3")->applyFromArray([
@@ -271,7 +282,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'E74C3C']
+                            'color' => ['argb' => 'FFE74C3C']
 
                         ],
                     ]);
@@ -281,7 +292,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => '27AE60']
+                            'color' => ['argb' => 'FF27AE60']
 
                         ],
                     ]);
@@ -291,7 +302,7 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                         ],
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => '64A8FF']
+                            'color' => ['argb' => 'FF64A8FF']
                             //?Azul
                         ],
                     ]);

@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Illuminate\Support\Facades\DB;
-
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
 {
     protected $request;
@@ -17,9 +17,10 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
     private $selectedService;
     private $selectedCentre;
     private $totalServices;
+    private $grandTotal;
 
 
-    public function __construct($request, $selectedCentre, $selectedService, $totalServices)
+    public function __construct($request, $selectedCentre, $selectedService, $totalServices, $grandTotal)
     {
         $this->request = $request;
         $this->startDate = $request->input('start_date');
@@ -27,6 +28,7 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
         $this->selectedService = $selectedService;
         $this->selectedCentre = $selectedCentre;
         $this->totalServices = $totalServices;
+        $this->grandTotal = $grandTotal;
     }
 
     public function collection()
@@ -42,7 +44,9 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
                 'NULL5' => '',
                 'CENTRO' => $this->selectedCentre ? $this->selectedCentre->name : 'CENTRO SELECCIONADO',
                 'NULL6' => '',
-                'TOTAL' => $this->totalServices,
+                'REALIZADOS' => $this->totalServices,
+                'NULL7' => '',
+                'TOTAL' => $this->grandTotal . '€' ,
             ]]);
 
             return $data;
@@ -52,7 +56,7 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
     public function headings(): array
     {
         return [
-            'SERVICIO', '', '', '', '', '', 'CENTRO', '', 'TOTAL'
+            'SERVICIO', '', '', '', '', '', 'CENTRO', '', 'REALIZADOS','', 'TOTAL',
         ];
     }
 
@@ -68,24 +72,27 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
                 for ($row = 1; $row <= $highestRow; $row++) {
                     $event->sheet->mergeCells("A{$row}:F{$row}");
                     $event->sheet->mergeCells("G{$row}:H{$row}");
+                    $event->sheet->mergeCells("I{$row}:J{$row}");
                 }
-                $event->sheet->getStyle("A1:I1")->applyFromArray([
+                $event->sheet->getStyle('I')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
+                $event->sheet->getStyle('J')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                $event->sheet->getStyle("A1:K1")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => 'AEB6BF']
+                        'color' => ['argb' => 'FFAEB6BF']
                         //TODO gris
                     ],
                 ]);
-                $event->sheet->getStyle("A2:I2")->applyFromArray([
+                $event->sheet->getStyle("A2:K2")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => '64A8FF']
+                        'color' => ['argb' => 'FF64A8FF']
                         //?Azul
                     ],
                 ]);

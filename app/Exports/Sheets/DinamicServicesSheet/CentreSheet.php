@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class CentreSheet implements FromCollection, WithHeadings, WithEvents
 {
@@ -99,13 +100,15 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                     $event->sheet->mergeCells("A{$row}:F{$row}");
                     $event->sheet->mergeCells("H{$row}:I{$row}");
                 }
+                $event->sheet->getStyle('H')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
+                $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
                 $event->sheet->getStyle("A1:J1")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => 'AEB6BF']
+                        'color' => ['rgb' => 'AEB6BF']
                     ],
                 ]);
                 $event->sheet->getStyle("A2:J2")->applyFromArray([
@@ -114,7 +117,7 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => '52BE80']
+                        'color' => ['rgb' => '52BE80']
                     ],
                 ]);
                 $event->sheet->getStyle("A3:J3")->applyFromArray([
@@ -123,7 +126,7 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => '64A8FF']
+                        'color' => ['rgb' => '64A8FF']
                     ],
                 ]);
 
