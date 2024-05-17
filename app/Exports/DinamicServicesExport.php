@@ -164,10 +164,10 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                     $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
-                        $event->sheet->mergeCells("G{$row}:H{$row}");
+                      //  $event->sheet->mergeCells("G{$row}:H{$row}");
                     }
-                    $event->sheet->getStyle('G')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-                    $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                    // $event->sheet->getStyle('G')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                    // $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
                     $event->sheet->getStyle("A1:I1")->applyFromArray([
                         'font' => [
                             'bold' => true,
@@ -203,10 +203,10 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                 
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
-                        $event->sheet->mergeCells("H{$row}:I{$row}");
+                    //    $event->sheet->mergeCells("H{$row}:I{$row}");
                     }
-                    $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-                    $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                    // $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                    // $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
                     $event->sheet->getStyle("A1:J1")->applyFromArray([
                         'font' => [
                             'bold' => true,

@@ -98,10 +98,10 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                 $highestRow = $worksheet->getHighestRow(); 
                 for ($row = 1; $row <= $highestRow; $row++) {
                     $event->sheet->mergeCells("A{$row}:F{$row}");
-                    $event->sheet->mergeCells("H{$row}:I{$row}");
+                   // $event->sheet->mergeCells("H{$row}:I{$row}");
                 }
-                $event->sheet->getStyle('H')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
-                $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                // $event->sheet->getStyle('H')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
+                // $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
                 $event->sheet->getStyle("A1:J1")->applyFromArray([
                     'font' => [
                         'bold' => true,
