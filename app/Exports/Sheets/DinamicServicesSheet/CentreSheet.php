@@ -108,7 +108,7 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['rgb' => 'AEB6BF']
+                        'color' => ['argb' => 'FFAEB6BF']
                     ],
                 ]);
                 $event->sheet->getStyle("A2:J2")->applyFromArray([
@@ -117,7 +117,7 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['rgb' => '52BE80']
+                        'color' => ['argb' => 'FF52BE80']
                     ],
                 ]);
                 $event->sheet->getStyle("A3:J3")->applyFromArray([
@@ -126,7 +126,7 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['rgb' => '64A8FF']
+                        'color' => ['argb' => 'FF64A8FF']
                     ],
                 ]);
 
