@@ -1,0 +1,64 @@
+body {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 100vh !important;
+  }
+
+  .main-dinamic-services {
+    width: 1600px;
+    height: 1800px;
+    margin-left: 15%;
+    marigin: 10%;
+}
+
+.table tr:nth-child(odd) {
+    background-color: #d8d5d5ec;
+}
+.table tr:nth-child(even) {
+    background-color: #f7f3f3ec;
+}
+
+.row-centre-service-filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.centre-container {
+    width: 20%;
+}
+
+.service-container {
+    width: 20%;
+}
+
+.filter-container {
+    width: 20%;
+}
+
+.buttons-container {
+    padding: 2%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.btn-filter-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.row-service {
+    background-color: var(--red-icot) !important;
+    color: white;
+}
+
+th {
+    font-weight: bold !important;
+}
+
+.chart-container {
+    background-color: white;
+    border-radius: 5px;
+    padding: 2%;
+}

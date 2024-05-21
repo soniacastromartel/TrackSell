@@ -355,7 +355,7 @@ button:focus {
 }
 .btn-watch {
   padding-left: 60px !important;
-  background-color: var(--gray-dark);
+  background-color: var(--light-grey)!important;
 }
 .btn-watch:hover {
   box-shadow: 8px 8px 15px rgba(36, 35, 35, 0.63);
@@ -417,11 +417,6 @@ button:focus {
 }
 
 
-.btn-add-container{
-  display: flex;
-  justify-content: flex-end;
-}
-
 .btn-add {
   position: relative;
   background-color: var(--red-icot);
@@ -457,10 +452,26 @@ button:focus {
   margin-top: 120px;
 }
 
-
+.service-btn-add {
+  position: relative;
+  background-color:var(--red-icot);
+  border: none;
+  color: white !important;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
+  margin-top: 120px;
+}
 /* ADD BUTTON */
 
-.btn-add, .header-btn-add::after {
+.btn-add::after,.service-btn-add::after ,.service-btn-add::after , .header-btn-add::after {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -476,12 +487,12 @@ button:focus {
   font-size: 12px;
 }
 
-.btn-add,.header-btn-add:hover {
+.btn-add:hover,.service-btn-add:hover , .header-btn-add:hover {
   background-color: white;
   color: var(--red-icot);
 }
 
-.btn-add,.header-btn-add:hover::after {
+.btn-add::after,.service-btn-add::after , .header-btn-add:hover::after {
   visibility: visible;
   opacity: 1;
 }

@@ -13,7 +13,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <div class="card" style="margin-top:100px">
+                <div class="card" style="margin-top:120px">
                     <div class="card-header card-header-danger">
 
                         <h4 class="card-title">Informes</h4>
@@ -164,11 +164,13 @@
                 </div>
                 
                 <!-- tabla-->
+
+              
             
-                    <div class="btn-add-container">
-                        <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="btn-add"><span
+                <div class="col-md-12 text-right">
+                        <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="service-btn-add"><span
                                 class="material-icons">add</span></a>
-                    </div>
+                    </div> 
 
               
                 <table class="table-striped table-bordered tracking-datatable table">
@@ -531,3 +533,55 @@
     </script>
 
 @endsection
+
+<style>
+
+    
+.btn-add-container{
+   position: relative;
+
+   display: flex;
+  justify-content: flex-end; 
+
+ 
+  
+}
+
+.service-btn-add {
+  position: absolute;
+  bottom: 50px;
+  background-color:var(--red-icot);
+  border: none;
+  color: white !important;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+/* ADD BUTTON */
+
+.service-btn-add::after {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.service-btn-add:hover  {
+  background-color: white;
+  color: var(--red-icot) !important;
+}
+.service-btn-add::after  {
+  visibility: visible;
+  opacity: 1;
+}
+    </style>

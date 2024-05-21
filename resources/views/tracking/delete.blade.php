@@ -12,7 +12,7 @@
 </div>
 
 <div class="content">
-    <div class="container-fluid" style="margin-top:100px">
+    <div class="container-fluid" style="margin-top:120px">
                 <table class="table  table-striped table-bordered  tracking-delete-datatable">
                     <thead  class="table-header">
                         <th>Centro Prescriptor</th>

@@ -1593,8 +1593,8 @@ class TrackingController extends Controller
                     // $btn  = '<div class="row col-md-12">';
                     $btn = '';
                     if ($request->validated == 0) {
-                        $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm center" > <span class="material-icons mr-1">check</span>Validar</a>';
-                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm center" > <span class="material-icons mr-1">delete</span>Borrar</a>';
+                        $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">check</span>Validar</a>';
+                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Borrar</a>';
                     } else {
                         $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round"> <span class="material-icons mr-1">close</span>Invalidar</a>';
                     }

@@ -12,7 +12,7 @@
 
 
 <div class="content">
-    <div class="container-fluid" style="margin-top:100px" >
+    <div class="container-fluid" style="margin-top:120px" >
         <div class="card">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Notificaciones</h4>

@@ -14,7 +14,7 @@
 
 <div class="content">
     <div class="container-fluid">
-        <div class="card incentive-logo" style="margin-top:100px ">
+        <div class="card incentive-logo" style="margin-top:120px ">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Configuración</h4>
             </div>

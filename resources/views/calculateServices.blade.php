@@ -1,11 +1,11 @@
 @extends('layouts.logged')
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
 <!DOCTYPE html>
 <html>
-
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/dinamic.css') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<div class="main-dinamic-services">
+<div class="main-dinamic-services" style="margin-top:140px">
 
     <div class="card">
         <div class="card-header card-header-danger">
@@ -63,40 +63,45 @@
                 </form>
             </div>
 
-            <div class="filter-container">
-                <form id="serviceForm" action="{{ route('calculateServices') }}" method="GET">
+       
 
-                    <input type="hidden" name="centre_id" value="{{ $centre_id }}">
-                    <input type="hidden" name="service_id" value="{{ $service_id }}">
-                    <div class="form-group">
-                        <label for="start_date">Fecha Inicio:</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date"
-                            value="{{ request('start_date') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="end_date">Fecha Fin:</label>
-                        <input type="date" class="form-control" id="end_date" name="end_date"
-                            value="{{ request('end_date') }}">
-                    </div>
-                    <div class="btn-filter-container">
-                        <button type="submit" class="btn btn-red-icot">Filtrar</button>
-                    </div>
-                </form>
-            </div>
+<div class="filter-container">
+    <form id="serviceForm" action="{{ route('calculateServices') }}" method="GET">
+        <input type="hidden" name="centre_id" value="{{ $centre_id }}">
+        <input type="hidden" name="service_id" value="{{ $service_id }}">
+        <div class="form-group">
+            <label for="start_date">Fecha Inicio:</label>
+            <input type="date" class="form-control" id="start_date" name="start_date"
+                   value="{{ request('start_date') }}" onchange="this.form.submit()">
         </div>
+        <div class="form-group">
+            <label for="end_date">Fecha Fin:</label>
+            <input type="date" class="form-control" id="end_date" name="end_date"
+                   value="{{ request('end_date') }}" onchange="this.form.submit()">
+        </div>
+    </form>
+</div>
+</div>
 
 
 
-        <div class="buttons-container">
-            <button type="button" class="btn btn-red-icot" onclick="resetSelectors()">Refrescar datos</button>
+        <div class="buttons-container" style="display:flex;justify-content:flex-end;">
+            <button id="btnClear" class="btn-refresh" onclick="resetSelectors()">Limpiar Formulario<span id=icon-refresh
+                class="material-icons">refresh</span>
+                
+              </button>
             <form action="{{ route('export.all-services') }}" method="GET">
                 @csrf
                 <input type="hidden" name="service_id" value="{{ $service_id ?? '' }}">
                 <input type="hidden" name="centre_id" value="{{ $centre_id ?? '' }}">
                 <input type="hidden" name="start_date"  id="start_date" value="{{ request('start_date') }}">
                 <input type="hidden" name="end_date"  id="end_date" value="{{ request('end_date') }}">
-                <button id="exportButton" type="submit" class="btn btn-red-icot">Exportar Documento</button>
-
+                <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
+                    class="material-icons">file_download</span>
+                <button id="btnSubmitLoad" type="submit" style="display: none;">
+                    <span class="spinner-border spinner-border-sm" role="status"
+                        aria-hidden="true"></span>
+                </button>
                 
             </form>
         </div>
@@ -267,62 +272,7 @@
 
 </div>
 
-<style>
-    .main-dinamic-services {
-        width: 1600px;
-        height: 1800px;
-        margin-left: 15%;
-        marigin: 10%;
-    }
 
-    .table tr:nth-child(odd) {
-        background-color: #d8d5d5ec;
-    }
-
-    .row-centre-service-filter {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
-
-    .centre-container {
-        width: 20%;
-    }
-
-    .service-container {
-        width: 20%;
-    }
-
-    .filter-container {
-        width: 20%;
-    }
-
-    .buttons-container {
-        padding: 2%;
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .btn-filter-container {
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .row-service {
-        background-color: var(--red-icot) !important;
-        color: white;
-    }
-
-    th {
-        font-weight: bold !important;
-    }
-
-    .chart-container {
-        background-color: white;
-        border-radius: 5px;
-        padding: 2%;
-    }
-</style>
 
 <script>
 
@@ -484,9 +434,9 @@
     }
     document.addEventListener('DOMContentLoaded', function() {
     // Asegurarse que el botón exista antes de añadirle un listener
-    var exportButton = document.getElementById('exportButton');
-    if(exportButton) {
-        exportButton.addEventListener('click', function() {
+    var btnSubmit = document.getElementById('btnSubmit');
+    if(btnSubmit) {
+        btnSubmit.addEventListener('click', function() {
             console.log('El botón de exportar fue clickeado.');
             console.log('Fecha de inicio:', document.getElementById('start_date').value);
             console.log('Fecha de fin:', document.getElementById('end_date').value);

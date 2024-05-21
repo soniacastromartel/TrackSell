@@ -11,12 +11,12 @@
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
-<div class="content">
-    <div class="container-fluid">
+<div class="content" style="padding-top: 120px" >
+    <div class="container-fluid"  >
         <div class="row">
             <div class="col-lg-8">
-                <div class="card card-info text-white mb-4 ml-4 p-0 mt-0">
-                    <div class="card-header">
+                <div class="card card-info text-white mb-4 ml-4 p-0 mt-0"  ;>
+                    <div class="card-header"">
                         <i class="material-icons" style="color: var(--red-icot)">info</i>
                         <span class="font-size-18" style="vertical-align:super; font-weight:bold; color: var(--red-icot);">Instrucciones</span>
                     </div>
@@ -47,7 +47,7 @@
                 @method('POST')
                 <div class="row">
                     <div class="col-lg-3">
-                        <div class="card" style="height:400px;">
+                        <div class="card" style="height:420px;">
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Objetivos</h5>
                             </div>
@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="col-lg-9">
-                        <div class="card" style="height:400px;">
+                        <div class="card" style="height:420px;">
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Incentivos</h5>
                             </div>
@@ -163,25 +163,14 @@
 
                                 </div>
                                 <hr class="mt-4">
-                                <div class="row" style="display: flex;justify-content: space-evenly;">
-                                    <div class="form-group" >
-                                        <div class="row" style="display: flex;justify-content:center;padding:10px;">
-                                        <button id="btnClear" href="#" class="btn-refresh">
-                                            <span id="icon-refresh" class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
-                                        </button>
-                                        <button id="btnSubmit" type="submit" class="btn-export">
-                                            <span id="icon-export" class="material-icons">file_download</span>
-                                            {{ __('Exportar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                
-                                        </button>
+                                <div class="container-incentives" >
+                                     
+                                      <div class="row" style="padding:10px; display:flex; justify-content:center " >
 
-                                      </div>
-                                      <div class="row" style="padding:10px;">
                                         <button id="btnIncentivesPreview" class="btn-watch">
                                             <span id="icon-watch" class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
                                         </button>
+
                                         <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         </button>
@@ -193,9 +182,7 @@
                                         <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         </button>
-
-                                   
-
+                                        
                                         @if ($user->rol_id != 1)
                                         <button id="btnTargetsPreview" class="btn-watch">
                                             @else
@@ -207,6 +194,27 @@
                                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                
                                             </button>
+
+                                     </div>
+                                     <hr class="mt-4">
+                                  
+                                     <div class="row" style="padding:10px; display:flex; justify-content:flex-end; " >
+
+
+                                            <button id="btnClear" href="#" class="btn-refresh">
+                                                <span id="icon-refresh" class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
+                                            </button>
+
+                                            <button id="btnSubmit" type="submit" class="btn-export">
+                                                <span id="icon-export" class="material-icons">file_download</span>
+                                                {{ __('Exportar') }}</button>
+                                            <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    
+                                            </button>
+    
+                                          </div>
+
 
                                         </div>
                                     </div>
@@ -305,6 +313,23 @@
     </div>
 </div>
 <style>
+    .btn-watch {
+  padding-left: 60px !important;
+  background-color: var(--light-grey);
+}
+#icon-watch {
+  position: absolute;
+  left: 0;
+  background-color: white;
+  color: var(--light-grey);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--light-grey);
+}
     
 </style>
 
