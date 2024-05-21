@@ -136,7 +136,6 @@ Route::prefix('a3api')->group(function () {
     Route::get('/token', 'A3Controller@getAuthCode')->name('code');
 });
 
-Route::get('/btnDesign', [BtnController::class, 'returnView']);
 
 // Route::fallback(function () {
 //     return response()->json(['error' => 'No encontrado'], 404);
