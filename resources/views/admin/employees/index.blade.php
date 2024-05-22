@@ -3,7 +3,6 @@
     @include('inc.navbar')
     @include('common.alert')
 
-    <link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     
     <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
@@ -360,3 +359,56 @@
     </script>
 @endsection
 
+<style>
+    
+.content {
+    
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 120vh !important;
+   
+   }
+
+   td.upper {
+       text-transform: lowercase;
+   }
+
+.user-updated-pass:hover::after,
+.user-updated-acc:hover::after ,
+.user-bloqued:hover::after {
+    content: attr(data-tooltip); /* Inserta el texto del tooltip */
+    position: absolute;
+    bottom: 100%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    white-space: nowrap; 
+    visibility: hidden; 
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s; 
+    background-color: black; 
+    color: white; 
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.user-updated-pass:hover::after,
+.user-updated-acc:hover::after,
+.user-bloqued:hover::after  {
+    visibility: visible; 
+    opacity: 1;
+}
+
+  /* ROW RED FOR BLOQUED USER */
+  
+  .user-bloqued {
+    color: red ;
+}
+
+/* ROW GREEN FOR UPDATED USER */
+.user-updated-acc,.user-updated-pass{
+color: green ;
+}
+
+    </style>
