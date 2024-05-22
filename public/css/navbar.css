@@ -1,0 +1,26 @@
+
+
+#minimizeSidebar {
+    background: none;
+    border: none;
+    color: var(--red-icot);
+}
+
+.alert-cutoff-date {
+    height: 100%;
+    color: var(--red-icot);
+    background-color: white;
+    padding: 20px 15px;
+    border-radius: 3px;
+    border: 2px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 20px 0 rgba(197, 65, 65, 0.14), 0 7px 10px -5px rgb(186 46 41/ 40%);
+}
+
+#warning {
+    color: var(--red-icot);
+    font-size: 20px;
+    padding-right: 1rem;
+}

@@ -17,7 +17,7 @@
                     En {{ $nDays }} días llega próximo corte, 20 de {{ $currentMonth }}
                 </div>
             @endif
-            <div id="formContent">
+            <div id="formContent" style="background-color: var(--red-icot);display:flex;flex-direction:column; justify-content:center; align-items:center; margin-top:50px;">
                 <!-- Tabs Titles -->
 
                 <!-- Icon -->
