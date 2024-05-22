@@ -2,21 +2,21 @@
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
-<!DOCTYPE html>
-<html>
+{{-- <!DOCTYPE html>
+<html> --}}
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/dinamic.css') }}">
-<head>
+{{-- <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PDI</title>
+    <title>PDI</title> --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}"> --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+{{-- </head> --}}
 
 <div class="main-dinamic-services" style="margin-top:140px">
 
@@ -179,7 +179,7 @@
     @if ($centre_id)
         <div class="card">
             <div class="chart-container">
-                <div>Servicios en {{ $selectedCentre->name }}</div>
+                <h4>Servicios en <strong>{{ $selectedCentre->name }}</strong> </h4>
                 <div>
                     <canvas id="chartCentre" width="1800" height="500"></canvas>
                 </div>
@@ -192,8 +192,8 @@
                         <th colspan="5">Fecha : {{ request('start_date') }} / {{ request('end_date') }}</th>
                     </tr>
                 @endif
+                
                 <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                    <th>Centro</th>
                     <th>Servicio</th>
                     <th>Precio</th>
                     <th>Realizados</th>
@@ -202,8 +202,8 @@
             </thead>
             <tbody>
                 @foreach ($servicesCountCentre as $service)
+             
                     <tr>
-                        <td>{{ $service->centre_name }}</td>
                         <td>{{ $service->service_name }}</td>
                         <td>{{ $service->price }}€</td>
                         <td>{{ $service->total }}</td>

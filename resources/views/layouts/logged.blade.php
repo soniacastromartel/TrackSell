@@ -30,6 +30,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}" />
 
     <link rel="stylesheet" href="{{ asset('css/yearpicker.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     <!-- <script src="/path/to/cdn/jquery.slim.min.js"></script> -->
     <script src="{{ asset('js/yearpicker.js') }}" async></script>
