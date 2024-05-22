@@ -46,13 +46,16 @@
             <div class="modal-body text-center">
                 <p id="message-validation" class="px-4 text-center"  style= "margin-bottom: 20px;"></p>
                 <label class="label" for="reason">Motivo: </label>
-                <input type="text" name="reason" id="reason" style= "margin-bottom: 20px;"placeholder="Escriba el motivo..." value="{{ isset($tracking) ? $tracking->cancellation_reason : ''}}"></input>
+                <input type="text" name="reason" id="reason" style= "margin-bottom: 20px;"placeholder="Escriba el motivo..." 
+                value="{{ isset($tracking) ? $tracking->cancellation_reason : ''}}" oninput="checkReason()"></input>
             </div>
+
             <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot">SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot" disabled>SI</button>
+                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal" disabled>NO</button>
                 </p>
             </div>
+
         </div>
     </div>
 </div>
@@ -82,7 +85,16 @@ function confirmRequest(state, id) {
         $("#validateVal").val(state);
         $("#id").val(id);
         $("#modal-validate").modal('show');
+        checkReason();
     }
+
+    function checkReason() {
+        const reason = $('#reason').val().trim();
+        const isReasonFilled = reason.length > 0;
+        $('#btnConfirmRequest').prop('disabled', !isReasonFilled);
+        $('#btnCancelRequest').prop('disabled', !isReasonFilled);
+    }
+
     var table; 
     $(function () {
         $(".nav-item").each(function(){
@@ -157,13 +169,18 @@ function confirmRequest(state, id) {
 
     function destroy() {
         trackingId= $("#id").val();
-        reason = $("#reason").val();
+        var reason = $("#reason").val().trim();
+        if (!reason.trim()) {
+            alert('Debe escribir un motivo antes de confirmar.');
+            return;
+        }
         console.log($("#reason").val());
         console.log($("#id").val());
 
-        params = {};
-        params["reason"] =  $("#reason").val();
-        params["id"] =  $("#id").val();
+        var params = {
+            reason: reason,
+            id: trackingId
+        };
 
             $.ajax({
                 url: 'destroy/' + trackingId,
