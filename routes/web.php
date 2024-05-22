@@ -72,6 +72,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/tracking/checkDate/{date}/{status}', 'TrackingController@checkDate')->name('tracking.checkDate');
     Route::post('/tracking/exportFinalValidation', 'TrackingController@exportFinalValidation')->name('tracking.exportFinalValidation');
     Route::post('/tracking/calculateValidationRRHH', 'TrackingController@calculateValidationRRHH')->name('tracking.calculateValidationRRHH');
+    Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::post('/tracking/validateTrackings', 'TrackingController@validateTrackings')->name('tracking.validateTrackings');
     Route::get('/tracking/requestChange', 'TrackingController@requestChange')->name('tracking.requestChange');
     Route::post('/tracking/saveRequest', 'TrackingController@saveRequest')->name('tracking.saveRequest');
@@ -83,7 +84,8 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/target/import', 'TargetController@import')->name('target.import');
     Route::post('/target/importSales', 'TargetController@importSales')->name('target.importSales');
     Route::post('/target/importIncentive', 'TargetController@importIncentive')->name('target.importIncentive');
-    Route::post('/target/calculateTargets', 'TargetController@calculateTargets')->name('target.calculateTargets');
+    Route::post('/target/calculateIncentives', 'TargetController@calculateIncentives')->name('target.calculateIncentives');
+    Route::post('/target/incentivesReportDownload', 'TargetController@incentivesReportDownload')->name('target.incentivesReportDownload');
     Route::post('/target/tracingTargets', 'TargetController@tracingTargets')->name('target.tracingTargets');
     Route::post('/target/targetReportDownload', 'TargetController@targetsReportDownload')->name('target.targetsReportDownload');
     Route::post('/target/targetReportView', 'TargetController@targetsReportView')->name('target.targetsReportView');
