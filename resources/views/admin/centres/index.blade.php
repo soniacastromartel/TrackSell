@@ -3,7 +3,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/centres.css') }}">
+
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <div id="alertErrorCentre" class="alert alert-danger" role="alert" style="display: none">
@@ -44,10 +44,14 @@
 @include('common.modal')
 
 <style>
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 140vh !important;
 
-    table.dataTable.dataTable_width_auto {
-        /* width: 100%; */
-    }
+}
+    
 </style>
 
 <script type="text/javascript">

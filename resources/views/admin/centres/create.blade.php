@@ -3,7 +3,7 @@
 @include('inc.navbar')
 @include('common.alert')
 
-<link rel="stylesheet" href="{{ asset('/css/centres.css') }}">
+
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <div class="content">
@@ -52,3 +52,13 @@
 
 </script>
 @endsection
+<style>
+    
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 140vh !important;
+
+}
+    </style>

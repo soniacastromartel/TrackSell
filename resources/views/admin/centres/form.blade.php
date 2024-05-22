@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('/css/centres.css') }}">
+
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <div class="row">
@@ -107,6 +107,15 @@
   </div>
 </div>
 <style>
+  
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 140vh !important;
+
+}
+    
   #centreImg {
     border: 5px solid var(--red-icot);
     border-radius: 16px;
