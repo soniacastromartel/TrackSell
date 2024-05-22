@@ -19,7 +19,6 @@ class RegisteredUser extends Mailable
      */
     public function __construct($employeeData)
     {
-        //
         $this -> employee = $employeeData;
     }
 
