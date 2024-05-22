@@ -16,6 +16,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
@@ -57,10 +59,10 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/store', 'TrackingController@store')->name('tracking.store');
     Route::get('/tracking/edit/{state}/{id}', 'TrackingController@edit')->name('tracking.edit');
     Route::put('/tracking/update/{state}/{id}', 'TrackingController@update')->name('tracking.update');
-    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}', 'TrackingController@updateState')->name('tracking.updateState');
-    Route::post('/tracking/updatePaidState', 'TrackingController@updatePaidState')->name('tracking.updatePaidState');
-    Route::get('/tracking/refreshServices/{centre_id}', 'TrackingController@refreshServices')->name('tracking.refreshServices');
-    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}', 'TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
+    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}','TrackingController@updateState')->name('tracking.updateState');
+    Route::post('/tracking/updatePaidState','TrackingController@updatePaidState')->name('tracking.updatePaidState');
+    Route::get('/tracking/refreshServices/{centre_id}','TrackingController@refreshServices')->name('tracking.refreshServices');
+    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}','TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
     Route::get('/tracking/exportForm', 'TrackingController@exportForm')->name('tracking.exportForm');
     Route::post('/tracking/export', 'TrackingController@export')->name('tracking.export');
     Route::get('/tracking/deleteForm', 'TrackingController@deleteForm')->name('tracking.deleteForm');
@@ -71,7 +73,6 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/exportFinalValidation', 'TrackingController@exportFinalValidation')->name('tracking.exportFinalValidation');
     Route::post('/tracking/calculateValidationRRHH', 'TrackingController@calculateValidationRRHH')->name('tracking.calculateValidationRRHH');
     Route::post('/tracking/validateTrackings', 'TrackingController@validateTrackings')->name('tracking.validateTrackings');
-    Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::get('/tracking/requestChange', 'TrackingController@requestChange')->name('tracking.requestChange');
     Route::post('/tracking/saveRequest', 'TrackingController@saveRequest')->name('tracking.saveRequest');
     Route::post('/tracking/getRequestChanges', 'TrackingController@getRequestChanges')->name('tracking.getRequestChanges');
@@ -82,8 +83,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/target/import', 'TargetController@import')->name('target.import');
     Route::post('/target/importSales', 'TargetController@importSales')->name('target.importSales');
     Route::post('/target/importIncentive', 'TargetController@importIncentive')->name('target.importIncentive');
-    Route::post('/target/calculateIncentives', 'TargetController@calculateIncentives')->name('target.calculateIncentives');
-    Route::post('/target/incentivesReportDownload', 'TargetController@incentivesReportDownload')->name('target.incentivesReportDownload');
+    Route::post('/target/calculateTargets', 'TargetController@calculateTargets')->name('target.calculateTargets');
     Route::post('/target/tracingTargets', 'TargetController@tracingTargets')->name('target.tracingTargets');
     Route::post('/target/targetReportDownload', 'TargetController@targetsReportDownload')->name('target.targetsReportDownload');
     Route::post('/target/targetReportView', 'TargetController@targetsReportView')->name('target.targetsReportView');
