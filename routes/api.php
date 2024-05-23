@@ -71,4 +71,10 @@ Route::get('/getCategoriesWithServices', 'API\ServiceController@getServiceCatego
 Route::get('/getServicesList', 'API\ServiceController@getServices');
 Route::get('/getCentersByService/{id}', 'API\CentreController@getCentersByService');
 
+/**
+ *  Notifcations
+ */
+Route::any('/notifications', 'API\NotificationController@getNotifications');
+
+
 

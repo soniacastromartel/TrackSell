@@ -423,7 +423,7 @@ class TargetsExport implements
                         );
                         $sheet->setCellValue('A' . $this->rows, $total['cod_business']);
                         $sheet->setCellValue('B' . $this->rows, $total['cod_employee']);
-                        $sheet->setCellValue('C' . $this->rows, $total['nombre_a3']);
+                        $sheet->setCellValue('C' . $this->rows, $total['nombre_a3']!= null ? $total['nombre_a3']:  $total['name']);
                         $sheet->setCellValue('D' . $this->rows, $total['total_incentive']);
                         $sheet->setCellValue('E' . $this->rows, $total['total_super_incentive']);
                         $sheet->setCellValue('F' . $this->rows, $total['total_income']);
@@ -431,7 +431,7 @@ class TargetsExport implements
                     } else { //Si no, imprime los datos de la suma de ingresos
                         $sheet->setCellValue('A' . $this->rows, $total['cod_business']);
                         $sheet->setCellValue('B' . $this->rows, $total['cod_employee']);
-                        $sheet->setCellValue('C' . $this->rows, $total['nombre_a3']);
+                        $sheet->setCellValue('C' . $this->rows, $total['nombre_a3']!= null ? $total['nombre_a3']:  $total['name']);
                         $sheet->setCellValue('D' . $this->rows, $total['total_incentive']);
                         $sheet->setCellValue('F' . $this->rows, $total['total_incentive']);
                         $this->rows++;
