@@ -61,7 +61,7 @@ class IncentivesPerBusinessSheet extends \PhpOffice\PhpSpreadsheet\Cell\StringVa
 
     public function title(): string
     {
-        return 'EMPRESA-' . substr($this->codBusiness, 0, strpos($this->codBusiness, "-"));
+        return 'Empresa (' . substr($this->codBusiness, 0, strpos($this->codBusiness, "-")).')';
     }
 
     public function coloringCells($color,$cells, $sheet){
@@ -82,23 +82,22 @@ class IncentivesPerBusinessSheet extends \PhpOffice\PhpSpreadsheet\Cell\StringVa
         $aligmentRight = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT;
          $sheet->getStyle('C2:D2')->applyFromArray(array (
             'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => array('rgb' => 'b01c2e')
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_NONE,
         ]));
          $sheet->getStyle('A5:B5')->applyFromArray(array (
             'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => array('rgb' => '39843c')
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_NONE,
+                
         ]));
          $sheet->getStyle('A7:D7')->applyFromArray(array (
             'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => array('rgb' => '69727E')
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_NONE,
+                
         ]));
          $sheet->getStyle('A8:D8')->applyFromArray(array (
             'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => array('rgb' => '959BA3')
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_NONE,
+              
         ]));
 
         $sheet->getStyle('A:J')->getAlignment()->setHorizontal($aligmentRight);
@@ -108,6 +107,8 @@ class IncentivesPerBusinessSheet extends \PhpOffice\PhpSpreadsheet\Cell\StringVa
                 8    => ['font' => ['bold' => true]],
                 'C2' => ['font' => ['bold' => true]], 
                 'C5' => ['font' => ['bold' => true]],
+                'B2' => ['font' => ['bold' => true]], 
+                'B5' => ['font' => ['bold' => true]],
                 'D2' => ['font' => ['bold' => true], 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
                 ]],
@@ -120,10 +121,12 @@ class IncentivesPerBusinessSheet extends \PhpOffice\PhpSpreadsheet\Cell\StringVa
     public static function beforeSheet( $codBusiness, $tracking, BeforeSheet $event)
     {
         $sheet = $event->sheet; 
-        $sheet->setCellValue('C2','EMPRESA');
+        $sheet->setCellValue('B2','EMPRES');
+        $sheet->setCellValue('C2','A');
         $sheet->setCellValue('D2',$codBusiness);
-        $sheet->setCellValue('A5','Fecha:');
-        $sheet->setCellValue('B5',date('d/m/Y'));
+        $sheet->setCellValue('B5','FECH');
+        $sheet->setCellValue('C5','A');
+        $sheet->setCellValue('D5',date('d/m/Y'));
 
         $sheet->mergeCells("A7:C7");
         $sheet->setCellValue('A7','TRABAJADORES');

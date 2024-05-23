@@ -1,5 +1,4 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
@@ -46,6 +45,9 @@
 
                             <div class="col-md-6">
                                 <div class="row">
+                                     
+                                    
+
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
@@ -69,6 +71,11 @@
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
                                     </div>
+
+
+
+
+
                                     <div class="form-group col-md-6">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
@@ -297,7 +304,6 @@
             table.ajax.reload();
         }
 
-
         $("#btnClear").on('click', function(e) {
 
             e.preventDefault();
@@ -338,32 +344,30 @@
         });
     }
 
+
     function setDate() {
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        var startDay = 21;
-
-        day = day >= 10 ? day : '0' + day;
-        month = month >= 10 ? month : '0' + month;
-        var dateTo = year + '-' + month + '-' + day;
-        console.log(month);
-
-        switch (month) {
-            case '01':
-                previousMonth = (day < 21) ? 12 : 1;
-                year = (day < 21) ? year - 1 : year;
-                break;
-            default:
-                previousMonth = (day < 21) ? month - 1 : month;
-                break;
-        }
-        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth; 
-        var dateFrom = year + '-' + previousMonth + '-' + startDay;
-        document.getElementById("date_from").value = dateFrom;
-        document.getElementById("date_to").value = dateTo;
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1; 
+    var year = date.getFullYear();
+    var startDay = 20;
+    day = day < 10 ? '0' + day : day;
+    month = month < 10 ? '0' + month : month;
+    var dateTo = year + '-' + month + '-' + day; 
+    var previousMonth = month; 
+    var previousYear = year;
+    if (month === '01' && day < 21) {
+        previousMonth = '12';
+        previousYear = year - 1; 
+    } else {
+        previousMonth = parseInt(month, 10); 
+        previousMonth = (day < 21) ? previousMonth - 1 : previousMonth; 
+        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString(); 
     }
+    var dateFrom = previousYear + '-' + previousMonth + '-' + startDay; 
+    document.getElementById("date_from").value = dateFrom;
+    document.getElementById("date_to").value = dateTo;
+}
 
     function getTrackingData() {
         if ($.fn.dataTable.isDataTable('.tracking-datatable')) {
@@ -479,8 +483,6 @@
         table.columns.adjust().draw();
     }
 
-
-
     // <!--Export-->
     $("#btnSubmit").on('click', function(e) {
         e.preventDefault();
@@ -502,7 +504,6 @@
         params["trackingState"] = $("#state_id option:selected").val();
         params["date_from"] = $('#date_from').val();
         params["date_to"] = $('#date_to').val();
-
 
         $.ajax({
             url: $("#exportTracking").attr('action'),

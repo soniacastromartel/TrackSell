@@ -13,7 +13,6 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 use Auth;
 use Exception;
-
 use App\A3Employee;
 
 //use Illuminate\Support\Facades\Log;
@@ -23,7 +22,7 @@ class AuthController extends BaseController
     private $cauEmail;
 
     public function __construct()
-    {
+    {   
         $this->cauEmail      =  env('MAIL_TO_CAU');
         $this->copycauEmail  =  explode(',', env('MAIL_CC_CAU'));
     }
@@ -106,8 +105,6 @@ class AuthController extends BaseController
         }
         \Log::channel('api')->info("Fin Solicitud Acceso!");
     }
-
-
     /**
      * Solicitud Desbloqueo
      */
@@ -132,6 +129,7 @@ class AuthController extends BaseController
     }
 
     /** Metodo procesa correo de error en solicitud acceso ( no se encuentra en AD / A3 ) */
+
     public function sendEmailErrorRegister($params)
     {
 
@@ -148,7 +146,7 @@ class AuthController extends BaseController
         /**
          * ENVIAR CORREO ERROR SOLICITUD ACCESO
          */
-        Mail::to($this->cauEmail)
+        Mail::to([$this->cauEmail])
             ->cc($this->copycauEmail)
             ->send(new RegisteredUser($emailData));
         return $this->sendResponse([], env('ERROR_A3_VALIDATION'));
@@ -166,12 +164,10 @@ class AuthController extends BaseController
         $emailData = $user;
         $emailData['subject'] = 'Se ha recibido una nueva solicitud accesso de empleado';
         $emailData['view']    = 'emails.registered_employee';
-
-
         /**
          * ENVIAR CORREO  SOLICITUD ACCESO
          */
-        Mail::to($this->cauEmail)
+        Mail::to([$this->cauEmail])
             ->cc($this->copycauEmail)
             ->send(new RegisteredUser($emailData));
         return $this->sendResponse([], env('REQUESTED'));
@@ -195,7 +191,7 @@ class AuthController extends BaseController
             /**
              * ENVIAR CORREO  SOLICITUD DESBLOQUEO
              */
-            Mail::to($this->cauEmail)
+            Mail::to([$this->cauEmail])
                 ->cc($this->copycauEmail)
                 ->send(new RegisteredUser($emailData));
             return $this->sendResponse([], env('REQUESTED'));
@@ -210,11 +206,9 @@ class AuthController extends BaseController
             );
         }
     }
-
-    /**
-     * Actualiza el unlockRequest en la base de datos 
-     * (solicitud de desbloqueo previa: false, true)
-     */
+    
+    //! ACTUALIZA EL UNLOCKREQUEST EN LA BASE DE DATOS (SOLICITUD DE DESBLOQUEO PREVIA: FALSE, TRUE)
+  
     public function unlockRequestUpdate($params)
     {
         \Log::channel('app')->info("Inicio update UnlockRequest");
@@ -239,9 +233,9 @@ class AuthController extends BaseController
             }
         }
     }
-    /**
-     * LOGIN
-     */
+   
+     //!LOGIN
+
     public function login(Request $request)
     {
         $initResult = $this->statusEmployee($request);
@@ -252,10 +246,8 @@ class AuthController extends BaseController
         }
     }
 
+    //! METODO AUXILIAR, REALIZA LA COMPROBACIÓN DEL ESTADO ACTUAL DEL EMPLEADO 
 
-    /**
-     * Method auxiliar, realiza la comprobación del estado actual del empleado
-     */
     protected function statusEmployee(Request $request)
     {
         $params = $request->all();
@@ -297,9 +289,8 @@ class AuthController extends BaseController
         }
     }
 
-    /**
-     * METODO AUXILIAR ACCESO LOGIN
-     */
+    //! METODO AUXILIAR ACCESO LOGIN 
+
     public function accessToEmployee(Request $request)
     {
         $loginData = $request->validate([
@@ -353,10 +344,9 @@ class AuthController extends BaseController
         }
         return $this->sendResponse($success, 'Usuario logueado!!');
     }
+    
+    //!SOLICITUD DE RECUPERACIÓN DE CONTRASEÑA DE EMPLEADOS
 
-    /**
-     * Solicitud de recuperación de contraseña empleados.
-     */
     public function recoveryPass(Request $request)
     {
         $employee_exists = $this->statusEmployee($request);

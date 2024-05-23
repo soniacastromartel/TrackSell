@@ -1,12 +1,7 @@
+
 <div class="sidebar" data-color="danger" data-background-color="grey" {{-- data-image="../assets/img/sidebar-1.jpg"--}}>
-
-  <!--
-      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
-      Tip 2: you can also add an image using data-image tag
-  -->
   <div class="sidebar-wrapper d-flex flex-column">
-    <img src="{{ asset('assets/img/whiteLogoPDI.png') }}" style="background-color: var(--red-icot); padding: 13px;">
+    <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
 
     <ul class="nav">
       <li id="userInfo" class="nav-item ">
@@ -41,7 +36,7 @@
       <hr>
 
       <li class="nav-item active" id="menuHome">
-        <a class="nav-link" href="/home">
+        <a class="nav-link"href="{{route('home')}}">
           <i class="material-icons">home</i>
           <p style="font-weight: bold"> Home </p>
         </a>
@@ -68,12 +63,7 @@
                 <span class="sidebar-normal"> Empleados </span>
               </a>
             </li>
-            <li id="pending_employee" class="nav-item ">
-              <a class="nav-link" href="{{route('employees.indexPending')}}">
-                <i class="material-icons">block</i>
-                <span class="sidebar-normal"> Pendientes de Validar </span>
-              </a>
-            </li>
+           
             <li id="adminCentre" class="nav-item ">
               <a class="nav-link" href="{{route('centres.index')}}">
                 <i class="material-icons">business</i>
@@ -189,7 +179,9 @@
       </li>
 
     </ul>
+    
     <div class="versionContainer">
+    
       <hr>
       <label class="lblVersion"> Versión {{ env('VERSION_WEB') }} </label>
     </div>

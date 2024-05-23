@@ -1,9 +1,8 @@
+{{-- 
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
-
 
 <div id="alertServicesCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -46,11 +45,11 @@
                                         <div class="dropdown bootstrap-select" style="margin-bottom: 50px;">
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
                                                 <option>SIN SELECCION </option>
-                                                @if ($user->rol_id != 1)
+                                             
                                                 @foreach ($centres as $centre)
                                                 <option value="{{ $centre->id }}" selected>{{ $centre->name }}</option>
                                                 @endforeach
-                                                @endif
+                                         
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
@@ -100,6 +99,10 @@
 
                 </div>
             </form>
+
+        
+
+
         </div>
 
         <div class="row" id="servicesData">
@@ -107,6 +110,7 @@
                 <table class="table table-striped table-bordered services-datatable col-lg-12">
                     <thead class="table-header">
                         <tr>
+                            <th>Centro</th>
                             <th>Servicio</th>
                             <th>Precio</th>
                             <th>Total</th>
@@ -122,10 +126,46 @@
 </div>
 
 <script type="text/javascript">
+<<<<<<< HEAD
+
+var table;
+var columnsFilled = [];
+columnsFilled.push({
+    data: 'centre_name', // Nombre del centro
+    name: 'centre_name',
+    searchable: true
+});
+
+
+columnsFilled.push({
+    data: 'service',
+    name: 'service',
+    searchable: true
+});
+columnsFilled.push({
+    data: 'price',
+    name: 'price',
+    searchable: true
+});
+columnsFilled.push({
+    name: 'total',
+    data: 'total'
+});
+
+
+$(function() {
+    setDate();
+
+    $(".nav-item").each(function() {
+        $(this).removeClass("active");
+=======
     var table;
 
     var columnsFilled = [];
-    
+    columnsFilled.push({
+        data: 'centre',
+        name: 'centre'
+    });
     columnsFilled.push({
         data: 'service',
         name: 'service',
@@ -135,40 +175,119 @@
         data: 'price',
         name: 'price',
         searchable: true
+>>>>>>> e95e8d338a91482815023bba7800abbfc1848ab8
     });
-    columnsFilled.push({
-        name: 'total',
-        data: 'total'
+    $('#servicesData').hide();
+
+    // Buscar
+    $("#btnSubmitFind").on('click', function(e) {
+        e.preventDefault();
+        $('#btnSubmitFind').hide();
+        $('#btnSubmitFindLoad').show();
+        $('#btnSubmitFindLoad').prop('disabled', true);
+        drawTable();
+        $('#servicesData').show();
     });
+<<<<<<< HEAD
+=======
+ 
   
+>>>>>>> e95e8d338a91482815023bba7800abbfc1848ab8
 
-    $(function() {
-
-        setDate();
-        $(".nav-item").each(function() {
-            $(this).removeClass("active");
-        });
-
-        $('#servicesData').hide();
+});
 
 
-        // Buscar
-        $("#btnSubmitFind").on('click', function(e) {
+ function clearForms() {
+            setDate();
+            $('select#centre_id').val('');
+            $('select#service_id').val('');
+            $('select#centre_id').selectpicker("refresh");
+            $('select#employee_id').selectpicker("refresh");
+            $('select#service_id').selectpicker("refresh");
+            $('input[type="search"]').val('');
+            table.search('').draw();
+            table.ajax.reload();
+        }
+        
+        $("#btnClear").on('click', function(e) {
+
             e.preventDefault();
-            $('#btnSubmitFind').hide();
-            $('#btnSubmitFindLoad').show();
-            $('#btnSubmitFindLoad').prop('disabled', true);
-            drawTable();
-            $('#servicesData').show();
+            clearForms();
         });
+ 
+        function drawTable() {
+    var centreId = $('#centre').val(); // Cambiado para usar el valor del ID
+    var serviceId = $('#service_id').val(); // Cambiado para usar el valor del ID
 
-    });
+    // Esta configuración reemplaza a 'params' para ajustarse a la espera de DataTables
+    var ajaxData = function(d) {
+        d._token = "{{ csrf_token() }}";
+        d.centre_id = centreId; 
+        d.service_id = serviceId; 
+        d.dateTo = $('#date_to').val();
+        d.dateFrom = $('#date_from').val();
+    };
 
+    if (!$.fn.dataTable.isDataTable('.services-datatable')) {
+        table = $('.services-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '{{route("services.getSalesServices")}}',
+                type: "POST",
+                data: ajaxData // Aquí usamos la función definida
+            },
+            columns: columnsFilled, // Asegúrate de que esta configuración coincide con los datos devueltos
+            search: {
+                "regex": true,
+                "smart": true
+            },
+            language: {
+                "url": "{{ asset('dataTables/Spanish.json') }}" 
+            }
+        });
+    } else {
+        table.ajax.reload();
+    }
+}
+
+
+
+
+function setDate() {
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1; 
+    var year = date.getFullYear();
+    var startDay = 20;
+    day = day < 10 ? '0' + day : day;
+    month = month < 10 ? '0' + month : month;
+    var dateTo = year + '-' + month + '-' + day; 
+    var previousMonth = month; 
+    var previousYear = year;
+    if (month === '01' && day < 21) {
+        previousMonth = '12';
+        previousYear = year - 1; 
+
+    } else {
+        previousMonth = parseInt(month, 10); 
+        previousMonth = (day < 21) ? previousMonth - 1 : previousMonth; 
+        previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString(); 
+    }
+
+    var dateFrom = previousYear + '-' + previousMonth + '-' + startDay; 
+
+    document.getElementById("date_from").value = dateFrom;
+    document.getElementById("date_to").value = dateTo; 
+  }
+
+<<<<<<< HEAD
+
+
+=======
     function drawTable() {
             $('#centre').val($("#centre_id option:selected").text());
             $('#service').val($("#service_id option:selected").text());
-
-
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["centre"] = $('#centre').val();
@@ -223,12 +342,9 @@
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
         var startDay = 21;
-
-
         day = day >= 10 ? day : '0' + day;
         month = month >= 10 ? month : '0' + month;
         var dateTo = year + '-' + month + '-' + day;
-
         var previousMonth = 0;
         if (month != 1 && day < 21) {
             previousMonth = month - 1;
@@ -242,10 +358,8 @@
         }
         // previousMonth= previousMonth >= 10 ? previousMonth : '0' + previousMonth;
         var dateFrom = year + '-' + previousMonth + '-' + startDay;
+>>>>>>> e95e8d338a91482815023bba7800abbfc1848ab8
 
-        document.getElementById("date_from").value = dateFrom;
-        document.getElementById("date_to").value = dateTo;
 
-    }
 </script>
-@endsection
+@endsection --}}
