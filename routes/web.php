@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\A3CenterSaraController;
+use App\Http\Controllers\ChartController;
+use App\Service;
 use Illuminate\Support\Arr;
 Route::get('/', function () {
     return redirect('login');
 });
 
 Auth::routes();
-
-
 
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
@@ -45,8 +45,11 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/admin/services/destroy/{id}', 'ServiceController@destroy')->name('services.destroy');
     Route::post('/admin/services/destroyIncentive', 'ServiceController@destroyIncentive')->name('services.destroyIncentive');
     Route::get('/admin/services/exportServices', 'ServiceController@exportServicesIncentivesActives')->name('services.exportServicesIncentivesActives');
-    Route::get('/calculateServices', 'ServiceController@calculateServices')->name('calculateServices');
-    Route::post('/getSaledServices', 'ServiceController@getSaledServices')->name('services.getSaledServices');
+    Route::get('/calculateServices', 'ServiceController@calculateServices')->name('services.calculateServices');
+    Route::post('/getSalesServices', 'ServiceController@getSalesServices')->name('services.getSalesServices');
+    Route::get('/calculateServices', 'ServiceController@showAllServicesAndByCentre')->name('calculateServices');
+    //?Exportar dinámica de servicios
+    Route::get('/export/services', 'ServiceController@exportDinamicServices')->name('export.all-services');
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
     Route::get('/tracking/create', 'TrackingController@create')->name('tracking.create');
@@ -115,7 +118,6 @@ Route::get('/admin/profile', 'HomeController@viewProfile')->name('admin.profile'
 Route::put('/editProfile/{id}', 'HomeController@editProfile')->name('editProfile');
 Route::get('/getSales', 'HomeController@getSales')->name('home.getSales');
 Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets');
-
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
 
 //!A3API

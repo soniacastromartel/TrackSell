@@ -4930,11 +4930,11 @@ tbody.collapse.show {
   color: #00353b;
 }
 
-.alert-warning {
+/* .alert-warning {
   color: #854f00;
   background-color: #ffeacc;
   border-color: #ffe2b8;
-}
+} */
 
 .alert-warning hr {
   border-top-color: #ffd89f;
