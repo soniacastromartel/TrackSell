@@ -15,9 +15,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-
-
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
@@ -74,6 +71,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/calculateValidationRRHH', 'TrackingController@calculateValidationRRHH')->name('tracking.calculateValidationRRHH');
     Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::post('/tracking/validateTrackings', 'TrackingController@validateTrackings')->name('tracking.validateTrackings');
+    Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::get('/tracking/requestChange', 'TrackingController@requestChange')->name('tracking.requestChange');
     Route::post('/tracking/saveRequest', 'TrackingController@saveRequest')->name('tracking.saveRequest');
     Route::post('/tracking/getRequestChanges', 'TrackingController@getRequestChanges')->name('tracking.getRequestChanges');
