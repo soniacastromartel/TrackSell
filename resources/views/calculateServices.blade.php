@@ -194,7 +194,7 @@
                 @endif
                 
                 <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                    <th>Servicio</th>
+                    <th>Servicios</th>
                     <th>Precio</th>
                     <th>Realizados</th>
                     <th>Total</th>
@@ -216,7 +216,7 @@
     @if ($service_id)
     <div class="card">
         <div class="chart-container">
-            <div>Servicio de {{ $selectedService->name }}</div>
+            <h4>Servicio de <strong> {{ $selectedService->name }}</strong> </h4>
             <div>
                 <canvas id="chartService" width="1800" height="500"></canvas>
             </div>
@@ -245,11 +245,10 @@
                 @endif
             </tbody>
         </table>
-        <h2>Desglose Servicio</h2>
+        <h4>Desglose Servicio <strong> {{ $selectedService->name }}</strong> </h4>
         <table class="table">
             <thead>
                 <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                    <th>Servicio</th>
                     <th>Realizados</th>
                     <th>Centro</th>
                     <th>Empleado</th>
@@ -259,7 +258,6 @@
             <tbody>
                 @foreach ($servicesCount as $desgloseService)
                     <tr>
-                        <td>{{ $desgloseService->service_name }}</td>
                         <td>{{ $desgloseService->cantidad }}</td>
                         <td>{{ $desgloseService->centre_name }}</td>
                         <td>{{ $desgloseService->employee_name }}</td>
