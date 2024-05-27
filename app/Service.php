@@ -21,6 +21,7 @@ class Service extends Model
     ];
 
     //!RELATIONS
+    
     public function servicePrice()
     {
         return $this->hasMany(ServicePrice::class);

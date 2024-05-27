@@ -35,6 +35,7 @@ Route::get('/employee_categories', 'API\EmployeeController@getJobCategories');
 Route::get('/getCenters', 'API\CentreController@getCenters');
 Route::get('/getCentersByService/{id}', 'API\CentreController@getCentersByService');
 
+
 /* CONTROL/RESETEO DE ACCESOS */
 Route::get('/controlUser', 'API\EmployeeController@controlUser');
 
@@ -69,5 +70,11 @@ Route::get('/getServiceCategories', 'API\ServiceController@getServiceCategories'
 Route::get('/getCategoriesWithServices', 'API\ServiceController@getServiceCategoriesWithServices');
 Route::get('/getServicesList', 'API\ServiceController@getServices');
 Route::get('/getCentersByService/{id}', 'API\CentreController@getCentersByService');
+
+/**
+ *  Notifcations
+ */
+Route::any('/notifications', 'API\NotificationController@getNotifications');
+
 
 

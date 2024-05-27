@@ -69,4 +69,16 @@ class Centre extends Model
 
         return !empty($centre) ? $centre->name : null;
     }
+
+    /**
+     * Devuelve la lista de centros para un servicio determinado
+     */
+    public function scopeGetCentersByServiceId($query, $serviceId){
+        return $query->select('centres.*')
+        ->join('service_prices', 'centres.id', '=', 'service_prices.centre_id')
+        ->join('services', 'services.id', '=', 'service_prices.service_id')
+        ->where('services.id', $serviceId)
+        ->groupBy('centres.id')
+        ->get();
+    }
 }
