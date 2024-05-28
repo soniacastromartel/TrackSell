@@ -2,10 +2,9 @@
 @section('content')
   @include('common.alert')
 
-
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <div class="bodyLogin">
-
-        <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+   
         <div class="fadeInDown">
             @if ($message = Session::get('error'))
                 <div class="alert alert-danger">
