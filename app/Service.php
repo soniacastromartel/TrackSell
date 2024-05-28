@@ -43,6 +43,7 @@ class Service extends Model
                        ->on('trackings.centre_id', '=', 'service_prices.centre_id');
               })
               ->join('employees', 'trackings.employee_id', '=', 'employees.id')
+              ->join ('roles', 'employees.rol_id' , '=', 'roles.id')
               ->where('trackings.validation_done', 1);
     
         // Filtrar por serviceId solo si se proporciona
@@ -67,17 +68,17 @@ class Service extends Model
                   'services.name as service_name',
                   'service_prices.price as price',
                   'employees.name as employee_name',
+                  'employees.rol_id as employee_rol_id',
                   'employees.category as employee_category',
                   'trackings.started_date',
                   'trackings.validation_date as end_date',
                   DB::raw('COUNT(*) as cantidad')
               );
               if (!is_null($serviceId)) {
-                $query->groupBy('centres.name', 'services.name', 'service_prices.price', 'employees.name');
+                $query->groupBy('centres.name', 'services.name', 'service_prices.price');
             } 
             
             else {
-                // Si no se especifica service_id, agrupar solo por centro y servicio
                 $query->groupBy('services.name');
             }
         
@@ -117,7 +118,7 @@ class Service extends Model
         $query->whereNull('service_prices.cancellation_date')
               ->whereNull('trackings.cancellation_date')
               ->whereNull('centres.cancellation_date')
-              ->groupBy('services.id', 'services.name', 'centres.name')  // Incluido el precio en el agrupamiento
+              ->groupBy('services.id', 'services.name', 'centres.name') 
               ->orderBy('total', 'desc');
     
         return $query;

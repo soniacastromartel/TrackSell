@@ -256,13 +256,16 @@
                 </tr>
             </thead>
             <tbody>
+
                 @foreach ($servicesCount as $desgloseService)
+                    @if ($desgloseService->employee_rol_id != 8)
                     <tr>
                         <td>{{ $desgloseService->cantidad }}</td>
                         <td>{{ $desgloseService->centre_name }}</td>
                         <td>{{ $desgloseService->employee_name }}</td>
                         <td>{{ $desgloseService->employee_category }}</td>
                     </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>
@@ -284,6 +287,7 @@
         const dataServiceAll = JSON.parse('@json($dataServiceAll)');
         const labelsCentreService = JSON.parse('@json($labelsCentreService)');
         const dataCentreService = JSON.parse('@json($dataCentreService)');
+        const dataTotalService = JSON.parse('@json($dataTotalService)');
 
 
 

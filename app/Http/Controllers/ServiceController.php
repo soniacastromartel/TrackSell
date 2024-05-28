@@ -435,84 +435,6 @@ class ServiceController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //!FUNCIÓN PARA DINÁMICA DE SERVICIOS
-
-    // public function calculateServices()
-    // {
-    //     try {
-    //         $this->user = session()->get('user');
-    //         $this->centreId = $this->user['centre_id'];
-    //         $title = 'Dinámica de Servicios';
-
-    //         if (isset($this->centreId) && $this->centreId != null) {
-    //             $services = Service::getServicesActive($this->centreId, true, false);
-    //             $centres = Centre::getCentreByField($this->centreId);
-    //         } else {
-    //             $services = Service::getServicesActive();
-    //             $centres = Centre::getCentresActive();
-    //         }
-    //         $disabledService = false;
-
-    //         return view('calculate_services', [
-    //             'title'            => $title,
-    //             'centres'         => $centres,
-    //             'services'        => $services,
-    //             'disabledService' => $disabledService,
-    //             'user'      => $this->user
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => 'false',
-    //             'errors'  => $e->getMessage(),
-    //         ], 400);
-    //     }
-    // }
-    // /**
-    //  * Function to to retrieve a list of services sold during a  period, and (optionally) filtered by center ID
-    //  */
-
-    // public function getSalesServices(Request $request)
-    // {
-    //     try {
-    //         if (!$request->ajax()) {
-    //             return;
-    //         }
-
-    //         $params = $request->all();
-    //         $centreId = $params['centre_id'];
-
-    //         $initPeriod = $params['dateFrom'];
-    //         $endPeriod = $params['dateTo'];
-
-    //         $servicesQuery = Service::select(
-
-    //             'services.name',
-    //             'service_prices.price',
-    //             DB::raw('COUNT(trackings.id) as total'),
-    //         )
-
-    //             ->join('service_prices', 'services.id', '=', 'service_prices.service_id')
-    //             ->join('trackings', 'services.id', '=', 'trackings.service_id')
-    //             ->whereBetween('trackings.validation_date', [$initPeriod, $endPeriod])
-    //             ->whereNull('trackings.cancellation_date')
-    //             ->groupBy('services.id');
-
-    //         if ($centreId) {
-    //             $servicesQuery->where('trackings.centre_id', $centreId);
-    //         }
-
-    //         $services = $servicesQuery->get();
-
-    //         return response()->json([
-    //             "data" => $services
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => 'false',
-    //             'errors'  => $e->getMessage(),
-    //         ], 400);
-    //     }
-    // }
 
     //!PRUEBA VIEW SOLO HTML 
 
@@ -534,9 +456,12 @@ class ServiceController extends Controller
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->total;
                     return $item;
-                })->sortByDesc('total');
+                })
+
+                ->sortByDesc('total');
         } elseif ($serviceId && !$centreId) {
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('employees.name')
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->cantidad;
@@ -550,7 +475,12 @@ class ServiceController extends Controller
                     return $item;
                 })->sortByDesc('cantidad');
         }
-
+        $servicesCountGroupService =  Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+            ->get()
+            ->map(function ($item) {
+                $item->total_price_per_centre = $item->price * $item->cantidad;
+                return $item;
+            })->sortByDesc('cantidad');
         $totalServices = $servicesCount->sum('cantidad');
         $grandTotal = $servicesCount->sum('total_price_per_centre');
         $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
@@ -559,11 +489,12 @@ class ServiceController extends Controller
         $labelsCentre = $servicesCountCentre->pluck('service_name')->all();
         $dataCentre = $servicesCountCentre->pluck('total')->all();
         //?datos para la grafica por servicio
-        $labelsService = $servicesCount->pluck('employee_name')->all();
-        $dataService = $servicesCount->pluck('cantidad');
+        $labelsService = $servicesCountGroupService->pluck('centre_name')->all();
+        $dataService = $servicesCountGroupService->pluck('cantidad');
         //?datos para la grafica por todos los servicios
         $labelsServiceAll = $servicesCount->pluck('service_name')->all();
         $dataServiceAll = $servicesCount->pluck('cantidad')->all();
+        $dataTotalService = [$grandTotal];
         //?datos para la grafica filtrado por centro y servicio 
         $labelsCentreService = $selectedService ? $selectedService->name : 'Servicio';
         $dataCentreService = [$totalServices];
@@ -585,8 +516,10 @@ class ServiceController extends Controller
             'dataService' => $dataService,
             'labelsServiceAll' => $labelsServiceAll,
             'dataServiceAll' => $dataServiceAll,
+            'dataTotalService' => $dataTotalService,
             'labelsCentreService' => $labelsCentreService,
             'dataCentreService' => $dataCentreService,
+            'servicesCountGroupService' => $servicesCountGroupService,
 
         ]);
     }
@@ -613,12 +546,10 @@ class ServiceController extends Controller
             $selectedCentre = Centre::find($centreId);
             $selectedService = Service::find($serviceId);
             ob_end_clean();
-             ob_start();
-            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices,$grandTotal), 'all-services.xls');
+            ob_start();
+            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices, $grandTotal), 'all-services.xls');
         } catch (\Illuminate\Database\QueryException $e) {
             return back()->with('error', 'Ha ocurrido un error al exportar, contacte con el administrador');
         }
     }
 }
-
-
