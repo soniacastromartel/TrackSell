@@ -2,21 +2,19 @@
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
-{{-- <!DOCTYPE html>
-<html> --}}
+ <!DOCTYPE html>
+<html> 
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/dinamic.css') }}">
-{{-- <head>
+ <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PDI</title> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}"> --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
-{{-- </head> --}}
+    <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ </head> 
 
 <div class="main-dinamic-services" style="margin-top:140px">
 
