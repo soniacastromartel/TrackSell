@@ -8,8 +8,10 @@ body {
   .main-dinamic-services {
     width: 1600px;
     height: 1800px;
-    margin-left: 15%;
-    marigin: 10%;
+    margin-left: 15%; 
+    padding-left: 3%;
+    padding-right: 3%;
+
 }
 
 .table tr:nth-child(odd) {

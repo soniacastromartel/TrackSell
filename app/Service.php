@@ -44,6 +44,7 @@ class Service extends Model
               })
               ->join('employees', 'trackings.employee_id', '=', 'employees.id')
               ->join ('roles', 'employees.rol_id' , '=', 'roles.id')
+              ->join('job_categories', 'employees.job_category_id', '=', 'job_categories.id')
               ->where('trackings.validation_done', 1);
     
         // Filtrar por serviceId solo si se proporciona
@@ -70,12 +71,13 @@ class Service extends Model
                   'employees.name as employee_name',
                   'employees.rol_id as employee_rol_id',
                   'employees.category as employee_category',
+                  'job_categories.name as category_name',
                   'trackings.started_date',
                   'trackings.validation_date as end_date',
                   DB::raw('COUNT(*) as cantidad')
               );
               if (!is_null($serviceId)) {
-                $query->groupBy('centres.name', 'services.name', 'service_prices.price');
+                 $query->groupBy('services.name');
             } 
             
             else {
@@ -91,7 +93,7 @@ class Service extends Model
         return $query;
     }
     
-    public function scopeGetCountServicesByCentre($query, $centreId, $startDate, $endDate)
+    public function scopeGetCountServicesByCentre($query, $centreId,$startDate, $endDate)
     {
         $query->select(
             'centres.name as centre_name',

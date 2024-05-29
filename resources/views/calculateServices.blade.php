@@ -3,7 +3,7 @@
 @include('inc.navbar')
 @include('common.alert')
  <!DOCTYPE html>
-<html> 
+<html>
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/dinamic.css') }}">
  <head>
@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- </head> 
+ </head>
 
 <div class="main-dinamic-services" style="margin-top:140px">
 
@@ -61,7 +61,7 @@
                 </form>
             </div>
 
-       
+
 
 <div class="filter-container">
     <form id="serviceForm" action="{{ route('calculateServices') }}" method="GET">
@@ -86,7 +86,7 @@
         <div class="buttons-container" style="display:flex;justify-content:flex-end;">
             <button id="btnClear" class="btn-refresh" onclick="resetSelectors()">Limpiar Formulario<span id=icon-refresh
                 class="material-icons">refresh</span>
-                
+
               </button>
             <form action="{{ route('export.all-services') }}" method="GET">
                 @csrf
@@ -100,7 +100,7 @@
                     <span class="spinner-border spinner-border-sm" role="status"
                         aria-hidden="true"></span>
                 </button>
-                
+
             </form>
         </div>
 
@@ -108,7 +108,8 @@
     @if (!empty($service_id) && !empty($centre_id))
     <div class="card">
         <div class="chart-container">
-            <div>Servicio por Centro</div>
+            <h4>Servicio <strong>{{ $selectedService->name }}</strong> en <strong>{{ $selectedCentre->name }}</strong> </h4>
+           
             <div>
                 <canvas id="chartCentreService" width="1550" height="500"></canvas>
             </div>
@@ -136,7 +137,7 @@
                     <td>{{ $totalServices }}</td>
                     <td>{{ $grandTotal }}€</td>
                 </tr>
-         
+
         </tbody>
     </table>
 @endif
@@ -144,7 +145,7 @@
     @if (empty($service_id) && empty($centre_id))
         <div class="card">
             <div class="chart-container">
-                <div>Todos los Servicios</div>
+                <h4><strong>SERVICIOS</strong> en <strong>TODOS LOS CENTROS</strong> 
                 <div>
                     <canvas id="chartServiceAll" width="1550" height="500"></canvas>
                 </div>
@@ -174,10 +175,10 @@
             </tbody>
         </table>
     @endif
-    @if ($centre_id)
+    @if (empty($service_id) && !empty($centre_id))
         <div class="card">
             <div class="chart-container">
-                <h4>Servicios en <strong>{{ $selectedCentre->name }}</strong> </h4>
+                <h4><strong>TODOS</strong> los Servicios en <strong>{{ $selectedCentre->name }}</strong> </h4>
                 <div>
                     <canvas id="chartCentre" width="1800" height="500"></canvas>
                 </div>
@@ -190,7 +191,7 @@
                         <th colspan="5">Fecha : {{ request('start_date') }} / {{ request('end_date') }}</th>
                     </tr>
                 @endif
-                
+
                 <tr class="row-service" style="background-color: var(--red-icot);color:white;">
                     <th>Servicios</th>
                     <th>Precio</th>
@@ -200,7 +201,7 @@
             </thead>
             <tbody>
                 @foreach ($servicesCountCentre as $service)
-             
+
                     <tr>
                         <td>{{ $service->service_name }}</td>
                         <td>{{ $service->price }}€</td>
@@ -211,39 +212,147 @@
             </tbody>
         </table>
     @endif
-    @if ($service_id)
+    @if  (!empty($service_id) && empty($centre_id))
     <div class="card">
         <div class="chart-container">
-            <h4>Servicio de <strong> {{ $selectedService->name }}</strong> </h4>
+            <h4>Ventas de <strong> {{ $selectedService->name }}</strong> en <strong>TODOS LOS CENTROS</strong> 
+                @if (!empty($selectedCentre))
+                en <strong>{{ $selectedCentre->name }}</strong>
+                @endif
+            </h4>
+            <div>
+                <canvas id="chartServiceAllTotal" width="1800" height="500"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <h4>Ventas de <strong>{{$selectedService->name}}</strong> en <strong>TODOS LOS CENTROS</strong> </h4>
+
+    <table class="table">
+        <thead>
+            @if (request('start_date') && request('end_date'))
+                <tr class="row-service" style="background-color: var(--red-icot);color:white;">
+                    <th colspan="5">Fecha : {{ request('start_date') }} / {{ request('end_date') }}</th>
+                </tr>
+            @endif
+            <tr class="row-service" style="background-color: var(--red-icot);color:white;">
+                <th>Servicio</th>
+                <th>Realizados</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if ($servicesCount->isNotEmpty())
+                <tr class="total-services-row" style="background-color:rgb(212, 209, 209)">
+                    <td>{{ $servicesCount->first()->service_name }}</td>
+                    <td>{{ $totalServices }}</td>
+                    <td>{{ $grandTotal }}€</td>
+                </tr>
+          
+            @endif
+        </tbody>
+    </table>
+    <div class="card">
+        <div class="chart-container">
+            <h4>Ventas de <strong> {{ $selectedService->name }}</strong> por <strong>CENTROS</strong> </h4>
             <div>
                 <canvas id="chartService" width="1800" height="500"></canvas>
             </div>
         </div>
     </div>
+
+     {{-- TABLA POR CENTRO PENDIENTE --}}
+
+    <table class="table">
+        <thead>
+
+            <tr class="row-service" style="background-color: var(--red-icot);color:white;">
+                <th>Centros</th>
+                <th>Precio</th>
+                <th>Realizados</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach ($serviceByCentre as $service)
+
+                <tr>
+                        <td>{{ $service->centre_name }}</td>
+                        <td>{{ $service->price }}€</td>
+                        <td>{{ $service->cantidad }}</td>
+                        <td>{{ $service->price * $service->cantidad }}€</td>
+                </tr>
+            @endforeach
+     
+        </tbody>
+    </table>
+
+    @endif
+    {{-- GRÁFICA VENTAS POR CATEGORÍA --}}
+    @if (!empty($service_id))
+    <div class="card">
+        <div class="chart-container">
+            <h4>Ventas de <strong> {{ $selectedService->name }}</strong> por <strong>CATEGORÍA</strong> 
+                @if (!empty($selectedCentre))
+                en <strong>{{ $selectedCentre->name }}</strong>
+                @endif
+            </h4>
+            <div>
+                <canvas id="chartServiceCategory" width="1800" height="500"></canvas>
+            </div>
+        </div>
+    </div>
+    @endif
+
+        @if  (!empty($service_id) && empty($centre_id) || !empty($service_id) && !empty($centre_id))
+
+        <h4>Ventas Servicio  <strong>{{$selectedService->name}}</strong> por <strong>CATEGORÍA</strong>
+            @if (!empty($selectedCentre))
+            en <strong>{{ $selectedCentre->name }}</strong>
+            @endif
+        </h4>
         <table class="table">
             <thead>
-                @if (request('start_date') && request('end_date'))
-                    <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                        <th colspan="5">Fecha : {{ request('start_date') }} / {{ request('end_date') }}</th>
-                    </tr>
-                @endif
                 <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                    <th>Servicio</th>
                     <th>Realizados</th>
-                    <th>Total</th>
+                    <th>Categoría</th>
                 </tr>
             </thead>
             <tbody>
-                @if ($servicesCount->isNotEmpty())
-                    <tr class="total-services-row" style="background-color:rgb(212, 209, 209)">
-                        <td>{{ $servicesCount->first()->service_name }}</td>
-                        <td>{{ $totalServices }}</td>
-                        <td>{{ $grandTotal }}€</td>
+                @foreach ($serviceCategory as $filterCategory)
+                    <tr>
+                        <td>{{ $filterCategory->cantidad }}</td>
+                        <td>{{ $filterCategory->category_name }}</td>
                     </tr>
+                   
+                @endforeach
                 @endif
             </tbody>
         </table>
-        <h4>Desglose Servicio <strong> {{ $selectedService->name }}</strong> </h4>
+       
+        @if  (!empty($service_id) && !empty($centre_id) || !empty($service_id) && empty($centre_id))
+
+        <div class="card">
+            <div class="chart-container">
+                <h4>Ventas de <strong> {{ $selectedService->name }}</strong> por <strong>EMPLEADO</strong> 
+                    @if (!empty($selectedCentre))
+                    en <strong>{{ $selectedCentre->name }}</strong>
+                    @endif
+                </h4>
+                <div>
+                    <canvas id="chartServiceEmployee" width="1800" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <h4>Ventas por empleado de <strong> {{ $selectedService->name }}</strong>
+        @if (!empty($selectedCentre))
+        en <strong>{{ $selectedCentre->name }}</strong>
+        @else
+        en <strong>TODOS LOS CENTROS</strong>
+        @endif
+        </h4>
         <table class="table">
             <thead>
                 <tr class="row-service" style="background-color: var(--red-icot);color:white;">
@@ -261,13 +370,14 @@
                         <td>{{ $desgloseService->cantidad }}</td>
                         <td>{{ $desgloseService->centre_name }}</td>
                         <td>{{ $desgloseService->employee_name }}</td>
-                        <td>{{ $desgloseService->employee_category }}</td>
+                        <td>{{ $desgloseService->category_name }}</td>
                     </tr>
                     @endif
                 @endforeach
+                @endif
             </tbody>
         </table>
-    @endif
+  
 
 </div>
 
@@ -286,7 +396,12 @@
         const labelsCentreService = JSON.parse('@json($labelsCentreService)');
         const dataCentreService = JSON.parse('@json($dataCentreService)');
         const dataTotalService = JSON.parse('@json($dataTotalService)');
-
+        const labelsServiceCategory = JSON.parse('@json($labelsServiceCategory)');
+        const dataServiceCategory = JSON.parse('@json($dataServiceCategory)');
+        const labelsServiceEmployee = JSON.parse('@json($labelsServiceEmployee)');
+        const dataServiceEmployee = JSON.parse('@json($dataServiceEmployee)');
+        const labelsServiceAllTotal = JSON.parse('@json($labelsServiceAllTotal)');
+        const dataServiceAllTotal = JSON.parse('@json($dataServiceAllTotal)');
 
 
         try {
@@ -358,6 +473,41 @@
             console.error('Error creating chartService:', error);
         }
 
+        
+        //chartServiceAllTotal
+        try {
+            var ctxServiceAllTotal = document.getElementById('chartServiceAllTotal').getContext('2d');
+            var chartServiceAllTotal = new Chart(ctxServiceAllTotal, {
+                type: 'bar',
+                data: {
+                    labels: labelsServiceAllTotal,
+                    datasets: [{
+                        label: 'Cantidad de Servicios',
+                        data: dataServiceAllTotal,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error creating chartCentre:', error);
+        }
         //chartServiceAll
 
         try {
@@ -393,7 +543,7 @@
 
         } catch (error) {
             console.error('Error creating chartService:', error);
-        } 
+        }
       //  Centre & Service
         try {
             var ctxCentreService = document.getElementById('chartCentreService').getContext('2d');
@@ -406,11 +556,11 @@
                         data: dataCentreService,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
-                            
+
                         ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
-                            
+
                         ],
                         borderWidth: 1
                     }]
@@ -426,6 +576,81 @@
         } catch (error) {
             console.error('Error creating chartCentre:', error);
         }
+
+        // Service Category
+
+        try {
+            var ctxServiceCategory = document.getElementById('chartServiceCategory').getContext('2d');
+            var chartServiceCategory = new Chart(ctxServiceCategory, {
+                type: 'bar',
+                data: {
+                    labels: labelsServiceCategory,
+                    datasets: [{
+                        label: 'Cantidad de Servicios',
+                        data: dataServiceCategory,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Error creating chartServiceCategory:', error);
+        }
+        
+        //chartServiceEmployee
+
+        try {
+            var ctxServiceEmployee = document.getElementById('chartServiceEmployee').getContext('2d');
+            var chartServiceEmployee = new Chart(ctxServiceEmployee, {
+                type: 'bar',
+                data: {
+                    labels: labelsServiceEmployee,
+                    datasets: [{
+                        label: 'Cantidad de Servicios',
+                        data: dataServiceEmployee,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Error creating chartServiceCategory:', error);
+        }
+        
 
     });
 

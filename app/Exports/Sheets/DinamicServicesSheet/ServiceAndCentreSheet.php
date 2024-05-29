@@ -42,7 +42,7 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
                 'NULL3' => '',
                 'NULL4' => '',
                 'NULL5' => '',
-                'CENTRO' => $this->selectedCentre ? $this->selectedCentre->name : 'CENTRO SELECCIONADO',
+                'CENTRO' => $this->selectedCentre ? $this->selectedCentre->name : 'TODOS',
                 'NULL6' => '',
                 'REALIZADOS' => $this->totalServices,
                 'NULL7' => '',

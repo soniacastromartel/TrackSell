@@ -28,58 +28,52 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
 
     public function collection()
     {
-       
-    {
         $serviceId = $this->request->input('service_id');
         $centreId = $this->request->input('centre_id');
-        
-        if (empty($serviceId) && empty($centreId)) {
-            $query = Service::getCountAllServices($serviceId,$centreId, $this->startDate, $this->endDate);
-        } else if (!empty($centreId)) {
-            $query = Service::getCountServicesByCentre($centreId, $this->startDate, $this->endDate);
-        } else if (!empty($serviceId)) {
-            $query = Service::getCountAllServices($serviceId,$centreId,$this->startDate, $this->endDate);
-        }        
+
+     
+     $query = Service::getCountAllServices($serviceId, null, $this->startDate, $this->endDate);
+  
+
+      
 
         $results = $query->get()->sortByDesc('cantidad');
-        
+
 
         $totalServices = $results->sum('cantidad');
-        $grandTotal = $results->sum(function($item) {
-            return $item->price * $item->cantidad;  
+        $grandTotal = $results->sum(function ($item) {
+            return $item->price * $item->cantidad;
         });
-         
             $data = $results->map(function ($item) { 
           
                     $extendedData = [
-                        'SERVICIOS' => $item->service_name,
+                        'CENTROS' => $item->centre_name,
                         'NULL1' => '',
                          'NULL2' => '',
                          'NULL3' => '',
                         'NULL4' => '',
                         'NULL5' => '',
                         'PRECIO' => $item->price . '€',
-                        'REALIZADOS'=> $item->total,
+                        'REALIZADOS'=> $item->cantidad,
                         'NULL6' => '',
                         'TOTAL' => $item->price * $item->total . '€',
                        
                     ];
-                
-    
+            
             return $extendedData;
         });
         $this->totalServices = $totalServices;
         $this->grandTotal = $grandTotal;
 
         return $data;
-    }
+    
 
     }
 
     public function headings(): array
     {
         return [
-            'SERVICIOS', '', '', '', '', '','PRECIO', 'REALIZADOS','', 'TOTAL',
+            'CENTROS', '', '', '', '', '','PRECIO', 'REALIZADOS','', 'TOTAL',
         ];
     }
 
@@ -92,14 +86,17 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                 $fechaTexto = isset($this->startDate) && isset($this->endDate) ? "Fechas: {$this->startDate} / {$this->endDate}" :  "Fechas: Historial completo";
                 $event->sheet->setCellValue("A1", $fechaTexto);
                 $centreId = $this->request->input('centre_id');
-                $centreName = \DB::table('centres')->where('id', $centreId)->value('name'); 
-                $event->sheet->setCellValue("A2", "Centro: " . ( $centreName ? $centreName : "Todos los centros"));
-                $worksheet = $event->sheet->getDelegate(); 
-                $highestRow = $worksheet->getHighestRow(); 
-                for ($row = 1; $row <= $highestRow; $row++) {
-                    $event->sheet->mergeCells("A{$row}:F{$row}");
+                // $centreName = \DB::table('centres')->where('id', $centreId)->value('name'); 
+                // $event->sheet->setCellValue("A2", "Centro: " . ( $centreName ? $centreName : "Todos los centros"));
+                $serviceId = $this->request->input('service_id');
+                $serviceName = \DB::table('services')->where('id', $serviceId)->value('name');
+                $event->sheet->setCellValue("A2", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
+                // $worksheet = $event->sheet->getDelegate(); 
+                // $highestRow = $worksheet->getHighestRow(); 
+                // for ($row = 1; $row <= $highestRow; $row++) {
+                //     $event->sheet->mergeCells("A{$row}:H{$row}");
                    // $event->sheet->mergeCells("H{$row}:I{$row}");
-                }
+                // }
                 // $event->sheet->getStyle('H')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
                 // $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
                 $event->sheet->getStyle("A1:J1")->applyFromArray([

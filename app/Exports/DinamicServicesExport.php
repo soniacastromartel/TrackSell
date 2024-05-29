@@ -46,6 +46,12 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
 
         if (!empty($this->request->input('service_id')) && !empty($this->request->input('centre_id'))) {
             $sheets[] = new DinamicServicesSheetServiceAndCentreSheet($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices, $this->grandTotal);
+            //?no quiero un sheet con todos los servicios de un centro
+            $sheets[] = new DinamicServicesSheetCentreSheet($this->request);
+            $sheets[] = new DinamicServicesSheetServiceSheet($this->request);
+
+        }elseif (!empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
+            $sheets[] = new DinamicServicesSheetServiceAndCentreSheet($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices, $this->grandTotal);
             $sheets[] = new DinamicServicesSheetCentreSheet($this->request);
             $sheets[] = new DinamicServicesSheetServiceSheet($this->request);
             
