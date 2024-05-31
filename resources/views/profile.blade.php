@@ -3,11 +3,11 @@
 @include('inc.navbar')
 @include('common.alert')
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
+
 
     <div class="content" style="display:flex; justify-content:center" >
        
-                <div class="card" style="width:25%; margin-top:100px;">
+                <div class="card" style="width:40%; margin-top:100px;">
                     <div class="card-header card-header-danger">
                         <h4 class="card-title">Perfil Usuarios</h4>
                     </div>
@@ -119,3 +119,15 @@
         });
     </script>
 @endsection
+
+<style>
+    .main-panel {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+ 
+}
+
+
+
+    </style>

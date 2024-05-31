@@ -7,7 +7,7 @@
 
 /*VIEW : traking/index,requestChange,calculateServices*/
 
-.informes-container,
+/* .informes-container,
 .solicitud-container,
 .service-container {
   display: flex;
@@ -18,7 +18,6 @@
 .date-informes-container,
 .date-solicitud-container,
 .date-services-container {
-  margin-left: 80px;
   padding-top: 50px;
   background-image: url(/assets/img/calendarImage.png);
   background-size: cover;
@@ -28,7 +27,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .form-date {
   position: relative !important;

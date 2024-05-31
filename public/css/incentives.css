@@ -3,7 +3,7 @@
     background-image: url(/assets/img/background_continue.png) !important;
     background-position: center center !important;
     background-size: 1000px;
-    height: 140vh !important;
+    height: 180vh !important;
   }
   
 
@@ -15,20 +15,6 @@
     background-position-x: right;
     min-width: 200px; 
     min-height: 100px; 
-}
-
-
-@media (max-width: 600px) {
-    .card {
-        background-size: cover; 
-        background-position-x: center; 
-    }
-}
-
-@media (max-width: 400px) {
-    .card {
-        min-height: 150px; /
-    }
 }
 
 

@@ -64,7 +64,7 @@
 
     <div class="btn-container-box">
 
-        <div class="btn-container">
+    
 
             <button id="btnClear" href="#" class="btn-refresh">Limpiar Formulario
                 <span id=icon-refresh class="material-icons">refresh</span>
@@ -79,7 +79,7 @@
             <button id="btnBack" href="/config" class="btn-return">
                 <span class="material-icons">arrow_back</span>
             </button>
-        </div>
+        
         </div>
     </div>
 </div>
@@ -111,3 +111,20 @@
 
     });
 </script>
+
+<style>
+    /* .date-informes-container,
+.date-solicitud-container,
+.date-services-container {
+  padding-top: 50px;
+  background-image: url(/assets/img/calendarImage.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
+
+    </style>

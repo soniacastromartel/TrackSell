@@ -19,9 +19,9 @@
                 <h4 class="card-title">Configuración</h4>
             </div>
             <div class="card-body">
-                <div class="row col-md-12 mb-3 justify-between">
+                <div class="row col-md-12 mb-4 ">
                     <div class="row col-lg-8 col-md-5">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
                             <div class="dropdown bootstrap-select">
                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
                                     @foreach ($centres as $centre)

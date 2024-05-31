@@ -5,157 +5,404 @@
 <link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
+@include('common.alert')
+
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
 <div class="content">
-    <div class="container-fluid" style="padding-top:150px;">
-        <div class="row-container">
-            <div class="search-container">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title">Búsqueda</h4>
-                    </div>
-                    <div class="card-search">
-                        <form id="rankingForm" method="POST">
-                            @csrf
-                            @method('POST')
-                            <div class="calendar-picker">
-                                <div id="monthYearPickerContainer">
-                                    <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
-                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
-                                    <input type="hidden" name="monthYear" id="monthYear" />
-                                </div>
+  <div class="container-fluid" style="margin-top: 120px">
+    <div class="row">
+      <div class="col-lg-4">
+        <div id="employee-info" class="card" style="min-height: 462px;">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title">Búsqueda</h4>
+          </div>
+          <div class="card-body">
+            <form id="rankingForm" method="POST">
+              @csrf
+              @method('POST')
+              <div class="row">
 
-                                <div id="yearPickerContainer">
-                                    <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
-                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
-                                </div>
-                            </div>
-                            
-                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                data-style="btn btn-red-icot" title="Centro" tabindex="-98">
-                                @if (isset($employee) && $employee->rol_id != 1)
-                                    <option value="{{ $employee->centre_id }}" selected>{{ $employee->centre }}
-                                    </option>
-                                @endif
-                                @if (isset($employee) && $employee->rol_id == 1)
-                                    @foreach ($centres as $centre)
-                                        <option value="{{ $centre->id }}">{{ $centre->name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <input type="hidden" name="centre" id="centre" />
-
-                            <div class="btn-clear-container">
-                                <button id="btnClear" class="btn-refresh">Limpiar Formulario<span id=icon-refresh
-                                        class="material-icons">refresh</span>
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
-                                        style="display: none;"></span>
-                                </button>
-                            </div>
-                            <div class="btn-radio-container">
-                                <div class="form-check">
-                                    <label class="form-check-label" id="selected-label">
-                                        <input id="monthly" class="form-check-input" type="radio" name="optradio"
-                                            value="1" checked>Mensual
-                                        <span class="circle"><span class="check"></span></span>
-                                    </label>
-                                    <label class="form-check-label">
-                                        <input id="annual" class="form-check-input" type="radio" name="optradio"
-                                            value="2">Anual
-                                        <span class="circle"><span class="check"></span></span>
-                                    </label>
-                                </div>
-                            </div>
+                    <div id="monthYearPickerContainer">
+                        <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
+                        <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                        <input type="hidden" name="monthYear" id="monthYear" />
                     </div>
+
+                    <div id="yearPickerContainer">
+                        <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
+                        <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                    </div>
+        
+                <div class="form-group col-sm-10">
+                  <div class="dropdown bootstrap-select">
+            
+                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
+
+                      <!-- <option selected>GRUPO ICOT</option> -->
+
+                      @if (isset($employee) && $employee->rol_id != 1)
+                      <option value="{{$employee->centre_id}}" selected>{{$employee->centre}}</option>
+                      @endif
+
+                      @if (isset($employee) && $employee->rol_id == 1)
+                      @foreach ($centres as $centre)
+                      <option value="{{$centre->id}}">{{$centre->name}}</option>
+                      @endforeach
+                      @endif
+                    </select>
+                    <input type="hidden" name="centre" id="centre" />
+                  </div>
+                </div>
+                <div class="col-md-10">
+                  <div class="row">
+                    <button id="btnClear" class="btn-refresh">Limpiar Formulario<span id=icon-refresh
+                        class="material-icons">refresh</span>
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                        style="display: none;"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="btn-radio-container">
+                <div class="form-check">
+                    <label class="form-check-label" id="selected-label">
+                        <input id="monthly" class="form-check-input" type="radio" name="optradio"
+                            value="1" checked>Mensual
+                        <span class="circle"><span class="check"></span></span>
+                    </label>
+                    <label class="form-check-label">
+                        <input id="annual" class="form-check-input" type="radio" name="optradio"
+                            value="2">Anual
+                        <span class="circle"><span class="check"></span></span>
+                    </label>
                 </div>
             </div>
-
-            <div class="objetives-container">
-                <div id="employee-info" class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title" id="title-target">Objetivos</h4>
-                    </div>
-                    <div class="card-objetives">
-                        <div class="title-venta">
-                            <h4 class="card-title" style="margin-left: 20px;">Venta cruzada</h4>
-                            <div id="chart_div_vc"></div>
-                        </div>
-                        <div class="title-venta">
-                            <h4 class="card-title" style="margin-left: 20px;">Venta privada</h4>
-                            <div id="chart_div_vp"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
 
-        <div class="row-container" id="monthlyData">
-            <div class="ranking-container">
-                <div class="card">
-                    <div class="btn-export-container">
-                        <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
-                                class="material-icons">file_download</span>
-                            <button id="btnSubmitLoad" type="submit" style="display: none;">
-                                <span class="spinner-border spinner-border-sm" role="status"
-                                    aria-hidden="true"></span>
-                            </button>
-                    </div>
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title" id="title-sales">Ranking Mensual</h4>
-                    </div>
-                    <div class="card-header-table">
-                        <table class="table-striped table-bordered sales-month-datatable col-lg-12 table">
-                            <thead class="table-header">
-                                <tr>
-                                    <th>Posicion</th>
-                                    <th>Empleado</th>
-                                    <th>Total Venta</th>
-                                    <th>Total Incentivo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+      </div>
+      <div class="col-lg-7">
+        <div id="employee-info" class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title" id="title-target">Objetivos</h4>
+          </div>
+          <div class="card-body">
+            <div>
+              <h4 class="card-title">Venta cruzada</h4>
+              <div id="chart_div_vc"></div>
             </div>
-        </div>
-        <div class="row-container" id="annualData">
-            <div class="ranking-container">
-                <div class="card">
-                    <div class="btn-export-container">
-                        <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
-                                class="material-icons">file_download</span>
-                            <button id="btnSubmitLoad" type="submit" style="display: none;">
-                                <span class="spinner-border spinner-border-sm" role="status"
-                                    aria-hidden="true"></span>
-                            </button>
-                    </div>
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title" id="title-ranking">Ranking Anual</h4>
-                    </div>
-                    <div class="card-header-table">
-                        <table class="table-striped table-bordered sales-year-datatable col-lg-12 table">
-                            <thead class="table-header">
-                                <tr>
-                                    <th>Posicion</th>
-                                    <th>Empleado</th>
-                                    <th>Centro</th>
-                                    <th>Total Venta</th>
-                                    <th>Total Incentivo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div id='vp_ok' class="card-header">
+              <h4 class="card-title">Venta privada</h4>
             </div>
+            <div>
+              <div id="chart_div_vp"></div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-lg">
+
+       
+      </div>
+      <div style="margin-right: 85px;margin-top: 15px;">
+        <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
+            class="material-icons">file_download</span>
+        <button id="btnSubmitLoad" type="submit" style="display: none;">
+            <span class="spinner-border spinner-border-sm" role="status"
+                aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+    <div class="row" id="monthlyData">
+      <div class="col-lg-11">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title" id="title-sales">Ranking Mensual</h4>
+          </div>
+          <div class="card-header-table">
+            <table class="table table-striped table-bordered sales-month-datatable col-lg-12">
+              <thead class="table-header">
+                <tr>
+                  <th>Posicion</th>
+                  <th>Empleado</th>
+                  <th>Total Venta</th>
+                  <th>Total Incentivo</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="annualData">
+      <div class="col-lg-11">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title" id="title-ranking">Ranking Anual</h4>
+          </div>
+          <div class="card-header-table">
+            <table class="table table-striped table-bordered sales-year-datatable col-lg-12">
+              <thead class="table-header">
+                <tr>
+                  <th>Posicion</th>
+                  <th>Empleado</th>
+                  <th>Centro</th>
+                  <th>Total Venta</th>
+                  <th>Total Incentivo</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<style>
+  table.dataTable.dataTable_width_auto {
+    width: 100%;
+  }
+
+  svg.ct-chart-bar,
+  svg.ct-chart-line {
+    overflow: visible;
+  }
+
+  .ct-label.ct-label.ct-horizontal.ct-end {
+    position: relative;
+    justify-content: flex-end;
+    text-align: right;
+    transform-origin: 100% 0;
+    transform: translate(-100%) rotate(0deg);
+    white-space: nowrap;
+  }
+
+  .card-header-table {
+    width: 100%;
+    margin-top: 0px !important;
+  }
+
+  .sales-datatable {
+    table-layout: fixed;
+    width: 100% !important;
+  }
+
+  .sales-datatable td,
+  .sales-datatable th {
+    /* width: auto !important; */
+    /* white-space: normal; */
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .form-group {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+
+  .row {
+    justify-content: center;
+  }
+
+  #DataTables_Table_0_paginate>ul.pagination {
+    margin: 16px 0 !important;
+  }
+
+  #btnClear {
+    align-self: end;
+    /* margin-top: 15px; */
+  }
+
+  .employee-info {
+    padding-left: 15px;
+    margin-top: 50px;
+    /* min-height: 5000px; */
+  }
+
+  .employee-info span {
+    color: var(--red-icot);
+  }
+
+  #typeRanking {
+    margin-bottom: 0px;
+    margin-right: 10px;
+    margin-left: 100px;
+    display: inline-block;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 700;
+    color: black;
+  }
+
+  #formRadio {
+    display: inline-block;
+    color: red;
+  }
+
+  #monthly {
+    margin-right: 15px;
+    color: var(--red-icot);
+  }
+
+  #annual {
+    margin-right: 15px;
+    color: var(--red-icot);
+  }
+
+  #separator {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  #selected-label {
+    color: var(--red-icot);
+    font-weight: bold;
+  }
+
+  .content {
+  background-image: url(/assets/img/background_continue.png) !important;
+  background-position: center center !important;
+  background-size: 1000px;
+  height: 180vh !important;
+}
+
+table.dataTable.dataTable_width_auto {
+  width: 100%;
+}
+
+svg.ct-chart-bar,
+svg.ct-chart-line {
+  overflow: visible;
+}
+
+.ct-label.ct-label.ct-horizontal.ct-end {
+  position: relative;
+  justify-content: flex-end;
+  text-align: right;
+  transform-origin: 100% 0;
+  transform: translate(-100%) rotate(0deg);
+  white-space: nowrap;
+}
+
+.card-header-table {
+  width: 100%;
+  margin-top: 0px !important;
+}
+
+.sales-datatable {
+  table-layout: fixed;
+  width: 100% !important;
+}
+
+.sales-datatable td,
+.sales-datatable th {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#DataTables_Table_0_paginate > ul.pagination {
+  margin: 16px 0 !important;
+}
+.label {
+  margin-top: 20px;
+  margin: 10px;
+}
+
+#monthYearPickerContainer {
+  display: flex;
+  justify-content: center;
+  position: relative !important;
+}
+
+#yearPickerContainer {
+  display: flex;
+  justify-content: center;
+  position: relative !important;
+}
+
+#monthYearPicker {
+  background-color: var(--info) !important;
+  width: 230px;
+  height: 45px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  border: none;
+  border-radius: 50px;
+  padding-left: 20px;
+}
+
+#monthYearPicker:hover {
+  box-shadow: 8px 8px 15px rgba(23, 94, 187, 0.63);
+}
+
+#yearPicker {
+  background-color: var(--info) !important;
+  width: 230px;
+  height: 45px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  border: none;
+  border-radius: 50px;
+  padding-left: 20px;
+}
+
+.btn-clear-container {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+#typeRanking {
+  margin-bottom: 0px;
+  margin-right: 10px;
+  margin-left: 100px;
+  display: inline-block;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-weight: 700;
+  color: black;
+}
+
+#btn-radio-refresh {
+  display: flex;
+  justify-content: space-between;
+  color: var(--red-icot);
+}
+
+
+#selected-label {
+  color: var(--red-icot);
+  font-weight: bold;
+}
+
+.btn-radio-container {
+  height: 45px;
+  margin: 10px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+
+</style>
 
 <script type="text/javascript">
     $(function() {

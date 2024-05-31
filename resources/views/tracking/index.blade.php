@@ -4,7 +4,6 @@
     @include('inc.navbar')
     @include('common.alert')
 
-    <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
     <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
@@ -122,7 +121,6 @@
 
                                     <div class="btn-container-box">
 
-                                        <div class="btn-container">
                                             <button id="btnClear" href="#" class="btn-refresh">
                                                 Limpiar Formulario
                                                 <span id=icon-refresh class="material-icons">
@@ -153,7 +151,7 @@
                                                 <span class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                             </button>
-                                        </div>
+                                     
                                     </div>
 
                                 </div>
@@ -539,7 +537,6 @@
     
 .btn-add-container{
    position: relative;
-
    display: flex;
   justify-content: flex-end; 
 
@@ -557,7 +554,6 @@
   border-radius: 50%;
   width: 40px;
   height: 40px;
-
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -584,4 +580,171 @@
   visibility: visible;
   opacity: 1;
 }
+.content {
+  background-image: url(/assets/img/background_continue.png) !important;
+  background-position: center center !important;
+  background-size: 1000px;
+  height: 260vh !important;
+}
+
+/*VIEW : traking/index,requestChange,calculateServices*/
+
+.informes-container,
+.solicitud-container,
+.service-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 420px;
+}
+
+.date-informes-container,
+.date-solicitud-container,
+.date-services-container {
+  /* margin-left: 80px; */
+  padding-top: 50px;
+  background-image: url(/assets/img/calendarImage.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-date {
+  position: relative !important;
+  background-color: var(--info) !important;
+  width: 230px;
+  height: 45px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center !important;
+  border: none;
+  border-radius: 50px;
+  padding-left: 20px;
+}
+
+.icon-container {
+  position: relative;
+  display: flex;
+}
+
+
+.picker-btn-container {
+  width: 100%;
+  display: flex;
+}
+
+.observaciones-container {
+  border: 4px solid var(--red-icot);
+  box-shadow: 0px 4px 8px rgba(255, 0, 0, 0.6);
+  padding: 30px;
+  border-radius: 20px;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  height: 200px;
+
+}
+
+.picker-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.col-md-6 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.myclass {
+  text-transform: capitalize;
+}
+
+
+#lbl {
+  color: black;
+  font-weight: 600;
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 12px;
+}
+
+.card-container {
+  display: flex;
+}
+
+
+.tracking-validation-datatable tr > :nth-child(6) {
+  color: #959ba3;
+}
+
+.month-picker-open-button {
+  margin-right: 15px;
+}
+
+.actions-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+
+.btn-container-box {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+  
+}
+.date-container {
+  background-color: #959ba3;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+
+#subLabel {
+  color: var(--red-icot);
+  font-weight: bold !important;
+  font-size: 11px;
+}
+#lbl {
+  color: black;
+  font-weight: 800;
+  font-family: "Helvetica", "Arial", sans-serif;
+  margin-top: 25px;
+  font-size: 12px;
+}
+
+#containerBtns {
+  margin-top: 40px;
+}
+
+.btn-back-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/*VIEW INDEX VALIDATION*/
+
+.btn-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+}
+
+/*VIEW CALCULATE INCENTIVE*/
     </style>

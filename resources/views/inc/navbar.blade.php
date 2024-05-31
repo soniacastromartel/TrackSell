@@ -31,7 +31,7 @@
     
 #navbar-home {
     background-image: url(/assets/img/background-nav.png);
-    height: 400px;
+    height: 450px;
     width: 100%;
     position: absolute;
 }
