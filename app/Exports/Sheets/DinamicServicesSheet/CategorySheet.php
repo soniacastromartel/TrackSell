@@ -10,12 +10,14 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class CentreSheet implements FromCollection, WithHeadings, WithEvents
+class CategorySheet implements FromCollection, WithHeadings, WithEvents
 {
+
     protected $request;
     private $startDate;
     private $endDate;
-
+    private $totalServices;
+    private $grandTotal;
 
 
     public function __construct($request)
@@ -26,46 +28,36 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
     }
 
     public function collection()
-    {
-        $serviceId = $this->request->input('service_id');
-        $centreId = $this->request->input('centre_id');
+    { 
+            $serviceId = $this->request->input('service_id');
+            $centreId = $this->request->input('centre_id');
 
-
-        $query = Service::getCountAllServices($serviceId, $centreId, $this->startDate, $this->endDate)
-            ->groupBy('centre_name')
+            $query = Service::getCountAllServices($serviceId, $centreId, $this->startDate, $this->endDate)
+            ->groupBy('category_name')
             ->get()
             ->map(function ($item) {
-                $item->total_price = $item->price * $item->cantidad;
+                $item->total_price_per_centre = $item->price * $item->cantidad;
                 return $item;
             })->sortByDesc('cantidad');
 
-        $query->sum(function ($item) {
-            return $item->price * $item->cantidad;
-        });
-        $data = $query->map(function ($item) {
+            $data = $query->map(function ($item) {
 
-            return  [
-                'CENTROS' => $item->centre_name,
-                'NULL1' => '',
-                'NULL2' => '',
-                'NULL3' => '',
-                'NULL4' => '',
-                'NULL5' => '',
-                'PRECIO' => $item->price . '€',
-                'REALIZADOS' => $item->cantidad,
-                'NULL6' => '',
-                'TOTAL' => $item->price * $item->cantidad . '€',
+                return  [
+                    'TOTAL' => $item->cantidad,
+                    'CATEGORÍA' => $item->category_name
+                ];
 
-            ];
-        });
+            });
+           
 
-        return $data;
+            return $data;
+        
     }
 
     public function headings(): array
     {
         return [
-            'CENTROS', '', '', '', '', '', 'PRECIO', 'REALIZADOS', '', 'TOTAL',
+             'TOTAL', 'CATEGORÍA'
         ];
     }
 
@@ -80,7 +72,12 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                 $serviceId = $this->request->input('service_id');
                 $serviceName = \DB::table('services')->where('id', $serviceId)->value('name');
                 $event->sheet->setCellValue("A2", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
+                $worksheet = $event->sheet->getDelegate();
+                $highestRow = $worksheet->getHighestRow();
+                for ($row = 3; $row <= $highestRow; $row++) {
+                    $event->sheet->mergeCells("B{$row}:D{$row}");
 
+                }
                 $event->sheet->getStyle("A1:J1")->applyFromArray([
                     'font' => [
                         'bold' => true,

@@ -31,26 +31,28 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
     { {
             $serviceId = $this->request->input('service_id');
             $centreId = $this->request->input('centre_id');
-            $query = Service::getCountAllServices($serviceId, $centreId, $this->startDate, $this->endDate);
-            $results = $query->get()->sortByDesc('cantidad');
-            $totalServices = $results->sum('cantidad');
-            $grandTotal = $results->sum(function ($item) {
+
+            $query = Service::getCountAllServices($serviceId, $centreId, $this->startDate, $this->endDate)
+            ->groupBy('employees.name', 'centres.name','service_prices.price')
+            ->get()
+            ->sortByDesc('cantidad');
+            $totalServices = $query->sum('cantidad');
+            $grandTotal = $query->sum(function ($item) {
                 return $item->price * $item->cantidad;
             });
 
-            $data = $results->map(function ($item) {
+            $data = $query->map(function ($item) {
 
-                $extendedData = [
+                return [
                     'TOTAL' => $item->cantidad,
                     'EMPLEADO' => $item->employee_name,
                     'NULL1' => '',
                     'NULL2' => '',
                     'NULL3' => '',
-                    'CATEGORÍA' => $item->employee_category
+                    'CATEGORÍA' => $item->category_name
 
                 ];
 
-                return $extendedData;
             });
             $this->totalServices = $totalServices;
             $this->grandTotal = $grandTotal;
@@ -72,8 +74,8 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
             AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet->insertNewRowBefore(1, 1);
                 $event->sheet->insertNewRowBefore(1, 1);
-                $event->sheet->insertNewRowBefore(1, 1);
-                $event->sheet->insertNewRowBefore(1, 1);
+                // $event->sheet->insertNewRowBefore(1, 1);
+                // $event->sheet->insertNewRowBefore(1, 1);
                 $event->sheet->insertNewRowBefore(1, 1);
                 $fechaTexto = isset($this->startDate) && isset($this->endDate) ? "Fechas: {$this->startDate} / {$this->endDate}" :  "Fechas: Historial completo";
                 $event->sheet->setCellValue("A1", $fechaTexto);
@@ -83,11 +85,11 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                 $serviceId = $this->request->input('service_id');
                 $serviceName = \DB::table('services')->where('id', $serviceId)->value('name');
                 $event->sheet->setCellValue("A3", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
-                $event->sheet->setCellValue("A4", "Total Realizados: " . $this->totalServices);
-                $event->sheet->setCellValue("A5", "Grand Total: " . $this->grandTotal . '€');
+                // $event->sheet->setCellValue("A4", "Total Realizados: " . $this->totalServices);
+                // $event->sheet->setCellValue("A5", "Grand Total: " . $this->grandTotal . '€');
                 $worksheet = $event->sheet->getDelegate();
                 $highestRow = $worksheet->getHighestRow();
-                for ($row = 6; $row <= $highestRow; $row++) {
+                for ($row = 4; $row <= $highestRow; $row++) {
                     $event->sheet->mergeCells("B{$row}:E{$row}");
                     $event->sheet->mergeCells("F{$row}:I{$row}");
                 }
@@ -120,27 +122,27 @@ class ServiceSheet implements FromCollection, WithHeadings, WithEvents
                         'color' => ['argb' => 'FFFCF3CF']
                     ],
                 ]);
+                // $event->sheet->getStyle("A4:I4")->applyFromArray([
+                //     'font' => [
+                //         'bold' => true,
+                //     ],
+                //     'fill' => [
+                //         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //         'color' => ['argb' => 'FFE74C3C']
+
+                //     ],
+                // ]);
+                // $event->sheet->getStyle("A5:I5")->applyFromArray([
+                //     'font' => [
+                //         'bold' => true,
+                //     ],
+                //     'fill' => [
+                //         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //         'color' => ['argb' => 'FF27AE60']
+
+                //     ],
+                // ]);
                 $event->sheet->getStyle("A4:I4")->applyFromArray([
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'fill' => [
-                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => 'FFE74C3C']
-
-                    ],
-                ]);
-                $event->sheet->getStyle("A5:I5")->applyFromArray([
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'fill' => [
-                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                        'color' => ['argb' => 'FF27AE60']
-
-                    ],
-                ]);
-                $event->sheet->getStyle("A6:I6")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],

@@ -242,14 +242,14 @@
             </tr>
         </thead>
         <tbody>
-            @if ($servicesCount->isNotEmpty())
+            {{-- @if ($servicesCount->isNotEmpty()) --}}
                 <tr class="total-services-row" style="background-color:rgb(212, 209, 209)">
                     <td>{{ $servicesCount->first()->service_name }}</td>
                     <td>{{ $totalServices }}</td>
                     <td>{{ $grandTotal }}€</td>
                 </tr>
           
-            @endif
+            {{-- @endif --}}
         </tbody>
     </table>
     <div class="card">

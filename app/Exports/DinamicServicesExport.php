@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Exports\Sheets\DinamicServicesSheet\CentreSheet as DinamicServicesSheetCentreSheet;
 use App\Exports\Sheets\DinamicServicesSheet\ServiceAndCentreSheet as DinamicServicesSheetServiceAndCentreSheet;
 use App\Exports\Sheets\DinamicServicesSheet\ServiceSheet as DinamicServicesSheetServiceSheet;
+use App\Exports\Sheets\DinamicServicesSheet\CategorySheet as DinamicServicesSheetCategorySheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Service;
@@ -43,16 +44,20 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
     public function sheets(): array
     {
         $sheets = [];
+         
+        //!selección de centro y servicio 3 sheets
 
         if (!empty($this->request->input('service_id')) && !empty($this->request->input('centre_id'))) {
             $sheets[] = new DinamicServicesSheetServiceAndCentreSheet($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices, $this->grandTotal);
             //?no quiero un sheet con todos los servicios de un centro
-            $sheets[] = new DinamicServicesSheetCentreSheet($this->request);
+            // $sheets[] = new DinamicServicesSheetCentreSheet($this->request);
+            $sheets[] = new DinamicServicesSheetCategorySheet($this->request);
             $sheets[] = new DinamicServicesSheetServiceSheet($this->request);
-
+        //!selección sólo de servicio 3 sheets
         }elseif (!empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
             $sheets[] = new DinamicServicesSheetServiceAndCentreSheet($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices, $this->grandTotal);
             $sheets[] = new DinamicServicesSheetCentreSheet($this->request);
+            $sheets[] = new DinamicServicesSheetCategorySheet($this->request);
             $sheets[] = new DinamicServicesSheetServiceSheet($this->request);
             
         } else {
@@ -101,19 +106,19 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                 ];
             }
 
-            if (!empty($this->request->input('service_id'))) {
-                $extendedData = [
-                    'CENTRO' => $item->centre_name,
-                    'NULL7' => '',
-                    'TOTAL' => $item->cantidad,
-                    'EMPLEADO' => $item->employee_name,
-                    'NULL8' => '',
-                    'NULL9' => '',
-                    'NULL10' => '',
-                    'CATEGORÍA' => $item->employee_category
-                ];
-            }
-            if (!empty($this->request->input('centre_id'))) {
+            // if (!empty($this->request->input('service_id'))) {
+            //     $extendedData = [
+            //         'CENTRO' => $item->centre_name,
+            //         'NULL7' => '',
+            //         'TOTAL' => $item->cantidad,
+            //         'EMPLEADO' => $item->employee_name,
+            //         'NULL8' => '',
+            //         'NULL9' => '',
+            //         'NULL10' => '',
+            //         'CATEGORÍA' => $item->employee_category
+            //     ];
+            // }
+            elseif (!empty($this->request->input('centre_id'))) {
                 $extendedData = [
                     'SERVICIOS' => $item->service_name,
                     'NULL10' => '',
@@ -145,11 +150,11 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
             return $heading;
         }
 
-        if (!empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
-            $heading = ['CENTRO', '', 'TOTAL', 'EMPLEADO', '', '', '', 'CATEGORÍA'];
-            return $heading;
-        }
-        if (!empty($this->request->input('centre_id')) && empty($this->request->input('service_id'))) {
+        // if (!empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
+        //     $heading = ['CENTRO', '', 'TOTAL', 'EMPLEADO', '', '', '', 'CATEGORÍA'];
+        //     return $heading;
+        // }
+        elseif (!empty($this->request->input('centre_id')) && empty($this->request->input('service_id'))) {
             $heading = ['SERVICIOS', '', '', '', '', '', 'PRECIO', 'REALIZADOS', '', 'TOTAL',];
             return $heading;
         }
@@ -170,10 +175,9 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                     $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
-                      //  $event->sheet->mergeCells("G{$row}:H{$row}");
+
                     }
-                    // $event->sheet->getStyle('G')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-                    // $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                
                     $event->sheet->getStyle("A1:I1")->applyFromArray([
                         'font' => [
                             'bold' => true,
@@ -209,10 +213,8 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                 
                     for ($row = 1; $row <= $highestRow; $row++) {
                         $event->sheet->mergeCells("A{$row}:F{$row}");
-                    //    $event->sheet->mergeCells("H{$row}:I{$row}");
                     }
-                    // $event->sheet->getStyle('H')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-                    // $event->sheet->getStyle('I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
                     $event->sheet->getStyle("A1:J1")->applyFromArray([
                         'font' => [
                             'bold' => true,
@@ -243,76 +245,76 @@ class DinamicServicesExport implements FromCollection, WithHeadings, WithMultipl
                 }
 
                 //! si es servicio
-                if (!empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
-                    $event->sheet->insertNewRowBefore(1, 1);
-                    $event->sheet->insertNewRowBefore(1, 1);
-                    $event->sheet->insertNewRowBefore(1, 1);
-                    $event->sheet->insertNewRowBefore(1, 1);
-                    $fechaTexto = isset($this->startDate) && isset($this->endDate) ? "Fechas: {$this->startDate} / {$this->endDate}" :  "Fechas: Historial completo";
-                    $event->sheet->setCellValue("A1", $fechaTexto);
-                    $centreId = $this->request->input('centre_id');
-                    $serviceId = $this->request->input('service_id');
-                    $serviceName = \DB::table('services')->where('id', $serviceId)->value('name');
-                    $event->sheet->setCellValue("A2", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
-                    $event->sheet->setCellValue("A3", "Total Realizados: " . $this->totalServices);
-                    $event->sheet->setCellValue("A4", "Grand Total: " . $this->grandTotal . '€');
-                    $worksheet = $event->sheet->getDelegate(); // Obtiene el objeto worksheet.
-                    $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
-                    for ($row = 4; $row <= $highestRow; $row++) {
-                        $event->sheet->mergeCells("A{$row}:B{$row}");
-                        $event->sheet->mergeCells("D{$row}:G{$row}");
-                        $event->sheet->mergeCells("H{$row}:L{$row}");
-                    }
-                    $event->sheet->getStyle("A1:L1")->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FFAEB6BF']
-                            //TODO gris
-                        ],
-                    ]);
-                    $event->sheet->getStyle("A2:L2")->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FFFCF3CF']
-                        ],
-                    ]);
-                    $event->sheet->getStyle("A3:L3")->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FFE74C3C']
+                // if (!empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
+                //     $event->sheet->insertNewRowBefore(1, 1);
+                //     $event->sheet->insertNewRowBefore(1, 1);
+                //     $event->sheet->insertNewRowBefore(1, 1);
+                //     $event->sheet->insertNewRowBefore(1, 1);
+                //     $fechaTexto = isset($this->startDate) && isset($this->endDate) ? "Fechas: {$this->startDate} / {$this->endDate}" :  "Fechas: Historial completo";
+                //     $event->sheet->setCellValue("A1", $fechaTexto);
+                //     $centreId = $this->request->input('centre_id');
+                //     $serviceId = $this->request->input('service_id');
+                //     $serviceName = \DB::table('services')->where('id', $serviceId)->value('name');
+                //     $event->sheet->setCellValue("A2", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
+                //     $event->sheet->setCellValue("A3", "Total Realizados: " . $this->totalServices);
+                //     $event->sheet->setCellValue("A4", "Grand Total: " . $this->grandTotal . '€');
+                //     $worksheet = $event->sheet->getDelegate(); // Obtiene el objeto worksheet.
+                //     $highestRow = $worksheet->getHighestRow(); // Obtiene la última fila con datos.
+                //     for ($row = 4; $row <= $highestRow; $row++) {
+                //         $event->sheet->mergeCells("A{$row}:B{$row}");
+                //         $event->sheet->mergeCells("D{$row}:G{$row}");
+                //         $event->sheet->mergeCells("H{$row}:L{$row}");
+                //     }
+                //     $event->sheet->getStyle("A1:L1")->applyFromArray([
+                //         'font' => [
+                //             'bold' => true,
+                //         ],
+                //         'fill' => [
+                //             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //             'color' => ['argb' => 'FFAEB6BF']
+                //             //TODO gris
+                //         ],
+                //     ]);
+                //     $event->sheet->getStyle("A2:L2")->applyFromArray([
+                //         'font' => [
+                //             'bold' => true,
+                //         ],
+                //         'fill' => [
+                //             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //             'color' => ['argb' => 'FFFCF3CF']
+                //         ],
+                //     ]);
+                //     $event->sheet->getStyle("A3:L3")->applyFromArray([
+                //         'font' => [
+                //             'bold' => true,
+                //         ],
+                //         'fill' => [
+                //             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //             'color' => ['argb' => 'FFE74C3C']
 
-                        ],
-                    ]);
-                    $event->sheet->getStyle("A4:L4")->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FF27AE60']
+                //         ],
+                //     ]);
+                //     $event->sheet->getStyle("A4:L4")->applyFromArray([
+                //         'font' => [
+                //             'bold' => true,
+                //         ],
+                //         'fill' => [
+                //             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //             'color' => ['argb' => 'FF27AE60']
 
-                        ],
-                    ]);
-                    $event->sheet->getStyle("A5:L5")->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                        ],
-                        'fill' => [
-                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                            'color' => ['argb' => 'FF64A8FF']
-                            //?Azul
-                        ],
-                    ]);
-                }
+                //         ],
+                //     ]);
+                //     $event->sheet->getStyle("A5:L5")->applyFromArray([
+                //         'font' => [
+                //             'bold' => true,
+                //         ],
+                //         'fill' => [
+                //             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //             'color' => ['argb' => 'FF64A8FF']
+                //             //?Azul
+                //         ],
+                //     ]);
+                // }
             }
 
         ];
