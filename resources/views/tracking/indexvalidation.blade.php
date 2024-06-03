@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
+
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -69,13 +69,16 @@
                 <div class="card-header card-header-danger">
                     <h4 class="card-title">Seguimiento</h4>
                 </div>
-                <div class="card-container" >
+                <div class="container-fluid">
 
-                    <div class="col-md-6" style="padding:20px;" >
+               
+                    <div class="row" >
+                     
 
-                        <div class="row" style=" padding:20px;">
-
-                            <div class="col-md-4">
+                            
+                        <div class="row"style="display: flex; justify-content:center">
+                        
+                
 
                                 <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
                                     <option value="">SIN CODIGO </option>
@@ -83,25 +86,26 @@
                                     <option value="{{$a3business->code_business}}">{{ $a3business->code_business .'-'. $a3business->name_business}}</option>
                                     @endforeach
                                 </select>
-                            </div>
-
+                           
+                     
                                 <div id="monthYearPickerContainer">
-                                <input id="monthYearPicker"  type="text" placeholder="yyyy/mm" />
-                                <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
-                                <input type="hidden" name="monthYear" id="monthYear" />
-                            </div>
 
+                                    <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
+                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                                    <input type="hidden" name="monthYear" id="monthYear" />
+                                    
+                                </div>
 
                         </div>
+                       
+                       
+                      
+                       
+                     
+ 
+                          <div class="col-sx-3"  style="display: flex;justify-content:center;flex-direction:column">
 
-                        <div class="row" style=" padding:20px;">
-
-                            <div class="btn-container" style= "">
-
-                            <button id="btnClear" href="#" class="btn-refresh" >
-                                <span id="icon-refresh" class="material-icons">refresh</span>
-                                {{ __('Limpiar formulario') }}
-                            </button>
+                           
                             <button id="btnCalculate" type="button" class="btn-calculate" >
                             <span id="icon-calculate" class="material-icons">calculate</span>{{ __('Calcular') }}</button>
                             <button id="btnCalculateLoad" type="button" class="btn-calculate" style="display: none">
@@ -114,19 +118,12 @@
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                               
                             </button>
-                            </div>
-                        </div>
-                    </div>
+                            
+                           </div>
+                   
 
-                    <div class="col-md-6">
-                        <div class="row" style=" padding:20px;">
-                        <div class="btn-container" style= "width:100%;display:flex; justify-content:flex-end;">
-                        <button id="btnExport" type="button" class="btn-export">
-                            <span id="icon-export" class="material-icons">file_download</span>{{ __('Exportar') }}</button>
-                            <button id="btnExportLoad" type="submit" class="btn-export" style="display: none">
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                          
-                            </button>
+                           <div class="col-sx-2"  style="display: flex;justify-content:end;flex-direction:column">
+                       
                             <button id="btnValidate" type="button" class="btn-pay-all">
                             <span id="icon-pay" class="material-icons">paid</span>{{ __('Pagar todos') }}</button>
                             <button id="btnValidateLoad" type="submit" class="btn btn-success" style="display: none">
@@ -139,10 +136,25 @@
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         
                             </button>
-                        </div>
-                    </div>
+
+                            <button id="btnClear" href="#" class="btn-refresh" >
+                                <span id="icon-refresh" class="material-icons">refresh</span>
+                                {{ __('Limpiar formulario') }}
+                            </button>
+
+                            <button id="btnExport" type="button" class="btn-export">
+                                <span id="icon-export" class="material-icons">file_download</span>{{ __('Exportar') }}</button>
+    
+                                <button id="btnExportLoad" type="submit" class="btn-export" style="display: none">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                </button>
+
+                           </div>
+                 </div>
+    
+                
                         
-                </div>
+                  
                 
                 </div>
             </div>

@@ -2,7 +2,8 @@
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
-<div class="solicitud-container">
+
+<div class=" solicitud-container">
 
     <div class="date-solicitud-container">
 
@@ -22,15 +23,7 @@
         </div>
     </input>
     </div>
-
-
-    <div class="observaciones-container">
-
-
-    <label class="label" for="observations">Observaciones</label>
-    <input type="text" class="form-control" id="observations" name="observations" />
-
-    </div>
+  
 
     <div class="picker-container">
 
@@ -60,11 +53,17 @@
         </select>
         <input type="hidden" name="employee" id="employee" />
 
+          
+     <div class="observations-container">
+        <label class="label" for="observations">Observaciones</label>
+        <div class="observations-input">
+        <input type="text" class="form-control" id="observations" name="observations" />
+        </div>
+        </div>
+
     </div>
-
-    <div class="btn-container-box">
-
     
+    <div class="btn-container-box">
 
             <button id="btnClear" href="#" class="btn-refresh">Limpiar Formulario
                 <span id=icon-refresh class="material-icons">refresh</span>
@@ -82,7 +81,9 @@
         
         </div>
     </div>
+
 </div>
+
 
 
 <script type="text/javascript">

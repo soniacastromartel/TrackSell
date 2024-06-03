@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
+
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none"></div>
 
@@ -19,13 +19,13 @@
             </div>
             <div class="card-body">
                 <div class="row col-md-12 mb-3 justify-between">
-                    <div class="col-md-2">
-                        <div class="mt-2 input-group date">
+                  
+                        <div class="input-group date">
                             <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
                             <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                             <input type="hidden" name="monthYear" id="monthYear" />
                         </div>
-                    </div>
+                   
 
                     <div class="row align-content-end">
                         <button id="btnClear" href="#" class="btn-refresh">

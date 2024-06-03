@@ -2,7 +2,6 @@
 @include('common.alert')
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 @include('common.alert')
@@ -317,49 +316,7 @@ svg.ct-chart-line {
   margin: 10px;
 }
 
-#monthYearPickerContainer {
-  display: flex;
-  justify-content: center;
-  position: relative !important;
-}
 
-#yearPickerContainer {
-  display: flex;
-  justify-content: center;
-  position: relative !important;
-}
-
-#monthYearPicker {
-  background-color: var(--info) !important;
-  width: 230px;
-  height: 45px;
-  margin: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  border: none;
-  border-radius: 50px;
-  padding-left: 20px;
-}
-
-#monthYearPicker:hover {
-  box-shadow: 8px 8px 15px rgba(23, 94, 187, 0.63);
-}
-
-#yearPicker {
-  background-color: var(--info) !important;
-  width: 230px;
-  height: 45px;
-  margin: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  border: none;
-  border-radius: 50px;
-  padding-left: 20px;
-}
 
 .btn-clear-container {
   padding: 10px;

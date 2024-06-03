@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
 <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -16,7 +15,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="card card-info text-white mb-4 ml-4 p-0 mt-0"  ;>
-                    <div class="card-header"">
+                    <div class="card-header">
                         <i class="material-icons" style="color: var(--red-icot)">info</i>
                         <span class="font-size-18" style="vertical-align:super; font-weight:bold; color: var(--red-icot);">Instrucciones</span>
                     </div>
@@ -41,21 +40,21 @@
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body" >
             <form id="importTargetForm" method="POST">
                 @csrf
                 @method('POST')
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="card" style="height:420px;">
+                <div class="row"  >
+                    <div class="col-lg-4" style="background-color:aqua">
+                        <div class="card" style=background-color:bisque;">
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Objetivos</h5>
                             </div>
 
                             <div class="card-body">
-                                <div class="row" style="display:flex;justify-content:center;">
-                                    <div class="col-sm-7" style="margin-left: 16px;">
-                                        <label class="label">Año <span class="obligatory">*</span> </label>
+                                <div class="row" >
+                                    <div class="col-sx-10">
+                                        {{-- <label class="label">Año <span class="obligatory">*</span> </label> --}}
                                         <div id="yearPickerContainer">
                                         <div id="yearPicker">
                                             <input id="yearTargetPicker" class='form-control' type="text" placeholder="yyyy" />
@@ -99,17 +98,17 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-9">
-                        <div class="card" style="height:420px;">
+                    <div class="col-lg-8">
+                        <div class="card" >
                             <div class="card-header card-header-danger">
                                 <h5 class="card-title">Incentivos</h5>
                             </div>
                             <div class="card-body">
 
-                                <div class="row" style="display:flex;justify-content:space-evenly">
+                                <div class="row" >
                                     <div class="date-container-incentive">
-                                        
-                                        <label class="label">Fecha <span class="obligatory">*</span> </label>
+{{--                                         
+                                        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
                                         
                                         <div id="monthYearPickerContainer">
                                             <input type="hidden" name="monthYear" id="monthYear" />
@@ -118,7 +117,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                 
                                         <div class="form-group col-md-6 mx-auto">
                                           
                                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
@@ -137,10 +136,10 @@
                                                 </select>
                                                 <input type="hidden" name="centre" id="centre" />
                                            
-                                        </div>
-                                        <br>
-                                        <div class="form-group col-md-6 mx-auto">
-                                            
+                                       
+                                        
+                            
+                        
                                                 <select class="selectpicker" name="employee_id" id="employee_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
                                                 <option>SIN SELECCION </option>
                                                     @if ($user->rol_id != 1)
@@ -159,13 +158,14 @@
                                                 <input type="hidden" name="employee" id="employee" />
                                           
                                         </div>
-                                    </div>
+                            
 
                                 </div>
                                 <hr class="mt-4">
-                                <div class="container-incentives" >
+
+                            
                                      
-                                      <div class="row" style="padding:10px; display:flex; justify-content:center " >
+                                <div class="" style="display: flex; justify-content:center;">
 
                                         <button id="btnIncentivesPreview" class="btn-watch">
                                             <span id="icon-watch" class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
@@ -198,7 +198,7 @@
                                      </div>
                                      <hr class="mt-4">
                                   
-                                     <div class="row" style="padding:10px; display:flex; justify-content:flex-end; " >
+                                     <div class="row" style="padding:10px; display:flex; justify-content:center; " >
 
 
                                             <button id="btnClear" href="#" class="btn-refresh">
@@ -218,7 +218,7 @@
 
                                         </div>
                                     </div>
-                                </div>
+                             
                             </div>
                         </div>
                     </div>
