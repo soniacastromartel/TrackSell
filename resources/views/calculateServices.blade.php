@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{{ asset('/css/dinamic.css') }}">
  <head>
     <meta charset="UTF-8">
-
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}">
@@ -22,18 +21,27 @@
             <h4 class="card-title">Dinámica de Servicios</h4>
         </div>
         <div class="row row-centre-service-filter">
-        <div class="col-md-4 filter-container">
+        <div class="">
             <form id="serviceForm" action="{{ route('calculateServices') }}" method="GET">
                 <input type="hidden" name="centre_id" value="{{ $centre_id }}">
                 <input type="hidden" name="service_id" value="{{ $service_id }}">
-                <div class="form-group">
-                    <label for="start_date">Fecha Inicio:</label>
-                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}" onchange="this.form.submit()">
+              
+                <label class="label" for="dateFrom" style="padding: 10px" >Fecha desde </label>
+                    <div class="icon-container">
+                    <input type="date" class="form-date" id="start_date" name="start_date" value="{{ request('start_date') }}" onchange="this.form.submit()">
+                    <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+                   </div>
+                  </input>
+               
+                
+          
+                  <label class="label" for="dateTo" style="padding: 10px" >Fecha hasta </label>
+                    <div class="icon-container">
+                    <input type="date" class="form-date" id="end_date" name="end_date" value="{{ request('end_date') }}" onchange="this.form.submit()">
+                    <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
                 </div>
-                <div class="form-group">
-                    <label for="end_date">Fecha Fin:</label>
-                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}" onchange="this.form.submit()">
-                </div>
+            </input>
+            
             </form>
         </div>
      
@@ -226,7 +234,6 @@
         <thead>
             <tr class="row-service" style="background-color: var(--red-icot);color:white;">
                 <th>Centros</th>
-                <th>Precio</th>
                 <th>Realizados</th>
                 <th>Total</th>
             </tr>
@@ -235,7 +242,6 @@
             @foreach ($serviceByCentre as $service)
                 <tr>
                     <td>{{ $service->centre_name }}</td>
-                    <td>{{ $service->price }}€</td>
                     <td>{{ $service->cantidad }}</td>
                     <td>{{ $service->price * $service->cantidad }}€</td>
                 </tr>
@@ -251,7 +257,7 @@
         <div class="chart-container">
             <h4>Ventas de <strong>{{ $selectedService->name }}</strong> por <strong>CATEGORÍA</strong></h4>
             <div>
-                <canvas id="chartServiceCategory" width="1800" height="500"></canvas>
+                <canvas id="chartServiceCategory"></canvas>
             </div>
         </div>
     </div>
@@ -262,15 +268,16 @@
     <table class="table mt-4">
         <thead>
             <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                <th>Realizados</th>
                 <th>Categoría</th>
+                <th>Realizados</th>
+                
             </tr>
         </thead>
         <tbody>
             @foreach ($serviceCategory as $filterCategory)
                 <tr>
-                    <td>{{ $filterCategory->cantidad }}</td>
                     <td>{{ $filterCategory->category_name }}</td>
+                    <td>{{ $filterCategory->cantidad }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -282,7 +289,7 @@
         <div class="chart-container">
             <h4>Ventas de <strong>{{ $selectedService->name }}</strong> por <strong>EMPLEADO</strong></h4>
             <div>
-                <canvas id="chartServiceEmployee" width="1800" height="500"></canvas>
+                <canvas id="chartServiceEmployee"></canvas>
             </div>
         </div>
     </div>
@@ -290,20 +297,21 @@
     <table class="table mt-4">
         <thead>
             <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                <th>Realizados</th>
-                <th>Centro</th>
                 <th>Empleado</th>
                 <th>Categoría</th>
+                <th>Centro</th>
+                <th>Realizados</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($servicesCount as $desgloseService)
                 @if ($desgloseService->employee_rol_id != 8)
                 <tr>
-                    <td>{{ $desgloseService->cantidad }}</td>
-                    <td>{{ $desgloseService->centre_name }}</td>
                     <td>{{ $desgloseService->employee_name }}</td>
                     <td>{{ $desgloseService->category_name }}</td>
+                    <td>{{ $desgloseService->centre_name }}</td>
+                    <td>{{ $desgloseService->cantidad }}</td>
+                   
                 </tr>
                 @endif
             @endforeach

@@ -1,3 +1,46 @@
+.informes-container,
+.solicitud-container,
+.service-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 420px;
+}
+
+.date-informes-container,
+.date-solicitud-container,
+.date-services-container {
+  /* margin-left: 80px; */
+  padding-top: 50px;
+  background-image: url(/assets/img/calendarImage.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.form-date {
+  position: relative !important;
+  background-color: var(--info) !important;
+  width: 230px;
+  height: 45px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center !important;
+  border: none;
+  border-radius: 50px;
+  padding-left: 20px;
+}
+.icon-container {
+  position: relative;
+  display: flex;
+}
+
 button:focus {
   outline: none;
 }

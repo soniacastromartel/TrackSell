@@ -19,7 +19,7 @@
 
     <link rel="shortcut icon" href="{{ asset('assets/img/LogoICOT.png') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material-lite.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/font-google-material-icons.css') }}" />
