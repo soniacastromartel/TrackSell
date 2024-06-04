@@ -13,7 +13,7 @@
 </div>
 
 <div class="content">
-    <div class="container-fluid" style="margin-top:120px" >
+    <div class="container-fluid" style="margin-top:100px" >
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -29,7 +29,7 @@
                             @csrf
                             @method('POST')
                             <div class="row">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <div class="dropdown bootstrap-select">
                                         <select class="selectpicker" name="datepickerType" id="datepickerType" data-size="7" data-style="btn btn-red-icot btn-round" title=" Mensual / Anual" tabindex="-98">
                                             <option value="1" selected>Mensual</option>
@@ -37,7 +37,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4 centre_picker">
+                                <div class="form-group col-md-3 centre_picker">
                                     <div class="dropdown bootstrap-select">
                                         <select class="selectpicker" name="centre_id" id="centre_id_picker" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
 
@@ -48,23 +48,21 @@
                                         </select>
                                         <input type="hidden" name="centre" id="centre" />
                                     </div>
-
-                                    <div id="monthYearPickerContainer">
-                                        <div class="input-group date mt-2">
-                                            <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
-                                            <span id="icon-date" class="material-symbols-outlined">calendar_month</span>
-                                            <input type="hidden" name="monthYear" id="monthYear" />
-                                        </div>
-                                    </div>
-                                    <div id="yearPickerContainer">
-                                        <div class="input-group date mt-2">
-                                        <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
-                                        <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
-                                    </div>
-                                    </div>
                                 </div>
                           
-                              
+                                <div id="monthYearPickerContainer">
+                                    <div class="input-group date mt-2">
+                                        <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
+                                        <span id="icon-date" class="material-symbols-outlined">calendar_month</span>
+                                        <input type="hidden" name="monthYear" id="monthYear" />
+                                    </div>
+                                </div>
+                                <div id="yearPickerContainer">
+                                    <div class="input-group date mt-2">
+                                    <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
+                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                                </div>
+                                </div>
                      
                        
 

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('/css/sidebar.css') }}">
+
 
 <div class="sidebar" data-color="danger" data-background-color="grey" {{-- data-image="../assets/img/sidebar-1.jpg"--}}>
   <div class="sidebar-wrapper d-flex flex-column">
@@ -191,3 +191,36 @@
   <div class="sidebar-background"></div>
 </div>
 
+<style>
+  
+.img-logo-sidebar{
+background-color: var(--white-icot);
+padding: 13px;
+}
+#userData {
+    font-weight: 900;
+  }
+
+  hr {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .lblVersion {
+    bottom: 50px;
+    width: 100%;
+    color: var(--red-icot);
+    text-align: center !important;
+    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    vertical-align: bottom;
+  }
+
+  .versionContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+  }
+ 
+  </style>

@@ -72,11 +72,11 @@
                 <div class="container-fluid">
 
                
-                    <div class="row" >
+                    <div class="row justify-content-lg-between m-4">
                      
 
                             
-                        <div class="row"style="display: flex; justify-content:center">
+                        <div class="row flex-column">
                         
                 
 
@@ -98,12 +98,10 @@
 
                         </div>
                        
-                       
-                      
-                       
+
                      
  
-                          <div class="col-sx-3"  style="display: flex;justify-content:center;flex-direction:column">
+                          <div class="row flex-column">
 
                            
                             <button id="btnCalculate" type="button" class="btn-calculate" >
@@ -122,7 +120,7 @@
                            </div>
                    
 
-                           <div class="col-sx-2"  style="display: flex;justify-content:end;flex-direction:column">
+                           <div class="row flex-column">
                        
                             <button id="btnValidate" type="button" class="btn-pay-all">
                             <span id="icon-pay" class="material-icons">paid</span>{{ __('Pagar todos') }}</button>
@@ -152,9 +150,7 @@
                            </div>
                  </div>
     
-                
-                        
-                  
+
                 
                 </div>
             </div>
