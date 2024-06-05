@@ -460,7 +460,7 @@ class ServiceController extends Controller
          //Todos servicios       
         } elseif ($serviceId && !$centreId) {
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
-                ->groupBy('employees.name', 'centres.name','service_prices.price')
+                ->groupBy('employees.name', 'centres.name','service_prices.price','services.name')
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->cantidad;
@@ -470,17 +470,23 @@ class ServiceController extends Controller
         //Todos los centros y servicios        
         } elseif (!$serviceId && !$centreId)  {
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
-              //->groupBy('service_prices.price')
+                ->groupBy('services.name')
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->cantidad;
                     return $item;
                 })->sortByDesc('cantidad');
+
+                $serviceCategory = Service::getCountAllServices($startDate, $endDate)
+                ->groupBy('category_service')
+                ->get();
+    
+                
              
         } else {
             //Todo un centros y  un servicio
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
-                ->groupBy('employees.name', 'centres.name','service_prices.price')
+                ->groupBy('employees.name', 'centres.name','service_prices.price','services.name')
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->cantidad;
@@ -488,7 +494,7 @@ class ServiceController extends Controller
                 })->sortByDesc('cantidad');
         }
         $servicesCountGroupService =  Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
-           ->groupBy('centres.name','service_prices.price')
+           ->groupBy('centres.name','service_prices.price','services.name')
             ->get()
             ->map(function ($item) {
                 $item->total_price_per_centre = $item->price * $item->cantidad;
@@ -500,20 +506,23 @@ class ServiceController extends Controller
         $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
             ->get();
         $serviceByCentre = Service::getCountAllServices($serviceId, null, $startDate,$endDate)
-        ->groupBy('centre_name')
+        ->groupBy('centre_name','services.name')
         ->get()
         ->map(function ($item) {
             $item->total_price = $item->price * $item->cantidad;
             return $item;
         })->sortByDesc('cantidad');
 
-        $serviceCategory = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+        $serviceEmployeeCategory = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
         ->groupBy('category_name')
         ->get()
         ->map(function ($item) {
             $item->total_price_per_centre = $item->price * $item->cantidad;
             return $item;
         })->sortByDesc('cantidad');
+        
+      
+        
         //?datos grafica para el total de servicios en todos los centros 
         $labelsServiceAllTotal = [$selectedService ? $selectedService->name : ''];
         $dataServiceAllTotal =  [$totalServices];
@@ -531,8 +540,8 @@ class ServiceController extends Controller
         $labelsCentreService = $selectedService ? $selectedService->name : 'Servicio';
         $dataCentreService = [$totalServices];
         //?datos para la grafica ventas servicios por categoría
-        $labelsServiceCategory = $serviceCategory->pluck('category_name')->all();
-        $dataServiceCategory = $serviceCategory->pluck('cantidad')->all();
+        $labelsServiceCategory = $serviceEmployeeCategory->pluck('category_name')->all();
+        $dataServiceCategory = $serviceEmployeeCategory->pluck('cantidad')->all();
          //?datos para la grafica ventas servicios por empleados
          $labelsServiceEmployee = $servicesCount->pluck('employee_name')->all();
          $dataServiceEmployee = $servicesCount->pluck('cantidad')->all();
@@ -558,6 +567,7 @@ class ServiceController extends Controller
             'labelsCentreService' => $labelsCentreService,
             'dataCentreService' => $dataCentreService,
             'servicesCountGroupService' => $servicesCountGroupService,
+            'serviceEmployeeCategory' => $serviceEmployeeCategory,
             'serviceCategory' => $serviceCategory,
             'labelsServiceCategory' => $labelsServiceCategory,
             'dataServiceCategory' => $dataServiceCategory,
@@ -567,8 +577,6 @@ class ServiceController extends Controller
             'dataServiceAllTotal' => $dataServiceAllTotal,
             'serviceByCentre' => $serviceByCentre,
            
-        
-    
 
         ]);
     }

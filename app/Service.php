@@ -45,6 +45,7 @@ class Service extends Model
               ->join('employees', 'trackings.employee_id', '=', 'employees.id')
               ->join ('roles', 'employees.rol_id' , '=', 'roles.id')
               ->join('job_categories', 'employees.job_category_id', '=', 'job_categories.id')
+              ->join ('service_categories', 'services.category_id', '=', 'service_categories.id')
               ->where('trackings.validation_done', 1);
     
         // Filtrar por serviceId solo si se proporciona
@@ -72,17 +73,18 @@ class Service extends Model
                   'employees.rol_id as employee_rol_id',
                   'employees.category as employee_category',
                   'job_categories.name as category_name',
+                  'service_categories.name as category_service',
                   'trackings.started_date',
                   'trackings.validation_date as end_date',
                   DB::raw('COUNT(*) as cantidad')
               );
-              if (!is_null($serviceId)) {
-                 $query->groupBy('services.name');
-            } 
+            //   if (!is_null($serviceId)) {
+            //      $query->groupBy('services.name');
+            // } 
             
-            else {
-                $query->groupBy('services.name');
-            }
+            // else {
+            //     $query->groupBy('services.name');
+            // }
         
             $query->orderBy('centres.name', 'asc')
                   ->orderBy('services.name', 'asc')
