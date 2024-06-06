@@ -10,12 +10,13 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class CentreSheet implements FromCollection, WithHeadings, WithEvents
+class CategoryServiceSheet implements FromCollection, WithHeadings, WithEvents
 {
+
     protected $request;
     private $startDate;
     private $endDate;
-
+ 
     public function __construct($request)
     {
         $this->request = $request;
@@ -28,34 +29,25 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
         $serviceId = $this->request->input('service_id');
         $centreId = $this->request->input('centre_id');
 
-
         $query = Service::getCountAllServices($serviceId, $centreId, $this->startDate, $this->endDate)
-            ->groupBy('centre_name')
+            ->groupBy('category_service')
             ->get()
             ->map(function ($item) {
-                $item->total_price = $item->price * $item->cantidad;
+                $item->total_price_per_centre = $item->price * $item->cantidad;
                 return $item;
             })->sortByDesc('cantidad');
 
-        $query->sum(function ($item) {
-            return $item->price * $item->cantidad;
-        });
         $data = $query->map(function ($item) {
 
             return  [
-                'CENTROS' => $item->centre_name,
+                'CATEGORÍA DE SERVICO' => $item->category_service,
                 'NULL1' => '',
                 'NULL2' => '',
                 'NULL3' => '',
-                'NULL4' => '',
-                'NULL5' => '',
-                'PRECIO' => $item->price . '€',
-                'REALIZADOS' => $item->cantidad,
-                'NULL6' => '',
-                'TOTAL' => $item->price * $item->cantidad . '€',
-
+                'TOTAL' => $item->cantidad
             ];
         });
+
 
         return $data;
     }
@@ -63,7 +55,7 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
     public function headings(): array
     {
         return [
-            'CENTROS', '', '', '', '', '', 'PRECIO', 'REALIZADOS', '', 'TOTAL',
+            'CATEGORÍA DE SERVICIO', '', '', '', 'TOTAL'
         ];
     }
 
@@ -73,22 +65,31 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
             AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet->insertNewRowBefore(1, 1);
                 $event->sheet->insertNewRowBefore(1, 1);
+                $event->sheet->insertNewRowBefore(1, 1);
                 $fechaTexto = isset($this->startDate) && isset($this->endDate) ? "Fechas: {$this->startDate} / {$this->endDate}" :  "Fechas: Historial completo";
                 $event->sheet->setCellValue("A1", $fechaTexto);
+                $centreId = $this->request->input('centre_id');
+                $centreName = \DB::table('centres')->where('id', $centreId)->value('name');
+                $event->sheet->setCellValue("A2", "Centro: " . ($centreName ? $centreName : "Todos los centros"));
                 $serviceId = $this->request->input('service_id');
                 $serviceName = \DB::table('services')->where('id', $serviceId)->value('name');
-                $event->sheet->setCellValue("A2", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
-
-                $event->sheet->getStyle("A1:J1")->applyFromArray([
+                $event->sheet->setCellValue("A3", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
+                $worksheet = $event->sheet->getDelegate();
+                $highestRow = $worksheet->getHighestRow();
+                for ($row = 4; $row <= $highestRow; $row++) {
+                    $event->sheet->mergeCells("A{$row}:D{$row}");
+                }
+                $event->sheet->getStyle("A1:I1")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'color' => ['argb' => 'FFAEB6BF']
+                        //TODO gris
                     ],
                 ]);
-                $event->sheet->getStyle("A2:J2")->applyFromArray([
+                $event->sheet->getStyle("A2:I2")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -97,13 +98,24 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                         'color' => ['argb' => 'FF52BE80']
                     ],
                 ]);
-                $event->sheet->getStyle("A3:J3")->applyFromArray([
+                $event->sheet->getStyle("A3:I3")->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'color' => ['argb' => 'FFFCF3CF']
+                    ],
+                ]);
+
+                $event->sheet->getStyle("A4:I4")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'color' => ['argb' => 'FF64A8FF']
+                        //?Azul
                     ],
                 ]);
             },
