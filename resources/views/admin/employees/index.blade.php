@@ -32,7 +32,6 @@
                         <th>Login</th>
                         <th>Centro</th>
                         <th>Categoría</th>
-                        <!-- <th>Permisos</th> -->
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -115,10 +114,6 @@
                         data: 'category',
                         name: 'category'
                     },
-                    // {
-                    //     data: 'role',
-                    //     name: 'role'
-                    // },
                     {
                         data: 'action',
                         name: 'action',
@@ -163,8 +158,7 @@
                         $(row).attr('data-tooltip', tooltipMessage);
                     }
                 },
-
-
+    
                 search: {
                     "regex": true,
                     "smart": true,
@@ -362,7 +356,6 @@
 <style>
     
 .content {
-    
     background-image: url(/assets/img/background_continue.png) !important;
     background-position: center center !important;
     background-size: 1000px;

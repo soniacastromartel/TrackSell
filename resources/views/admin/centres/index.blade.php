@@ -31,7 +31,6 @@
                     <th>Teléfono</th>
                     <th>Email</th>
                     <th>Horario</th>
-                    <th>Fecha baja</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -125,12 +124,8 @@
                     targets: 4
                 },
                 {
-                    width: "10%",
-                    targets: 5
-                },
-                {
                     width: "20%",
-                    targets: 6
+                    targets: 5
                 }
             ],
             columns: [{
@@ -152,10 +147,6 @@
                 {
                     data: 'timetable',
                     name: 'timetable'
-                },
-                {
-                    data: 'cancellation_date',
-                    name: 'cancellation_date'
                 },
                 {
                     data: 'action',

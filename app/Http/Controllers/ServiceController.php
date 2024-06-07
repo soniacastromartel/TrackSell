@@ -447,7 +447,7 @@ class ServiceController extends Controller
         $services = Service::getServicesActiveFilter();
         $centres = Centre::getCentresActive();
         $selectedCentre = !empty($centreId) ? Centre::find($centreId) : null;
-       $selectedService = !empty($serviceId) ? Service::find($serviceId) : null;
+        $selectedService = !empty($serviceId) ? Service::find($serviceId) : null;
         //Todos centros
         if ($centreId && !$serviceId) {
             $servicesCount = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
@@ -477,11 +477,9 @@ class ServiceController extends Controller
                     return $item;
                 })->sortByDesc('cantidad');
 
-                $serviceCategory = Service::getCountAllServices($startDate, $endDate)
-                ->groupBy('category_service')
-                ->get();
-    
-                
+             
+
+               
              
         } else {
             //Todo un centros y  un servicio
@@ -493,6 +491,7 @@ class ServiceController extends Controller
                     return $item;
                 })->sortByDesc('cantidad');
         }
+
         $servicesCountGroupService =  Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
            ->groupBy('centres.name','service_prices.price','services.name')
             ->get()
@@ -520,9 +519,18 @@ class ServiceController extends Controller
             $item->total_price_per_centre = $item->price * $item->cantidad;
             return $item;
         })->sortByDesc('cantidad');
-        
-      
-        
+
+        $serviceCategory = Service::getCountAllServices($serviceId, $centreId,$startDate, $endDate)
+        ->groupBy('category_service')
+        ->get()
+        ->sortByDesc('cantidad');
+
+        $serviceEmployee = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+        ->groupBy('employees.name')
+        ->get()
+        ->sortByDesc('cantidad');
+       
+
         //?datos grafica para el total de servicios en todos los centros 
         $labelsServiceAllTotal = [$selectedService ? $selectedService->name : ''];
         $dataServiceAllTotal =  [$totalServices];
@@ -539,12 +547,19 @@ class ServiceController extends Controller
         //?datos para la grafica filtrado por centro y servicio 
         $labelsCentreService = $selectedService ? $selectedService->name : 'Servicio';
         $dataCentreService = [$totalServices];
-        //?datos para la grafica ventas servicios por categoría
-        $labelsServiceCategory = $serviceEmployeeCategory->pluck('category_name')->all();
-        $dataServiceCategory = $serviceEmployeeCategory->pluck('cantidad')->all();
-         //?datos para la grafica ventas servicios por empleados
+        //?datos para la grafica ventas servicios por categoría de empleado 
+        $labelsEmployeeCategory = $serviceEmployeeCategory->pluck('category_name')->all();
+        $dataEmployeeCategory = $serviceEmployeeCategory->pluck('cantidad')->all();
+        //?datos para la grafica ventas servicios por categoría de servicios 
+        $labelsServiceCategory = $serviceCategory->pluck('category_service')->all();
+        $dataServiceCategory = $serviceCategory->pluck('cantidad')->all();
+        //?datos para la grafica ventas servicios por empleados
          $labelsServiceEmployee = $servicesCount->pluck('employee_name')->all();
          $dataServiceEmployee = $servicesCount->pluck('cantidad')->all();
+        //? datos para la gráfica de ventas totales de empleados
+        $labelsTotalEmployee = $serviceEmployee->pluck('employee_name')->all();
+        $dataTotalEmployee = $serviceEmployee->pluck('cantidad')->all();
+
 
         return view('calculateServices', [
             'services' => $services,
@@ -569,6 +584,8 @@ class ServiceController extends Controller
             'servicesCountGroupService' => $servicesCountGroupService,
             'serviceEmployeeCategory' => $serviceEmployeeCategory,
             'serviceCategory' => $serviceCategory,
+            'labelsEmployeeCategory' => $labelsEmployeeCategory,
+            'dataEmployeeCategory' => $dataEmployeeCategory,
             'labelsServiceCategory' => $labelsServiceCategory,
             'dataServiceCategory' => $dataServiceCategory,
             'labelsServiceEmployee' => $labelsServiceEmployee,
@@ -576,6 +593,9 @@ class ServiceController extends Controller
             'labelsServiceAllTotal' => $labelsServiceAllTotal,
             'dataServiceAllTotal' => $dataServiceAllTotal,
             'serviceByCentre' => $serviceByCentre,
+            'serviceEmployee' => $serviceEmployee,
+            'labelsTotalEmployee' => $labelsTotalEmployee,
+            'dataTotalEmployee' => $dataTotalEmployee,
            
 
         ]);
@@ -605,7 +625,7 @@ class ServiceController extends Controller
             $selectedService = Service::find($serviceId);
             ob_end_clean();
             ob_start();
-            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices, $grandTotal), 'all-services.xls');
+            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices, $grandTotal), 'services.xls');
         } catch (\Illuminate\Database\QueryException $e) {
             return back()->with('error', 'Ha ocurrido un error al exportar, contacte con el administrador');
         }
