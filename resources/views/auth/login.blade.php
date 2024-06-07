@@ -34,7 +34,7 @@
                     <input id="username" type="text" class="fadeIn second @error('username') is-invalid @enderror"
                         name="username" value="{{ old('username') }}" required autofocus placeholder="Nombre de usuario">
                     @error('username')
-                        <span class="invalid-feedback" role="alert">
+                        <span class="text-credenciales text-white align-self-md-center" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
@@ -42,7 +42,7 @@
                     <input id="password" type="password" class="fadeIn third @error('password') is-invalid @enderror"
                         name="password" required autocomplete="current-password" placeholder="Contraseña">
                     @error('password')
-                        <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback color tex" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror

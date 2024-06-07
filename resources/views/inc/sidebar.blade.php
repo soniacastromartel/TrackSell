@@ -43,7 +43,9 @@
         </a>
       </li>
 
+
       <li id="menuConfig" class="nav-item ">
+
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesConfig" aria-expanded="false">
           <i class="material-icons">settings</i>
           <p style="font-weight: bold"> Configuración
@@ -87,6 +89,7 @@
         </div>
       </li>
 
+
       <li class="nav-item ">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesTracking" aria-expanded="false">
           <i class="material-icons">remove_red_eye</i>
@@ -124,6 +127,8 @@
         </div>
       </li>
 
+   
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesReport" aria-expanded="false">
           <i class="material-icons">insert_drive_file</i>
@@ -131,6 +136,8 @@
             <b class="caret"></b>
           </p>
         </a>
+        
+
         <div class="collapse" id="pagesReport">
           <ul class="nav">
 
@@ -140,14 +147,15 @@
                 <span class="sidebar-normal"> Calculadora de Incentivos </span>
               </a>
             </li>
-
-            <li id="calculateService" class="nav-item">
+            @if (session()->get('user')->rol_id == 1 || session()->get('user')->rol_id == 3)
+             <li id="calculateService" class="nav-item">
               <a class="nav-link" href="{{route('calculateServices')}}">
                 <i class="material-icons">track_changes</i>
                 <span class="sidebar-normal"> Dinámica de Servicios </span>
               </a>
             </li>
-
+            @endif
+      
             <li id="centerLeague" class="nav-item">
               <a class="nav-link" href="{{route('centerLeague')}}">
                 <i class="material-icons">
@@ -160,6 +168,7 @@
           </ul>
         </div>
       </li>
+  
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification" aria-expanded="false">

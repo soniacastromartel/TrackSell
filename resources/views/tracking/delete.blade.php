@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/modal.css') }}">
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -51,8 +52,8 @@
             </div>
 
             <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot" disabled>SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal" disabled>NO</button>
+                <div id="btnConfirmRequest" class="btn-yes" >SI</div>
+                <div id="btnCancelRequest"  class="btn-no" data-dismiss="modal" >NO</div>
                 </p>
             </div>
 

@@ -78,6 +78,11 @@ class CentreSheet implements FromCollection, WithHeadings, WithEvents
                 $serviceId = $this->request->input('service_id');
                 $serviceName = \DB::table('services')->where('id', $serviceId)->value('name');
                 $event->sheet->setCellValue("A2", "Servicio: " . ($serviceName ? $serviceName : "Todos los servicios"));
+                $worksheet = $event->sheet->getDelegate();
+                $highestRow = $worksheet->getHighestRow();
+                for ($row = 3; $row <= $highestRow; $row++) {
+                    $event->sheet->mergeCells("A{$row}:F{$row}");
+                }
 
                 $event->sheet->getStyle("A1:J1")->applyFromArray([
                     'font' => [
