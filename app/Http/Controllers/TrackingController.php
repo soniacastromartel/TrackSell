@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Auth;
 use Illuminate\Http\Request;
 // use Adldap\Laravel\Facades\Adldap;
@@ -154,81 +155,70 @@ class TrackingController extends Controller
 
                     ->addColumn('action', function ($tracking) {
                         $btn = '';
-                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) 
-                        {
+                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) {
                             $state = Service::getStateService($tracking->state);
                             //TODO -EDIT BUTTON
-                            $btn .= '<div class="col-md-12">';
                             $btn .= '<a href="edit/' . $state . '/' . $tracking->id . '" class="btn btn-warning a-btn-slide-text btn-sm btn-round">Editar</a>';
-                            $btn .= '</div>';
+
                             //TODO - DATE
                             $trackingDate =  date('Y-m-d');
                             $state = substr($state, 0, strpos($state, "_"));
                             //!PENDIENTE
-                            if ($tracking->state == env('STATE_PENDING')) { 
+                            if ($tracking->state == env('STATE_PENDING')) {
                                 // $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-12" style="display:flex;justify-content:center; >';
-                                $btn .= '<input style="resize:horizontal; width: 100px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+
+                                $btn .= '<input " type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
-                                $btn .= '</div>';
-                                $btn .= '<div class="col-md-12">';
+
+
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 //TODO - BUTTON CITAR
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Citar</a>';
-                                $btn .= '</div></div>';
-                            } 
+                            }
                             //!CITADOS
-                            if ($tracking->state == env('STATE_APOINTMENT')) { 
+                            if ($tracking->state == env('STATE_APOINTMENT')) {
                                 // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-12" style="display:flex;justify-content:center;" >';
-                                $btn .= '<input style="resize:horizontal; width: 100px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+
+                                $btn .= '<input " type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
-                                $btn .= '</div>';
-                                $btn .= '</div>';
-                                $btn .= '<div class="col-md-12"  >';
+
+
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Realizar</a>';
-                                $btn .= '</div>';
-                                $btn .= '<div class="col-md-12">';
+
+
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">Reiniciar</a>';
-                                $btn .= '</div></div>';
-                            } 
+                            }
                             //!REALIZADOS
-                            if ($tracking->state == env('STATE_SERVICE')) { 
+                            if ($tracking->state == env('STATE_SERVICE')) {
                                 // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-6">';
-                                $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+
+                                $btn .= '<input  " type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
-                                $btn .= '</div>';
-                                $btn .= '</div>';
-                                $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-6 px-3">';
+
+
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Facturar</a>';
-                                $btn .= '</div>';
-                                $btn .= '<div class="col-md-6">';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Facturar</a>';
+                        
+
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm">Citar</a>';
-                                $btn .= '</div></div>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">Citar</a>';
+                             
                             }
                             //!FACTURADOS
-                            if ($tracking->state == env('STATE_INVOICED')) { 
+                            if ($tracking->state == env('STATE_INVOICED')) {
                                 // $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-4">';
-                                $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+
+                                $btn .= '<input type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
-                                $btn .= '</div>';
-                                $btn .= '</div>';
-                                $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-6 px-2">';
+
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm">Validar</a>';
-                                $btn .= '</div>';
-                                $btn .= '<div class="col-md-6">';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Validar</a>';
+
+
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">Realizar</a>';
-                                $btn .= '</div></div>';
                             }
                         }
 
@@ -283,12 +273,12 @@ class TrackingController extends Controller
 
 
             return view('tracking.index', [
-                'title' => $title, 
-                'mensaje' => '', 
-                'centres'  => $centres,  
-                'states'   => $states, 
-                'employees'  => $employees, 
-                'services'  => $services, 
+                'title' => $title,
+                'mensaje' => '',
+                'centres'  => $centres,
+                'states'   => $states,
+                'employees'  => $employees,
+                'services'  => $services,
                 'patients'  => $patients,
                 'user'      => $this->user,
 
@@ -317,12 +307,12 @@ class TrackingController extends Controller
             $discounts = Discount::whereNull('cancellation_date')->get();
 
             return view('tracking.create', [
-                'title' => $title, 
+                'title' => $title,
                 'centres' => $centres,
-                 'services' => $services,
-                  'employees' => $employees, 
-                  'disabledService' => $disabledService,
-                   'discounts'  => $discounts
+                'services' => $services,
+                'employees' => $employees,
+                'disabledService' => $disabledService,
+                'discounts'  => $discounts
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar formulario de nuevo seguimiento, contacte con el administrador');
@@ -412,16 +402,16 @@ class TrackingController extends Controller
             $discounts = Discount::whereNull('cancellation_date')->get();
 
             return view('tracking.edit', [
-                 'title' => 'Modificar recomendación',
-                 'tracking' => $tracking, 
-                 'centres'  => $centres, 
-                 'services' => $services, 
-                 'employees' => $employees,
-                 'state'  => $state,
-                 'employee'  => $employee, 
-                 'tracking_date'=> $tracking[$state], 
-                 'discounts'  => $discounts, 
-                 'disabledService' => $disabledService
+                'title' => 'Modificar recomendación',
+                'tracking' => $tracking,
+                'centres'  => $centres,
+                'services' => $services,
+                'employees' => $employees,
+                'state'  => $state,
+                'employee'  => $employee,
+                'tracking_date' => $tracking[$state],
+                'discounts'  => $discounts,
+                'disabledService' => $disabledService
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento para editar, contacte con el administrador');
@@ -539,7 +529,7 @@ class TrackingController extends Controller
     }
 
     //? MÉTODO VALIDAR SEGUIIENTO, LISTADO VALIDAR RRHH
-  
+
     public function updatePaidState(Request $request)
     {
         try {
@@ -561,8 +551,8 @@ class TrackingController extends Controller
                 ];
                 $paramUpdateVal = ['paid_date' => null];
             }
-            
-    //?CONTEMPLAR CASOS DE BAJA , ANDES DE FECHA FIN DE CORTE
+
+            //?CONTEMPLAR CASOS DE BAJA , ANDES DE FECHA FIN DE CORTE
             $tIds = explode('-', $paramsRequest['trackingIds']);
             $validateFechas = null;
             foreach ($tIds as $tId) {
@@ -759,10 +749,10 @@ class TrackingController extends Controller
             $employees = Employee::getEmployeesActive();
 
             return view('tracking.delete', [
-                'title' => 'Borrar Seguimiento', 
+                'title' => 'Borrar Seguimiento',
                 'centres'  => $centres,
-                 'services' => $services,
-                  'employees' => $employees
+                'services' => $services,
+                'employees' => $employees
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar formulario borrar seguimientos , contacte con el administrador');
@@ -947,21 +937,20 @@ class TrackingController extends Controller
             $query = Tracking::getNonCancelledTrackings();
 
             $tracking = $query
-            ->where(function ($q) use ($initPeriod, $endPeriod, $centreId) {
-                if ($this->user->centre_id != null) {
-                    $q->where('centres.id', '=', $centreId);
-                }
+                ->where(function ($q) use ($initPeriod, $endPeriod, $centreId) {
+                    if ($this->user->centre_id != null) {
+                        $q->where('centres.id', '=', $centreId);
+                    }
 
-                $q -> where(function($q2) use ($initPeriod, $endPeriod) {
-                 $q2
-                    ->whereNull('trackings.cancellation_date')
-                    ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
-                    ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
-                    ->orWhereBetween('trackings.validation_date', [$initPeriod, $endPeriod])
-                    ->orderBy('trackings.validation_date', 'desc');
+                    $q->where(function ($q2) use ($initPeriod, $endPeriod) {
+                        $q2
+                            ->whereNull('trackings.cancellation_date')
+                            ->whereBetween('trackings.state_date', [$initPeriod, $endPeriod])
+                            ->orWhereBetween('trackings.started_date', [$initPeriod, $endPeriod])
+                            ->orWhereBetween('trackings.validation_date', [$initPeriod, $endPeriod])
+                            ->orderBy('trackings.validation_date', 'desc');
+                    });
                 });
-                   
-            });
 
             return DataTables::of($tracking)
                 ->addIndexColumn()
@@ -978,7 +967,7 @@ class TrackingController extends Controller
                             $search = $request->get('search');
                             $w->orWhere('centres.name', 'LIKE', "%$search%")
                                 ->orWhere('employees.name', 'LIKE', "%$search%")
-                                ->orWhere('services.name', 'LIKE', "%$search%") 
+                                ->orWhere('services.name', 'LIKE', "%$search%")
                                 ->orWhere('patient_name', 'LIKE', "%$search%")
                                 ->orWhere('hc', 'LIKE', "%$search%");
                         });

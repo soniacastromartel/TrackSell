@@ -11,7 +11,7 @@
 
     <div class="content">
         <div class="container-fluid">
-            <div class="col-lg-12">
+            <div class="col-12">
                 <div class="card" style="margin-top:120px">
                     <div class="card-header card-header-danger">
 
@@ -165,13 +165,13 @@
 
               
             
-                <div class="col-md-12 text-right">
+                <div class="col-12 text-right">
                         <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="service-btn-add"><span
                                 class="material-icons">add</span></a>
                     </div> 
 
-              
-                <table class="table-striped table-bordered tracking-datatable table">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered tracking-datatable ">
                     <thead class="table-header">
                         <tr>
                             <th>Centro Prescriptor</th>
@@ -189,6 +189,7 @@
                     <tbody>
                     </tbody>
                 </table>
+            </div>
             </div>
         </div>
     </div>
