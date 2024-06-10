@@ -5,7 +5,7 @@
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+  
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
     <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
@@ -14,8 +14,8 @@
     <div class="content" style="padding-top: 120px">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-8">
-                    <div class="card card-info mb-4 ml-4 mt-0 p-0 text-white" ;>
+                <div class="col-lg-8 ">
+                    <div class="card card-info  mb-4 ml-4 mt-0 p-0";>
                         <div class="card-header">
                             <i class="material-icons" style="color: var(--red-icot)">info</i>
                             <span class="font-size-18"
@@ -52,14 +52,15 @@
                 <form id="importTargetForm" method="POST">
                     @csrf
                     @method('POST')
-                    <div class="row">
-                        <div class="col-lg-4">
+                    <div class="container-fluid">
+                      <div class="row justify-content-between">
+                        <div class="col-lg-4   d-flex  flex-column  ">   
                             <div class="card">
                                 <div class="card-header card-header-danger">
                                     <h5 class="card-title">Objetivos</h5>
                                 </div>
 
-                                <div class="card-body">
+                                <div class="card-body ">
                                     <div class="row justify-content-center">
                                         <div class="">
                                             {{-- <label class="label">Año <span class="obligatory">*</span> </label> --}}
@@ -78,26 +79,21 @@
                                             <span class="m-5"></span>
                                         @endif
                                         @if ($user->rol_id == 1)
-                                            <div id="btnImportTargets" class="file-upload btn-import">
+                                            <button id="btnImportTargets" class="file-upload btn-import">
                                                 <span id="icon-import"
-                                                    class="material-icons">upload</span>{{ __('Importar Objetivos') }}
+                                                    class="material-icons">upload</span>Importar Objetivos
                                                 <input type="file" name="targetInputFile" id="targetInputFile"
                                                     class="upload" />
-                                            </div>
-                                            <button id="targetInputFileLoad" type="submit" class="btn-import"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                {{ __('Importando datos...') }}
                                             </button>
+                                           
                                         @endif
 
-                                        <div id="btnImportSales" class="file-upload btn-import">
+                                        <button id="btnImportSales" class="file-upload btn-import">
                                             <span id="icon-import"
                                                 class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
                                             <input type="file" name="targetInputSalesFile" id="targetInputSalesFile"
                                                 class="upload" />
-                                        </div>
+                                        </button>
 
                                         @if ($user->rol_id != 1)
                                             <span class="m-3"></span>
@@ -113,7 +109,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-8">
+                        <div class="col-lg-8 ">
                             <div class="card">
                                 <div class="card-header card-header-danger">
                                     <h5 class="card-title">Incentivos</h5>
@@ -250,6 +246,7 @@
 
                         </div>
                     </div>
+                </div>
             </div>
         </div>
         </form>

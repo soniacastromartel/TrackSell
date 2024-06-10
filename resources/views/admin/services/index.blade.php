@@ -1,5 +1,4 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
@@ -24,7 +23,7 @@
                 <tr>
                 <th>Nombre</th>
                 <th>Categoría</th>
-                <th>Fecha baja</th>
+                {{-- <th>Fecha baja</th> --}}
                 <th>Acciones</th>
                 </tr>
             </thead>
@@ -80,7 +79,7 @@
             columns: [ 
                 {data: 'name', name: 'name'},
                 {data: 'category', name: 'category'},
-                {data: 'cancellation_date', name: 'cancellation_date'},
+                // {data: 'cancellation_date', name: 'cancellation_date'},
                 {
                     data: 'action', 
                     name: 'action', 

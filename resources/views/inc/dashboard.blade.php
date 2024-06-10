@@ -31,7 +31,7 @@
 
                     <div id="yearPickerContainer">
                         <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
-                        <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                        <span id="icon-date" class="material-symbols-outlined">calendar_month</span>
                     </div>
         
                 <div class="form-group col-sm-10">
@@ -108,13 +108,20 @@
 
        
       </div>
+
       <div style="margin-right: 85px;margin-top: 15px;">
-        <button id="btnSubmit" type="submit" class="btn-export">Exportar<span id=icon-export
-            class="material-icons">file_download</span>
-        <button id="btnSubmitLoad" type="submit" style="display: none;">
-            <span class="spinner-border spinner-border-sm" role="status"
-                aria-hidden="true"></span>
-        </button>
+
+        <button id="btnSubmit" type="submit" class="btn-export">
+          Exportar
+          <span id=icon-export class="material-icons">file_download</span>
+      </button>
+
+      <button id="btnSubmitLoad" type="submit" class="btn-export"
+          style="display: none">
+          <span class="spinner-border spinner-border-sm" role="status"
+              aria-hidden="true"></span>
+      </button>
+      
       </div>
     </div>
     <div class="row" id="monthlyData">
@@ -219,12 +226,12 @@
 
   #btnClear {
     align-self: end;
-    /* margin-top: 15px; */
+    
   }
 
   .employee-info {
-    padding-left: 15px;
-    margin-top: 50px;
+    /* padding-left: 15px; */
+    /* margin-top: 50px; */
     /* min-height: 5000px; */
   }
 
@@ -312,8 +319,8 @@ svg.ct-chart-line {
   margin: 16px 0 !important;
 }
 .label {
-  margin-top: 20px;
-  margin: 10px;
+  /* margin-top: 20px;
+  margin: 10px; */
 }
 
 

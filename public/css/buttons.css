@@ -380,6 +380,8 @@ button:focus {
 #btnSubmitFind,
 #btnSubmitLoad,
 #btnSubmitFindLoad,
+#btnImportTargets,
+#targetInputFileLoad,
 #btnSubmitExport,
 #btnCalculate,
 #btnValidate,
@@ -430,6 +432,10 @@ button:focus {
   background-color: var(--gray-dark);
 }
 .btn-import {
+  padding-left: 60px !important;
+  background-color: var(--gray-dark);
+}
+.file-upload btn-import {
   padding-left: 60px !important;
   background-color: var(--gray-dark);
 }

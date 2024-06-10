@@ -30,15 +30,16 @@
 <style>
     
 #navbar-home {
-    background-image: url(/assets/img/background-nav.png);
-    height: 450px;
-    width: 100%;
-    position: absolute;
+     background-image: url(/assets/img/background-nav.png); 
+     background-size: 100%;
+     height: 550px;
+     width: 100%;
+     position: absolute;
 }
 
 .minimize-sidebar-home {
     position: absolute !important;
-    top: 120px;
+    padding-top: 50px !important;
     left: 0 !important;
     background: none !important;
     border: none !important;

@@ -43,6 +43,7 @@
         </a>
       </li>
 
+      @if (session()->get('user')->rol_id == 1 )
 
       <li id="menuConfig" class="nav-item ">
 
@@ -88,6 +89,7 @@
             </li>
         </div>
       </li>
+      @endif
 
 
       <li class="nav-item ">
@@ -147,7 +149,7 @@
                 <span class="sidebar-normal"> Calculadora de Incentivos </span>
               </a>
             </li>
-            @if (session()->get('user')->rol_id == 1 || session()->get('user')->rol_id == 3)
+            @if (session()->get('user')->rol_id == 1 || session()->get('user')->rol_id == 4)
              <li id="calculateService" class="nav-item">
               <a class="nav-link" href="{{route('calculateServices')}}">
                 <i class="material-icons">track_changes</i>

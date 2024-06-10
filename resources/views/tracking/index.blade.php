@@ -181,8 +181,8 @@
                             <th>Servicio</th>
                             <th>Estado</th>
                             <th>F. Inicio</th>
-                            <th>F. Actualización</th>
-                            <th>F. Cancelación</th>
+                            {{-- <th>F. Actualización</th>
+                            <th>F. Cancelación</th> --}}
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -229,14 +229,14 @@
             name: 'started_date',
             data: 'started_date'
         });
-        columnsFilled.push({
-            name: 'state_date',
-            data: 'state_date'
-        });
-        columnsFilled.push({
-            name: 'cancellation_date',
-            data: 'cancellation_date'
-        });
+        // columnsFilled.push({
+        //     name: 'state_date',
+        //     data: 'state_date'
+        // });
+        // columnsFilled.push({
+        //     name: 'cancellation_date',
+        //     data: 'cancellation_date'
+        // });
         columnsFilled.push({
             data: 'action',
             name: 'action',
@@ -371,7 +371,7 @@
                 table = $('.tracking-datatable').DataTable();
             } else {
                 table = $('.tracking-datatable').DataTable({
-                    order: [7, "desc"],
+                    order: [6, "desc"],
                     processing: true,
                     serverSide: true,
                     language: {
@@ -414,27 +414,27 @@
                             // }
 
                         },
-                        {
-                            targets: [6, 7, 8],
-                            // data: "cancellation_date",
-                            type: "date",
-                            render: function(data, type, row) {
+                        // {
+                        //     targets:  8,
+                        //     // data: "cancellation_date",
+                        //     type: "date",
+                        //     render: function(data, type, row) {
 
-                                if (data != null) {
-                                    var datetime = moment(data, 'YYYY-M-D');
-                                    var displayString = moment(datetime).format('D-M-YYYY');
+                        //         if (data != null) {
+                        //             var datetime = moment(data, 'YYYY-M-D');
+                        //             var displayString = moment(datetime).format('D-M-YYYY');
 
-                                    if (type === 'display' || type === 'filter') {
-                                        return displayString;
-                                    } else {
-                                        return datetime; // for sorting
-                                    }
-                                } else {
-                                    return null;
-                                }
+                        //             if (type === 'display' || type === 'filter') {
+                        //                 return displayString;
+                        //             } else {
+                        //                 return datetime; // for sorting
+                        //             }
+                        //         } else {
+                        //             return null;
+                        //         }
 
-                            }
-                        },
+                        //     }
+                        // },
                         {
                             width: "10%",
                             targets: 0
@@ -453,8 +453,8 @@
                             targets: 5
                         },
                         {
-                            width: "5%",
-                            targets: [6, 7, 8]
+                            width: "10%",
+                            targets:  7
                         },
                         {
                             targets: -1,
