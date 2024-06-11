@@ -5,7 +5,7 @@
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  
+
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
     <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
@@ -14,8 +14,8 @@
     <div class="content" style="padding-top: 120px">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-8 ">
-                    <div class="card card-info  mb-4 ml-4 mt-0 p-0";>
+                <div class="col-lg-8">
+                    <div class="card card-info mb-4 ml-4 mt-0 p-0";>
                         <div class="card-header">
                             <i class="material-icons" style="color: var(--red-icot)">info</i>
                             <span class="font-size-18"
@@ -53,16 +53,16 @@
                     @csrf
                     @method('POST')
                     <div class="container-fluid">
-                      <div class="row justify-content-between">
-                        <div class="col-lg-4   d-flex  flex-column  ">   
-                            <div class="card">
-                                <div class="card-header card-header-danger">
-                                    <h5 class="card-title">Objetivos</h5>
-                                </div>
+                        <div class="row justify-content-between">
+                            <div class="col-lg-4 d-flex flex-column">
+                                <div class="card">
+                                    <div class="card-header card-header-danger">
+                                        <h5 class="card-title">Objetivos</h5>
+                                    </div>
 
-                                <div class="card-body ">
-                                    <div class="row justify-content-center">
-                                        <div class="">
+                                    <div class="card-body">
+                                        <div class="row justify-content-center">
+
                                             {{-- <label class="label">Año <span class="obligatory">*</span> </label> --}}
                                             <div id="yearPickerContainer">
                                                 <div id="yearPicker">
@@ -74,268 +74,271 @@
                                                 </div>
                                             </div>
 
-                                        </div>
-                                        @if ($user->rol_id != 1)
+
+                                            {{-- @if ($user->rol_id != 1)
                                             <span class="m-5"></span>
-                                        @endif
-                                        @if ($user->rol_id == 1)
-                                            <button id="btnImportTargets" class="file-upload btn-import">
+                                        @endif --}}
+                                            @if ($user->rol_id == 1)
+                                                <button id="btnImportTargets" class="file-upload btn-import">
+                                                    <span id="icon-import" class="material-icons">upload</span>Importar
+                                                    Objetivos
+                                                    <input type="file" name="targetInputFile" id="targetInputFile"
+                                                        class="upload" />
+                                                </button>
+                                            @endif
+
+                                            <button id="btnImportSales" class="file-upload btn-import">
                                                 <span id="icon-import"
-                                                    class="material-icons">upload</span>Importar Objetivos
-                                                <input type="file" name="targetInputFile" id="targetInputFile"
+                                                    class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
+                                                <input type="file" name="targetInputSalesFile" id="targetInputSalesFile"
                                                     class="upload" />
                                             </button>
-                                           
-                                        @endif
-
-                                        <button id="btnImportSales" class="file-upload btn-import">
-                                            <span id="icon-import"
-                                                class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
-                                            <input type="file" name="targetInputSalesFile" id="targetInputSalesFile"
-                                                class="upload" />
-                                        </button>
-
+                                            {{-- 
                                         @if ($user->rol_id != 1)
                                             <span class="m-3"></span>
-                                        @endif
+                                        @endif --}}
 
-                                        <button id="btnTracingTargets" class="file-upload btn-import">
-                                            <span id="icon-export"
-                                                class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
-                                        </button>
+                                            <button id="btnTracingTargets" class="file-upload btn-import">
+                                                <span id="icon-export"
+                                                    class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
+                                            </button>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-8 ">
-                            <div class="card">
-                                <div class="card-header card-header-danger">
-                                    <h5 class="card-title">Incentivos</h5>
-                                </div>
-                                <div class="card-body">
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-header card-header-danger">
+                                        <h5 class="card-title">Incentivos</h5>
+                                    </div>
+                                    <div class="card-body">
 
-                                    <div class="row">
-                                     
-                                        <div class="date-container-incentive">
-                                            {{--        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
-                                            <div id="monthYearPickerContainer">
-                                                <input type="hidden" name="monthYear" id="monthYear" />
-                                                <span id="icon-date" class="material-symbols-outlined">
-                                                    calendar_month</span>
-                                                <input id="monthYearPicker" class='form-control' type="text"
-                                                    placeholder="yyyy/mm" />
+                                        <div class="row">
+
+                                            <div class="date-container-incentive">
+                                                {{--        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
+                                                <div id="monthYearPickerContainer">
+                                                    <input type="hidden" name="monthYear" id="monthYear" />
+                                                    <span id="icon-date" class="material-symbols-outlined">
+                                                        calendar_month</span>
+                                                    <input id="monthYearPicker" class='form-control' type="text"
+                                                        placeholder="yyyy/mm" />
+                                                </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="col-md-4 mx-auto">
+                                            <div class="col-md-4 mx-auto">
 
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                                data-style="btn btn-red-icot btn-round" title=" Seleccione Centro"
-                                                tabindex="-98">
-                                                @if ($user->rol_id != 1)
-                                                    @foreach ($centres as $centre)
-                                                        @if ($centre->id == $user->centre_id)
-                                                            <option value="{{ $centre->id }}" selected>
-                                                                {{ $centre->name }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    @foreach ($centres as $centre)
-                                                        <option value="{{ $centre->id }}">{{ $centre->name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <input type="hidden" name="centre" id="centre" />
+                                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                                    data-style="btn btn-red-icot btn-round" title=" Seleccione Centro"
+                                                    tabindex="-98">
+                                                    @if ($user->rol_id != 1)
+                                                        @foreach ($centres as $centre)
+                                                            @if ($centre->id == $user->centre_id)
+                                                                <option value="{{ $centre->id }}" selected>
+                                                                    {{ $centre->name }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($centres as $centre)
+                                                            <option value="{{ $centre->id }}">{{ $centre->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                                <input type="hidden" name="centre" id="centre" />
 
 
-                                            <select class="selectpicker" name="employee_id" id="employee_id"
-                                                data-size="7" data-style="btn btn-red-icot btn-round"
-                                                title=" Seleccione Empleado" tabindex="-98">
-                                                <option>SIN SELECCION </option>
-                                                @if ($user->rol_id != 1)
-                                                    @foreach ($employees as $employee)
-                                                        @if ($employee->centre_id == $user->centre_id)
+                                                <select class="selectpicker" name="employee_id" id="employee_id"
+                                                    data-size="7" data-style="btn btn-red-icot btn-round"
+                                                    title=" Seleccione Empleado" tabindex="-98">
+                                                    <option>SIN SELECCION </option>
+                                                    @if ($user->rol_id != 1)
+                                                        @foreach ($employees as $employee)
+                                                            @if ($employee->centre_id == $user->centre_id)
+                                                                <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($employees as $employee)
                                                             <option value="{{ $employee->id }}">{{ $employee->name }}
                                                             </option>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    @foreach ($employees as $employee)
-                                                        <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <input type="hidden" name="employee" id="employee" />
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                                <input type="hidden" name="employee" id="employee" />
+                                            </div>
+
                                         </div>
-                             
-                                    </div>
 
-                                    <hr class="mt-4">
+                                        <hr class="mt-4">
 
 
 
-                                    <div class="" style="display: flex; justify-content:center;">
+                                        <div class="" style="display: flex; justify-content:center;">
 
-                                        <button id="btnIncentivesPreview" class="btn-watch">
+                                            <button id="btnIncentivesPreview" class="btn-watch">
+                                                <span id="icon-watch"
+                                                    class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
+                                            </button>
+
+                                            <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch"
+                                                style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+
+                                            <button id="btnSummaryPreview" class="btn-watch">
+                                                <span id="icon-watch"
+                                                    class="material-icons">visibility</span>{{ __('Ver Resumen') }}
+                                            </button>
+
+                                            <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch"
+                                                style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+
+                                            @if ($user->rol_id != 1)
+                                                <button id="btnTargetsPreview" class="btn-watch">
+                                                @else
+                                                    <button id="btnTargetsPreview" class="btn-watch" disabled="disabled">
+                                            @endif
                                             <span id="icon-watch"
-                                                class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
-                                        </button>
+                                                class="material-icons">visibility</span>{{ __('Ver Objetivos') }}
+                                            </button>
+                                            <button id="btnTargetsLoad" type="submit" class="file-upload btn-watch"
+                                                style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
 
-                                        <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
+                                            </button>
 
-                                        <button id="btnSummaryPreview" class="btn-watch">
-                                            <span id="icon-watch"
-                                                class="material-icons">visibility</span>{{ __('Ver Resumen') }}
-                                        </button>
+                                        </div>
+                                        <hr class="mt-4">
 
-                                        <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
+                                        <div class="row" style="padding:10px; display:flex; justify-content:center; ">
 
-                                        @if ($user->rol_id != 1)
-                                            <button id="btnTargetsPreview" class="btn-watch">
-                                            @else
-                                                <button id="btnTargetsPreview" class="btn-watch" disabled="disabled">
-                                        @endif
-                                        <span id="icon-watch"
-                                            class="material-icons">visibility</span>{{ __('Ver Objetivos') }}
-                                        </button>
-                                        <button id="btnTargetsLoad" type="submit" class="file-upload btn-watch"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
 
-                                        </button>
+                                            <button id="btnClear" href="#" class="btn-refresh">
+                                                <span id="icon-refresh"
+                                                    class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
+                                            </button>
+
+                                            <button id="btnSubmit" type="submit" class="btn-export">
+                                                Exportar
+                                                <span id=icon-export class="material-icons">file_download</span>
+                                            </button>
+
+                                            <button id="btnSubmitLoad" type="submit" class="btn-export"
+                                                style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+
+                                        </div>
+
 
                                     </div>
-                                    <hr class="mt-4">
-
-                                    <div class="row" style="padding:10px; display:flex; justify-content:center; ">
-
-
-                                        <button id="btnClear" href="#" class="btn-refresh">
-                                            <span id="icon-refresh"
-                                                class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
-                                        </button>
-
-                                        <button id="btnSubmit" type="submit" class="btn-export">
-                                            <span id="icon-export" class="material-icons">file_download</span>
-                                            {{ __('Exportar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn-export"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-
-                                        </button>
-
-                                    </div>
-
-
                                 </div>
+
                             </div>
 
                         </div>
                     </div>
+            </div>
+            </form>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <label id="centreName"></label>
+        </div>
+
+        <div class="row" id="targetsData">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+
+                        <h4 class="card-title" id="title-targets">OBJETIVOS</h4>
+                    </div>
+                    <div class="card-header-table">
+                        <table class="table-striped table-bordered targets-datatable col-lg-12 table">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Objetivo Venta Cruzada</th>
+                                    <th>Objetivo Venta Privada</th>
+                                    <th>Venta Cruzada</th>
+                                    <th>Venta Privada</th>
+                                    <th>Número de Personas</th>
+                                    <th>Venta Media por Persona</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        </form>
-    </div>
 
-    <div class="col-sm-3" style="margin-left: 560px;">
-        <label id="centreName" class=""></label>
-    </div>
-
-    <div class="row" id="targetsData">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title" id="title-targets">OBJETIVOS</h4>
-                </div>
-                <div class="card-header-table">
-                    <table class="table-striped table-bordered targets-datatable col-lg-12 table">
-                        <thead class="table-header">
-                            <tr>
-                                <th>Objetivo Venta Cruzada</th>
-                                <th>Objetivo Venta Privada</th>
-                                <th>Venta Cruzada</th>
-                                <th>Venta Privada</th>
-                                <th>Número de Personas</th>
-                                <th>Venta Media por Persona</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+        <div class="row" id="incentivesData">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title" id="title-incentives">INCENTIVOS</h4>
+                    </div>
+                    <div class="card-header-table">
+                        <table class="table-striped table-bordered incentives-datatable col-lg-12 table">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Centro</th>
+                                    <th>HC</th>
+                                    <th>Paciente</th>
+                                    <th>Servicio</th>
+                                    <th>Cantidad</th>
+                                    <th>Empleado</th>
+                                    <th>Precio</th>
+                                    <th>Incentivo</th>
+                                    <th>Bonus</th>
+                                    <th>Ingresos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row" id="incentivesData">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title" id="title-incentives">INCENTIVOS</h4>
-                </div>
-                <div class="card-header-table">
-                    <table class="table-striped table-bordered incentives-datatable col-lg-12 table">
-                        <thead class="table-header">
-                            <tr>
-                                <th>Centro</th>
-                                <th>HC</th>
-                                <th>Paciente</th>
-                                <th>Servicio</th>
-                                <th>Cantidad</th>
-                                <th>Empleado</th>
-                                <th>Precio</th>
-                                <th>Incentivo</th>
-                                <th>Bonus</th>
-                                <th>Ingresos</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+        <div class="row" id="summaryData">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title" id="title-summary">RESUMEN</h4>
+                    </div>
+                    <div class="card-header-table">
+                        <table class="table-striped table-bordered summary-datatable col-lg-12 table">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Centro</th>
+                                    <th>Suma Incentivo</th>
+                                    <th>Suma Bonus</th>
+                                    <th>Suma Ingreso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row" id="summaryData">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title" id="title-summary">RESUMEN</h4>
-                </div>
-                <div class="card-header-table">
-                    <table class="table-striped table-bordered summary-datatable col-lg-12 table">
-                        <thead class="table-header">
-                            <tr>
-                                <th>Centro</th>
-                                <th>Suma Incentivo</th>
-                                <th>Suma Bonus</th>
-                                <th>Suma Ingreso</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
-
     </div>
     </div>
     <style>
@@ -356,6 +359,18 @@
             align-items: center;
             justify-content: center;
             border: 1px solid var(--light-grey);
+        }
+
+        #centreName {
+            padding: 10px;
+            display: block;
+            text-align: center;
+            font-weight: bold;
+            font-size: xx-large;
+            font-family: monospace;
+            color: white !important;
+            border-radius: 50px !important;
+            background-color: var(--red-icot);
         }
     </style>
 
@@ -614,7 +629,7 @@
                     complete: function() {
                         $("#btnTracingTargets").html(
                             "<span class='material-icons mr-1'>download</span> Seguimiento de objetivos"
-                            );
+                        );
                     }
 
                 }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -732,7 +747,8 @@
                         {
                             targets: [6, 7, 8, 9],
                             render: $.fn.dataTable.render.number('.', ',', 2, '',
-                                '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
+                                '€'
+                            ) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
                         },
                         {
                             targets: [0, 1, 4, 6, 7, 8, 9],
@@ -792,7 +808,8 @@
                     columnsDef = [{
                             targets: [1, 2, 3],
                             render: $.fn.dataTable.render.number('.', ',', 2, '',
-                                '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
+                                '€'
+                            ) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
                         },
                         {
                             targets: [1, 2, 3],
@@ -852,7 +869,8 @@
                     columnsDef = [{
                             targets: [0, 1, 2, 3, 5],
                             render: $.fn.dataTable.render.number('.', ',', 2, '',
-                                '€') //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
+                                '€'
+                            ) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda,posfix)
                         },
                         {
                             targets: '_all',
@@ -941,7 +959,7 @@
                             $(input).appendTo($(column.footer()).empty())
                                 .on('change', function() {
                                     var val = $.fn.dataTable.util.escapeRegex($(this)
-                                .val());
+                                        .val());
                                     column
                                         .search(val ? '^' + val + '$' : '', true, false)
                                         .draw();

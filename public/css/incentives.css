@@ -18,16 +18,7 @@
 }
 
 
-#centreName {
-    display: block;
-    text-align: center;
-    font-weight: bold;
-    font-size: xx-large;
-    font-family: monospace;
-    color: white;
-    border: 2px solid var(--red-icot);
-    background-color: var(--red-icot);
-}
+
 
 .ui-datepicker-calendar {
     display: none;
