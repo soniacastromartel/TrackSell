@@ -44,11 +44,12 @@ class EmployeeSheet implements FromCollection, WithHeadings, WithEvents
                     'NULL1' => '',
                     'NULL2' => '',
                     'NULL3' => '',
-                    'NULL4' => '',
                     'CATEGORÍA' => $item->category_name,
+                    'NULL4' => '',
                     'NULL5' => '',
+                    'REALIZADOS' => $item->cantidad,
                     'NULL6' => '',
-                    'TOTAL' => $item->cantidad
+                    'TOTAL' => $item->cantidad * $item->price . '€'
 
                 ];
 
@@ -62,7 +63,7 @@ class EmployeeSheet implements FromCollection, WithHeadings, WithEvents
     public function headings(): array
     {
         return [
-              'EMPLEADO', '', '', '','', 'CATEGORÍA','','','TOTAL'
+              'EMPLEADO', '', '', '', 'CATEGORÍA','','','REALIZADOS','', 'TOTAL'
         ];
     }
 
@@ -84,12 +85,12 @@ class EmployeeSheet implements FromCollection, WithHeadings, WithEvents
                 $worksheet = $event->sheet->getDelegate();
                 $highestRow = $worksheet->getHighestRow();
                 for ($row = 4; $row <= $highestRow; $row++) {
-                    $event->sheet->mergeCells("A{$row}:E{$row}");
-                    $event->sheet->mergeCells("F{$row}:H{$row}");
+                    $event->sheet->mergeCells("A{$row}:D{$row}");
+                    $event->sheet->mergeCells("E{$row}:G{$row}");
                    
                 }
                 $event->sheet->getStyle('A')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
-                $event->sheet->getStyle("A1:I1")->applyFromArray([
+                $event->sheet->getStyle("A1:J1")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -99,7 +100,7 @@ class EmployeeSheet implements FromCollection, WithHeadings, WithEvents
                         //TODO gris
                     ],
                 ]);
-                $event->sheet->getStyle("A2:I2")->applyFromArray([
+                $event->sheet->getStyle("A2:J2")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -108,7 +109,7 @@ class EmployeeSheet implements FromCollection, WithHeadings, WithEvents
                         'color' => ['argb' => 'FF52BE80']
                     ],
                 ]);
-                $event->sheet->getStyle("A3:I3")->applyFromArray([
+                $event->sheet->getStyle("A3:J3")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -118,7 +119,7 @@ class EmployeeSheet implements FromCollection, WithHeadings, WithEvents
                     ],
                 ]);
                
-                $event->sheet->getStyle("A4:I4")->applyFromArray([
+                $event->sheet->getStyle("A4:J4")->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],

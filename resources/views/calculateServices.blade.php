@@ -217,6 +217,7 @@
                             <th>Empleado</th>
                             <th>Categoría</th>
                             <th>Realizados</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -225,6 +226,7 @@
                                 <td>{{ $service->employee_name }}</td>
                                 <td>{{ $service->category_name }}</td>
                                 <td>{{ $service->cantidad }}</td>
+                                <td>{{ $service->cantidad * $service->price }} €</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -336,13 +338,17 @@
                     <thead>
                         <tr class="row-service">
                             <th>Empleado</th>
+                            <th>Categoría</th>
                             <th>Realizados</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     @foreach ($serviceEmployee as $service)
                         <tr>
                             <td>{{ $service->employee_name }}</td>
+                            <td>{{ $service->category_name }}</td>
                             <td>{{ $service->cantidad }}</td>
+                            <td>{{ $service->cantidad * $service->price }} €</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -453,6 +459,7 @@
                             <th>Empleado</th>
                             <th>Categoría</th>
                             <th>Realizados</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     @foreach ($serviceEmployee as $service)
@@ -460,6 +467,7 @@
                             <td>{{ $service->employee_name }}</td>
                             <td>{{ $service->category_name }}</td>
                             <td>{{ $service->cantidad }}</td>
+                            <td>{{ $service->cantidad * $service->price }} €</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -604,6 +612,7 @@
                             <th>Empleado</th>
                             <th>Categoría</th>
                             <th>Realizados</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     @foreach ($serviceEmployee as $service)
@@ -611,6 +620,7 @@
                             <td>{{ $service->employee_name }}</td>
                             <td>{{ $service->category_name }}</td>
                             <td>{{ $service->cantidad }}</td>
+                            <td>{{ $service->cantidad * $service->price }} €</td>
                         </tr>
                     @endforeach
                     </tbody>
