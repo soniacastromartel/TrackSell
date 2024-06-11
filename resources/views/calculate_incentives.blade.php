@@ -342,11 +342,11 @@
     </div>
     </div>
     <style>
-        .content-wrapper{
+        .content{
     background-image: url(/assets/img/background_continue.png) !important;
     background-position: center center !important;
     background-size: 1000px;
-
+    height: 250vh !important;
   }
         .btn-watch {
             padding-left: 60px !important;
