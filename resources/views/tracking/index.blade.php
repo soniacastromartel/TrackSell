@@ -241,7 +241,7 @@
             data: 'action',
             name: 'action',
             searchable: true,
-            width: 300
+            
         });
 
 

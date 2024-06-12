@@ -13,7 +13,7 @@
   <div class="container-fluid" style="margin-top: 120px">
     <div class="row">
       <div class="col-lg-4">
-        <div id="employee-info" class="card" style="min-height: 462px;">
+        <div id="employee-info" class="card" style="min-height: 482.5px;">
           <div class="card-header card-header-danger">
             <h4 class="card-title">Búsqueda</h4>
           </div>
@@ -40,12 +40,13 @@
                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
 
                       <!-- <option selected>GRUPO ICOT</option> -->
-
-                      @if (isset($employee) && $employee->rol_id != 1)
+                      @if (!in_array($employee->rol_id, [1,4]))
+                      {{-- @if (isset($employee) && $employee->rol_id != 1) --}}
                       <option value="{{$employee->centre_id}}" selected>{{$employee->centre}}</option>
                       @endif
-
-                      @if (isset($employee) && $employee->rol_id == 1)
+                      
+                      @if (!in_array($employee->rol_id, [1,4]))
+                      {{-- @if (isset($employee) && $employee->rol_id == 1) --}}
                       @foreach ($centres as $centre)
                       <option value="{{$centre->id}}">{{$centre->name}}</option>
                       @endforeach
@@ -87,18 +88,26 @@
           <div class="card-header card-header-danger">
             <h4 class="card-title" id="title-target">Objetivos</h4>
           </div>
-          <div class="card-body">
+          <div class="card-body ">
+             
+            <div id='vp_ok' class="card-header">
+            <h4 class="card-title">Venta cruzada</h4>
+            </div>
+
             <div>
-              <h4 class="card-title">Venta cruzada</h4>
               <div id="chart_div_vc"></div>
             </div>
+
             <div id='vp_ok' class="card-header">
               <h4 class="card-title">Venta privada</h4>
             </div>
+
             <div>
               <div id="chart_div_vp"></div>
             </div>
+
           </div>
+
         </div>
       </div>
     </div>
@@ -381,11 +390,11 @@ svg.ct-chart-line {
             }
         }
 
-        @if (isset($employee) && $employee->rol_id == 2)
-            $("#btnClear").hide();
-        @else
-            $("#btnClear").show();
-        @endif
+        // @if (isset($employee) && $employee->rol_id == 2)
+        //     $("#btnClear").hide();
+        // @else
+        //     $("#btnClear").show();
+        // @endif
 
         $(".form-check-input").change(function() {
             $(".form-check-label").removeAttr('id');

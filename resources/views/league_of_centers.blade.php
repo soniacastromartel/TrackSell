@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
+
 
 <div id="alertErrorLeague" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -21,8 +21,6 @@
                         <div class="card-text" style="border-radius: 50px" >
                             <h4 class="card-title">Informes</h4>
                         </div>
-                        <i class="material-icons" id="icInfo" style="color: var(--red-icot)">info</i>
-                        <label id="infoLeague"></label>
                     </div>
                     <div class="card-body">
                         <form id="leagueForm" method="POST">
@@ -36,8 +34,8 @@
                                             <option value="2">Anual</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="form-group col-md-3 centre_picker">
+                              
+                                <div class="form-group  centre_picker">
                                     <div class="dropdown bootstrap-select">
                                         <select class="selectpicker" name="centre_id" id="centre_id_picker" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
 
@@ -49,7 +47,7 @@
                                         <input type="hidden" name="centre" id="centre" />
                                     </div>
                                 </div>
-                          
+                            </div>
                                 <div id="monthYearPickerContainer">
                                     <div class="input-group date mt-2">
                                         <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
@@ -149,13 +147,6 @@
         text-align: center;
     }
 
-    #infoLeague {
-        float: right;
-        margin: 16px;
-        text-align: center;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        color: black;
-    }
 
     #icInfo {
         float: right;
@@ -408,18 +399,18 @@
                 params["centre"] = centre;
                 params["year"] = $("#yearPicker").val()
                 params["month"] = null;
-                document.getElementById('infoLeague').innerHTML = 'DETALLE ANUAL DE CENTRO';
+               
             } else {
                 if ($('#monthYearPicker').is(":visible")) {
                     monthYear = $("#monthYearPicker").val();
                     dateSearch = monthYear.split('/');
                     params["month"] = dateSearch[0];
                     params["year"] = dateSearch[1];
-                    document.getElementById('infoLeague').innerHTML = 'CLASIFICACIÓN MENSUAL';
+                  
                 } else {
                     params["year"] = $("#yearPicker").val()
                     params["month"] = null;
-                    document.getElementById('infoLeague').innerHTML = 'CLASIFICACIÓN ANUAL';
+                  
                 }
             }
 
