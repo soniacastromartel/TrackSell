@@ -103,10 +103,12 @@ class ServiceController extends Controller
     {
         try {
             $categories = DB::table('service_categories')->get();
+            $centres = Centre::getCentresActive();
 
             return view('admin.services.create', [
                 'title' => $this->title,
-                'categories' => $categories
+                'categories' => $categories,
+                'centres' => $centres
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar servicio, contacte con el administrador');
@@ -125,44 +127,44 @@ class ServiceController extends Controller
             $request->validate([
                 'name'        => 'required',
                 'description' => 'required',
-                'alias_img'   => 'required',
+                'alias_img'   => 'required|unique:services,alias_img',
                 'category'    => 'required',
-                'changeImg'   => 'mimes:jpg'
+                'changeImg'   => 'required|mimes:jpg,png,jpeg|max:2048'
             ]);
+    
             $params = $request->all();
-
-            $existsAlias = DB::table('services')
-                ->select('alias_img')
-                ->where('alias_img', '=', $params['alias_img'])->get()->toArray();
-
-            if (!empty($existsAlias)) {
-                return back()->with('error', 'El alias ya existe, por favor elegir otro');
+    
+            if ($request->hasFile('changeImg')) {
+                $image = $request->file('changeImg');
+                $imageName = $request->alias_img . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/img/services', $imageName);
+                $imagePath = 'img/services/' . $imageName;
             } else {
-                $request->file('changeImg')->storeAs('public/img/services/',  $request->alias_img . ".jpg");
-
-                $pathImg = env('STORAGE_IMGS_SERVICES');
-
-                $service = array(
-                    'name' => $params['name'],
-                    'url' => $params['url'],
-                    'category_id' => $params['category'],
-                    'description' => $params['description'],
-                    'alias_img' => $params['alias_img'],
-                    'image' => $pathImg . $params['alias_img'] . '.jpg'
-                );
-                $service_id = Service::create($service)->id;
-
-                $request->session()->put('success', 'Servicio creado correctamente');
-                return redirect()->action('ServiceController@index')
-                    ->with('success', 'Servicio creado correctamente');
+                $imagePath = 'img/default.png';
             }
+    
+            // Crear el servicio
+            $service = Service::create([
+                'name' => $params['name'],
+                'url' => $params['url'],
+                'category_id' => $params['category'],
+                'description' => $params['description'],
+                'alias_img' => $params['alias_img'],
+                'image' => $imagePath,
+               
+            ]);
+    
+            // Redirigir a la vista index con un mensaje de éxito
+            return redirect()->route('services.index')->with('success', 'Servicio creado correctamente');
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->with('error', 'Formulario incompleto, faltan campos requeridos');
+            // Mostrar los errores de validación para depuración
+            return back()->with('error', 'Ya existe este servicio o campos requeridos incompletos');
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al crear servicio, contacte con el administrador');
         }
     }
-
+    
+       
     /**
      * Display the specified resource.
      *
@@ -198,10 +200,11 @@ class ServiceController extends Controller
                 ->get(['name'])
                 ->pluck('name')->toArray();
 
-            $centres = '';
-            foreach ($centresName  as $key => $centre) {
-                $centres .= '- ' . $centre . PHP_EOL;
-            }
+                $centres = Centre::select("id", "name")
+                ->whereIn('id', $centresService)
+                ->whereNull('cancellation_date')
+                ->orderby('name')
+                ->get();
             $service = Service::find($id);
 
             $categories = DB::table('service_categories')->get();

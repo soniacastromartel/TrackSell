@@ -78,14 +78,7 @@ class Service extends Model
                   'trackings.validation_date as end_date',
                   DB::raw('COUNT(*) as cantidad')
               );
-            //   if (!is_null($serviceId)) {
-            //      $query->groupBy('services.name');
-            // } 
-            
-            // else {
-            //     $query->groupBy('services.name');
-            // }
-        
+           
             $query->orderBy('centres.name', 'asc')
                   ->orderBy('services.name', 'asc')
                   ->orderBy('cantidad', 'desc');
