@@ -17,9 +17,9 @@
     <label for="name" class="label">Rol <span id="obligatory">*</span></label>
     <select class="selectpicker" name="level_id" id="level_id" data-size="7" data-style="btn btn-red-icot btn-round" 
       title="* Seleccione Nivel de Acceso" tabindex="-98">
-      <option value="1" @if (isset($role) && $role->level_id == 1)  selected="selected" @endif>Admin</option>
-      <option value="2" @if (isset($role) && $role->level_id == 2)  selected="selected" @endif>Supervisor/Centro</option>
-      <option value="3" @if (isset($role) && $role->level_id == 3)  selected="selected" @endif>Empleado</option>
+     @foreach ($roles as $role)
+     <option value="{{ $role->id }}">{{ $role->name }}</option>
+     @endforeach
     </select>
   </div>
 </div>

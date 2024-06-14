@@ -70,7 +70,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('admin.roles.create', ['title' => $this->title]);
+        $roles = Role::getRolesActive(); 
+        return view('admin.roles.create', ['title' => $this->title, 'roles' => $roles]);
     }
 
     /**
@@ -115,11 +116,12 @@ class RoleController extends Controller
     {
         try{
             $role = Role::find($id);
+            $roles = Role::getRolesActive(); 
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar rol para editar, contacte con el administrador');
         }    
 
-        return view('admin.roles.edit', ['title' => $this->title, 'role' => $role]);
+        return view('admin.roles.edit', ['title' => $this->title, 'role' => $role, 'roles' => $roles]);
     }
 
     /**
@@ -142,7 +144,6 @@ class RoleController extends Controller
             } else {
 
                 $role = Role::find($id);
-
                 $params = $request->all(); 
                 $role->update($params);
 
