@@ -45,7 +45,7 @@
                       <option value="{{$employee->centre_id}}" selected>{{$employee->centre}}</option>
                       @endif
                       
-                      @if (!in_array($employee->rol_id, [1,4]))
+                      @if (in_array($employee->rol_id, [1,4]))
                       {{-- @if (isset($employee) && $employee->rol_id == 1) --}}
                       @foreach ($centres as $centre)
                       <option value="{{$centre->id}}">{{$centre->name}}</option>
