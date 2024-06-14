@@ -24,10 +24,13 @@ class CentreController extends Controller
     {
         try{
             if ($request->ajax()) {
-                $centres = DB::table('centres')->orderBy('name');
+                $centres = DB::table('centres')
+                 ->whereNull('cancellation_date')
+                ->orderBy('name');
 
                 // $centres = Centre::all();
                 return DataTables::of($centres)
+               
                     ->addIndexColumn()
                     ->addColumn('action', function($centre){
                         $buttons = '';
