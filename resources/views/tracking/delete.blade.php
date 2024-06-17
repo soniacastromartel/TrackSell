@@ -52,8 +52,8 @@
             </div>
 
             <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot" disabled>SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal" disabled>NO</button>
+                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot btn-round" disabled>SI</button>
+                <button id="btnCancelRequest" type="button" class="btn btn-default btn-round" data-dismiss="modal" disabled>NO</button>
                 </p>
             </div>
 

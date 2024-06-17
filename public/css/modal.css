@@ -377,7 +377,7 @@
    border:none
   }
 
-.btn-yes {
+.btn-yes, .btn btn-yes {
     position: relative;
     background-color: var(--red-icot);
     border: none;
@@ -395,7 +395,7 @@
     margin-right: 10px;
 }
 
-.btn-yes::after {
+.btn-yes::after, .btn btn-yes::after {
     position: absolute;
     bottom: 100%;
     left: 50%;
@@ -408,12 +408,12 @@
     font-size: 12px;
 }
 
-.btn-yes:hover {
+.btn-yes:hover, .btn btn-yes::after {
     background-color: white;
     color: var(--red-icot);
 }
 
-.btn-yes:hover::after {
+.btn-yes:hover::after, .btn btn-yes::after {
     visibility: visible;
     opacity: 1;
 }
