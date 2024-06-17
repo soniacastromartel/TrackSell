@@ -3,16 +3,18 @@
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+
 
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-info card-header-text">
-                        <div class="card-text">
+                <div class="card" style="margin-top:100px">
+                    <div class="card-header card-header-danger">
+                   
                             <h4 class="card-title">Modificar empleado</h4>
-                        </div>
+                   
                     </div>
                     <div class="card-body px-6">
                         <form id="editEmployee" action="{{ route('employees.update', $employee->id) }}" method="POST">
@@ -122,15 +124,17 @@
                                 </div>
                                 <div class="row mt-3 mr-3 text-right">
                                     <div class="col" style="margin-left: 55px;">
-                                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success">
-                                            <span class="material-icons mr-1">save</span> {{ __('Guardar') }}</button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                            {{ __('Guardando...') }}
-                                        </button>
-                                        <button id="btnBack" href="#" class="btn btn-fill btn-red-icot">
-                                        <span class="material-icons">arrow_back</span> {{ __('Volver') }}
-                                        </button>
+                                        <button id="btnSubmitSave" type="submit" class="btn-save">
+                                            <span class="material-icons mr-1">save </span>  
+                                            </button>
+                                    
+                                            <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none">
+                                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                      
+                                            </button>
+                                         <button id="btnBack" href="/config" class="btn-return">
+        <span class="material-icons">arrow_back</span> 
+        </button>
                                         <div class="mt-2 mr-3">
                                             <label id="lbl" class="label"><span class="obligatory">*</span> Estos campos son requeridos</label>
                                         </div>
@@ -167,10 +171,10 @@ font-weight: bold;
         $('#pagesConfig').addClass('show');
         $('#adminUser').addClass('active');
 
-        $("#btnSubmit").on('click', function() {
-            $('#btnSubmit').hide();
-            $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
+        $("#btnSubmitSave").on('click', function() {
+            $('#btnSubmitSave').hide();
+            $('#btnSubmitLoadSave').show();
+            $('#btnSubmitLoadSave').prop('disabled', true);
             $("#editEmployee").submit();
         });
         $("#btnBack").on('click', function() {
@@ -227,3 +231,15 @@ font-weight: bold;
     });
 </script>
 @endsection
+
+<style>
+    
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 140vh !important;
+
+}
+       
+    </style>

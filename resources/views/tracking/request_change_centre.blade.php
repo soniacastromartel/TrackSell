@@ -1,39 +1,38 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-info card-header-text">
-                        <div class="card-text">
+                <div class="card " style="margin-top:120px">
+
+                    <div class="card-header card-header-danger">
+                    
                             <h4 class="card-title">Nueva solicitud</h4>
-                        </div>
+                     
                     </div>
+
                     <div class="card-body ">
                         <form id="createRequestChangeCentre" action="{{ route('tracking.saveRequest') }}" method="POST">
-
                             @csrf
                             @method('POST')
                             @include('tracking.form_change_centre')
                         </form>
                     </div>
-
-
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card ">
-                    <div class="card-header card-header-info card-header-text">
-                        <div class="card-text">
+                    <div class="card-header card-header-danger">
                             <h4 class="card-title">Solicitudes</h4>
-                        </div>
                     </div>
                     <div class="card-body ">
                         <table class="table table-bordered request-changes-datatable">
@@ -248,5 +247,7 @@
         });
 
     });
+    
 </script>
 @endsection
+

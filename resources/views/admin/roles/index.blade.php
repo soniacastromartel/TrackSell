@@ -1,8 +1,10 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
 
 <div id="alertErrorRole" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -10,13 +12,13 @@
 </div>
 
 <div class="content">
-    <div class="container-fluid">
-        <div class="row col-md-12 mb-3 ">
+    <div class="container-fluid" >
+        <div class="row col-md-12 mb-3">
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('roles.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg" ><span class="material-icons">
-                            add_circle</span> Nuevo</a>
+                <a href="{{ route('roles.create') }}" id="btnNewCenter" class="header-btn-add" ><span class="material-icons">
+                add</span></a>
             </div>
         </div>     
         <table class="table table-striped table-bordered roles-datatable">
@@ -143,3 +145,5 @@
 </script>
 
 @endsection
+
+

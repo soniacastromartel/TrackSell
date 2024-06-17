@@ -35,12 +35,12 @@ class CentreController extends Controller
                     ->addColumn('action', function($centre){
                         $buttons = '';
                         if (empty($centre->cancellation_date)) {
-                            $buttons = '<a href="centres/edit/'.$centre->id.'" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
+                            $buttons = '<a href="centres/edit/'.$centre->id.'" class="btn-edit"><span class="material-icons">
                             edit
-                            </span> Editar</a>';
-                            $buttons .= '<a onclick="confirmRequest(0,' . $centre->id . ')" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                            </span></a>';
+                            $buttons .= '<a onclick="confirmRequest(0,' . $centre->id . ')" class="btn-delete"><span class="material-icons">
                             delete
-                            </span> Borrar</a>';
+                            </span></a>';
                         }    
                         return $buttons;
                     })

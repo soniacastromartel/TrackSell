@@ -9,16 +9,15 @@ use App\Http\Controllers\A3CenterSaraController;
 use App\Http\Controllers\ChartController;
 use App\Service;
 use Illuminate\Support\Arr;
+
 Route::get('/', function () {
     return redirect('login');
 });
 
 Auth::routes();
-
 Route::middleware(['check-permission'])->group(function () {
     //! Employees
     Route::get('/admin/employees', 'EmployeeController@index')->name('employees.index');
-    Route::get('/admin/employees/validation', 'EmployeeController@indexPending')->name('employees.indexPending');
     Route::get('/admin/employees/history/{id}', 'EmployeeController@history')->name('employees.history.index');
     Route::get('/admin/employees/edit/{id}', 'EmployeeController@edit')->name('employees.edit');
     Route::put('/admin/employees/update/{id}', 'EmployeeController@update')->name('employees.update');
@@ -27,6 +26,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/admin/employees/denyAccessApp', 'EmployeeController@denyAccessApp')->name('employees.denyAccessApp');
     Route::post('/admin/employees/resetAccessApp', 'EmployeeController@resetAccessApp')->name('employees.resetAccessApp');
     Route::post('/admin/employees/syncA3', 'EmployeeController@syncA3')->name('employees.syncA3');
+    Route::post('/admin/employees/resetPassword', 'EmployeeController@resetPassword')->name('employees.resetPassword');
     Route::post('/admin/employees/resetPassword', 'EmployeeController@resetPassword')->name('employees.resetPassword');
     //!Centress
     Route::get('/admin/centres', 'CentreController@index')->name('centres.index');
@@ -56,10 +56,10 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/tracking/store', 'TrackingController@store')->name('tracking.store');
     Route::get('/tracking/edit/{state}/{id}', 'TrackingController@edit')->name('tracking.edit');
     Route::put('/tracking/update/{state}/{id}', 'TrackingController@update')->name('tracking.update');
-    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}', 'TrackingController@updateState')->name('tracking.updateState');
-    Route::post('/tracking/updatePaidState', 'TrackingController@updatePaidState')->name('tracking.updatePaidState');
-    Route::get('/tracking/refreshServices/{centre_id}', 'TrackingController@refreshServices')->name('tracking.refreshServices');
-    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}', 'TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
+    Route::get('/tracking/updateState/{state}/{id}/{date}/{back?}','TrackingController@updateState')->name('tracking.updateState');
+    Route::post('/tracking/updatePaidState','TrackingController@updatePaidState')->name('tracking.updatePaidState');
+    Route::get('/tracking/refreshServices/{centre_id}','TrackingController@refreshServices')->name('tracking.refreshServices');
+    Route::get('/tracking/refreshDiscount/{service_id}/{centre_id}','TrackingController@refreshDiscount')->name('tracking.refreshDiscount');
     Route::get('/tracking/exportForm', 'TrackingController@exportForm')->name('tracking.exportForm');
     Route::post('/tracking/export', 'TrackingController@export')->name('tracking.export');
     Route::get('/tracking/deleteForm', 'TrackingController@deleteForm')->name('tracking.deleteForm');
@@ -69,6 +69,7 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/tracking/checkDate/{date}/{status}', 'TrackingController@checkDate')->name('tracking.checkDate');
     Route::post('/tracking/exportFinalValidation', 'TrackingController@exportFinalValidation')->name('tracking.exportFinalValidation');
     Route::post('/tracking/calculateValidationRRHH', 'TrackingController@calculateValidationRRHH')->name('tracking.calculateValidationRRHH');
+    Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::post('/tracking/validateTrackings', 'TrackingController@validateTrackings')->name('tracking.validateTrackings');
     Route::post('/tracking/unvalidateTrackings', 'TrackingController@unvalidateTrackings')->name('tracking.unvalidateTrackings');
     Route::get('/tracking/requestChange', 'TrackingController@requestChange')->name('tracking.requestChange');
@@ -92,9 +93,9 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/calculateRanking', 'RankingController@index')->name('calculateRanking');
     Route::post('/ranking/calculateRankings', 'RankingController@calculateRankings')->name('ranking.calculateRankings');
     //!League
+    Route::get('/league/export', 'LeagueController@exportLeague')->name('league.exportLeague');
     Route::get('/centerLeague', 'LeagueController@index')->name('centerLeague');
     Route::post('/league/generateLeague', 'LeagueController@generateLeague')->name('league.generateLeague');
-    Route::post('/league/exportLeague', 'LeagueController@exportLeague')->name('league.exportLeague');
     Route::post('/league/details', 'LeagueController@detailsCentreLeague')->name('league.detailsCentreLeague');
     //!Notifications
     Route::any('/notifications/index', 'NotificationController@index')->name('notifications.index');
@@ -121,7 +122,7 @@ Route::post('/getTargets', 'HomeController@getTargets')->name('home.getTargets')
 Route::get('/generateVersion', 'VersionAppController@generateVersion');
 
 //!A3API
-Route::prefix('a3api')->group(function() {
+Route::prefix('a3api')->group(function () {
     Route::get('/a3', 'A3Controller@index')->name('a3');
     Route::get('/centres/{companyCode}', 'A3Controller@getCentres')->name('centres');
     Route::get('/employees/{companyCode}/{workplaceCode}/{pagenumber}', 'A3Controller@getEmployees')->name('employees');
@@ -134,6 +135,7 @@ Route::prefix('a3api')->group(function() {
     Route::get('/refreshtoken', 'A3Controller@refreshToken')->name('refreshtoken');
     Route::get('/token', 'A3Controller@getAuthCode')->name('code');
 });
+
 
 // Route::fallback(function () {
 //     return response()->json(['error' => 'No encontrado'], 404);

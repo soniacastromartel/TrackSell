@@ -1,9 +1,10 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/services.css') }}">
 <div class="content">
     <div class="container-fluid">
         @if ($user -> rol_id == 1)
@@ -11,8 +12,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('services.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg" ><span class="material-icons">
-                            add_circle</span> Nuevo</a>
+                <a href="{{ route('services.create') }}" id="btnNewCenter" class="header-btn-add" ><span class="material-icons">add</span></a>
             </div>
         </div>   
         @endif
@@ -23,7 +23,7 @@
                 <tr>
                 <th>Nombre</th>
                 <th>Categoría</th>
-                <th>Fecha baja</th>
+                {{-- <th>Fecha baja</th> --}}
                 <th>Acciones</th>
                 </tr>
             </thead>
@@ -34,7 +34,6 @@
 </div> 
   
 @include('common.modal')
-
 
 <script type="text/javascript">
 
@@ -80,7 +79,7 @@
             columns: [ 
                 {data: 'name', name: 'name'},
                 {data: 'category', name: 'category'},
-                {data: 'cancellation_date', name: 'cancellation_date'},
+                // {data: 'cancellation_date', name: 'cancellation_date'},
                 {
                     data: 'action', 
                     name: 'action', 
@@ -145,3 +144,4 @@
 </script>
 
 @endsection
+

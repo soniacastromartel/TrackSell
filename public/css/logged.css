@@ -27,23 +27,20 @@
 .alert-timeout{
     z-index: 99;
     top: 10px;
-    /* left:450px; */
     min-width:30%;
-    /* position: fixed; */
     animation: slide 0.5s forwards;
-    /* width: 100%; */
 }
 
 @keyframes slide {
     100% { top: 10px; }
 }
 @media screen and (max-width: 668px) {
-    .alert{ /* center the alert on small screens */
+    .alert{ 
         left: 10px;
         right: 10px; 
 
     }
-    .alert-timeout{ /* center the alert on small screens */
+    .alert-timeout{
         left: 10px;
         right: 10px; 
     }

@@ -1,4 +1,5 @@
 
+
 <div class="sidebar" data-color="danger" data-background-color="grey" {{-- data-image="../assets/img/sidebar-1.jpg"--}}>
   <div class="sidebar-wrapper d-flex flex-column">
     <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
@@ -42,7 +43,10 @@
         </a>
       </li>
 
+      @if (session()->get('user')->rol_id == 1 )
+
       <li id="menuConfig" class="nav-item ">
+
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesConfig" aria-expanded="false">
           <i class="material-icons">settings</i>
           <p style="font-weight: bold"> Configuración
@@ -64,6 +68,7 @@
               </a>
             </li>
            
+           
             <li id="adminCentre" class="nav-item ">
               <a class="nav-link" href="{{route('centres.index')}}">
                 <i class="material-icons">business</i>
@@ -84,6 +89,8 @@
             </li>
         </div>
       </li>
+      @endif
+
 
       <li class="nav-item ">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesTracking" aria-expanded="false">
@@ -122,6 +129,8 @@
         </div>
       </li>
 
+   
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesReport" aria-expanded="false">
           <i class="material-icons">insert_drive_file</i>
@@ -129,6 +138,8 @@
             <b class="caret"></b>
           </p>
         </a>
+        
+
         <div class="collapse" id="pagesReport">
           <ul class="nav">
 
@@ -138,14 +149,15 @@
                 <span class="sidebar-normal"> Calculadora de Incentivos </span>
               </a>
             </li>
-
-            <li id="calculateService" class="nav-item">
+            @if (session()->get('user')->rol_id == 1 || session()->get('user')->rol_id == 4)
+             <li id="calculateService" class="nav-item">
               <a class="nav-link" href="{{route('calculateServices')}}">
                 <i class="material-icons">track_changes</i>
                 <span class="sidebar-normal"> Dinámica de Servicios </span>
               </a>
             </li>
-
+            @endif
+      
             <li id="centerLeague" class="nav-item">
               <a class="nav-link" href="{{route('centerLeague')}}">
                 <i class="material-icons">
@@ -158,6 +170,7 @@
           </ul>
         </div>
       </li>
+  
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification" aria-expanded="false">
@@ -181,7 +194,7 @@
     </ul>
     
     <div class="versionContainer">
-    
+      <img src="{{ asset('/assets/img/logoIncentivos.png') }}" style="margin:10px; margin-top:40px;">
       <hr>
       <label class="lblVersion"> Versión {{ env('VERSION_WEB') }} </label>
     </div>
@@ -190,7 +203,12 @@
 </div>
 
 <style>
-  #userData {
+  
+.img-logo-sidebar{
+background-color: var(--white-icot);
+padding: 13px;
+}
+#userData {
     font-weight: 900;
   }
 
@@ -215,4 +233,5 @@
     justify-content: flex-end;
     flex-direction: column;
   }
-</style>
+ 
+  </style>

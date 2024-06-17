@@ -1,23 +1,14 @@
-<link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-transparent">
+<div id="{{ Request::is('home') ? 'navbar-home' : 'navbar'}}">
+
     <div class="container-fluid">
         <div class="navbar-wrapper">
-            <div class="navbar-minimize">
-                <button id="minimizeSidebar">
+                <button id="minimizeSidebar" class="{{ Request::is('home') ? 'minimize-sidebar-home' : 'minimize-sidebar' }}">
                     <i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
                     <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
                 </button>
-            </div>
-            <a id="title" class="navbar-brand" href="javascript:;">{{ $title ?? '' }}</a>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-        </button>
         <div class="navbar-collapse justify-content-end collapse">
             <form class="navbar-form">
                 <span class="bmd-form-group">
@@ -28,10 +19,78 @@
             </form>
         </div>
         @if ($nDays != '')
-            <div class="alert-cutoff-date alert-warning" role="alert">
-                <i class="material-icons" id="warning">warning</i>
+        <div id="{{ Request::is('home') ? 'alert-cutoff-date-home' : 'alert-cutoff-date' }}" role="alert">
+                <i class="material-icons"  id="{{ Request::is('home') ? 'warning-home' : 'warning ' }}" >warning</i>
                 En {{ $nDays }} días llega próximo corte, 20 de {{ $currentMonth }}
             </div>
         @endif
     </div>
-</nav>
+</div>
+
+<style>
+    
+#navbar-home {
+     background-image: url(/assets/img/background-nav.png); 
+     background-size: 100%;
+     height: 550px;
+     width: 100%;
+     position: absolute;
+}
+
+.minimize-sidebar-home {
+    position: absolute !important;
+    padding-top: 50px !important;
+    left: 0 !important;
+    background: none !important;
+    border: none !important;
+    color: white !important;
+}
+.minimize-sidebar {
+    position: absolute !important;
+    padding-top: 50px !important;
+    background: none !important;
+    border: none !important;
+    color: var(--red-icot) !important;
+}
+#alert-cutoff-date-home{
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    color: var(--red-icot);
+    background-color: white;
+    padding: 20px 15px;
+    border-radius: 3px;
+    border: 2px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.678), 0 10px 20px -5px rgb(186 46 41 / 50%) !important;
+}
+#alert-cutoff-date{
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    top:20px;
+    color: white;
+    background-color:var(--red-icot);
+    padding: 20px 15px;
+    margin-right: 20px;
+    border-radius: 3px;
+    border: 2px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 8px 25px 0 rgba(0, 0, 0, 0.678), 0 10px 20px -5px rgb(186 46 41 / 50%) !important;
+}
+#warning-home {
+    color: var(--red-icot);
+    font-size: 20px;
+    padding-right: 1rem;
+}
+#warning {
+    color: white;
+    font-size: 20px;
+    padding-right: 1rem;
+}
+
+    </style>

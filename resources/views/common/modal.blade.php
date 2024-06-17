@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{ asset('/css/modal.css') }}">
+
+
 <div class="modal" tabindex="-1" role="dialog" id="modal-validate">
     <input type="hidden" id="id" />
     <input type="hidden" id="validateVal" />
@@ -13,8 +16,8 @@
                 <p id="message-validation" class="px-4 text-center"  style= "margin-bottom: 20px;"></p>
             </div>
             <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot">SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+                <div id="btnConfirmRequest"  class="btn-yes">SI</div>
+                <div id="btnCancelRequest" class="btn-no" data-dismiss="modal">NO</div>
                 </p>
             </div>
         </div>

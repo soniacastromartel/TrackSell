@@ -3,8 +3,8 @@
     @include('inc.navbar')
     @include('common.alert')
 
-    <link rel="stylesheet" href="{{ asset('/css/employee.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    
     <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
     </div>
     <div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
@@ -16,12 +16,11 @@
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-4 text-right" id="blockNewTracking">
-                    <a id="btnSyncA3" class="btn btn-raised"><span class="material-icons mr-1">
+                    <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
                             sync
-                        </span> Sincronizar A3</a>
-                    <button id="btnSubmitLoad" type="submit" class="btn btn-raised" style="display: none">
+                        </span> </a>
+                    <button id="btnSubmitLoad" type="submit" class="btn-sincro-all" style="display: none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        {{ __('Realizando sincronización...') }}
                     </button>
                 </div>
             </div>
@@ -33,7 +32,6 @@
                         <th>Login</th>
                         <th>Centro</th>
                         <th>Categoría</th>
-                        <!-- <th>Permisos</th> -->
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -116,10 +114,6 @@
                         data: 'category',
                         name: 'category'
                     },
-                    // {
-                    //     data: 'role',
-                    //     name: 'role'
-                    // },
                     {
                         data: 'action',
                         name: 'action',
@@ -164,8 +158,7 @@
                         $(row).attr('data-tooltip', tooltipMessage);
                     }
                 },
-
-
+    
                 search: {
                     "regex": true,
                     "smart": true,
@@ -359,3 +352,56 @@
         }
     </script>
 @endsection
+
+<style>
+    
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 220vh !important;
+   
+   }
+
+   td.upper {
+       text-transform: lowercase;
+   }
+
+.user-updated-pass:hover::after,
+.user-updated-acc:hover::after ,
+.user-bloqued:hover::after {
+    content: attr(data-tooltip); /* Inserta el texto del tooltip */
+    position: absolute;
+    bottom: 100%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    white-space: nowrap; 
+    visibility: hidden; 
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s; 
+    background-color: black; 
+    color: white; 
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.user-updated-pass:hover::after,
+.user-updated-acc:hover::after,
+.user-bloqued:hover::after  {
+    visibility: visible; 
+    opacity: 1;
+}
+
+  /* ROW RED FOR BLOQUED USER */
+  
+  .user-bloqued {
+    color: red ;
+}
+
+/* ROW GREEN FOR UPDATED USER */
+.user-updated-acc,.user-updated-pass{
+color: green ;
+}
+
+    </style>

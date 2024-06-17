@@ -8,6 +8,7 @@ use DataTables;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 
+
 class RoleController extends Controller
 {
 
@@ -44,12 +45,13 @@ class RoleController extends Controller
                     ->addColumn('action', function($role){
                         $btn = '';
                         $fnCall = 'destroy(\'' . $role->id . '\')';
-                        $btn .= '<a href="roles/edit/'.$role->id.'"class="btn btn-warning a-btn-slide-text" style=""><span class="material-icons">
-                        edit
-                        </span>  Editar</a>';
-                        $btn .= '<a onclick="confirmRequest(0,' . $role->id . ')" class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
-                        delete
-                        </span>  Borrar</a>';
+
+                        $btn .= '<a href="roles/edit/'.$role->id.'"class="btn-edit" style=""><span class="material-icons">
+                        edit</span></a>';
+
+                        $btn .= '<a onclick="confirmRequest(0,' . $role->id . ')" class="btn-delete"><span class="material-icons">
+                        delete</span></a>';
+                        
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -68,7 +70,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('admin.roles.create', ['title' => $this->title]);
+        $roles = Role::getRolesActive(); 
+        return view('admin.roles.create', ['title' => $this->title, 'roles' => $roles]);
     }
 
     /**
@@ -113,11 +116,12 @@ class RoleController extends Controller
     {
         try{
             $role = Role::find($id);
+            $roles = Role::getRolesActive(); 
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar rol para editar, contacte con el administrador');
         }    
 
-        return view('admin.roles.edit', ['title' => $this->title, 'role' => $role]);
+        return view('admin.roles.edit', ['title' => $this->title, 'role' => $role, 'roles' => $roles]);
     }
 
     /**
@@ -140,7 +144,6 @@ class RoleController extends Controller
             } else {
 
                 $role = Role::find($id);
-
                 $params = $request->all(); 
                 $role->update($params);
 

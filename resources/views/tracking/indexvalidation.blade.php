@@ -1,8 +1,13 @@
-@extends('layouts.logged')
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+@extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -15,7 +20,7 @@
             @csrf
             @method('POST')
             <div class="row">
-                <div class="col-lg-8 p-0">
+                <div class="col-lg-8 p-0"   >
                     <div class="col-lg-9 ">
                         <div class="card card-info text-white ml-4 mt-0">
                             <div class="card-header">
@@ -23,7 +28,7 @@
                                 <span style="font-size:16px; vertical-align:super; font-weight:bold; color: var(--red-icot)">Funcionamiento</span>
                             </div>
                             <div class="card-body py-0 mb-3">
-                                <div class="row">
+                                <div class="row" >
                                     <div class="col-md-3">
                                         <h5 class="card-title" style="font-size:18px !important;">Calcular</h5>
                                     </div>
@@ -64,63 +69,88 @@
                 <div class="card-header card-header-danger">
                     <h4 class="card-title">Seguimiento</h4>
                 </div>
-                <div class="card-body row justify-between">
-                    <div class="col-md-6" style="margin-top:35px;">
-                        <div class="row m-0" >
-                            <div class="col-md-4 dropdown bootstrap-select mb-2" style="margin-right: 25px;">
-                                <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Cod Empresa" tabindex="-98">
+                <div class="container-fluid">
+
+               
+                    <div class="row justify-content-lg-between m-4">
+                     
+
+                            
+                        <div class="row flex-column">
+                        
+                
+
+                                <select class="selectpicker" name="business_id" id="business_id" data-size="7" data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
                                     <option value="">SIN CODIGO </option>
                                     @foreach ($a3business as $a3business)
                                     <option value="{{$a3business->code_business}}">{{ $a3business->code_business .'-'. $a3business->name_business}}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                            <div class="input-group date">
-                                <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
-                                <input type="hidden" name="monthYear" id="monthYear" />
-                            </div>
+                           
+                     
+                                <div id="monthYearPickerContainer">
+
+                                    <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
+                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                                    <input type="hidden" name="monthYear" id="monthYear" />
+                                    
+                                </div>
+
                         </div>
-                        <div class="col-md-12 input-group px-3" style="margin-top:35px;">
-                            <button id="btnClear" href="#" class="ml-2 btn btn-fill btn-warning">
-                                <span class="material-icons mr-1">clear_all</span>
-                                {{ __('Limpiar formulario') }}
-                            </button>
-                            <button id="btnCalculate" type="button" class="btn btn-fill btn-grey" >
-                            <span class="material-icons mr-2">calculate</span>{{ __('Calcular') }}</button>
-                            <button id="btnCalculateLoad" type="button" class="btn btn-fill btn-grey" style="display: none">
+                       
+
+                     
+ 
+                          <div class="row flex-column">
+
+                           
+                            <button id="btnCalculate" type="button" class="btn-calculate" >
+                            <span id="icon-calculate" class="material-icons">calculate</span>{{ __('Calcular') }}</button>
+                            <button id="btnCalculateLoad" type="button" class="btn-calculate" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Calculando datos...') }}
+                          
                             </button>
-                            <button id="btnSubmit" type="submit" class="btn btn-success">
-                            <span class="material-icons mr-1">search</span>{{ __('Buscar') }}</button>
+                            <button id="btnSubmit" type="submit" class="btn-search">
+                            <span id="icon-search" class="material-icons">search</span>{{ __('Buscar') }}</button>
                             <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Obteniendo datos...') }}
+                              
                             </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-md-12 input-group date px-3 actions-container" style="padding-top: 15px;">
-                        <button id="btnExport" type="button" class="ml-2 btn btn-fill btn-dark-black">
-                            <span class="material-icons mr-1">file_download</span>{{ __('Exportar') }}</button>
-                            <button id="btnExportLoad" type="submit" class="btn btn-grey" style="display: none">
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Exportando datos...') }}
-                            </button>
-                            <button id="btnValidate" type="button" class="ml-2 btn btn-fill btn-success">
-                            <span class="material-icons mr-2">paid</span>{{ __('Pagar todos') }}</button>
+                            
+                           </div>
+                   
+
+                           <div class="row flex-column">
+                       
+                            <button id="btnValidate" type="button" class="btn-pay-all">
+                            <span id="icon-pay" class="material-icons">paid</span>{{ __('Pagar todos') }}</button>
                             <button id="btnValidateLoad" type="submit" class="btn btn-success" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Validando datos...') }}
+                            
                             </button>
-                            <button id="btnUnvalidate" type="button" class="ml-2 btn btn-fill btn-red-icot">
-                            <span class="material-icons mr-2">restart_alt</span>{{ __('Deshacer Pagar todos') }}</button>
+                            <button id="btnUnvalidate" type="button" class="btn-deshacer-pagar">
+                            <span id="icon-deshacer" class="material-icons">restart_alt</span>{{ __('Deshacer Pagar todos') }}</button>
                             <button id="btnUnvalidateLoad" type="submit" class="btn btn-red-icot" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                {{ __('Validando datos...') }}
+                        
                             </button>
-                        </div>
-                </div>
+
+                            <button id="btnClear" href="#" class="btn-refresh" >
+                                <span id="icon-refresh" class="material-icons">refresh</span>
+                                {{ __('Limpiar formulario') }}
+                            </button>
+
+                            <button id="btnExport" type="button" class="btn-export">
+                                <span id="icon-export" class="material-icons">file_download</span>{{ __('Exportar') }}</button>
+    
+                                <button id="btnExportLoad" type="submit" class="btn-export" style="display: none">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                </button>
+
+                           </div>
+                 </div>
+    
+
                 
                 </div>
             </div>
@@ -143,25 +173,6 @@
         </table>
     </div>
 </div>
-<style>
-    .tracking-validation-datatable tr>:nth-child(6) {
-        color: #959ba3;
-    }
-
-    .month-picker-open-button {
-        margin-right: 15px;
-    }
-
-    .actions-container {
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        height: 100%;
-    }
-    /* table.dataTable.dataTable_width_auto {
-        width: 100%; 
-    } */
-</style>
 
 <script type="text/javascript">
     var table;
@@ -214,7 +225,10 @@
         var date = new Date();
         var textMonthYear =  setDate(date);
         $('#monthYearPicker').val(textMonthYear);
-        $('#monthYearPicker').MonthPicker();
+    
+        $('#monthYearPicker').MonthPicker({
+                ShowIcon: false
+            });
 
         function getEmployeeIncentives() {
             if ($.fn.dataTable.isDataTable('.tracking-validation-datatable')) {
@@ -562,3 +576,4 @@
 </script>
 
 @endsection
+

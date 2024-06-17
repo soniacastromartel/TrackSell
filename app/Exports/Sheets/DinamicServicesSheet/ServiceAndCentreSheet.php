@@ -19,7 +19,6 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
     private $totalServices;
     private $grandTotal;
 
-
     public function __construct($request, $selectedCentre, $selectedService, $totalServices, $grandTotal)
     {
         $this->request = $request;
@@ -35,14 +34,13 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
     { {
 
             $data = collect([[
-
                 'SERVICIO' => $this->selectedService ? $this->selectedService->name : 'SERVICIO SELECCIONADO',
                 'NULL1' => '',
                 'NULL2' => '',
                 'NULL3' => '',
                 'NULL4' => '',
                 'NULL5' => '',
-                'CENTRO' => $this->selectedCentre ? $this->selectedCentre->name : 'CENTRO SELECCIONADO',
+                'CENTRO' => $this->selectedCentre ? $this->selectedCentre->name : 'TODOS',
                 'NULL6' => '',
                 'REALIZADOS' => $this->totalServices,
                 'NULL7' => '',
@@ -72,10 +70,9 @@ class ServiceAndCentreSheet implements FromCollection, WithHeadings, WithEvents
                 for ($row = 1; $row <= $highestRow; $row++) {
                     $event->sheet->mergeCells("A{$row}:F{$row}");
                     $event->sheet->mergeCells("G{$row}:H{$row}");
-                  //  $event->sheet->mergeCells("I{$row}:J{$row}");
+                
                 }
-                // $event->sheet->getStyle('I')->getAlignment()->setHorizontal(AlignmenT::HORIZONTAL_LEFT);
-                // $event->sheet->getStyle('J')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+            
                 $event->sheet->getStyle("A1:K1")->applyFromArray([
                     'font' => [
                         'bold' => true,

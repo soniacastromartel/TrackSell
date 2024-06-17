@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Las credenciales no son encontradas en el programa',
+    'failed' => 'Las credenciales son incorrectas',
     'throttle' => 'Demasiados intentos de login. Por favor, intentelo en unos minutos.',
 
 ];

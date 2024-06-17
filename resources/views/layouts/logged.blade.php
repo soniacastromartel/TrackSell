@@ -19,7 +19,7 @@
 
     <link rel="shortcut icon" href="{{ asset('assets/img/LogoICOT.png') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material-lite.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/font-google-material-icons.css') }}" />
@@ -29,7 +29,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.dataTables.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}" />
 
+
     <link rel="stylesheet" href="{{ asset('css/yearpicker.css') }}">
+    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     <!-- <script src="/path/to/cdn/jquery.slim.min.js"></script> -->
     <script src="{{ asset('js/yearpicker.js') }}" async></script>

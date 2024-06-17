@@ -1,9 +1,11 @@
 @extends('layouts.logged')
-
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/modal.css') }}">
 
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -11,7 +13,7 @@
 </div>
 
 <div class="content">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:120px">
                 <table class="table  table-striped table-bordered  tracking-delete-datatable">
                     <thead  class="table-header">
                         <th>Centro Prescriptor</th>
@@ -50,8 +52,8 @@
             </div>
 
             <div class="modal-footer center">
-                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot" disabled>SI</button>
-                <button id="btnCancelRequest" type="button" class="btn btn-default" data-dismiss="modal" disabled>NO</button>
+                <button id="btnConfirmRequest" type="button" class="btn btn-red-icot btn-round" disabled>SI</button>
+                <button id="btnCancelRequest" type="button" class="btn btn-default btn-round" data-dismiss="modal" disabled>NO</button>
                 </p>
             </div>
 
@@ -208,3 +210,8 @@ function confirmRequest(state, id) {
         }
 </script>
 @endsection
+
+
+
+
+

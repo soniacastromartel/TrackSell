@@ -1,3 +1,11 @@
+
+
+
+<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+
+
+
 <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
@@ -142,52 +150,41 @@
 </div>
 <div id="containerBtns">
   <div class="float-left">
-  <button id="btnClear" href="#" class="btn btn-fill btn-warning">
-    <span class="material-icons">clear_all</span>{{ __('Limpiar formulario') }}
-  </button>
+    <button id="btnClear" class="btn-refresh">Limpiar Formulario<span id=icon-refresh
+      class="material-icons">refresh</span>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+      style="display: none;"></span>
+</button>
 </div>
   <div class="float-right">
-      <button id="btnSubmit" type="button" class="btn btn-fill btn-success"> <span class="material-icons mr-1">
-                            save
-                            </span> {{ __('Guardar') }}</button>
-      <button id="btnSubmitLoad" type="button" class="btn btn-success" style="display: none">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        {{ __('Guardando...') }}
+      <button id="btnSubmitSave" type="button" class="btn-save"> <span class="material-icons">save
+                            </span></button>
+      <button id="btnSubmitLoadSave" type="button" class="btn-save" style="display: none">
+        <span class="material-icons">save</span>
       </button>
-      <button id="btnBack" href="/config" class="btn btn-fill btn-red-icot">
-      <span class="material-icons">
-                            arrow_back
-                            </span> {{ __('Volver') }}
-      </button> 
+
+      <button id="btnBack" href="/config" class="btn-return">
+        <span class="material-icons">arrow_back</span> 
+        </button>
+
       <br>
+
+       
+
+
       <label id="lbl" class="float-right mr-4"><span class="obligatory">*</span> Estos campos son requeridos</label>
   </div>
 </div>
 
 <style>
-  #subLabel{
-    color: var(--red-icot);
-    font-weight: bold !important;
-    font-size: 11px;
-  }
-  #lbl {
-        color: black;
-        font-weight: 800;
-        font-family: 'Helvetica', 'Arial', sans-serif;
-        margin-top: 25px;
-        font-size:12px;
-      }
-
-    #containerBtns{
-      margin-top: 40px;
-    }
+ 
 </style>
 
 <script type="text/javascript">
   $(function () {
 
-    $("#btnSubmit").on('click', function(e){
-          $('#btnSubmit').hide()
+    $("#btnSubmitSave").on('click', function(e){
+          $('#btnSubmitSave').hide()
           if (action == 'create') {
             checkFecha();
           } else {
@@ -234,8 +231,8 @@
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
                     alert(response.errors); 
-                    $('#btnSubmitLoad').hide();
-                    $('#btnSubmit').show();
+                    $('#btnSubmitLoadSave').hide();
+                    $('#btnSubmitSave').show();
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -272,8 +269,8 @@
                 error: function(xhr, status, error) {
                     // var response = JSON.parse(xhr.responseText);
                     // alert(response.errors); 
-                    // $('#btnSubmitLoad').hide();
-                    // $('#btnSubmit').show();
+                    // $('#btnSubmitLoadSave').hide();
+                    // $('#btnSubmitSave').show();
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) { 
@@ -312,8 +309,8 @@
                       if (data.result == "ok") {
                         var service_name = $('#service_id option:selected').text(); 
                         $('#service_name').val(service_name);
-                        $('#btnSubmitLoad').show();
-                        $('#btnSubmitLoad').prop('disabled', true);
+                        $('#btnSubmitLoadSave').show();
+                        $('#btnSubmitLoadSave').prop('disabled', true);
                         $('#alertErrorTrackingDate').hide(); 
                         if (action == 'create') {
                           $('form#createTracking').submit(); 
@@ -321,8 +318,8 @@
                           $('form#editTracking').submit(); 
                         }
                       } else {
-                        $('#btnSubmitLoad').hide();
-                        $('#btnSubmit').show();
+                        $('#btnSubmitLoadSave').hide();
+                        $('#btnSubmitSave').show();
                         $('#alertErrorTrackingDate').text(data.message); 
                         $('#alertErrorTrackingDate').show().delay(2000).slideUp(300); 
                       }

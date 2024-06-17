@@ -1,33 +1,31 @@
 @extends('layouts.logged')
-
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
-    <div class="content">
-        <div>
-            <div class="card">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title">Perfil Usuarios</h4>
-                </div>
-                <div class="col-lg-10 mx-auto">
+
+    <div class="content" style="display:flex; justify-content:center" >
+       
+                <div class="card" style="width:40%; margin-top:100px;">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Perfil Usuarios</h4>
+                    </div>
                     <div class="card-body">
-                        <div class="col-11 mx-auto">
+                        <div class="col-lg-10 mx-auto">
                         <form id=editEmployee action="{{ route('editProfile', $employee->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-
                             <div class="row">
-                                <div class="col-md-4">
-                                    <label for="name" class="label">Nombre * </label>
+                                <div class="col-lg-10 mx-auto">
+                                    <label for="name" class="label">Nombre </label>
                                     <input type="text" class="form-control" name="name" id="name" placeholder=""
                                         value="{{ isset($employee) ? $employee->name : '' }}" readonly>
                                 </div>
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-lg-10 mx-auto">
                                     <label for="login" class="label">Login </label>
                                     <input type="text" class="form-control" name="username" id="username"
                                         placeholder="" value="{{ isset($employee) ? $employee->username : '' }}"
@@ -36,16 +34,16 @@
                             </div>
                             <br>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-lg-10 mx-auto">
                                     <label for="login" class="label">Password </label>
                                     <input type="password" class="form-control" name="password" id="password"
                                         placeholder="" value="{{ isset($employee) ? $employee->password : '' }}"
                                         readonly>
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            <div class="col-lg-10 mx-auto" style="margin-top:50px;">
                                 <!--- Accion solo permitida para admin -->
-                                <div class="col-md-2">
+                                <div class="row">
                                     <select class="selectpicker" name="rol_id" id="rol_id" data-size="7"
                                         data-style="btn btn-red-icot btn-round" title="* Seleccione Rol" tabindex="-98"
                                         @if (isset($employee) && $employee->rol_id != 1) disabled="disabled" @endif>
@@ -57,7 +55,7 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="row">
                                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
                                         data-style="btn btn-red-icot btn-round" title="* Seleccione Centro"
                                         tabindex="-98">
@@ -70,18 +68,18 @@
                                 </div>
                                 
                             </div>
-                            <div class="row mt-2 text-right">
+                            <div class="row md-3 text-right">
                                     <div class="col-md-12">
-                                        <button id="btnSubmit" type="submit" class="btn btn-success">
-                                        <span class="material-icons mr-2">save</span>{{ __('Guardar') }}
+                                        <button id="btnSubmitSave" type="submit" class="btn-save">
+                                        <span class="material-icons">save</span>
                                         </button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn btn-success"
-                                            style="display: none">
+                                        <button id="btnSubmitLoadSave" type="submit" class="btn-save"
+                                            style="display: none"Save>
                                             <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>{{ __('Guardando...') }}
+                                                aria-hidden="true"></span>
                                         </button>
-                                        <button id="btnBack" href="/config" class="btn btn-red-icot">
-                                        <span class="material-icons">arrow_back</span> {{ __('Volver') }}
+                                        <button id="btnBack" href="/config" class="btn-return">
+                                        <span class="material-icons">arrow_back</span> 
                                         </button>
                                     </div>
                                 </div>
@@ -89,8 +87,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+           
+      
     </div>
 
     <script type="text/javascript">
@@ -103,10 +101,10 @@
             $('#menuProfile').addClass('active');
 
 
-            $("#btnSubmit").on('click', function() {
-                $('#btnSubmit').hide();
-                $('#btnSubmitLoad').show();
-                $('#btnSubmitLoad').prop('disabled', true);
+            $("#btnSubmitSave").on('click', function() {
+                $('#btnSubmitSave').hide();
+                $('#btnSubmitLoadSave').show();
+                $('#btnSubmitLoadSave').prop('disabled', true);
                 $("#editEmployee").submit(function() {
                     $('<input />').attr('type', 'hidden')
                         .attr('id', 'rol_id_hidden')
@@ -121,3 +119,15 @@
         });
     </script>
 @endsection
+
+<style>
+    .main-panel {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+ 
+}
+
+
+
+    </style>

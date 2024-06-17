@@ -1,57 +1,29 @@
 @extends('layouts.logged')
-
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
 
 
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
 <div id="alertErrorServiceIncentive" class="alert alert-danger" role="alert" style="display: none">
 </div>
 <div id="alertServiceIncentive" class="alert alert-warning" role="alert" style="display: none">
 </div>
 
 
-
-<style>
-    .file-upload {
-        margin: 0 10px 0 25px;
-    }
-
-    .file-upload input.upload {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        padding: 0;
-        z-index: 10;
-        font-size: 20px;
-        cursor: pointer;
-        height: 36px;
-        opacity: 0;
-        filter: alpha(opacity=0);
-    }
-
-    #fileuploadurl {
-        border: none;
-        font-size: 12px;
-        padding-left: 0;
-        width: 250px;
-        margin-left: 25px;
-    }
-</style>
 <div class="content">
     <div class="container-fluid">
-        <div class="card">
+        <div class="card incentive-logo" style="margin-top:120px ">
             <div class="card-header card-header-danger">
                 <h4 class="card-title">Configuración</h4>
             </div>
             <div class="card-body">
-                <div class="row col-md-12 mb-3 justify-between">
-                    <div class="row col-lg-8 col-md-5">
-                        <div class="form-group col-md-4">
+                <div class="row col-md-12 mb-4 ">
+                    <div class="row col-lg-8 ">
+                        <div class="form-group ">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
-    
+                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
                                     @foreach ($centres as $centre)
                                     <option value="{{$centre->id}}">{{$centre->name}}</option>
                                     @endforeach
@@ -61,8 +33,7 @@
     
                         <div class="form-group col-md-4">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Servicio" tabindex="-98">
-    
+                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Servicio" tabindex="-98">
                                     @foreach ($services as $service)
                                     <option value="{{  $service->id  }}">{{$service->name}}</option>
                                     @endforeach
@@ -70,22 +41,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2">
-                        <button id="btnClear" href="#" class="btn btn-fill btn-warning">
+                   
+                    <div class="form-group col-md-4" style="display:flex;justify-content:end;align-items:center;">
+                        <button id="btnClearRefresh" href="#" class="btn-refresh-circle">
                         <span class="material-icons">
-                            clear_all
-                            </span>    {{ __('Limpiar formulario') }}
+                            refresh
+                            </span>   
                         </button>
-                        <button id="btnSubmit" type="submit" class="btn btn-fill btn-success"><span class="material-icons mr-1">
-                            search</span> {{ __('Buscar') }}</button>
-                        <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
+                        <button id="btnSubmitSearch" type="submit" class="btn-search-circle">
+                        <span class="material-icons">
+                            search
+                        </span>
+                    </button>
+                        <button id="btnSubmitLoadSearch" type="submit" class="btn-search-circle" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            {{ __('Obteniendo datos...') }}
                         </button>
                     </div>
-
                 </div>
-
         </div>
 
     </div>
@@ -179,7 +151,7 @@
             $('.services-datatable').DataTable().search('').draw();
             $('.services-datatable').DataTable().ajax.reload();
         }
-        $("#btnClear").on('click', function(e) {
+        $("#btnClearRefresh").on('click', function(e) {
             e.preventDefault();
             clearForms();
         });
@@ -207,11 +179,11 @@
         });
 
 
-        $("#btnSubmit").on('click', function(e) {
+        $("#btnSubmitSearch").on('click', function(e) {
             e.preventDefault();
-            $('#btnSubmit').hide();
-            $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
+            $('#btnSubmitSearch').hide();
+            $('#btnSubmitLoadSearch').show();
+            $('#btnSubmitLoadSearch').prop('disabled', true);
             getServiceIncentives();
         });
 
@@ -297,8 +269,8 @@
                         d.service = $("#service_id option:selected").val()
                     },
                     dataSrc: function(json) {
-                        $('#btnSubmit').show();
-                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmitSearch').show();
+                        $('#btnSubmitLoadSearch').hide();
                         return json.data;
                     }
                 },
@@ -361,8 +333,8 @@
 
                 $('#alertErrorServiceIncentive').text(response.mensaje);
                 $('#alertErrorServiceIncentive').show();
-                $('#btnSubmitLoad').hide();
-                $('#btnSubmit').show();
+                $('#btnSubmitLoadSearch').hide();
+                $('#btnSubmitSearch').show();
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {

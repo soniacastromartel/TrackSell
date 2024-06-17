@@ -5,15 +5,15 @@
 @include('inc.navbar')
 @include('common.alert')
 
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card ">
-                    <div class="card-header card-header-info card-header-text">
-                      <div class="card-text">
+                    <div class="card-header card-header-danger">
                         <h4 class="card-title">Nuevo servicio</h4>
-                      </div>
                     </div>
                     <div class="card-body ">
                         <form id="createService" action="{{ route('services.store') }}" method="POST" enctype="multipart/form-data">
@@ -40,7 +40,7 @@
         $('#pagesConfig').addClass('show');
         $('#adminService').addClass('active')
 
-        $("#btnSubmit").on('click', function(){
+        $("#btnSubmitSave").on('click', function(){
             $("#createService").submit();
         });
         $("#btnBack").on('click', function(){

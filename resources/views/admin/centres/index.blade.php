@@ -1,9 +1,10 @@
 @extends('layouts.logged')
-
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
+
+
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <div id="alertErrorCentre" class="alert alert-danger" role="alert" style="display: none">
 </div>
@@ -17,8 +18,8 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-4 text-right">
-                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="btn btn-red-icot btn-lg"><span class="material-icons mr-1">
-                            add_circle</span> Nuevo</a>
+                <a href="{{ route('centres.create') }}" id="btnNewCenter" class="header-btn-add" ><span class="material-icons">
+                            add</span></a>
             </div>
         </div>
         @endif
@@ -42,10 +43,14 @@
 @include('common.modal')
 
 <style>
+.content {
+    background-image: url(/assets/img/background_continue.png) !important;
+    background-position: center center !important;
+    background-size: 1000px;
+    height: 160vh !important;
 
-    table.dataTable.dataTable_width_auto {
-        /* width: 100%; */
-    }
+}
+    
 </style>
 
 <script type="text/javascript">
@@ -208,3 +213,6 @@
 </script>
 
 @endsection
+
+
+

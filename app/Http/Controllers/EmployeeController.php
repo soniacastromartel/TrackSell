@@ -350,7 +350,6 @@ class EmployeeController extends DefaultLoginController
         }
     }
 
-
     //! VALIDATE USER AND NEW PASSWORD
 
     public function resetPassword(Request $request)

@@ -6,7 +6,7 @@
 @include('common.alert')
 
 <div class="content">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:100px">
         <div class="row">
             <div class="col-md-12">
                 <div class="card ">

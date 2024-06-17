@@ -31,8 +31,6 @@ class ServiceController extends Controller
         $this->title = 'Servicios';
         $this->user = session()->get('user');
     }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -78,12 +76,12 @@ class ServiceController extends Controller
                     ->addColumn('action', function ($service) {
                         $btn = '';
                         if (empty($service->cancellation_date)) {
-                            $btn = '<a href="services/edit/' . $service->id . '" class="btn btn-warning a-btn-slide-text"><span class="material-icons">
+                            $btn = '<a href="services/edit/' . $service->id . '" class="btn-edit"><span class="material-icons">
                             edit
-                            </span> Editar</a>';
-                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn btn-red-icot a-btn-slide-text"><span class="material-icons">
+                            </span></a>';
+                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn-delete"><span class="material-icons">
                             delete
-                            </span> Borrar</a>';
+                            </span></a>';
                         }
                         return $btn;
                     })
@@ -105,10 +103,12 @@ class ServiceController extends Controller
     {
         try {
             $categories = DB::table('service_categories')->get();
+            $centres = Centre::getCentresActive();
 
             return view('admin.services.create', [
                 'title' => $this->title,
-                'categories' => $categories
+                'categories' => $categories,
+                'centres' => $centres
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar servicio, contacte con el administrador');
@@ -127,44 +127,44 @@ class ServiceController extends Controller
             $request->validate([
                 'name'        => 'required',
                 'description' => 'required',
-                'alias_img'   => 'required',
+                'alias_img'   => 'required|unique:services,alias_img',
                 'category'    => 'required',
-                'changeImg'   => 'mimes:jpg'
+                'changeImg'   => 'required|mimes:jpg,png,jpeg|max:2048'
             ]);
+    
             $params = $request->all();
-
-            $existsAlias = DB::table('services')
-                ->select('alias_img')
-                ->where('alias_img', '=', $params['alias_img'])->get()->toArray();
-
-            if (!empty($existsAlias)) {
-                return back()->with('error', 'El alias ya existe, por favor elegir otro');
+    
+            if ($request->hasFile('changeImg')) {
+                $image = $request->file('changeImg');
+                $imageName = $request->alias_img . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/img/services', $imageName);
+                $imagePath = 'img/services/' . $imageName;
             } else {
-                $request->file('changeImg')->storeAs('public/img/services/',  $request->alias_img . ".jpg");
-
-                $pathImg = env('STORAGE_IMGS_SERVICES');
-
-                $service = array(
-                    'name' => $params['name'],
-                    'url' => $params['url'],
-                    'category_id' => $params['category'],
-                    'description' => $params['description'],
-                    'alias_img' => $params['alias_img'],
-                    'image' => $pathImg . $params['alias_img'] . '.jpg'
-                );
-                $service_id = Service::create($service)->id;
-
-                $request->session()->put('success', 'Servicio creado correctamente');
-                return redirect()->action('ServiceController@index')
-                    ->with('success', 'Servicio creado correctamente');
+                $imagePath = 'img/default.png';
             }
+    
+            // Crear el servicio
+            $service = Service::create([
+                'name' => $params['name'],
+                'url' => $params['url'],
+                'category_id' => $params['category'],
+                'description' => $params['description'],
+                'alias_img' => $params['alias_img'],
+                'image' => $imagePath,
+               
+            ]);
+    
+            // Redirigir a la vista index con un mensaje de éxito
+            return redirect()->route('services.index')->with('success', 'Servicio creado correctamente');
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->with('error', 'Formulario incompleto, faltan campos requeridos');
+            // Mostrar los errores de validación para depuración
+            return back()->with('error', 'Ya existe este servicio o campos requeridos incompletos');
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al crear servicio, contacte con el administrador');
         }
     }
-
+    
+       
     /**
      * Display the specified resource.
      *
@@ -200,10 +200,11 @@ class ServiceController extends Controller
                 ->get(['name'])
                 ->pluck('name')->toArray();
 
-            $centres = '';
-            foreach ($centresName  as $key => $centre) {
-                $centres .= '- ' . $centre . PHP_EOL;
-            }
+                $centres = Centre::select("id", "name")
+                ->whereIn('id', $centresService)
+                ->whereNull('cancellation_date')
+                ->orderby('name')
+                ->get();
             $service = Service::find($id);
 
             $categories = DB::table('service_categories')->get();
@@ -359,9 +360,8 @@ class ServiceController extends Controller
                         $user = session()->get('user');
                         if (empty($service->cancellation_date) && $user->rol_id == 1) {
                             // $fnCall = 'destroyIncentive('.$service->serviceprice_id.' )';
-                            $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btnDeleteServicePrice btn btn-red-icot a-btn-slide-text"><span class="material-icons">
-                        delete
-                        </span> Borrar</a>';
+                            $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btn-delete"><span class="material-icons">
+                        delete</span></a>';
                         }
                         return $btn;
                     })
@@ -438,84 +438,6 @@ class ServiceController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //!FUNCIÓN PARA DINÁMICA DE SERVICIOS
-
-    // public function calculateServices()
-    // {
-    //     try {
-    //         $this->user = session()->get('user');
-    //         $this->centreId = $this->user['centre_id'];
-    //         $title = 'Dinámica de Servicios';
-
-    //         if (isset($this->centreId) && $this->centreId != null) {
-    //             $services = Service::getServicesActive($this->centreId, true, false);
-    //             $centres = Centre::getCentreByField($this->centreId);
-    //         } else {
-    //             $services = Service::getServicesActive();
-    //             $centres = Centre::getCentresActive();
-    //         }
-    //         $disabledService = false;
-
-    //         return view('calculate_services', [
-    //             'title'            => $title,
-    //             'centres'         => $centres,
-    //             'services'        => $services,
-    //             'disabledService' => $disabledService,
-    //             'user'      => $this->user
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => 'false',
-    //             'errors'  => $e->getMessage(),
-    //         ], 400);
-    //     }
-    // }
-    // /**
-    //  * Function to to retrieve a list of services sold during a  period, and (optionally) filtered by center ID
-    //  */
-
-    // public function getSalesServices(Request $request)
-    // {
-    //     try {
-    //         if (!$request->ajax()) {
-    //             return;
-    //         }
-
-    //         $params = $request->all();
-    //         $centreId = $params['centre_id'];
-
-    //         $initPeriod = $params['dateFrom'];
-    //         $endPeriod = $params['dateTo'];
-
-    //         $servicesQuery = Service::select(
-
-    //             'services.name',
-    //             'service_prices.price',
-    //             DB::raw('COUNT(trackings.id) as total'),
-    //         )
-
-    //             ->join('service_prices', 'services.id', '=', 'service_prices.service_id')
-    //             ->join('trackings', 'services.id', '=', 'trackings.service_id')
-    //             ->whereBetween('trackings.validation_date', [$initPeriod, $endPeriod])
-    //             ->whereNull('trackings.cancellation_date')
-    //             ->groupBy('services.id');
-
-    //         if ($centreId) {
-    //             $servicesQuery->where('trackings.centre_id', $centreId);
-    //         }
-
-    //         $services = $servicesQuery->get();
-
-    //         return response()->json([
-    //             "data" => $services
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => 'false',
-    //             'errors'  => $e->getMessage(),
-    //         ], 400);
-    //     }
-    // }
 
     //!PRUEBA VIEW SOLO HTML 
 
@@ -527,26 +449,45 @@ class ServiceController extends Controller
         $endDate = $request->input('end_date');
         $services = Service::getServicesActiveFilter();
         $centres = Centre::getCentresActive();
-        $selectedCentre = Centre::find($centreId);
-        $selectedService = Service::find($serviceId);
-
-        //TODO modificar los parámetros cuando selecciono servicio y centro
+        $selectedCentre = !empty($centreId) ? Centre::find($centreId) : null;
+        $selectedService = !empty($serviceId) ? Service::find($serviceId) : null;
+        //Todos centros
         if ($centreId && !$serviceId) {
             $servicesCount = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->total;
                     return $item;
-                })->sortByDesc('total');
+                })
+                ->sortByDesc('total');
+         //Todos servicios       
         } elseif ($serviceId && !$centreId) {
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('employees.name', 'centres.name','service_prices.price','services.name')
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->cantidad;
                     return $item;
                 })->sortByDesc('cantidad');
-        } else {
+
+        //Todos los centros y servicios        
+        } elseif (!$serviceId && !$centreId)  {
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('services.name')
+                ->get()
+                ->map(function ($item) {
+                    $item->total_price_per_centre = $item->price * $item->cantidad;
+                    return $item;
+                })->sortByDesc('cantidad');
+
+             
+
+               
+             
+        } else {
+            //Todo un centros y  un servicio
+            $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('employees.name', 'centres.name','service_prices.price','services.name')
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->cantidad;
@@ -554,22 +495,74 @@ class ServiceController extends Controller
                 })->sortByDesc('cantidad');
         }
 
+        $servicesCountGroupService =  Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+           ->groupBy('centres.name','service_prices.price','services.name')
+            ->get()
+            ->map(function ($item) {
+                $item->total_price_per_centre = $item->price * $item->cantidad;
+                return $item;
+            })->sortByDesc('cantidad');
+
         $totalServices = $servicesCount->sum('cantidad');
         $grandTotal = $servicesCount->sum('total_price_per_centre');
         $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
             ->get();
+        $serviceByCentre = Service::getCountAllServices($serviceId, null, $startDate,$endDate)
+        ->groupBy('centre_name','services.name')
+        ->get()
+        ->map(function ($item) {
+            $item->total_price = $item->price * $item->cantidad;
+            return $item;
+        })->sortByDesc('cantidad');
+
+        $serviceEmployeeCategory = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+        ->groupBy('category_name')
+        ->get()
+        ->map(function ($item) {
+            $item->total_price_per_centre = $item->price * $item->cantidad;
+            return $item;
+        })->sortByDesc('cantidad');
+
+        $serviceCategory = Service::getCountAllServices($serviceId, $centreId,$startDate, $endDate)
+        ->groupBy('category_service')
+        ->get()
+        ->sortByDesc('cantidad');
+
+        $serviceEmployee = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+        ->groupBy('employees.name')
+        ->get()
+        ->sortByDesc('cantidad');
+       
+
+        //?datos grafica para el total de servicios en todos los centros 
+        $labelsServiceAllTotal = [$selectedService ? $selectedService->name : ''];
+        $dataServiceAllTotal =  [$totalServices];
         //?datos para la grafica por cetro 
         $labelsCentre = $servicesCountCentre->pluck('service_name')->all();
         $dataCentre = $servicesCountCentre->pluck('total')->all();
         //?datos para la grafica por servicio
-        $labelsService = $servicesCount->pluck('employee_name')->all();
-        $dataService = $servicesCount->pluck('cantidad');
+        $labelsService = $servicesCountGroupService->pluck('centre_name')->all();
+        $dataService = $servicesCountGroupService->pluck('cantidad');
         //?datos para la grafica por todos los servicios
         $labelsServiceAll = $servicesCount->pluck('service_name')->all();
         $dataServiceAll = $servicesCount->pluck('cantidad')->all();
+        $dataTotalService = [$grandTotal];
         //?datos para la grafica filtrado por centro y servicio 
         $labelsCentreService = $selectedService ? $selectedService->name : 'Servicio';
         $dataCentreService = [$totalServices];
+        //?datos para la grafica ventas servicios por categoría de empleado 
+        $labelsEmployeeCategory = $serviceEmployeeCategory->pluck('category_name')->all();
+        $dataEmployeeCategory = $serviceEmployeeCategory->pluck('cantidad')->all();
+        //?datos para la grafica ventas servicios por categoría de servicios 
+        $labelsServiceCategory = $serviceCategory->pluck('category_service')->all();
+        $dataServiceCategory = $serviceCategory->pluck('cantidad')->all();
+        //?datos para la grafica ventas servicios por empleados
+         $labelsServiceEmployee = $servicesCount->pluck('employee_name')->all();
+         $dataServiceEmployee = $servicesCount->pluck('cantidad')->all();
+        //? datos para la gráfica de ventas totales de empleados
+        $labelsTotalEmployee = $serviceEmployee->pluck('employee_name')->all();
+        $dataTotalEmployee = $serviceEmployee->pluck('cantidad')->all();
+
 
         return view('calculateServices', [
             'services' => $services,
@@ -588,8 +581,25 @@ class ServiceController extends Controller
             'dataService' => $dataService,
             'labelsServiceAll' => $labelsServiceAll,
             'dataServiceAll' => $dataServiceAll,
+            'dataTotalService' => $dataTotalService,
             'labelsCentreService' => $labelsCentreService,
             'dataCentreService' => $dataCentreService,
+            'servicesCountGroupService' => $servicesCountGroupService,
+            'serviceEmployeeCategory' => $serviceEmployeeCategory,
+            'serviceCategory' => $serviceCategory,
+            'labelsEmployeeCategory' => $labelsEmployeeCategory,
+            'dataEmployeeCategory' => $dataEmployeeCategory,
+            'labelsServiceCategory' => $labelsServiceCategory,
+            'dataServiceCategory' => $dataServiceCategory,
+            'labelsServiceEmployee' => $labelsServiceEmployee,
+            'dataServiceEmployee' => $dataServiceEmployee,
+            'labelsServiceAllTotal' => $labelsServiceAllTotal,
+            'dataServiceAllTotal' => $dataServiceAllTotal,
+            'serviceByCentre' => $serviceByCentre,
+            'serviceEmployee' => $serviceEmployee,
+            'labelsTotalEmployee' => $labelsTotalEmployee,
+            'dataTotalEmployee' => $dataTotalEmployee,
+           
 
         ]);
     }
@@ -604,6 +614,7 @@ class ServiceController extends Controller
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+               ->groupBy('employees.name', 'centres.name','service_prices.price')
                 ->get()
                 ->map(function ($item) {
                     $item->total_price_per_centre = $item->price * $item->cantidad;
@@ -616,12 +627,10 @@ class ServiceController extends Controller
             $selectedCentre = Centre::find($centreId);
             $selectedService = Service::find($serviceId);
             ob_end_clean();
-             ob_start();
-            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices,$grandTotal), 'all-services.xls');
+            ob_start();
+            return Excel::download(new DinamicServicesExport($request, $selectedCentre, $selectedService, $totalServices, $grandTotal), 'services.xls');
         } catch (\Illuminate\Database\QueryException $e) {
             return back()->with('error', 'Ha ocurrido un error al exportar, contacte con el administrador');
         }
     }
 }
-
-

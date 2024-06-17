@@ -1,19 +1,20 @@
 @extends('layouts.logged')
-
 @section('content')
-
 @include('inc.navbar')
 @include('common.alert')
+
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/roles.css') }}">
 
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-info card-header-text">
-                      <div class="card-text">
+                <div class="card" style="margin-top: 120px">
+                    <div class="card-header card-header-danger">
+                    
                         <h4 class="card-title">Nuevo rol</h4>
-                      </div>
+                  
                     </div>
                     <div class="card-body ">
                         <form id="createRole" action="{{ route('roles.store') }}" method="POST">
@@ -38,10 +39,10 @@
         $('#pagesConfig').addClass('show');
         $('#adminRole').addClass('active');
 
-        $("#btnSubmit").on('click', function(){
-            $('#btnSubmit').hide();
-            $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
+        $("#btnSubmitSave").on('click', function(){
+            $('#btnSubmitSave').hide();
+            $('#btnSubmitLoadSave').show();
+            $('#btnSubmitLoadSave').prop('disabled', true);
             $("#createRole").submit();
         });
         $("#btnBack").on('click', function(){
