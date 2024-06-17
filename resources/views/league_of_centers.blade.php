@@ -249,7 +249,7 @@
 
             $.ajax({
                 url: $("#leagueForm").attr('action'),
-                type: 'post',
+                type: 'GET',
                 data: params,
                 dataType: 'binary',
                 xhrFields: {
