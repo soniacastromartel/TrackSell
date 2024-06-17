@@ -128,18 +128,18 @@
                                                 </span>
                                             </button>
 
-                                            <button id="btnSubmitFind" type="submit" class="btn-search">
+                                            {{-- <button id="btnSubmitFind" type="submit" class="btn-search">
                                                 Buscar
                                                 <span id=icon-search class="material-icons">
                                                     search
                                                 </span>
-                                            </button>
+                                            </button> --}}
 
-                                            <button id="btnSubmitFindLoad" type="submit" class="btn-search"
+                                            {{-- <button id="btnSubmitFindLoad" type="submit" class="btn-search"
                                                 style="display: none">
                                                 <span class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
-                                            </button>
+                                            </button> --}}
 
                                             <button id="btnSubmit" type="submit" class="btn-export">
                                                 Exportar
@@ -253,27 +253,29 @@
             });
             $('#pagesTracking').addClass('show');
             $('#trackingStarted').addClass('active');
-
+            $('#centre_id, #employee_id, #service_id, #patient_name, #state_id').on('change', function() {
+                getTrackingData();
+            });
             var state = "{{ collect(request()->segments())->last() }}";
             state = state.split("_")[1];
 
-            var tableHtml = '';
+            // var tableHtml = '';
 
-            tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
-            getTrackingData();
-
+            // tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
+            // getTrackingData();
+         
             // Buscar
-            $("#btnSubmitFind").on('click', function(e) {
-                e.preventDefault();
+            // $("#btnSubmitFind").on('click', function(e) {
+            //     e.preventDefault();
 
-                //$("#finalValidationForm").attr('action','{{ route('tracking.index_validation_final') }}');
-                $('#btnSubmitFind').hide();
-                $('#btnSubmitFindLoad').show();
-                $('#btnSubmitFindLoad').prop('disabled', true);
-                //$('#centre').val($( "#centre_id option:selected" ).text());
-                getTrackingData();
+            //     //$("#finalValidationForm").attr('action','{{ route('tracking.index_validation_final') }}');
+            //     $('#btnSubmitFind').hide();
+            //     $('#btnSubmitFindLoad').show();
+            //     $('#btnSubmitFindLoad').prop('disabled', true);
+            //     //$('#centre').val($( "#centre_id option:selected" ).text());
+            //     getTrackingData();
 
-            });
+            // });
 
             function clearForms() {
                 setDate();
@@ -290,8 +292,9 @@
                 $('input[type="search"]').val('');
                 // $('input[type="search"]').selectpicker("refresh");
                 //table.ajax.draw();
-                table.search('').draw();
-                table.ajax.reload();
+                 table.search('').draw();
+                 table.ajax.reload();
+             
             }
 
 
