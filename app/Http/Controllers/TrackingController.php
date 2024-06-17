@@ -153,7 +153,7 @@ class TrackingController extends Controller
                         }
                     })
 
-                    ->addColumn('action', function ($tracking) {
+                      ->addColumn('action', function ($tracking) {
                         $btn = '';
                         if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) 
                         {
@@ -168,26 +168,26 @@ class TrackingController extends Controller
                             //!PENDIENTE
                             if ($tracking->state == env('STATE_PENDING')) { 
                                 // $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-10">';
-                                $btn .= '<input style="resize:horizontal; " type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
-                                min="1000-01-01" value="' . $trackingDate . '" class="form-control align-self-center"></input>';
+                                $btn .= '<div class="col-md-6" >';
+                                $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+                                min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
                                 $btn .= '</div>';
                                 $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 //TODO - BUTTON CITAR
-                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Citar</a>';
+                                $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round ">Citar</a>';
                                 $btn .= '</div></div>';
                             } 
                             //!CITADOS
                             if ($tracking->state == env('STATE_APOINTMENT')) { 
                                 // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-10">';
-                                $btn .= '<input style="resize:horizontal; " type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+                                $btn .= '<div class="col-md-6">';
+                                $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
                                 $btn .= '</div>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-12 ">';
+                                $btn .= '<div class="col-md-12 d-flex flex-column">';
+                                $btn .= '<div class="col-md-12 px-2">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Realizar</a>';
                                 $btn .= '</div>';
@@ -199,17 +199,17 @@ class TrackingController extends Controller
                             //!REALIZADOS
                             if ($tracking->state == env('STATE_SERVICE')) { 
                                 // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
-                                $btn .= '<div class="col-md-6">';
-                                $btn .= '<input style="resize:horizontal;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+                                $btn .= '<div class="col-md-6 ">';
+                                $btn .= '<input style="resize:horizontal;width: 160px; " type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
                                 $btn .= '</div>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="row col-md-12">';
-                                $btn .= '<div class="col-md-6 >';
+                                $btn .= '<div class=" col-md-12 d-flex flex-column">';
+                                $btn .= '<div class="col-md-12 px-3 ">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',0 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round">Facturar</a>';
                                 $btn .= '</div>';
-                                $btn .= '<div class="col-md-6">';
+                                $btn .= '<div class="col-md-12">';
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">Citar</a>';
                                 $btn .= '</div></div>';
@@ -218,7 +218,7 @@ class TrackingController extends Controller
                             if ($tracking->state == env('STATE_INVOICED')) { 
                                 // $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-4">';
-                                $btn .= '<input style="resize:horizontal;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
+                                $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
                                 min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>';
                                 $btn .= '</div>';
                                 $btn .= '</div>';

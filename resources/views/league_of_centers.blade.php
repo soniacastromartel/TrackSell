@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
-
 <div id="alertErrorLeague" class="alert alert-danger" role="alert" style="display: none">
 </div>
 
@@ -68,7 +67,8 @@
 
                                     <button id="btnSubmit" type="submit" class="btn-search">
                                         <span id="icon-search" class="material-icons">
-                                            search</span> {{ __('Buscar') }}</button>
+                                            search</span> {{ __('Buscar') }}
+                                    </button>
                                     <button id="btnSubmitLoad" type="submit" class="btn-search" style="display: none">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     </button>
@@ -76,14 +76,17 @@
                                     <button id="btnSubmitExport" type="submit" class="btn-export">
                                         <span id="icon-export" class="material-icons">
                                             file_download
-                                        </span> {{ __('Exportar') }}</button>
+                                        </span> {{ __('Exportar') }}
+                                    </button>
 
 
                                     <button id="btnClear" href="#" class="btn-refresh">
                                         <span id="icon-refresh" class="material-icons">refresh
                                         </span> {{ __('Limpiar Formulario') }}
                                     </button>
+
                                 </div>
+
                             </div>
 
 
