@@ -33,7 +33,7 @@
                                             <option value="2">Anual</option>
                                         </select>
                                     </div>
-                              
+
                                 <div class="form-group  centre_picker">
                                     <div class="dropdown bootstrap-select">
                                         <select class="selectpicker" name="centre_id" id="centre_id_picker" data-size="7" data-style="btn btn-red-icot btn-round" title=" Seleccione Centro" tabindex="-98">
@@ -60,8 +60,8 @@
                                     <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                 </div>
                                 </div>
-                     
-                       
+
+
 
                                 <div class="col-lg-5" style="display:flex;flex-direction:column;align-items:flex-end"; >
 
@@ -77,6 +77,11 @@
                                         <span id="icon-export" class="material-icons">
                                             file_download
                                         </span> {{ __('Exportar') }}
+                                    </button>
+                                    <button id="btnSubmitLoad" type="submit" class="btn-export"
+                                    style="display: none">
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
                                     </button>
 
 
@@ -132,7 +137,7 @@
         border: none !important;
     }
 
- 
+
 
     #centreName {
         display: block;
@@ -161,7 +166,7 @@
 
     .card .card-header {
         width: unset;
-        
+
     }
 </style>
 
@@ -200,9 +205,9 @@
 
     function loadData() {
         $('#alertErrorLeague').hide();
-        $('#btnSubmit').hide();
-        $('#btnSubmitLoad').show();
-        $('#btnSubmitLoad').prop('disabled', true);
+        // $('#btnSubmit').hide();
+        // $('#btnSubmitLoad').show();
+        // $('#btnSubmitLoad').prop('disabled', true);
         $('#centre').val($("#centre_id_picker option:selected").text());
         $('.card-header-table').show();
 
@@ -290,6 +295,96 @@
             },
         });
     }
+
+          /**
+         * Botón exportar
+         */
+         $("#btnSubmitExport").on('click', function(e) {
+            $('#alertErrorLeague').hide();
+            e.preventDefault();
+            $("#leagueForm").attr('action', '{{ route('league.exportLeague')}}');
+             $('#btnSubmitExport').hide();
+             $('#btnSubmitLoad').show();
+             $('#btnSubmitLoad').prop('disabled', true);
+            $('#centre').val($("#centre_id_picker option:selected").text());
+
+
+            params = {};
+            params["_token"] = "{{ csrf_token() }}";
+            //   params["centre"] = $('#centre').val();
+
+            if ($("#datepickerType").val() == 1) {
+                $('#centre').selectpicker('refresh');
+                params['centre'] = null;
+                params["state"] = 'mensual';
+
+            } else {
+                params["centre"] = $('#centre').val();
+                params["state"] = 'anual';
+            }
+
+            if (params["centre"]) {
+                params["year"] = $("#yearPicker").val()
+                params["month"] = null;
+            } else {
+                if ($('#monthYearPicker').is(":visible")) {
+                    monthYear = $("#monthYearPicker").val();
+                    dateSearch = monthYear.split('/');
+                    params["month"] = dateSearch[0];
+                    params["year"] = dateSearch[1];
+
+                } else {
+                    params["year"] = $("#yearPicker").val()
+                    params["month"] = null;
+
+                }
+            }
+
+
+            $.ajax({
+                url: $("#leagueForm").attr('action'),
+                type: 'GET',
+                data: params,
+                dataType: 'binary',
+                xhrFields: {
+                    'responseType': 'blob'
+                },
+                xhr: function() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == 2) {
+                            if (xhr.status == 200) {
+                                xhr.responseType = "blob";
+                            } else {
+                                xhr.responseType = "text";
+                            }
+                        }
+                    };
+                    return xhr;
+                },
+                success: function(data, textStatus, jqXHR) {
+                    // if success, HTML response is expected, so replace current
+                    if (textStatus === 'success') {
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmitExport').show();
+
+                        var link = document.createElement('a'),
+                            filename = 'league.xls';
+                        link.href = URL.createObjectURL(data);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    $('#alertErrorLeague').text(response);
+                    $('#alertErrorLeague').show().delay(2000).slideUp(300);
+                    $('#btnSubmitLoad').hide();
+                    $('#btnSubmitExport').show();
+                    timeOutAlert($('#alertErrorLeague'));
+                }
+            });
+        });
 
     function drawLeague(centre, idDataTable) {
         var params = {};
