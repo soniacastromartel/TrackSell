@@ -61,8 +61,6 @@
                                 </div>
                                 </div>
 
-
-
                                 <div class="col-lg-5" style="display:flex;flex-direction:column;align-items:flex-end"; >
 
                                     {{-- <button id="btnSubmit" type="submit" class="btn-search">
@@ -98,8 +96,8 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-sm-3" style="margin-left: 560px;">
-                    <label id="centreName" class=""></label>
+                <div class="d-flex justify-content-center">
+                    <label id="centreName" ></label>
                 </div>
                 <div class="card-header-table" style="display: none;">
                     <table id="league-month-datatable" class="table table-striped table-bordered league-month-datatable col-lg-12">
@@ -140,17 +138,15 @@
 
 
     #centreName {
-        display: block;
-        text-align: center;
-        font-weight: bold;
-        font-size: xx-large;
-        font-family: monospace;
-        color: white !important;
-        border-radius: 50px !important;
-        min-height: 30px !important;
-        padding: 1px !important;
-        background-color: var(--red-icot) !important;
-        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1) !important;
+        padding: 10px;
+            display: block;
+            text-align: center;
+            font-weight: bold;
+            font-size: xx-large;
+            font-family: monospace;
+            color: white !important;
+            border-radius: 50px !important;
+            background-color: var(--red-icot);
     }
 
     td {
