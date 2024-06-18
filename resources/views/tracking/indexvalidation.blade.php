@@ -15,7 +15,7 @@
     <div id="alertTrackingDate" class="alert alert-success" role="alert" style="display: none">
     </div>
 
-    <div class="content">
+    <div class="content" style="padding-top: 120px">
         <div class="container-fluid">
             <form id="finalValidationForm" method="POST">
                 @csrf
