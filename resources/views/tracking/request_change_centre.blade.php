@@ -14,7 +14,7 @@
 
                     <div class="card-header card-header-danger">
                     
-                            <h4 class="card-title">Nueva solicitud</h4>
+                            <h4 class="card-title">Cambio De Centro</h4>
                      
                     </div>
 
@@ -166,7 +166,7 @@
                 type: "POST",
                 data: function(d) {
                     d._token = "{{ csrf_token() }}"
-                    //d.centre_id  = $('#centre_id option:selected').val()
+                   //  d.centre_id  = $('#centre_id option:selected').val()
                 }
             },
             columns: columnsFilled,

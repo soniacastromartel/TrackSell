@@ -54,12 +54,12 @@
         <input type="hidden" name="employee" id="employee" />
 
           
-     <div class="observations-container">
+     {{-- <div class="observations-container">
         <label class="label" for="observations">Observaciones</label>
         <div class="observations-input">
         <input type="text" class="form-control" id="observations" name="observations" />
         </div>
-        </div>
+        </div> --}}
 
     </div>
     
@@ -70,7 +70,7 @@
             </button>
 
             <button id="btnSubmit" type="button" class="btn-send">
-                <span id=icon-send class="material-icons">publish</span>{{ __('Enviar') }}</button>
+                <span id=icon-send class="material-icons">publish</span>{{ __('Registrar cambio') }}</button>
             <button id="btnSubmitLoad" type="button" class="btn btn-fill btn-success" style="display: none">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>
@@ -107,25 +107,10 @@
             $('#employee_id').selectpicker('val', '');
             $('#start_date').val('');
             $('#end_date').val('');
-            $('#observations').val('');
+        
         }
 
     });
 </script>
 
-<style>
-    /* .date-informes-container,
-.date-solicitud-container,
-.date-services-container {
-  padding-top: 50px;
-  background-image: url(/assets/img/calendarImage.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-} */
 
-    </style>
