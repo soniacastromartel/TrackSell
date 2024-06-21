@@ -238,7 +238,7 @@ class A3EmpleadosCron extends Command
                         }
                     }
                     if (!empty($cancelDate)) {
-                        $eHistory->update(['cancellation_date' => $cancelDate]);
+                     $eHistory->update(['cancellation_date' => $cancelDate]);   
                     }
                 } else {
                     continue;

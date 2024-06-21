@@ -1569,35 +1569,36 @@ class TrackingController extends Controller
                     'request_changes.id',
                     'request_changes.start_date',
                     'request_changes.end_date',
-                    'request_changes.observations',
-                    'request_changes.validated',
                     'co.name as centre_origin',
                     'cd.name as centre_destination',
                     'employees.name as employee'
                 )
                 ->join('employees', 'employees.id', '=', 'employee_id')
                 ->join('centres as co', 'co.id', '=', 'centre_origin_id')
-                ->join('centres as cd', 'cd.id', '=', 'centre_destination_id');
+                ->join('centres as cd', 'cd.id', '=', 'centre_destination_id')
+                ->whereNull('request_changes.cancellation_date');
 
             $user = session()->get('user');
             $centrUserId = $user->centre_id;
             if (!empty($centrUserId)) {
                 $whereFields .=  " request_changes.centre_origin_id = " . $centrUserId;
                 $query = $query
-                    ->whereRaw($whereFields);
+                    ->whereRaw($whereFields)
+                    ;
             }
-            $requests = $query->get();
+            $requests = $query
+            ->get();
 
             return DataTables::of($requests)
                 ->addColumn('action', function ($request) {
                     // $btn  = '<div class="row col-md-12">';
                     $btn = '';
-                    if ($request->validated == 0) {
-                        $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">check</span>Validar</a>';
-                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Borrar</a>';
-                    } else {
-                        $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round"> <span class="material-icons mr-1">close</span>Invalidar</a>';
-                    }
+                    // if ($request->validated == 0) {
+                        // $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">check</span>Validar</a>';
+                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Cancelar</a>';
+                    // } else {
+                        // $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round"> <span class="material-icons mr-1">close</span>Invalidar</a>';
+                    // }
                     // $btn .= '</div>';
 
                     return $btn;
@@ -1615,22 +1616,14 @@ class TrackingController extends Controller
         try {
             $params = [];
             $params = $request->all();
+            //  $now = new DateTime();
 
             $requestChange =  RequestChange::where(['id' => $params['id']]);
             $user = session()->get('user');
+            $requestChange->update([
+                'cancellation_date' => now()
+            ]);
 
-            switch ($params['state']) {
-                case '-1':
-                    $requestChange->delete();
-                    break;
-                case '0':
-                case '1':
-                    $requestChange->update([
-                        'validated'         => $params['state'],
-                        'validate_user_id'  => $user->id
-                    ]);
-                    break;
-            }
 
             return json_encode(['data' =>  ['id'  => $params['id']]]);
         } catch (\Illuminate\Database\QueryException $e) {

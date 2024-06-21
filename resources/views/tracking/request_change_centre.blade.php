@@ -43,7 +43,6 @@
                                     <th>Empleado</th>
                                     <th>Centro Origen</th>
                                     <th>Centro Destino</th>
-                                    <th>Observaciones</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -82,10 +81,6 @@
         name: 'centre_destination'
     });
     columnsFilled.push({
-        data: 'observations',
-        name: 'observations'
-    });
-    columnsFilled.push({
         data: 'action',
         name: 'action',
         searchable: true,
@@ -95,16 +90,16 @@
     var table;
 
     function validateRequest(state, id) {
-        if (state == -1) {
+        // if (state == -1) {
             $("#message-validation").html('¿Confirma la eliminación de la solicitud?');
             $("#modal-title").html('ELIMINACIÓN');
-        } else if (state == 0) {
-            $("#message-validation").html('¿Confirma la invalidación de la solicitud?');
-            $("#modal-title").html('CONFIRMACIÓN');
-        } else {
-            $("#message-validation").html('¿Confirma la validación de la solicitud?');
-            $("#modal-title").html('CONFIRMACIÓN');
-        }
+        // } else if (state == 0) {
+        //     $("#message-validation").html('¿Confirma la invalidación de la solicitud?');
+        //     $("#modal-title").html('CONFIRMACIÓN');
+        // } else {
+        //     $("#message-validation").html('¿Confirma la validación de la solicitud?');
+        //     $("#modal-title").html('CONFIRMACIÓN');
+        // }
 
         $("#validateVal").val(state);
         $("#id").val(id);
@@ -114,7 +109,7 @@
     function confirmRequest() {
         var params = {
             'id': $("#id").val(),
-            'state': $("#validateVal").val(),
+             'state': $("#validateVal").val(),
             '_token': "{{ csrf_token() }}"
         };
         $.ajax({
@@ -123,14 +118,13 @@
             data: params,
             dataType: 'json',
             success: function(data, textStatus, jqXHR) {
-
-                // if success, HTML response is expected, so replace current
                 if (textStatus === 'success') {
 
                 }
             },
             error: function(xhr, status, error) {
-
+                var response = JSON.parse(xhr.responseText);
+                alert(response);
             },
             complete: function() {
                 $("#modal-validate").modal('hide');
@@ -138,7 +132,7 @@
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error'+jqXHR.responseText);
+            alert('Error '+jqXHR.responseText);
 
         });
     }
@@ -194,10 +188,10 @@
                     width: "25%",
                     targets: 5
                 },
-                {
-                    width: "15%",
-                    targets: 5
-                },
+                // {
+                //     width: "15%",
+                //     targets: 5
+                // },
                 {
                     targets: '_all',
                     visible: true,
