@@ -33,7 +33,6 @@ class Service extends Model
     }
 
     //!FUNCIÓN DINÁMICA DE SERVICIOS
-
     public function scopeGetCountAllServices($query, $serviceId = null, $centreId = null, $startDate = null, $endDate = null)
     {
         $query->join('trackings', 'services.id', '=', 'trackings.service_id')
@@ -43,50 +42,53 @@ class Service extends Model
                        ->on('trackings.centre_id', '=', 'service_prices.centre_id');
               })
               ->join('employees', 'trackings.employee_id', '=', 'employees.id')
-              ->join ('roles', 'employees.rol_id' , '=', 'roles.id')
+              ->join('roles', 'employees.rol_id', '=', 'roles.id')
               ->join('job_categories', 'employees.job_category_id', '=', 'job_categories.id')
-              ->join ('service_categories', 'services.category_id', '=', 'service_categories.id')
-              ->where('trackings.validation_done', 1);
+              ->join('service_categories', 'services.category_id', '=', 'service_categories.id')
+              ->where('trackings.validation_done', 1)
+              ->whereNull('service_prices.cancellation_date')
+              ->whereNull('trackings.cancellation_date')
+              ->whereNull('centres.cancellation_date');
     
-        // Filtrar por serviceId solo si se proporciona
-        if (!is_null($serviceId)) {
-            $query->where('services.id', $serviceId);
-        }
-
-      if (!is_null($centreId)) {
-        $query->where('trackings.centre_id', $centreId);
-    }
-        
-        // Filtrar por rango de fechas si ambos se proporcionan
+        // if (!is_null($serviceId)) {
+        //     $query->where('services.id', $serviceId);
+        // }
+    
+        // if (!is_null($centreId)) {
+        //     $query->where('trackings.centre_id', $centreId);
+        // }
+    
         if (!is_null($startDate) && !is_null($endDate)) {
             $query->whereBetween('trackings.started_date', [$startDate, $endDate]);
         }
     
-        $query->whereNull('service_prices.cancellation_date')
-              ->whereNull('trackings.cancellation_date')
-              ->whereNull('centres.cancellation_date')
-              ->select(
-                  'centres.name as centre_name',
-                  'services.name as service_name',
-                  'service_prices.price as price',
-                  'employees.name as employee_name',
-                  'employees.rol_id as employee_rol_id',
-                  'employees.category as employee_category',
-                  'job_categories.name as category_name',
-                  'service_categories.name as category_service',
-                  'trackings.started_date',
-                  'trackings.validation_date as end_date',
-                  DB::raw('COUNT(*) as cantidad')
-              );
-           
-            $query->orderBy('centres.name', 'asc')
-                  ->orderBy('services.name', 'asc')
-                  ->orderBy('cantidad', 'desc');
-        
-            return $query;
+        $query->select(
+            'centres.name as centre_name',
+            'services.name as service_name',
+            'service_prices.price as price',
+            'employees.name as employee_name',
+            'employees.rol_id as employee_rol_id',
+            'job_categories.name as category_name',
+            'service_categories.name as category_service',
+            DB::raw('COUNT(*) as cantidad'),
+            DB::raw('SUM(service_prices.price) as total_price')
+        )
+        ->groupBy(
+            'centres.name',
+            'services.name',
+            'service_prices.price',
+             'employees.name',
+             'employees.rol_id',
+            'job_categories.name',
+            // 'service_categories.name'
+        )
+        ->orderBy('centres.name', 'asc')
+        ->orderBy('services.name', 'asc')
+        ->orderBy('cantidad', 'desc');
     
         return $query;
     }
+    
     
     public function scopeGetCountServicesByCentre($query, $centreId,$startDate, $endDate)
     {
