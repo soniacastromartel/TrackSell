@@ -476,7 +476,7 @@
 
             {{-- SELECCION DE SERVICIO  --}}
 
-
+            @if (!empty($service_id) && empty($centre_id))
                 <div class="card mt-4">
                     <div class="chart-container">
                         <h4>Ventas de <strong>{{ $selectedService->name }}</strong> en <strong>TODOS LOS CENTROS</strong>
@@ -494,14 +494,14 @@
                             </tr>
                         @endif
                         <tr class="row-service" style="background-color: var(--red-icot);color:white;">
-                            <th>Servicio testing</th>
+                            <th>Servicio</th>
                             <th>Realizados</th>
                             <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="total-services-row" style="background-color:rgb(212, 209, 209)">
-                            <td>{{ $selectedService->name}}</td>
+                            <td>{{ $servicesCount->first()->service_name }}</td>
                             <td>{{ $totalServices }}</td>
                             <td>{{ $grandTotal }}€</td>
                         </tr>
@@ -626,7 +626,7 @@
                     </tbody>
                 </table>
               
-       
+            @endif
 
         </div>
         <div class="row h-50 bg-transparent"></div>

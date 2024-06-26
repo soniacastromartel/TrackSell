@@ -451,15 +451,49 @@ class ServiceController extends Controller
         $centres = Centre::getCentresActive();
         $selectedCentre = !empty($centreId) ? Centre::find($centreId) : null;
         $selectedService = !empty($serviceId) ? Service::find($serviceId) : null;
-        $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)->get();
-        $servicesCount->each(function ($item) {
-            $item->total_price_per_centre = $item->price * $item->cantidad;
-        });
-        
-        $totalServices = $servicesCount->sum('cantidad');
-        $grandTotal = $servicesCount->sum('total_price_per_centre');
+        //Todos centros
+        if ($centreId && !$serviceId) {
+            $servicesCount = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
+                ->get()
+                ->map(function ($item) {
+                    $item->total_price_per_centre = $item->price * $item->total;
+                    return $item;
+                })
+                ->sortByDesc('total');
+         //Todos servicios       
+        } elseif ($serviceId && !$centreId) {
+            $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('employees.name', 'centres.name','service_prices.price','services.name')
+                ->get()
+                ->map(function ($item) {
+                    $item->total_price_per_centre = $item->price * $item->cantidad;
+                    return $item;
+                })->sortByDesc('cantidad');
 
-        
+        //Todos los centros y servicios        
+        } elseif (!$serviceId && !$centreId)  {
+            $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('services.name')
+                ->get()
+                ->map(function ($item) {
+                    $item->total_price_per_centre = $item->price * $item->cantidad;
+                    return $item;
+                })->sortByDesc('cantidad');
+
+             
+
+               
+             
+        } else {
+            //Todo un centros y  un servicio
+            $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('employees.name', 'centres.name','service_prices.price','services.name')
+                ->get()
+                ->map(function ($item) {
+                    $item->total_price_per_centre = $item->price * $item->cantidad;
+                    return $item;
+                })->sortByDesc('cantidad');
+        }
 
         $servicesCountGroupService =  Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
            ->groupBy('centres.name','service_prices.price','services.name')
@@ -469,6 +503,8 @@ class ServiceController extends Controller
                 return $item;
             })->sortByDesc('cantidad');
 
+        $totalServices = $servicesCount->sum('cantidad');
+        $grandTotal = $servicesCount->sum('total_price_per_centre');
         $servicesCountCentre = Service::getCountServicesByCentre($centreId, $startDate, $endDate)
             ->get();
         $serviceByCentre = Service::getCountAllServices($serviceId, null, $startDate,$endDate)
