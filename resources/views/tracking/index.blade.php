@@ -259,10 +259,10 @@
             var state = "{{ collect(request()->segments())->last() }}";
             state = state.split("_")[1];
 
-            // var tableHtml = '';
+             var tableHtml = '';
 
-            // tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
-            // getTrackingData();
+             tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
+             getTrackingData();
          
             // Buscar
             // $("#btnSubmitFind").on('click', function(e) {
@@ -543,9 +543,6 @@
    position: relative;
    display: flex;
   justify-content: flex-end; 
-
- 
-  
 }
 
 .service-btn-add {
@@ -588,7 +585,7 @@
   background-image: url(/assets/img/background_continue.png) !important;
   background-position: center center !important;
   background-size: 1000px;
-  height: 260vh !important;
+  height: 300vh !important;
 }
 
 /*VIEW : traking/index,requestChange,calculateServices*/
