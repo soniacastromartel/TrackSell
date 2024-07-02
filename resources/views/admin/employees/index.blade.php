@@ -200,6 +200,7 @@
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
+                    console.log(jqXHR);
                     // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
                         $('#alertChangeEmployee').text(response.mensaje);
@@ -218,7 +219,7 @@
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error cargando servicios');
+                alert('Error Reseteando Acceso');
                 $('#btnResetAccess' + employeeId + ' .material-icons').show();
                 $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
             });
@@ -256,7 +257,7 @@
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error cargando servicios');
+                alert('Error Reseteando Contraseña');
                 $('#btnResetPass' + employeeId + ' .material-icons').show();
                 $('#btnResetPass' + employeeId + ' .spinner-border').hide();
             });
@@ -294,7 +295,7 @@
 
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error cargando servicios');
+                alert('Error Bloqueando Acceso');
                 $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                 $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
             });

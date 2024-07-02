@@ -88,7 +88,7 @@ class RoleController extends Controller
         try{
             $role_id = Role::create($request->all())->id; 
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to('home')->with('error', 'Ha ocurrido un error al crear rol, contacte con el administrador');
+            return redirect()->action('RoleController@index')->with('error', 'Ha ocurrido un error al crear rol, contacte con el administrador');
         }
         return redirect()->action('RoleController@index')
     
@@ -118,7 +118,7 @@ class RoleController extends Controller
             $role = Role::find($id);
             $roles = Role::getRolesActive(); 
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar rol para editar, contacte con el administrador');
+            return redirect()->action('RoleController@index')->with('error', 'Ha ocurrido un error al cargar rol para editar, contacte con el administrador');
         }    
 
         return view('admin.roles.edit', ['title' => $this->title, 'role' => $role, 'roles' => $roles]);
@@ -138,7 +138,7 @@ class RoleController extends Controller
                 'name' => 'required',
             ]);
             if ($validator->fails()){
-                return redirect()->action('CentreController@index')
+                return redirect()->action('RoleController@index')
                 ->with('error','Ha ocurrido un error');
 
             } else {
@@ -152,7 +152,7 @@ class RoleController extends Controller
                                 ->with('success','Rol actualizado correctamente');
             }
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to('home')->with('error', 'Ha ocurrido un error al actualizar rol, contacte con el administrador');
+            return redirect()->action('RoleController@index')->with('error', 'Ha ocurrido un error al actualizar rol, contacte con el administrador');
         }    
     }
 
@@ -175,7 +175,7 @@ class RoleController extends Controller
                 'success' => true,  'mensaje' => 'Rol eliminado correctamente'
             ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to('home')->with('error', 'Ha ocurrido un error al eliminar rol, contacte con el administrador');
+            return redirect()->action('RoleController@index')->with('error', 'Ha ocurrido un error al eliminar rol, contacte con el administrador');
         }
 
 
