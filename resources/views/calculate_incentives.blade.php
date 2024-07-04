@@ -73,8 +73,8 @@
                                                     <input type="hidden" name="yearTarget" id="yearTarget" />
                                                 </div>
                                             </div>
-
-
+                                        </div>
+                                            <div class="row  d-flex flex-column align-content-center  ">
                                             {{-- @if ($user->rol_id != 1)
                                             <span class="m-5"></span>
                                         @endif --}}
@@ -114,10 +114,7 @@
                                         <h5 class="card-title">Incentivos</h5>
                                     </div>
                                     <div class="card-body">
-
-                                        <div class="row">
-
-                                            <div class="date-container-incentive">
+                                            <div class="row d-flex justify-content-center">
                                                 {{--        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
                                                 <div id="monthYearPickerContainer">
                                                     <input type="hidden" name="monthYear" id="monthYear" />
@@ -126,11 +123,10 @@
                                                     <input id="monthYearPicker" class='form-control' type="text"
                                                         placeholder="yyyy/mm" />
                                                 </div>
+
                                             </div>
 
-
-                                            <div class="col-md-4 mx-auto">
-
+                                            <div class=" ">
                                                 <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
                                                     data-style="btn btn-red-icot btn-round" title=" Seleccione Centro"
                                                     tabindex="-98">
@@ -170,9 +166,17 @@
                                                     @endif
                                                 </select>
                                                 <input type="hidden" name="employee" id="employee" />
+
+
+
                                             </div>
 
-                                        </div>
+
+                                         
+
+                                         
+
+                                       
 
                                         <hr class="mt-4">
 
