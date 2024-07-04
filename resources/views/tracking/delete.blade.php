@@ -13,7 +13,20 @@
 </div>
 
 <div class="content">
-    <div class="container-fluid" style="margin-top:120px">
+    <div class="container-fluid" >
+        <div class="row ">
+            <div class="col-lg-12 mb-5" style="margin-top: 120px">
+                <div class="card " style="min-height: 200px">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Borrar seguimiento</h4>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                     <img src="/assets/img/deleteServices.png" width="300">
+                    </div>
+                </div>
+            </div>
+        </div>
+
                 <table class="table  table-striped table-bordered  tracking-delete-datatable">
                     <thead  class="table-header">
                         <th>Centro Prescriptor</th>
@@ -30,6 +43,7 @@
                     <tbody>
                     </tbody>
                 </table>  
+      
     </div>
 </div>
 
