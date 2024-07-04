@@ -1,5 +1,7 @@
 {{-- Message --}}
 <link rel="stylesheet" href="{{ asset('css/sweetalert-custom.css') }}">
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if (Session::has('success'))
     <script>
@@ -9,7 +11,6 @@
             icon: 'success',
             timer: 4000,
             showConfirmButton: false,
-            footer: ' ',
         });
     </script>
 @endif
@@ -22,18 +23,37 @@
             icon: 'error',
             timer: 4000,
             showConfirmButton: false,
-            footer: ' ',
         });
     </script>
 @endif
 <script type="text/javascript">
+    var time = 4000;
+
     function showAlert(type, message) {
         Swal.fire({
             title: type === 'success' ? '¡Perfecto!' : '¡Error!',
             text: message,
             icon: type,
-            timer: 4000,
+            timer: time,
             showConfirmButton: false
+        });
+    }
+
+    function showToast(icon, message) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: time,
+            timerProgressBar: true,
+        });
+        Toast.fire({
+            icon: icon,
+            title: message,
         });
     }
 
@@ -47,7 +67,7 @@
             },
             background: '#a5dc86',
             showConfirmButton: false,
-            timer: 4000,
+            timer: time,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -67,32 +87,46 @@
             text: "Está a punto de eliminar ¿Desea Continuar?",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#388e3c',
-            cancelButtonColor: '#d32f2f',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#bc012e',
             confirmButtonText: '¡Sí, eliminarlo!',
-            cancelButtonText: 'Cancelar'
-        });
-    }
-
-    async function confirmWithInput() {
-        const {
-            value: reason,
-            isConfirmed
-        } = await Swal.fire({
-            title: '¿Está seguro?',
-            text: "Está a punto de eliminar. ¡No podrá revertir esto!",
-            icon: 'question',
-            input: "text",
-            inputLabel: "Motivo:",
-            inputValue: "",
-            showCancelButton: true,
-            inputValidator: (value) => {
-                if (!value) {
-                    return "Debe escribir un motivo";
-                }
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'btn btn-primary btn-lg mr-2',
+                cancelButton: 'btn btn-danger btn-lg',
+                loader: 'custom-loader',
+            },
+            loaderHtml: '<div class="spinner-border text-primary"></div>',
+            preConfirm: () => {
+                Swal.showLoading();
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve(true);
+                    }, 3000);
+                });
             }
-        });
-
-        return isConfirmed ? reason : null;
+        }); 
     }
+
+        async function confirmWithInput() {
+            const {
+                value: reason,
+                isConfirmed
+            } = await Swal.fire({
+                title: '¿Está seguro?',
+                text: "Está a punto de eliminar. ¡No podrá revertir esto!",
+                icon: 'question',
+                input: "text",
+                inputLabel: "Motivo:",
+                inputValue: "",
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return "Debe escribir un motivo";
+                    }
+                }
+            });
+
+            return isConfirmed ? reason : null;
+        }
 </script>

@@ -1,6 +1,7 @@
 @extends('layouts.logged')
 @section('content')
-    @include('inc.dashboard')
+@include('inc.navbar')
+@include('inc.dashboard')
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {

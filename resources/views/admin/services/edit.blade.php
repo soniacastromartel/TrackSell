@@ -1,8 +1,6 @@
 @extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
-@include('common.alert')
-
 
 <div class="content">
     <div class="container-fluid" style="margin-top:50px">

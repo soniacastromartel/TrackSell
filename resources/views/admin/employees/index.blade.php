@@ -1,18 +1,13 @@
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
-    @include('common.alert')
 
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-    
-    <div class="alert alert-danger" id="alertErrorChangeEmployee" role="alert" style="display: none">
-    </div>
-    <div class="alert alert-success" id="alertChangeEmployee" role="alert" style="display: none">
-    </div>
 
     <div class="content">
         <div class="container-fluid">
             <div class="row col-md-12 mb-3">
+                
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-4 text-right" id="blockNewTracking">
@@ -41,7 +36,6 @@
         </div>
     </div>
 
-
     <script type="text/javascript">
         var table
         $(function() {
@@ -65,7 +59,6 @@
                 ajax: {
                     url: "{{ route('employees.index') }}",
                     data: function(d) {
-                        //d.status = $('#status').val(),
                         d.search = $('input[type="search"]').val()
                     }
                 },
@@ -83,10 +76,7 @@
                         data: "category",
                         render: function(data, type, row) {
                             if (data != null) {
-
                                 return data.toUpperCase();
-
-                                // return data.split(' ')[1];
                             } else {
                                 return data;
                             }
@@ -123,42 +113,41 @@
 
                 ],
                 createdRow: function(row, data, dataIndex) {
-                    console.log(data);
                     var tooltipMessage = "";
                     var resetDateTimeString, resetDate, currentDate = new Date();
                     var differenceInHours;
 
                     function calculateDifference(resetDateTimeString) {
                         resetDate = new Date(resetDateTimeString.split(" GMT")[0]);
-                        return Math.abs(currentDate - resetDate) / (3600000); 
+                        return Math.abs(currentDate - resetDate) / (3600000);
                     }
                     if (parseInt(data.count_access) === 3) {
                         $(row).addClass('user-bloqued');
                         tooltipMessage = "Usuario bloqueado";
                     } else if (parseInt(data.pending_password) === 0 && data.updated_at) {
                         differenceInHours = calculateDifference(data.updated_at);
-                            if (differenceInHours <= 24) {
-                                $(row).addClass('user-updated-pass');
-                                tooltipMessage = "Asignación de nueva contraseña en las últimas 24h";
+                        if (differenceInHours <= 24) {
+                            $(row).addClass('user-updated-pass');
+                            tooltipMessage = "Asignación de nueva contraseña en las últimas 24h";
                         }
-                    } else if (parseInt(data.count_access) === 0  && data.updated_at) {
-                         differenceInHours = calculateDifference(data.updated_at);
-                            if (differenceInHours <= 24) {
-                                $(row).addClass('user-updated-acc');
-                                tooltipMessage = "Reseteo de acceso en las últimas 24h";
+                    } else if (parseInt(data.count_access) === 0 && data.updated_at) {
+                        differenceInHours = calculateDifference(data.updated_at);
+                        if (differenceInHours <= 24) {
+                            $(row).addClass('user-updated-acc');
+                            tooltipMessage = "Reseteo de acceso en las últimas 24h";
                         }
                     }
                     if (!$(row).hasClass('user-updated-pass')) {
                         $(row).removeClass('user-updated-pass');
                     }
-                      if (!$(row).hasClass('user-updated-acc')) {
+                    if (!$(row).hasClass('user-updated-acc')) {
                         $(row).removeClass('user-updated-acc');
                     }
                     if (tooltipMessage) {
                         $(row).attr('data-tooltip', tooltipMessage);
                     }
                 },
-    
+
                 search: {
                     "regex": true,
                     "smart": true,
@@ -170,7 +159,6 @@
                         $(input).appendTo($(column.footer()).empty())
                             .on('change', function() {
                                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                //column.search(val ? val : '', true, false).draw();
                                 column
                                     .search(val ? '^' + val + '$' : '', true, false)
                                     .draw();
@@ -187,8 +175,6 @@
 
 
         function resetAccessApp(employeeId, back) {
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
             $('#btnResetAccess' + employeeId + ' .material-icons').hide();
             $('#btnResetAccess' + employeeId + ' .spinner-border').show();
 
@@ -200,11 +186,9 @@
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
-                    console.log(jqXHR);
-                    // if success, HTML response is expected, so replace current
+                    console.log(response);
                     if (textStatus === 'success') {
-                        $('#alertChangeEmployee').text(response.mensaje);
-                        $('#alertChangeEmployee').show().delay(2000).slideUp(300);
+                        showToast(response.success?'success' :'error', response.mensaje);
                         table.ajax.reload();
                         $('#btnResetAccess' + employeeId + ' .material-icons').show();
                         $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
@@ -212,13 +196,14 @@
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
-                    $('#alertErrorChangeEmployee').text(response.mensaje);
-                    $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
+                    showToast('error', response);
                     $('#btnResetAccess' + employeeId + ' .material-icons').show();
                     $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
+                showToast('error', jqXHR.responseText);
                 alert('Error Reseteando Acceso');
                 $('#btnResetAccess' + employeeId + ' .material-icons').show();
                 $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
@@ -226,8 +211,6 @@
         }
 
         function resetPassword(employeeId, back) {
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
             $('#btnResetPass' + employeeId + ' .material-icons').hide();
             $('#btnResetPass' + employeeId + ' .spinner-border').show();
             params = {};
@@ -238,10 +221,8 @@
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
-                        $('#alertChangeEmployee').text(response.mensaje);
-                        $('#alertChangeEmployee').show().delay(2000).slideUp(300);
+                        showToast(response.success?'success' :'error', response.mensaje);
                         table.ajax.reload();
                         $('#btnResetPass' + employeeId + ' .material-icons').show();
                         $('#btnResetPass' + employeeId + ' .spinner-border').hide();
@@ -249,8 +230,7 @@
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
-                    $('#alertErrorChangeEmployee').text(response.mensaje);
-                    $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300);
+                    showToast('error', response);
                     $('#btnResetPass' + employeeId + ' .material-icons').show();
                     $('#btnResetPass' + employeeId + ' .spinner-border').hide();
 
@@ -258,14 +238,13 @@
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error Reseteando Contraseña');
+                showToast('error', jqXHR.responseText);
                 $('#btnResetPass' + employeeId + ' .material-icons').show();
                 $('#btnResetPass' + employeeId + ' .spinner-border').hide();
             });
         }
 
         function denyAccess(employeeId, back) {
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
             $('#btnDenyAccess' + employeeId + ' .material-icons').hide();
             $('#btnDenyAccess' + employeeId + ' .spinner-border').show();
             params = {};
@@ -276,10 +255,8 @@
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
-                        $('#alertChangeEmployee').text(response.mensaje);
-                        $('#alertChangeEmployee').show().delay(2000).slideUp(300);
+                        showToast('error', response.mensaje);
                         table.ajax.reload();
                         $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                         $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
@@ -287,8 +264,7 @@
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
-                    $('#alertErrorChangeEmployee').text(response.mensaje);
-                    $('#alertErrorChangeEmployee').show().delay(2000).slideUp(300)();
+                    showToast('error', response);
                     $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                     $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
                 }
@@ -296,6 +272,7 @@
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error Bloqueando Acceso');
+                showToast('error', jqXHR.responseText);
                 $('#btnDenyAccess' + employeeId + ' .material-icons').show();
                 $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
             });
@@ -307,23 +284,19 @@
             params["_token"] = "{{ csrf_token() }}";
             params["employee_id"] = employeeId;
             params["type"] = type;
-
             if (employeeId == null) {
                 $('#btnSyncA3').hide();
                 $('#btnSubmitLoad').show();
-
             } else {
                 $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').show();
             }
-            $('#alertChangeEmployee').hide();
-            $('#alertErrorChangeEmployee').hide();
             $.ajax({
                 url: "{{ route('employees.syncA3') }}",
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
+                    console.log(respone);
                     if (textStatus === 'success') {
                         if (type == 'only') {
                             $('#btnSyncA3_' + employeeId + ' .material-icons').show();
@@ -332,77 +305,77 @@
                             $('#btnSubmitLoad').hide();
                             $('#btnSyncA3').show();
                         }
+                        showToast('success', response.mensaje);
                         table.ajax.reload();
                     }
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
-                    timeOutAlert($('#alertErrorChangeEmployee'), response);
+                    showToast('error', response);
                     window.location = response.url;
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                timeOutAlert($('#alertErrorChangeEmployee'), jqXHR.responseText);
+                showToast('error', jqXHR.responseText);
+                $('#btnSyncA3_' + employeeId + ' .material-icons').show();
+                $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
             });
         }
 
 
-        function timeOutAlert($alert, $message) {
-            $alert.text($message);
-            $alert.show().delay(2000).slideUp(300);
-        }
+       
     </script>
 @endsection
 
 <style>
-    
-.content {
-    background-image: url(/assets/img/background_continue.png) !important;
-    background-position: center center !important;
-    background-size: 1000px;
-    height: 220vh !important;
-   
-   }
+    .content {
+        background-image: url(/assets/img/background_continue.png) !important;
+        background-position: center center !important;
+        background-size: 1000px;
+        height: 220vh !important;
 
-   td.upper {
-       text-transform: lowercase;
-   }
+    }
 
-.user-updated-pass:hover::after,
-.user-updated-acc:hover::after ,
-.user-bloqued:hover::after {
-    content: attr(data-tooltip); /* Inserta el texto del tooltip */
-    position: absolute;
-    bottom: 100%; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    white-space: nowrap; 
-    visibility: hidden; 
-    opacity: 0;
-    transition: opacity 0.2s, visibility 0.2s; 
-    background-color: black; 
-    color: white; 
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-}
+    td.upper {
+        text-transform: lowercase;
+    }
 
-.user-updated-pass:hover::after,
-.user-updated-acc:hover::after,
-.user-bloqued:hover::after  {
-    visibility: visible; 
-    opacity: 1;
-}
+    .user-updated-pass:hover::after,
+    .user-updated-acc:hover::after,
+    .user-bloqued:hover::after {
+        content: attr(data-tooltip);
+        /* Inserta el texto del tooltip */
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0.2s;
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
 
-  /* ROW RED FOR BLOQUED USER */
-  
-  .user-bloqued {
-    color: red ;
-}
+    .user-updated-pass:hover::after,
+    .user-updated-acc:hover::after,
+    .user-bloqued:hover::after {
+        visibility: visible;
+        opacity: 1;
+    }
 
-/* ROW GREEN FOR UPDATED USER */
-.user-updated-acc,.user-updated-pass{
-color: green ;
-}
+    /* ROW RED FOR BLOQUED USER */
 
-    </style>
+    .user-bloqued {
+        color: red;
+    }
+
+    /* ROW GREEN FOR UPDATED USER */
+    .user-updated-acc,
+    .user-updated-pass {
+        color: green;
+    }
+</style>

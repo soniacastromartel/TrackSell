@@ -10,9 +10,7 @@
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-4 text-right">
-                    <a href="{{ route('roles.create') }}" id="btnNewCenter" class="header-btn-add"><span
-                            class="material-icons">
-                            add</span></a>
+                    <a href="{{ route('roles.create') }}" id="btnNewCenter" class="header-btn-add"><span class="material-icons">add</span></a>
                 </div>
             </div>
             <table class="table table-striped table-bordered roles-datatable">
@@ -29,38 +27,22 @@
         </div>
     </div>
 
-    @include('common.modal')
-
-
     <script type="text/javascript">
         function confirmRequest(state, id) {
-            $("#id").val(id);
-            Swal.fire({
-                title: '¿Está seguro?',
-                text: "Está a punto de eliminar este Rol. ¡No podrás revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminarlo!',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
+            confirmedRequest().then((result) => {
                 if (result.isConfirmed) {
-                    destroy();
+                    destroy(id);
                 }
             });
         }
+
         var table;
         $(function() {
-
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
             $('#pagesConfig').addClass('show');
             $('#adminRole').addClass('active');
-            // $("#btnConfirmRequest").on('click', function(event) {
-            //     destroy();
-            // });
 
             table = $('.roles-datatable').DataTable({
                 processing: true,
@@ -115,48 +97,32 @@
             });
         });
 
-        function destroy() {
+        function destroy(id) {
             var params = {};
             params["_token"] = "{{ csrf_token() }}";
-            params["id"] = $("#id").val();
+            params["id"] = id;
 
             $.ajax({
                 url: 'roles/destroy/' + params['id'],
                 type: 'get',
                 data: params,
+                beforeSend: function() {
+                Swal.showLoading();
+            },
                 success: function(response) {
                     if (response.success) {
-                        $("#modal-validate").modal('hide');
+                        Swal.hideLoading();
                         table.ajax.reload();
-                        Swal.fire({
-                            title: '¡Perfecto!',
-                            text: response.mensaje,
-                            icon: 'success',
-                            timer: 4000,
-                            showConfirmButton: false,
-
-                        });
+                        showAlert('success', response.mensaje);
                     } else {
-                        Swal.fire({
-                            title: '¡Error!',
-                            text: response.mensaje,
-                            icon: 'error',
-                            timer: 4000,
-                            showConfirmButton: false,
-                        });
+                        Swal.hideLoading();
+                        showAlert('error', response.mensaje);
                     }
                 },
                 error: function(xhr, status, error) {
-                    // console.log(xhr.responseText);
-                    console.log(error);
+                    Swal.hideLoading();
                     var errorMessage = "Error occurred: " + xhr.responseText;
-                    Swal.fire({
-                        title: '¡Error!',
-                        text: errorMessage,
-                        icon: 'error',
-                        timer: 4000,
-                        showConfirmButton: false,
-                    });
+                    showAlert('error', errorMessage);
                 }
             });
         }
