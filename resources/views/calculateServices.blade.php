@@ -501,7 +501,7 @@
                     </thead>
                     <tbody>
                         <tr class="total-services-row" style="background-color:rgb(212, 209, 209)">
-                            <td>{{ $servicesCount->first()->service_name }}</td>
+                            <td>{{ $selectedService->name }}</td>
                             <td>{{ $totalServices }}</td>
                             <td>{{ $grandTotal }}€</td>
                         </tr>

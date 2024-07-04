@@ -65,6 +65,7 @@ class Service extends Model
         $query->whereNull('service_prices.cancellation_date')
               ->whereNull('trackings.cancellation_date')
               ->whereNull('centres.cancellation_date')
+              ->whereNull('employees.cancellation_date')
               ->select(
                   'centres.name as centre_name',
                   'services.name as service_name',
