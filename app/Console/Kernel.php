@@ -12,13 +12,13 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
+    //TODO Uso de ::class permite que PHP resuelva automáticamente el nombre completo de la clase, incluyendo el namespace. Esto reduce errores tipográficos y hace que el código sea más fácil de refactorizar.
     protected $commands = [
-        'app\Console\Commands\A3EmpleadosCron',
-        'app\Console\Commands\A3Download',
-        'app\Console\Commands\UpdateOldPendingServicesCron',
-        //
+        \App\Console\Commands\A3EmpleadosCron::class,
+        \App\Console\Commands\A3Download::class,
+        \App\Console\Commands\UpdateOldPendingServicesCron::class,
     ];
-
+    
     /**
      * Define the application's command schedule.
      *
@@ -27,11 +27,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('a3empleados:cron')->everyMinute();
+         //TODO - DEFINE HOW TO INVOCATE THIS COMMAND
         $schedule->command('a3:download');
         $schedule->command('a3empleados:cron');
-        //TODO - DEFINE HOW TO INVOCATE THIS COMMAND
         $schedule->command('services:update_old_pending_services')->daily();
+     
     }
 
     /**
