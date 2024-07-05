@@ -7,14 +7,13 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row col-md-12 mb-3">
-                
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-4 text-right" id="blockNewTracking">
                     <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
                             sync
                         </span> </a>
-                    <button id="btnSubmitLoad" type="submit" class="btn-sincro-all" style="display: none">
+                    <button id="btnSubmitLoadA3" type="submit" class="btn-sincro-all" style="display: none">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -286,7 +285,8 @@
             params["type"] = type;
             if (employeeId == null) {
                 $('#btnSyncA3').hide();
-                $('#btnSubmitLoad').show();
+                $('#btnSubmitLoadA3').show();
+
             } else {
                 $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').show();
@@ -302,7 +302,7 @@
                             $('#btnSyncA3_' + employeeId + ' .material-icons').show();
                             $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
                         } else {
-                            $('#btnSubmitLoad').hide();
+                            $('#btnSubmitLoadA3').hide();
                             $('#btnSyncA3').show();
                         }
                         showToast('success', response.mensaje);
@@ -367,15 +367,15 @@
         opacity: 1;
     }
 
-    /* ROW RED FOR BLOQUED USER */
+  /* ROW RED FOR BLOQUED USER */
+  
+  .user-bloqued {
+    color: red ;
+}
 
-    .user-bloqued {
-        color: red;
-    }
+/* ROW GREEN FOR UPDATED USER */
+.user-updated-acc,.user-updated-pass{
+color: green ;
+}
 
-    /* ROW GREEN FOR UPDATED USER */
-    .user-updated-acc,
-    .user-updated-pass {
-        color: green;
-    }
-</style>
+    </style>

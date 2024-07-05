@@ -33,12 +33,13 @@
                             refresh
                             </span>   {{ __('Limpiar formulario') }}
                         </button>
+{{--                         
                         <button id="btnSubmit" type="submit" class="btn-search"><span id="icon-search" class="material-icons">
                             search</span> {{ __('Buscar') }}</button>
                         <button id="btnSubmitLoad" type="submit" class="btn-search" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             
-                        </button>
+                        </button> --}}
                     </div>
 
                 </div>
@@ -67,90 +68,90 @@
     var table;
     setDate();
 
-    var columnsFilled = [];
-    columnsFilled.push({
-        data: 'id',
-        name: 'id'
-    });
-    columnsFilled.push({
-        data: 'employee',
-        name: 'employee',
-        searchable: true
-    });
-    columnsFilled.push({
-        data: 'service',
-        name: 'service',
-        searchable: true
-    });
-    columnsFilled.push({
-        name: 'started_date',
-        data: 'started_date'
-    });
-    columnsFilled.push({
-        data: 'cancellation_date',
-        name: 'cancellation_date'
-    });
-    columnsFilled.push({
-        data: 'cancellation_reason',
-        name: 'cancellation_reason'
-    });
+    var columnsFilled = [
+        { data: 'id', name: 'id' },
+        { data: 'employee', name: 'employee', searchable: true },
+        { data: 'service', name: 'service', searchable: true },
+        { data: 'started_date', name: 'started_date' },
+        { data: 'cancellation_date', name: 'cancellation_date' },
+        { data: 'cancellation_reason', name: 'cancellation_reason' }
+    ];
 
-    // var d = new Date();
-    // var dayOfMonth = d.getDate();
-    // var year = d.getFullYear();
-    // var month = 1;
-
-    // if (d.getMonth() < 11) {
-    //     if (dayOfMonth > 20) {
-    //         month = d.getMonth() + 2;
-    //     } else {
-    //         month = d.getMonth() + 1;
-    //     }
-    // } else {
-    //     if (dayOfMonth > 20) {
-    //         month = 1;
-    //         year = year + 1;
-    //     } else {
-    //         month = d.getMonth() + 1;
-    //     }
-    // }
-
-    // var textMonthYear = month >= 10 ? month : '0' + month;
-    // textMonthYear += '/' + year;
-
-    // $('#monthYearPicker').val(textMonthYear);
-    // // Default functionality.
-    // $('#monthYearPicker').MonthPicker();
-    // $('#monthPicker').datepicker($.datepicker.regional["es"]);
-
-    $(function() {
+    $(document).ready(function() {
         $(".nav-item").each(function() {
             $(this).removeClass("active");
         });
         $('#pagesNotification').addClass('show');
         $('#supervisorNotificationsIndex').addClass('active');
 
-        var state = "{{ collect(request()->segments())->last() }}";
-        state = state.split("_")[1];
-
-        var tableHtml = '';
-
-        tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
-        getTrackingData();
-
-        $("#btnSubmit").on('click', function(e) {
-            e.preventDefault();
-            $('#btnSubmit').hide();
-            $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
-            getTrackingData();
+        table = $('.notifications-datatable').DataTable({
+            order: [4, "desc"],
+            processing: true,
+            serverSide: true,
+            language: {
+                "url": "{{ asset('dataTables/Spanish.json') }}"
+            },
+            ajax: {
+                url: '{{ route("notifications.index") }}',
+                type: "POST",
+                data: function(d) {
+                    d._token = "{{ csrf_token() }}";
+                    d.date = $('#monthYearPicker').val();
+                    d.search = $('input[type="search"]').val();
+                },
+                dataSrc: function(json) {
+                    $('#btnSubmit').show();
+                    $('#btnSubmitLoad').hide();
+                    return json.data;
+                }
+            },
+            columns: columnsFilled,
+            columnDefs: [
+                { width: "5%", targets: 0 },
+                { width: "15%", targets: 1 },
+                { width: "15%", targets: 2 },
+                { width: "10%", targets: 3 },
+                { width: "10%", targets: 4 },
+                { width: "15%", targets: 5 },
+                {
+                    targets: 4,
+                    data: "cancellation_date",
+                    type: "date",
+                    render: function(data, type, row) {
+                        var datetime = moment(data, 'YYYY-MM-DD');
+                        var displayString = moment(datetime).format('D-M-YYYY');
+                        if (type === 'display' || type === 'filter') {
+                            return displayString;
+                        } else {
+                            return datetime; // for sorting
+                        }
+                    }
+                },
+                {
+                    targets: 3,
+                    data: "started_date",
+                    type: "date",
+                    render: function(data, type, row) {
+                        var datetime = moment(data, 'YYYY-MM-DD');
+                        var displayString = moment(datetime).format('D-M-YYYY');
+                        if (type === 'display' || type === 'filter') {
+                            return displayString;
+                        } else {
+                            return datetime; // for sorting
+                        }
+                    }
+                }
+            ],
+            search: {
+                "regex": true,
+                "smart": true
+            }
         });
 
-        function clearForms() {
-            setDate();
-            table.search('').draw();
+        // Evento change para cargar datos automáticamente al cambiar la fecha
+        $('#monthYearPicker').on('change', function() {
             table.ajax.reload();
-        }
+        });
 
         $("#btnClear").on('click', function(e) {
             e.preventDefault();
@@ -159,152 +160,25 @@
     });
 
     function setDate(){
-    var d = new Date();
-    var dayOfMonth = d.getDate();
-    var year = d.getFullYear();
-    var month = 1;
+        var d = new Date();
+        var year = d.getFullYear();
+        var month = d.getMonth() + 1;
+        var textMonthYear = month >= 10 ? month : '0' + month;
+        textMonthYear += '/' + year;
 
-    if (d.getMonth() < 11) {
-        if (dayOfMonth > 20) {
-            month = d.getMonth() + 1;
-        } else {
-            month = d.getMonth() + 1;
-        }
-    } else {
-        if (dayOfMonth > 20) {
-            month = 1;
-            year = year + 1;
-        } else {
-            month = d.getMonth() + 1;
-        }
-    }
-
-    var textMonthYear = month >= 10 ? month : '0' + month;
-    textMonthYear += '/' + year;
-
-    $('#monthYearPicker').val(textMonthYear);
-    // Default functionality.
-    $('#monthYearPicker').MonthPicker({
-        ShowIcon: false,
-    });
-    $('#monthPicker').datepicker($.datepicker.regional["es"]);
-}
-
-    function updateDateTracking(state, trackingId, back) {
-        $('#alertErrorTrackingDate').hide();
-        var trackingDate = $("#tracking_date_" + trackingId).val();
-        $.ajax({
-            url: 'updateState/' + state + '/' + trackingId + '/' + trackingDate + '/' + back,
-            type: 'get',
-            success: function(response, textStatus, jqXHR) {
-                // if success, HTML response is expected, so replace current
-                table.columns.adjust().draw();
-                return;
-                if (textStatus === 'success') {
-                    //$("div.alert-success").show();
-                    //alert(response.mensaje);
-                    window.location = response.url;
-                }
-            },
-            error: function(xhr, status, error) {
-                var response = JSON.parse(xhr.responseText);
-                $('#alertErrorTrackingDate').text(response.mensaje);
-                $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
-                $('#btnSubmitLoad').hide();
-                $('#btnSubmit').show();
+        $('#monthYearPicker').val(textMonthYear);
+        $('#monthYearPicker').MonthPicker({
+            ShowIcon: false,
+            OnAfterChooseMonth: function(selectedDate) {
+                $('#monthYearPicker').trigger('change');
             }
-
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error'+jqXHR.responseText);
-            //alert('Error cargando servicios');
-
         });
     }
 
-
-    function getTrackingData() {
-
-        if ($.fn.dataTable.isDataTable('.notifications-datatable')) {
-            table = $('.notifications-datatable').DataTable();
-        } else {
-            table = $('.notifications-datatable').DataTable({
-
-                order: [4, "desc"],
-                processing: true,
-                serverSide: true,
-                language: {
-                    "url": "{{ asset('dataTables/Spanish.json') }}"
-                },
-                ajax: {
-                    url: '{{route("notifications.index")}}',
-                    type: "POST",
-                    data: function(d) {
-                        d._token = "{{ csrf_token() }}",
-                        d.date = $('#monthYearPicker').val(),
-                        d.search = $('input[type="search"]').val()
-                    },
-                    dataSrc: function(json) {
-                        $('#btnSubmit').show();
-                        $('#btnSubmitLoad').hide();
-
-                        return json.data;
-                    }
-                },
-                columns: columnsFilled,
-                columnDefs: [
-                    { width: "5%", targets: 0 },
-                    { width: "15%", targets: 1 },
-                    { width: "15%", targets: 2 },
-                    { width: "10%", targets: 3 },
-                    { width: "10%", targets: 4 },
-                    { width: "15%", targets: 5 },
-                    {
-
-                        targets: 4,
-                        data: "cancellation_date",
-                        type: "date",
-                        render: function(data, type, row) {
-                            var datetime = moment(data, 'YYYY-M-D');
-                            var displayString = moment(datetime).format('D-M-YYYY');
-
-                            if (type === 'display' || type === 'filter') {
-                                return displayString;
-                            } else {
-                                return datetime; // for sorting
-                            }
-                        }
-                    },
-
-                    {
-                        targets: 3,
-                        data: "started_date",
-                        type: "date",
-                        render: function(data, type, row) {
-
-                            var datetime = moment(data, 'YYYY-M-D');
-                            var displayString = moment(datetime).format('D-M-YYYY');
-
-                            if (type === 'display' || type === 'filter') {
-                                return displayString;
-                            } else {
-                                return datetime; // for sorting
-                            }
-                        }
-                    }
-
-                ],
-                search: {
-                    "regex": true,
-                    "smart": true
-                },
-                initComplete: function() {
-                    this.api().columns().every(function() {
-                        var column = this;
-                    });
-                }
-            });
-        }
-        table.columns.adjust().draw();
+    function clearForms() {
+        setDate();
+        table.search('').draw();
+        table.ajax.reload();
     }
 </script>
 

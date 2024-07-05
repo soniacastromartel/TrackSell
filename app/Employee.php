@@ -45,6 +45,7 @@ class Employee extends Authenticatable
         , 'excludeRanking'
         , 'unlockRequest'
         , 'img'
+        , 'job_category_id'
     ];
 
     //ldap AUTHENTICATABLE

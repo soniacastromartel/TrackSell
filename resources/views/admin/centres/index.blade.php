@@ -166,7 +166,6 @@
         });
 
         function destroy(id) {
-            console.log(id);
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["id"] = id;
