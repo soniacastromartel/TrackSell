@@ -12,7 +12,7 @@
                 <div class="card" style="margin-top:120px">
                     <div class="card-header card-header-danger">
 
-                        <h4 class="card-title">Informes</h4>
+                        <h4 class="card-title">Registro de Ventas</h4>
 
                     </div>
 

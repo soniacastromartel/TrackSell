@@ -104,13 +104,13 @@
             <li id="trackingStarted" class="nav-item ">
               <a class="nav-link" href="{{route('tracking.index')}}">
                 <i class="material-icons">playlist_add_check</i>
-                <span class="sidebar-normal"> Recomendaciones </span>
+                <span class="sidebar-normal"> Registro de Ventas </span>
               </a>
             </li>
             <li id="requestChange" class="nav-item ">
               <a class="nav-link" href="{{route('tracking.requestChange')}}">
                 <i class="material-icons">transform</i>
-                <span class="sidebar-normal"> Solicitudes de cambio </span>
+                <span class="sidebar-normal"> Cambio de Centro </span>
               </a>
             </li>
             <li id="trackingValidateFinal" class="nav-item ">
