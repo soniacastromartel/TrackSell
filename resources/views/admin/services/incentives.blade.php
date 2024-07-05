@@ -23,7 +23,7 @@
                     <div class="row col-lg-8 ">
                         <div class="form-group ">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
+                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98" onchange="getServiceIncentives()">
                                     @foreach ($centres as $centre)
                                     <option value="{{$centre->id}}">{{$centre->name}}</option>
                                     @endforeach
@@ -33,7 +33,7 @@
     
                         <div class="form-group col-md-4">
                             <div class="dropdown bootstrap-select">
-                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Servicio" tabindex="-98">
+                                <select class="selectpicker" name="service_id" id="service_id" data-size="7" data-style="btn btn-red-icot btn-round" title="Servicio" tabindex="-98" onchange="getServiceIncentives()">
                                     @foreach ($services as $service)
                                     <option value="{{  $service->id  }}">{{$service->name}}</option>
                                     @endforeach
@@ -48,14 +48,14 @@
                             refresh
                             </span>   
                         </button>
-                        <button id="btnSubmitSearch" type="submit" class="btn-search-circle">
+                        {{-- <button id="btnSubmitSearch" type="submit" class="btn-search-circle">
                         <span class="material-icons">
                             search
                         </span>
                     </button>
                         <button id="btnSubmitLoadSearch" type="submit" class="btn-search-circle" style="display: none">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
         </div>
@@ -171,75 +171,75 @@
         });
 
         //FIXME BOTON DE EXPORTAR?? DONDE ESTÁ?
-        $("#btnExportIncentives").on('click', function(e) {
-            console.log('obteniendo documento de servicios');
-            $('#targetExportFileLoad').show();
-            $("#btnExportIncentives").hide();
-            exportServicesToExcel();
-        });
+        // $("#btnExportIncentives").on('click', function(e) {
+        //     console.log('obteniendo documento de servicios');
+        //     $('#targetExportFileLoad').show();
+        //     $("#btnExportIncentives").hide();
+        //     exportServicesToExcel();
+        // });
 
 
-        $("#btnSubmitSearch").on('click', function(e) {
-            e.preventDefault();
-            $('#btnSubmitSearch').hide();
-            $('#btnSubmitLoadSearch').show();
-            $('#btnSubmitLoadSearch').prop('disabled', true);
-            getServiceIncentives();
-        });
+        // $("#btnSubmitSearch").on('click', function(e) {
+        //     e.preventDefault();
+        //     $('#btnSubmitSearch').hide();
+        //     $('#btnSubmitLoadSearch').show();
+        //     $('#btnSubmitLoadSearch').prop('disabled', true);
+        //     getServiceIncentives();
+        // });
 
     });
  
     //FIXME donde se usa este método? puede ser útil?
-    function exportServicesToExcel() {
+    // function exportServicesToExcel() {
 
-        $.ajax({
-            url: "{{ route('services.exportServicesIncentivesActives') }}",
-            type: 'GET',
-            dataType: 'binary',
-            xhrFields: {
-                'responseType': 'blob'
-            },
-            xhr: function() {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 2) {
-                        if (xhr.status == 200) {
-                            xhr.responseType = "blob";
-                        } else {
-                            xhr.responseType = "text";
-                        }
-                    }
-                };
-                return xhr;
-            },
-            success: function(response, textStatus, jqXHR) {
-                // if success, HTML response is expected, so replace current
-                if (textStatus === 'success') {
-                    var link = document.createElement('a');
-                    var d = new Date();
-                    var m = String(d.getMonth() + 1).padStart(2, '0');
-                    var currentDate = d.getDate() + '-' + m + '-' + d.getFullYear();
-                    filename = 'servicios-' + currentDate + '.xls';
-                    link.href = URL.createObjectURL(response);
-                    link.download = filename;
-                    link.click();
-                    $("#btnExportIncentives").show();
-                    $('#targetExportFileLoad').hide();
-                }
-            },
-            error: function(xhr, status, error) {
-                var response = JSON.parse(xhr.responseText);
+    //     $.ajax({
+    //         url: "{{ route('services.exportServicesIncentivesActives') }}",
+    //         type: 'GET',
+    //         dataType: 'binary',
+    //         xhrFields: {
+    //             'responseType': 'blob'
+    //         },
+    //         xhr: function() {
+    //             var xhr = new XMLHttpRequest();
+    //             xhr.onreadystatechange = function() {
+    //                 if (xhr.readyState == 2) {
+    //                     if (xhr.status == 200) {
+    //                         xhr.responseType = "blob";
+    //                     } else {
+    //                         xhr.responseType = "text";
+    //                     }
+    //                 }
+    //             };
+    //             return xhr;
+    //         },
+    //         success: function(response, textStatus, jqXHR) {
+    //             // if success, HTML response is expected, so replace current
+    //             if (textStatus === 'success') {
+    //                 var link = document.createElement('a');
+    //                 var d = new Date();
+    //                 var m = String(d.getMonth() + 1).padStart(2, '0');
+    //                 var currentDate = d.getDate() + '-' + m + '-' + d.getFullYear();
+    //                 filename = 'servicios-' + currentDate + '.xls';
+    //                 link.href = URL.createObjectURL(response);
+    //                 link.download = filename;
+    //                 link.click();
+    //                 $("#btnExportIncentives").show();
+    //                 $('#targetExportFileLoad').hide();
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             var response = JSON.parse(xhr.responseText);
 
-                $('#alertErrorServiceIncentive').text('Ha ocurrido un error al exportar los servicios, contacte con el administrador');
-                $('#alertErrorServiceIncentive').show().delay(2000).slideUp(300);
-                $("#btnExportIncentives").show();
-                $('#targetExportFileLoad').hide();
-            }
+    //             $('#alertErrorServiceIncentive').text('Ha ocurrido un error al exportar los servicios, contacte con el administrador');
+    //             $('#alertErrorServiceIncentive').show().delay(2000).slideUp(300);
+    //             $("#btnExportIncentives").show();
+    //             $('#targetExportFileLoad').hide();
+    //         }
 
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error cargando servicios');
-        });
-    }
+    //     }).fail(function(jqXHR, textStatus, errorThrown) {
+    //         alert('Error cargando servicios');
+    //     });
+    // }
 
 
     function getServiceIncentives() {
@@ -269,8 +269,8 @@
                         d.service = $("#service_id option:selected").val()
                     },
                     dataSrc: function(json) {
-                        $('#btnSubmitSearch').show();
-                        $('#btnSubmitLoadSearch').hide();
+                        // $('#btnSubmitSearch').show();
+                        // $('#btnSubmitLoadSearch').hide();
                         return json.data;
                     }
                 },
@@ -333,8 +333,8 @@
 
                 $('#alertErrorServiceIncentive').text(response.mensaje);
                 $('#alertErrorServiceIncentive').show();
-                $('#btnSubmitLoadSearch').hide();
-                $('#btnSubmitSearch').show();
+                // $('#btnSubmitLoadSearch').hide();
+                // $('#btnSubmitSearch').show();
             }
 
         }).fail(function(jqXHR, textStatus, errorThrown) {

@@ -27,7 +27,6 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/admin/employees/resetAccessApp', 'EmployeeController@resetAccessApp')->name('employees.resetAccessApp');
     Route::post('/admin/employees/syncA3', 'EmployeeController@syncA3')->name('employees.syncA3');
     Route::post('/admin/employees/resetPassword', 'EmployeeController@resetPassword')->name('employees.resetPassword');
-    Route::post('/admin/employees/resetPassword', 'EmployeeController@resetPassword')->name('employees.resetPassword');
     //!Centress
     Route::get('/admin/centres', 'CentreController@index')->name('centres.index');
     Route::get('/admin/centres/create', 'CentreController@create')->name('centres.create');

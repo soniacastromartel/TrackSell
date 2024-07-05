@@ -481,7 +481,42 @@ class EmployeeController extends DefaultLoginController
                 Artisan::call('a3empleados:cron', ['name' => $employee->name]);
             }
         }
+        // añade el campo de categorías para PDI
+
+        $this->syncJobCategories();
+
         Log::channel('a3')->info("Finalizado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
         return view('admin.employees.index', ['title' => $this->title])->with('sucess', 'Se ha sincronizado usuarios');
     }
+
+
+   
+    public function syncJobCategories()
+{
+    // Obtener todas las categorías con sus job_category_id correspondientes
+    $categoryJobCategories = DB::table('category_job_category')->get()->mapWithKeys(function ($item) {
+        return [strtolower(trim(preg_replace('/\s+/', ' ', $item->category_name))) => $item->job_category_id];
+    });
+
+    // Recorrer todos los empleados en bloques para evitar problemas de memoria
+    Employee::chunk(100, function ($employees) use ($categoryJobCategories) {
+        foreach ($employees as $employee) {
+            if (!empty($employee->category)) {
+                $normalizedCategory = strtolower(trim(preg_replace('/\s+/', ' ', $employee->category)));
+                // Buscar el job_category_id correspondiente en category_job_category
+                if (isset($categoryJobCategories[$normalizedCategory])) {
+                    $employee->update(['job_category_id' => $categoryJobCategories[$normalizedCategory]]);
+                    Log::info("Updated employee ID {$employee->id} with job_category_id {$categoryJobCategories[$normalizedCategory]} for category {$employee->category}");
+                } else {
+                    Log::warning("No matching category found for employee ID {$employee->id} with category '{$employee->category}' (normalized to '{$normalizedCategory}')");
+                }
+            } else {
+                Log::warning("Employee ID {$employee->id} has an empty category field.");
+            }
+        }
+    });
+
+    return redirect()->back()->with('success', 'Categorías de empleados sincronizadas correctamente.');
+}
+
 }
