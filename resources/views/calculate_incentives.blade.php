@@ -1,15 +1,12 @@
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
-    @include('common.alert')
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
-    <div id="alertErrorCalculate" class="alert alert-danger" role="alert" style="display: none">
-    </div>
 
     <div class="content" style="padding-top: 120px">
         <div class="container-fluid">
@@ -74,7 +71,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            <div class="row  d-flex flex-column align-content-center  ">
+                                        <div class="row  d-flex flex-column align-content-center  ">
                                             {{-- @if ($user->rol_id != 1)
                                             <span class="m-5"></span>
                                         @endif --}}
@@ -114,69 +111,69 @@
                                         <h5 class="card-title">Incentivos</h5>
                                     </div>
                                     <div class="card-body">
-                                            <div class="row d-flex justify-content-center">
-                                                {{--        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
-                                                <div id="monthYearPickerContainer">
-                                                    <input type="hidden" name="monthYear" id="monthYear" />
-                                                    <span id="icon-date" class="material-symbols-outlined">
-                                                        calendar_month</span>
-                                                    <input id="monthYearPicker" class='form-control' type="text"
-                                                        placeholder="yyyy/mm" />
-                                                </div>
-
+                                        <div class="row d-flex justify-content-center">
+                                            {{--        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
+                                            <div id="monthYearPickerContainer">
+                                                <input type="hidden" name="monthYear" id="monthYear" />
+                                                <span id="icon-date" class="material-symbols-outlined">
+                                                    calendar_month</span>
+                                                <input id="monthYearPicker" class='form-control' type="text"
+                                                    placeholder="yyyy/mm" />
                                             </div>
 
-                                            <div class=" ">
-                                                <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                                    data-style="btn btn-red-icot btn-round" title=" Seleccione Centro"
-                                                    tabindex="-98">
-                                                    @if ($user->rol_id != 1)
-                                                        @foreach ($centres as $centre)
-                                                            @if ($centre->id == $user->centre_id)
-                                                                <option value="{{ $centre->id }}" selected>
-                                                                    {{ $centre->name }}</option>
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        @foreach ($centres as $centre)
-                                                            <option value="{{ $centre->id }}">{{ $centre->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <input type="hidden" name="centre" id="centre" />
+                                        </div>
+
+                                        <div class=" ">
+                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                                data-style="btn btn-red-icot btn-round" title=" Seleccione Centro"
+                                                tabindex="-98">
+                                                @if ($user->rol_id != 1)
+                                                    @foreach ($centres as $centre)
+                                                        @if ($centre->id == $user->centre_id)
+                                                            <option value="{{ $centre->id }}" selected>
+                                                                {{ $centre->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    @foreach ($centres as $centre)
+                                                        <option value="{{ $centre->id }}">{{ $centre->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            <input type="hidden" name="centre" id="centre" />
 
 
-                                                <select class="selectpicker" name="employee_id" id="employee_id"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round"
-                                                    title=" Seleccione Empleado" tabindex="-98">
-                                                    <option>SIN SELECCION </option>
-                                                    @if ($user->rol_id != 1)
-                                                        @foreach ($employees as $employee)
-                                                            @if ($employee->centre_id == $user->centre_id)
-                                                                <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        @foreach ($employees as $employee)
+                                            <select class="selectpicker" name="employee_id" id="employee_id"
+                                                data-size="7" data-style="btn btn-red-icot btn-round"
+                                                title=" Seleccione Empleado" tabindex="-98">
+                                                <option>SIN SELECCION </option>
+                                                @if ($user->rol_id != 1)
+                                                    @foreach ($employees as $employee)
+                                                        @if ($employee->centre_id == $user->centre_id)
                                                             <option value="{{ $employee->id }}">{{ $employee->name }}
                                                             </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <input type="hidden" name="employee" id="employee" />
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    @foreach ($employees as $employee)
+                                                        <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            <input type="hidden" name="employee" id="employee" />
 
 
 
-                                            </div>
+                                        </div>
 
 
-                                         
 
-                                         
 
-                                       
+
+
+
 
                                         <hr class="mt-4">
 
@@ -209,7 +206,7 @@
                                             @if ($user->rol_id != 1)
                                                 <button id="btnTargetsPreview" class="btn-watch">
                                                 @else
-                                                    <button id="btnTargetsPreview" class="btn-watch" disabled="disabled">
+                                                    <button id="btnTargetsPreview" class="btn-watch">
                                             @endif
                                             <span id="icon-watch"
                                                 class="material-icons">visibility</span>{{ __('Ver Objetivos') }}
@@ -346,12 +343,13 @@
     </div>
     </div>
     <style>
-        .content{
-    background-image: url(/assets/img/background_continue.png) !important;
-    background-position: center center !important;
-    background-size: 1000px;
-    height: 250vh !important;
-  }
+        .content {
+            background-image: url(/assets/img/background_continue.png) !important;
+            background-position: center center !important;
+            background-size: 1000px;
+            height: 250vh !important;
+        }
+
         .btn-watch {
             padding-left: 60px !important;
             background-color: var(--light-grey);
@@ -401,26 +399,34 @@
             $('#summaryData').hide();
 
 
-            $("#centre_id").on('change', function() {
-                $('#btnTargetsPreview').removeAttr('disabled');
+            // $("#centre_id").on('change', function() {
+            //     $('#btnTargetsPreview').removeAttr('disabled');
 
-            });
+            // });
 
             /**
              * Visualizar Objetivos
              */
             $("#btnTargetsPreview").on('click', function(e) {
+                console.log($("#centre_id").val() == "");
+                console.log($("#centre_id").text());
                 e.preventDefault();
-                $('#centreName').show();
-                document.getElementById('centreName').innerHTML = $("#centre_id option:selected").text();
-                $('#btnTargetsPreview').hide();
-                $('#btnTargetsLoad').show();
-                $('#btnTargetsLoad').prop('disabled', true);
-                drawTable('.targets-datatable');
+                if ($("#centre_id").val() == "") {
+                    showToast('error', 'Seleccione Centro a Mostrar');
+                } else {
+                    $('#centreName').show();
+                    document.getElementById('centreName').innerHTML = $("#centre_id option:selected")
+                .text();
+                    $('#btnTargetsPreview').hide();
+                    $('#btnTargetsLoad').show();
+                    $('#btnTargetsLoad').prop('disabled', true);
+                    drawTable('.targets-datatable');
 
-                $('#targetsData').show();
-                $('#summaryData').hide();
-                $('#incentivesData').hide();
+                    $('#targetsData').show();
+                    $('#summaryData').hide();
+                    $('#incentivesData').hide();
+                }
+
             });
 
             /**
@@ -484,7 +490,6 @@
             $("#btnSubmit").on('click', function(e) {
                 console.log($("#centre_id option:selected").text());
                 e.preventDefault();
-                $('#alertErrorCalculate').hide();
                 $("#importTargetForm").attr('action', '{{ route('target.incentivesReportDownload') }}');
                 $('#btnSubmit').hide();
                 $('#btnSubmitLoad').show();
@@ -535,11 +540,9 @@
                     },
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
-                        $('#alertErrorCalculate').text(response.errors);
-                        $('#alertErrorCalculate').show();
+
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
-                        timeOutAlert($('#alertErrorCalculate'), response);
                     },
                     complete: function() {
                         $("#btnSubmit").html(
@@ -643,7 +646,6 @@
                     }
 
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    timeOutAlert($('#alertErrorCalculate'), jqXHR.responseText);
 
                 });
             });
@@ -791,6 +793,7 @@
                     ];
 
                 } else if (idDataTable == '.summary-datatable') {
+                    console.log(params);
                     params["isSumary"] = true;
                     $('summary-datatable').DataTable();
                     $('summary-datatable').DataTable().ajax.reload();
@@ -948,8 +951,8 @@
                             }
                         } else {
                             var response = JSON.parse(xhr.responseText);
-                            $('#alertErrorLeague').text(response.errors);
-                            $('#alertErrorLeague').show().delay(2000).slideUp(300);
+                            console.log(xhr.responseText);
+
                             if (idDataTable == '.incentives-datable') {
                                 $('#btnIncentivesLoad').hide();
                                 $('#btnIncentivesPreview').show();
@@ -988,11 +991,6 @@
             textMonthYear = month >= 10 ? month : '0' + month;
             fecha = textMonthYear + '/' + year;
             return fecha;
-        }
-
-        function timeOutAlert($alert, $message) {
-            $alert.text($message);
-            $alert.show().delay(2000).slideUp(300);
         }
     </script>
 @endsection

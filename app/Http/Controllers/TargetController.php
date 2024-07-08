@@ -397,6 +397,7 @@ class TargetController extends Controller
             $totalCentre = [];
 
             foreach ($centres as $centre) {
+
                 $centresData = Centre::where('name', $centre->name)->get();
                 $params = $filters;
                 unset($params['employee']);

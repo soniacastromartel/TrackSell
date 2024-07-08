@@ -3524,3 +3524,194 @@ from
 where
     s.cancellation_date is null
     and spd.cancellation_date is null
+
+CREATE
+OR REPLACE ALGORITHM = UNDEFINED DEFINER = `root` @`%` SQL SECURITY DEFINER VIEW `export_target` AS
+select
+    `e`.`id` AS `employee_id`,
+    `e`.`name` AS `employee`,
+    `e`.`nombre_a3` AS `nombreA3`,
+    `e`.`rol_id` AS `rol_id`,
+    `e`.`dni` AS `dni`,
+    `e`.`cod_business` AS `cod_business`,
+    `e`.`cod_employee` AS `cod_employee`,
+    `e`.`cancellation_date` AS `cancellation_date`,
+    `e`.`excludeRanking` AS `excludeRanking`,
+    `s`.`name` AS `service`,
+    `c`.`name` AS `centre`,
+    `c`.`id` AS `tracking_centre_id`,
+    `c2`.`id` AS `centre_employee_id`,
+    `c3`.`id` AS `rc_centre_employee_id`,
+    `c2`.`name` AS `centre_employee`,
+    `c3`.`name` AS `rc_centre_employee`,
+    `t`.`id` AS `tracking_id`,
+    `t`.`patient_name` AS `patient_name`,
+    `t`.`hc` AS `hc`,
+    `t`.`started_date` AS `started_date`,
+    `t`.`apointment_date` AS `apointment_date`,
+    `t`.`service_date` AS `service_date`,
+    `t`.`invoiced_date` AS `invoiced_date`,
+    `t`.`validation_date` AS `validation_date`,
+    `t`.`paid_date` AS `paid_date`,
+    `t`.`observations` AS `observations`,
+    `t`.`quantity` AS `quantity`,
+    `t`.`state` AS `current_state`,
+    `t`.`discount` AS `discount`,
+    `d`.`name` AS `discount_name`,
+    `d`.`is_calculate` AS `is_calculate`,
+    `sp`.`price` AS `price`,
+    round(((`sp`.`price` * 10) / 100), 2) AS `direct_incentive`,
+    round(((`sp`.`price` * 5) / 100), 2) AS `obj1_incentive`,
+    round(((`sp`.`price` * 5) / 100), 2) AS `obj2_incentive`,
+    round(((`sp`.`price` * 2.5) / 100), 2) AS `superv_obj1_incentive`,
+    round(((`sp`.`price` * 2.5) / 100), 2) AS `superv_obj2_incentive`,
+    round(`sp`.`service_price_direct_incentive`, 2) AS `service_price_direct_incentive`,
+    round(`sp`.`service_price_incentive1`, 2) AS `service_price_incentive1`,
+    round(`sp`.`service_price_incentive2`, 2) AS `service_price_incentive2`,
+    round(`sp`.`service_price_super_incentive1`, 2) AS `service_price_super_incentive1`,
+    round(`sp`.`service_price_super_incentive2`, 2) AS `service_price_super_incentive2`,
+    round(`spd`.`price`, 2) AS `discount_price`,
+    round(`spd`.`direct_incentive`, 2) AS `discount_direct_incentive`,
+    round(`spd`.`incentive1`, 2) AS `discount_incentive1`,
+    round(`spd`.`incentive2`, 2) AS `discount_incentive2`,
+    round(`spd`.`super_incentive1`, 2) AS `discount_super_incentive1`,
+    round(`spd`.`super_incentive2`, 2) AS `discount_super_incentive2`,
+    group_concat(distinct `super`.`employee_id` separator ', ') AS `supervisor`
+from
+    (
+        (
+            (
+                (
+                    (
+                        (
+                            (
+                                (
+                                    (
+                                        (
+                                            `trackings` `t`
+                                            join `employees` `e` on ((`e`.`id` = `t`.`employee_id`))
+                                        )
+                                        join `centres` `c` on ((`c`.`id` = `t`.`centre_id`))
+                                    )
+                                    join `services` `s` on ((`s`.`id` = `t`.`service_id`))
+                                )
+                                join `service_prices` `sp` on (
+                                    (
+                                        (`sp`.`service_id` = `t`.`service_id`)
+                                        and (`sp`.`centre_id` = `t`.`centre_id`)
+                                        and (`sp`.`cancellation_date` is null)
+                                    )
+                                )
+                            )
+                            join `centres` `c2` on ((`c2`.`id` = `t`.`centre_employee_id`))
+                        )
+                        left join `service_prices_discounts` `spd` on (
+                            (
+                                (`spd`.`service_price_id` = `sp`.`id`)
+                                and (`spd`.`cancellation_date` is null)
+                                and (`spd`.`cancellation_date` is null)
+                                and (`spd`.`discount_type` = `t`.`discount`)
+                            )
+                        )
+                    )
+                    left join `discounts` `d` on ((`d`.`type` = `t`.`discount`))
+                )
+                left join (
+                    select
+                        `eh`.`employee_id` AS `employee_id`,
+                        `eh`.`centre_id` AS `centre_id`,
+                        `eh`.`cancellation_date` AS `cancellation_date`,
+                        `eh`.`created_at` AS `created_at`,
+                        `eh`.`rol_id` AS `rol_id`
+                    from
+                        (
+                            `employee_history` `eh`
+                            join `roles` `r` on (
+                                (
+                                    (`r`.`id` = `eh`.`rol_id`)
+                                    and (`r`.`name` = 'SUPERVISOR')
+                                )
+                            )
+                        )
+                ) `super` on (
+                    (
+                        (`super`.`centre_id` = `c2`.`id`)
+                        and (
+                            (
+                                `t`.`validation_date` between cast(`super`.`created_at` as date)
+                                and (cast(`super`.`cancellation_date` as date) - 1)
+                            )
+                            or (
+                                (`super`.`cancellation_date` is null)
+                                and (
+                                    cast(`super`.`created_at` as date) <= `t`.`validation_date`
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            left join `request_changes` `rc` on (
+                (
+                    (`rc`.`id` is not null)
+                    and (`rc`.`employee_id` = `e`.`id`)
+                    and (
+                        `rc`.`centre_origin_id` = `t`.`centre_employee_id`
+                    )
+                    and (`t`.`validation_date` >= `rc`.`start_date`)
+                    and (`t`.`validation_date` <= `rc`.`end_date`)
+                )
+            )
+        )
+        left join `centres` `c3` on ((`c3`.`id` = `rc`.`centre_destination_id`))
+    )
+where
+    (`t`.`cancellation_date` is null)
+    AND 
+    (`e`.`cancellation_date` is null)
+group by
+    `e`.`id`,
+    `e`.`name`,
+    `e`.`rol_id`,
+    `e`.`dni`,
+    `e`.`cod_business`,
+    `e`.`cod_employee`,
+    `e`.`cancellation_date`,
+    `e`.`excludeRanking`,
+    `s`.`name`,
+    `c`.`name`,
+    `c`.`id`,
+    `c2`.`name`,
+    `c2`.`id`,
+    `c3`.`name`,
+    `c3`.`id`,
+    `t`.`id`,
+    `t`.`patient_name`,
+    `t`.`hc`,
+    `t`.`started_date`,
+    `t`.`apointment_date`,
+    `t`.`service_date`,
+    `t`.`invoiced_date`,
+    `t`.`validation_date`,
+    `t`.`paid_date`,
+    `t`.`observations`,
+    `t`.`quantity`,
+    `d`.`name`,
+    `d`.`is_calculate`,
+    `sp`.`price`,
+    round(((`sp`.`price` * 10) / 100), 2),
+    round(((`sp`.`price` * 5) / 100), 2),
+    round(((`sp`.`price` * 5) / 100), 2),
+    round(((`sp`.`price` * 2.5) / 100), 2),
+    round(((`sp`.`price` * 2.5) / 100), 2),
+    round(`sp`.`service_price_direct_incentive`, 2),
+    round(`sp`.`service_price_incentive1`, 2),
+    round(`sp`.`service_price_incentive2`, 2),
+    round(`sp`.`service_price_super_incentive1`, 2),
+    round(`sp`.`service_price_super_incentive2`, 2),
+    round(`spd`.`price`, 2),
+    round(`spd`.`direct_incentive`, 2),
+    round(`spd`.`incentive1`, 2),
+    round(`spd`.`incentive2`, 2),
+    round(`spd`.`super_incentive1`, 2),
+    round(`spd`.`super_incentive2`, 2);

@@ -296,7 +296,7 @@
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
-                    console.log(respone);
+                    console.log(response);
                     if (textStatus === 'success') {
                         if (type == 'only') {
                             $('#btnSyncA3_' + employeeId + ' .material-icons').show();
