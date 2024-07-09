@@ -2,7 +2,7 @@
 
 <div class="sidebar" data-color="danger" data-background-color="grey" {{-- data-image="../assets/img/sidebar-1.jpg"--}}>
   <div class="sidebar-wrapper d-flex flex-column">
-    <img src="{{ asset('assets/img/LOGOICOT.png') }}" style="margin:10px;">
+    <img src="{{ asset('assets/img/logoIcot2.png') }}" style="margin:10px;">
 
     <ul class="nav">
       <li id="userInfo" class="nav-item ">
