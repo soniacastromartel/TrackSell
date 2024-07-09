@@ -534,6 +534,27 @@
                     </tbody>
                 </table>
 
+                {{-- CENTROS REMCOMENDADOS --}}
+
+                <table class="mt-4 table">
+                    <thead>
+                        <tr class="row-service" style="background-color: var(--red-icot);color:white;">
+                            <th>Recomendado</th>
+                            <th>Realizado</th>
+                            <th>Recomendaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($servicesRecommend as $service)
+                            <tr>
+                                <td>{{ $service->centre_recommendation_name }}</td>
+                                <td>{{ $service->centre_name }}</td>
+                                <td>{{ $service->cantidad }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
                 <div class="card mt-4">
                     <div class="chart-container">
                         <h4>Ventas de <strong>{{ $selectedService->name }}</strong> en

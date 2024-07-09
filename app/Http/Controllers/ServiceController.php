@@ -470,6 +470,10 @@ class ServiceController extends Controller
                     return $item;
                 })->sortByDesc('cantidad');
 
+                $servicesRecommend = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('centres_recommendation.name','centres.name')
+                ->get();
+        
         //Todos los centros y servicios        
         } elseif (!$serviceId && !$centreId)  {
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
@@ -480,10 +484,10 @@ class ServiceController extends Controller
                     return $item;
                 })->sortByDesc('cantidad');
 
-             
+                $servicesRecommend = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('centres_recommendation.name','centres.name')
+                ->get();
 
-               
-             
         } else {
             //Todo un centros y  un servicio
             $servicesCount = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
@@ -493,6 +497,10 @@ class ServiceController extends Controller
                     $item->total_price_per_centre = $item->price * $item->cantidad;
                     return $item;
                 })->sortByDesc('cantidad');
+
+                $servicesRecommend = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+                ->groupBy('centres_recommendation.name','centres.name')
+                ->get();
         }
 
         $servicesCountGroupService =  Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
@@ -502,6 +510,9 @@ class ServiceController extends Controller
                 $item->total_price_per_centre = $item->price * $item->cantidad;
                 return $item;
             })->sortByDesc('cantidad');
+            $servicesRecommend = Service::getCountAllServices($serviceId, $centreId, $startDate, $endDate)
+            ->groupBy('centres_recommendation.name','centres.name')
+            ->get();
 
         $totalServices = $servicesCount->sum('cantidad');
         $grandTotal = $servicesCount->sum('total_price_per_centre');
@@ -599,8 +610,7 @@ class ServiceController extends Controller
             'serviceEmployee' => $serviceEmployee,
             'labelsTotalEmployee' => $labelsTotalEmployee,
             'dataTotalEmployee' => $dataTotalEmployee,
-           
-
+            'servicesRecommend' => $servicesRecommend,
         ]);
     }
 

@@ -38,6 +38,7 @@ class Service extends Model
     {
         $query->join('trackings', 'services.id', '=', 'trackings.service_id')
               ->join('centres', 'trackings.centre_id', '=', 'centres.id')
+              ->join('centres as centres_recommendation', 'trackings.centre_employee_id', '=', 'centres_recommendation.id')
               ->join('service_prices', function ($join) {
                   $join->on('services.id', '=', 'service_prices.service_id')
                        ->on('trackings.centre_id', '=', 'service_prices.centre_id');
@@ -68,6 +69,7 @@ class Service extends Model
               ->whereNull('employees.cancellation_date')
               ->select(
                   'centres.name as centre_name',
+                  'centres_recommendation.name as centre_recommendation_name',
                   'services.name as service_name',
                   'service_prices.price as price',
                   'employees.name as employee_name',
@@ -77,12 +79,12 @@ class Service extends Model
                   'service_categories.name as category_service',
                   'trackings.started_date',
                   'trackings.validation_date as end_date',
-                  DB::raw('COUNT(*) as cantidad')
+                  'trackings.centre_employee_id',
+                  DB::raw('COUNT(*) as cantidad'),
+                  DB::raw('COUNT(DISTINCT trackings.centre_employee_id) as centre_recommendation_count')
               );
            
-            $query->orderBy('centres.name', 'asc')
-                  ->orderBy('services.name', 'asc')
-                  ->orderBy('cantidad', 'desc');
+            $query->orderBy('cantidad', 'desc');
         
             return $query;
     
