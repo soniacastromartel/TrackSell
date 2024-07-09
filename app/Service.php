@@ -88,7 +88,6 @@ class Service extends Model
         
             return $query;
     
-        return $query;
     }
     
     public function scopeGetCountServicesByCentre($query, $centreId,$startDate, $endDate)

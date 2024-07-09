@@ -29,7 +29,7 @@ class EmployeeController extends DefaultLoginController
     {
         $this->title = 'Empleados';
         $this->user = session()->get('user');
-        $this->copycauEmail  =  explode(',', env('MAIL_CC_CAU'));
+        $this->copycauEmail = explode(',', env('MAIL_CC_CAU'));
     }
 
     public function index(Request $request)
@@ -68,7 +68,7 @@ class EmployeeController extends DefaultLoginController
 
 
 
-                return  Datatables::of($employees)
+                return Datatables::of($employees)
                     ->addIndexColumn()
                     ->filter(function ($instance) use ($request) {
 
@@ -92,25 +92,25 @@ class EmployeeController extends DefaultLoginController
                         <span class="material-icons">edit</span></a>';
                         //!BTN RESET ACCESS
                         $fnCall = 'resetAccessApp(' . $employee->id . ' )';
-                        $btn .= '<a id="btnResetAccess' .  $employee->id . '" onclick="' . $fnCall . '"  class="btn-reset-access"  data-access="Resetear número de acceso">
+                        $btn .= '<a id="btnResetAccess' . $employee->id . '" onclick="' . $fnCall . '"  class="btn-reset-access"  data-access="Resetear número de acceso">
                         <span class="material-icons">refresh</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"  style="display: none;"></span>
                         </a>';
                         //!BTN NEW PASSWORD AND VALIDATE 
                         $fnCall = 'resetPassword(' . $employee->id . ' )';
-                        $btn .= '<a id="btnResetPass' .  $employee->id . '" onclick="' . $fnCall . '"  class="btn-validate-password" data-validate="Validación y nueva contraseña">
+                        $btn .= '<a id="btnResetPass' . $employee->id . '" onclick="' . $fnCall . '"  class="btn-validate-password" data-validate="Validación y nueva contraseña">
                         <span class="material-icons">person</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                         </a>';
                         //!BTN DENY ACCESS
                         $fnCall = 'denyAccess(' . $employee->id . ' )';
-                        $btn .= '<a id="btnDenyAccess' .  $employee->id . '" onclick="' . $fnCall . '" class="btn-denegate-access" data-denegate="Denegar accesso">
+                        $btn .= '<a id="btnDenyAccess' . $employee->id . '" onclick="' . $fnCall . '" class="btn-denegate-access" data-denegate="Denegar accesso">
                         <span class="material-icons">block</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                         </a>';
                         //!BTN SYNC A3
                         $fnCall = 'syncA3(' . $employee->id . ' , \'only\')';
-                        $btn .= '<a id="btnSyncA3_' .  $employee->id . '" onclick="' . $fnCall . '" class="btn-sincro-a3"  data-sincro="Sincronizar A3">
+                        $btn .= '<a id="btnSyncA3_' . $employee->id . '" onclick="' . $fnCall . '" class="btn-sincro-a3"  data-sincro="Sincronizar A3">
                         <span class="material-icons">sync</span>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                         </a>';
@@ -174,7 +174,7 @@ class EmployeeController extends DefaultLoginController
                 ->where('employee_history.employee_id', '=', $id)
                 ->orderBy('employee_history.created_at', 'desc')
                 ->get();
-            return  Datatables::of($employee_history)
+            return Datatables::of($employee_history)
                 ->addIndexColumn()
                 ->rawColumns(['action'])
                 ->make(true);
@@ -196,7 +196,13 @@ class EmployeeController extends DefaultLoginController
             $dayNow = date('Y-m-d');
             $dayYesterday = date('Y-m-d', strtotime('-1 days'));
             return view('admin.employees.edit', [
-                'title'     => $this->title, 'employee' => $employee, 'roles'    => $roles, 'centres'  => $centres, 'dayNow'   => $dayNow, 'dayYesterday' => $dayYesterday, 'motives' => $excludeMotives
+                'title' => $this->title,
+                'employee' => $employee,
+                'roles' => $roles,
+                'centres' => $centres,
+                'dayNow' => $dayNow,
+                'dayYesterday' => $dayYesterday,
+                'motives' => $excludeMotives
 
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -240,7 +246,7 @@ class EmployeeController extends DefaultLoginController
                 if (!empty($employeeData->toArray() && empty($employeeData->email))) {
                     return response()->json([
                         'success' => 'false',
-                        'errors'  => 'Error usuario no encontrado'
+                        'errors' => 'Error usuario no encontrado'
                     ], 400);
                 }
 
@@ -253,17 +259,20 @@ class EmployeeController extends DefaultLoginController
                 $employee->update($fields);
 
                 $emailData = [
-                    'username' => $params['username'], 'password' => $randomPass, 'subject'  => 'Acceso para la app ICOT PDI', 'view'     => 'emails.first_access_data_registered_employee'
+                    'username' => $params['username'],
+                    'password' => $randomPass,
+                    'subject' => 'Acceso para la app ICOT PDI',
+                    'view' => 'emails.first_access_data_registered_employee'
                 ];
                 Mail::to($employeeData->email)->send(new RegisteredUser($emailData));
 
-                return json_encode(['data' =>  ['username'  => $params['username']]]);
+                return json_encode(['data' => ['username' => $params['username']]]);
             }
             return view('admin.employees.validated_employee', ['title' => $this->title]);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'success' => 'false',
-                'errors'  => $e->getMessage(),
+                'errors' => $e->getMessage(),
             ], 400);
         }
     }
@@ -278,17 +287,17 @@ class EmployeeController extends DefaultLoginController
                 $employee = Employee::where('username', $params['username']);
 
                 $fields['username'] = $params['username'];
-                $fields['name']     = $params['name'];
-                $fields['email']    = $params['email'];
+                $fields['name'] = $params['name'];
+                $fields['email'] = $params['email'];
 
                 $employee->update($fields);
-                return json_encode(['data' =>  ['username'  => $params['username']]]);
+                return json_encode(['data' => ['username' => $params['username']]]);
             }
             return view('admin.employees.validated_employee', ['title' => $this->title]);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'success' => 'false',
-                'errors'  => $e->getMessage(),
+                'errors' => $e->getMessage(),
             ], 400);
         }
     }
@@ -298,13 +307,13 @@ class EmployeeController extends DefaultLoginController
     {
         try {
             $params = $request->all();
-            $idEmployee = (int)$params['employee_id'];
+            $idEmployee = (int) $params['employee_id'];
             $employee = Employee::where('id', $idEmployee)->first(); // Asegurarse de que el empleado existe
 
             if (!$employee) { // Verificar si el empleado no fue encontrado
                 return response()->json([
                     'success' => false,
-                    'errors'  => 'Empleado no encontrado'
+                    'mensaje' => 'Empleado no encontrado'
                 ], 404);
             }
 
@@ -314,11 +323,10 @@ class EmployeeController extends DefaultLoginController
             if (!$resultado) {
                 return response()->json([
                     'success' => false,
-                    'mensaje' => 'Error al resetear el contador de accesos'
+                    'mensaje' => 'Error al Desbloquear Cuenta'
                 ], 500);
             }
 
-            // Verificar si el empleado tiene correo electrónico antes de enviar el correo
             if (!empty($employee->email)) {
                 $emailData = [
                     'subject' => 'Reseteo de Acceso',
@@ -338,9 +346,13 @@ class EmployeeController extends DefaultLoginController
             $employee->updated_at = now();
             $employee->save();
 
+            $hasEmail = !empty($employee->email);
+            $success = $hasEmail ? true : false;
+            $mensaje = $hasEmail ? 'Cuenta desbloqueada' : 'Cuenta desbloqueada. Sin Correo Asociado';
+
             return response()->json([
-                'success' => true,
-                'mensaje' => 'Se ha reseteado el contador de accesos' . (empty($employee->email) ? ', no se envió correo electrónico por falta de registro.' : ' y enviado el correo electrónico.')
+                'success' => $success,
+                'mensaje' => $mensaje
             ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
@@ -358,6 +370,9 @@ class EmployeeController extends DefaultLoginController
             $excludeCategories = ['SUPERVISOR CENTRO DE REHABILITACIÓN', 'Aux. Administrativo/a TFE', 'Auxiliares Administrativos', 'AUXILIAR ADMINISTRATIVO/A', 'JEFE/A ADMINISTRACION', 'AUX. ADMINISTRATIVO/A'];
             $excludeCategories = array_map('strtoupper', $excludeCategories);
             $employee = Employee::findOrFail($request->employee_id);
+            $hasEmail = !empty($employee->email);
+            $success = $hasEmail ? true : false;
+            $mensaje = $hasEmail ? 'Usuario Validado Correctamente' : 'Sin Correo Asociado';
 
             if (in_array(strtoupper($employee->category), $excludeCategories)) {
                 $employee->validated = 1;
@@ -369,20 +384,23 @@ class EmployeeController extends DefaultLoginController
                         'view' => 'emails.template_validateExcludeCategory',
                     ];
 
-                Mail::to($employee->email)
-                ->cc($this->copycauEmail)
-                ->send(new RegisteredUser($emailData));
+                    Mail::to($employee->email)
+                        ->cc($this->copycauEmail)
+                        ->send(new RegisteredUser($emailData));
 
-                 \Log::debug('CC Emails:', $this->copycauEmail);
+                    \Log::debug('CC Emails:', $this->copycauEmail);
 
-                 $employee->updated_at = now();
-                 $employee->save();
+                    $employee->updated_at = now();
+                    $employee->save();
 
                 }
+               
+
                 return response()->json([
-                   'success' => true,
-                   'mensaje' => 'Usuario validado correctamente' . (empty($employee->email) ? ', no se envió correo electrónico por falta de registro.' : ' y enviado el correo electrónico.')
+                    'success' => $success,
+                    'mensaje' => $mensaje
                 ], 200);
+
 
             } else {
                 $employee->password = 'abc.1234';
@@ -409,17 +427,17 @@ class EmployeeController extends DefaultLoginController
                     $employee->updated_at = now();
                     $employee->save();
                 }
-            
+
                 return response()->json([
-                    'success' => true,
-                    'mensaje' => 'Usuario validado correctamente' . (empty($employee->email) ? ', no se envió correo electrónico por falta de registro.' : ' y enviado el correo electrónico.')
+                    'success' => $success,
+                    'mensaje' => $mensaje
                 ], 200);
             }
 
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['success' => false, 'mensaje' => 'Empleado no encontrado'], 404);
+            return response()->json(['success' => false, 'mensaje' => 'Empleado No Encontrado'], 404);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['success' => false, 'mensaje' => 'Error de base de datos'], 500);
+            return response()->json(['success' => false, 'mensaje' => 'Error de Base de Datos'], 500);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'mensaje' => 'Error general: ' . $e->getMessage()], 500);
         }
@@ -439,17 +457,23 @@ class EmployeeController extends DefaultLoginController
                 $tokenId = $tokenId->id;
                 $tokenRepository->revokeAccessToken($tokenId);
                 return response()->json([
-                    'success' => true, 'url'    => '/admin/employees', 'mensaje' => 'Denegado acceso'
+                    'success' => true,
+                    'url' => '/admin/employees',
+                    'mensaje' => 'Cuenta Bloqueada.'
                 ], 200);
             } else {
                 return response()->json([
-                    'success' => false, 'url'    => '/admin/employees', 'mensaje' => 'No encontrado access token'
+                    'success' => false,
+                    'url' => '/admin/employees',
+                    'mensaje' => 'No Encontrado Access Token.'
                 ], 404);
             }
         } catch (\Illuminate\Database\QueryException $e) {
 
             return response()->json([
-                'success' => true, 'url'    => null, 'mensaje' => 'Error'
+                'success' => true,
+                'url' => null,
+                'mensaje' => 'Error de Base de Datos'
             ], 200);
         }
     }
@@ -459,26 +483,42 @@ class EmployeeController extends DefaultLoginController
     public function syncA3(Request $request)
     {
         $params = $request->all();
-        $idEmployee = (int)$params['employee_id'];
+        $idEmployee = (int) $params['employee_id'];
         $this->user = session()->get('user');
 
         \Log::channel('a3')->info("Iniciado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
         if ($params['type'] == 'full') {
-            Artisan::call('a3empleados:cron', []);
+            try {
+                Artisan::call('a3empleados:cron', []);
+            } catch (\Exception $e) {
+                \Log::channel('a3')->info('Error' . $e->getMessage());
+            }
         } else {
             $employee = Employee::find($idEmployee);
 
             if (!empty($employee->dni)) {
                 if (!empty($employee->name)) {
                     Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con DNI: " . $employee->dni);
-                    Artisan::call('a3empleados:cron', ['dni' => $employee->dni, 'name' => $employee->name]);
+                    try {
+                        Artisan::call('a3empleados:cron', ['dni' => $employee->dni, 'name' => $employee->name]);
+                    } catch (\Exception $e) {
+                        \Log::channel('a3')->info('Error' . $e->getMessage());
+                    }
                 } else {
                     Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con DNI: " . $employee->dni);
-                    Artisan::call('a3empleados:cron', ['dni' => $employee->dni]);
+                    try {
+                        Artisan::call('a3empleados:cron', ['dni' => $employee->dni]);
+                    } catch (\Exception $e) {
+                        \Log::channel('a3')->info('Error' . $e->getMessage());
+                    }
                 }
             } else {
                 Log::channel('a3')->info("Sync A3 desde PDI-Web, forzando usuario con Nombre: " . $employee->name);
-                Artisan::call('a3empleados:cron', ['name' => $employee->name]);
+                try {
+                    Artisan::call('a3empleados:cron', ['name' => $employee->name]);
+                } catch (\Exception $e) {
+                    \Log::channel('a3')->info('Error' . $e->getMessage());
+                }
             }
         }
         // añade el campo de categorías para PDI
@@ -486,7 +526,8 @@ class EmployeeController extends DefaultLoginController
         $this->syncJobCategories();
 
         Log::channel('a3')->info("Finalizado forzado de Sync A3 desde PDI-Web, realizado por usuario: " . $this->user->username);
-        return view('admin.employees.index', ['title' => $this->title])->with('sucess', 'Se ha sincronizado usuarios');
+        session()->flash('success', 'Sincronización Correcta');
+        return view('admin.employees.index', ['title' => $this->title])->with('success', 'Sincronización Realizada Correctamente.');
     }
 
 

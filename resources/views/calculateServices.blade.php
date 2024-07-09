@@ -710,6 +710,7 @@
             });
         } catch (error) {
             console.error('Error creating chartCentre:', error);
+            showAlert('error',error);
         }
 
         try {
@@ -742,6 +743,7 @@
             });
         } catch (error) {
             console.error('Error creating chartService:', error);
+            showAlert('error',error);
         }
 
         try {
@@ -774,6 +776,9 @@
             });
         } catch (error) {
             console.error('Error creating chartServiceAllTotal:', error);
+            showAlert('error',error);
+
+
         }
 
         try {
@@ -806,6 +811,8 @@
             });
         } catch (error) {
             console.error('Error creating chartServiceAll:', error);
+            showAlert('error',error);
+
         }
 
         try {
@@ -834,6 +841,8 @@
             });
         } catch (error) {
             console.error('Error creating chartCentreService:', error);
+            showAlert('error',error);
+
         }
         //POR CATEGORÍA DE SERVICIO 
         try {
@@ -866,6 +875,8 @@
             });
         } catch (error) {
             console.error('Error creating chartServiceCategory:', error);
+            showAlert('error',error);
+
         }
         //POR CATEGORÍA DE EMPLEADO
         try {
@@ -898,6 +909,8 @@
             });
         } catch (error) {
             console.error('Error creating chartEmployeeCategory:', error);
+            showAlert('error',error);
+
         }
 
 
@@ -933,6 +946,8 @@
             });
         } catch (error) {
             console.error('Error creating chartTotalEmployee:', error);
+            showAlert('error',error);
+
         }
 
         try {
@@ -965,6 +980,7 @@
             });
         } catch (error) {
             console.error('Error creating chartServiceEmployee:', error);
+            showAlert('error',error);
         }
     });
 

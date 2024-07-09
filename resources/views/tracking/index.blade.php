@@ -2,12 +2,9 @@
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
-    @include('common.alert')
 
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
-    <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
-    </div>
 
     <div class="content">
         <div class="container-fluid">

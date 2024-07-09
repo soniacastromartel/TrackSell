@@ -48,6 +48,9 @@
     
         {{-- @auth --}}
         @include('inc.sidebar')
+        @include('common.alert')
+        @include('inc.navbar')
+
         {{-- @endauth --}}
         <div class="main-panel">
             @yield('content')
@@ -107,4 +110,6 @@
     </div>    
     
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </html>

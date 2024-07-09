@@ -22,13 +22,11 @@ class TargetService {
             $idCentres = array_column($params['centre']->toArray(), 'id');
             $whereFields .=  ' and centre_employee_id in (  ' . implode(",", $idCentres) . ')' ; 
         }
-
         if (isset($params['employee']) && !empty($params['employee'])) {
             $whereFields .= ' and employee = \'' . $params['employee'] . '\'';
             
         }
-        if (isset($params['monthYear']) && !empty($params['monthYear'])) {
-            
+        if (isset($params['monthYear']) && !empty($params['monthYear'])) { 
             if (isset($params['acumulative']) && $params['acumulative']) {
                 $year         = substr($params['monthYear'],strpos($params['monthYear'], '/') +1); 
                 $beginYear = intval($year) -1; 
@@ -60,7 +58,6 @@ class TargetService {
          ->orderBy('cod_business'); 
         
         $exportData = $exportData->where(function($query) use ($whereLikeBegin, $whereLikeLast, $params){
-
             if (isset($params['todos_estados']) && $params['todos_estados']) {
                 $query->whereBetween('started_date', [$whereLikeBegin,$whereLikeLast])
                     ->orWhereBetween('apointment_date', [$whereLikeBegin,$whereLikeLast])
