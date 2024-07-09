@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <div class="row col-md-12 mb-3">
            
-                
+
                 <div class="col-md-12 text-right" id="blockNewTracking">
                     <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
                             sync
