@@ -81,13 +81,6 @@ class AppServiceProvider extends ServiceProvider
                 ])->baseUrl( env('API_ENDPOINT').'/');
             });
 
-            // PendingRequest::macro('a3', function ($access_token) {
-            //     return PendingRequest::withHeaders([
-            //         'authorization' => 'Bearer ' . $access_token,
-            //         'Ocp-Apim-Subscription-Key' => env('SUBSCRIPTION_KEY1')
-            //     ])->baseUrl( env('API_ENDPOINT').'/');
-            // });
-
             Response:: macro('success', function($data){
                 return response()-> json($data);
             });

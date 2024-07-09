@@ -106,7 +106,6 @@ class HomeController extends Controller
                 $vc = ['value' => $vcTotal, 'target' => $target[0]->obj1]; 
             }
         }
-        // session()->flash('success', 'Bienvenido a su zona de usuario');
         //FIXME--- Usuario de varios centros, coger ultimo
         return view('home', ['title'       => 'Inicio'
             , 'user'      => $this->user

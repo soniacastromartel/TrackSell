@@ -527,7 +527,6 @@
                         return xhr;
                     },
                     success: function(data, textStatus, jqXHR) {
-                        // if success, HTML response is expected, so replace current
                         if (textStatus === 'success') {
                             $('#btnSubmitLoad').hide();
                             $('#btnSubmit').show();
@@ -540,14 +539,16 @@
                     },
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
-
+                        showAlert('error', response);
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
                     },
                     complete: function() {
                         $("#btnSubmit").html(
                             "<span class='material-icons mr-1'>download</span> Exportar");
+                            showToast('info', 'Archivo Descargado');
                     }
+
                 });
             });
 
@@ -635,17 +636,19 @@
                     },
                     error: function(xhr, status, error) {
                         var response = JSON.parse(xhr.responseText);
+                        showAlert('error', response);
                         alert(response.errors);
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
                     },
                     complete: function() {
+                        showToast('info', 'Archivo Descargado');
                         $("#btnTracingTargets").html(
                             "<span class='material-icons mr-1'>download</span> Seguimiento de objetivos"
                         );
                     }
-
                 }).fail(function(jqXHR, textStatus, errorThrown) {
+                    showAlert('error', jqXHR.responseText);
 
                 });
             });
@@ -933,9 +936,6 @@
                     columnDefs: columnsDef,
                     columns: columnss,
                     initComplete: function(data, idDatatable) {
-                        console.log(data.json.data);
-                        console.log(data);
-                        console.log(idDataTable);
                         if (data.jqXHR.statusText === 'OK') {
                             if (idDataTable == '.incentives-datatable') {
                                 $('#btnIncentivesLoad').hide();
@@ -951,8 +951,7 @@
                             }
                         } else {
                             var response = JSON.parse(xhr.responseText);
-                            console.log(xhr.responseText);
-
+                            showAlert('error', response);
                             if (idDataTable == '.incentives-datable') {
                                 $('#btnIncentivesLoad').hide();
                                 $('#btnIncentivesPreview').show();

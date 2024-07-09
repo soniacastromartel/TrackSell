@@ -1,15 +1,10 @@
 @extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
-@include('common.alert')
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
-
-
-<div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none"></div>
-
 
 <div class="content">
     <div class="container-fluid" style="margin-top:120px" >
@@ -19,32 +14,19 @@
             </div>
             <div class="card-body">
                 <div class="row col-md-12 mb-3 justify-between">
-                  
                         <div class="input-group date">
                             <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />
                             <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                             <input type="hidden" name="monthYear" id="monthYear" />
                         </div>
-                   
-
                     <div class="row align-content-end">
                         <button id="btnClear" href="#" class="btn-refresh">
                         <span id="icon-refresh" class="material-icons">
                             refresh
                             </span>   {{ __('Limpiar formulario') }}
                         </button>
-{{--                         
-                        <button id="btnSubmit" type="submit" class="btn-search"><span id="icon-search" class="material-icons">
-                            search</span> {{ __('Buscar') }}</button>
-                        <button id="btnSubmitLoad" type="submit" class="btn-search" style="display: none">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            
-                        </button> --}}
                     </div>
-
                 </div>
-
-
             </div>
         </div>
         <table class="table table-bordered notifications-datatable">
@@ -148,7 +130,6 @@
             }
         });
 
-        // Evento change para cargar datos automáticamente al cambiar la fecha
         $('#monthYearPicker').on('change', function() {
             table.ajax.reload();
         });
