@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-
 
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/logged.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/logged.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -272,7 +270,8 @@
                     <div class="chart-container">
                         <h4>Ventas de <strong>{{ $selectedService->name }}</strong> en
                             <strong>{{ $selectedCentre->name }}</strong>
-                            por <strong>CATEGORÍA</strong> de <strong>SERVICIO</strong></h4>
+                            por <strong>CATEGORÍA</strong> de <strong>SERVICIO</strong>
+                        </h4>
                         <div>
                             <canvas id="chartServiceCategory"></canvas>
                         </div>
@@ -300,7 +299,8 @@
                     <div class="chart-container">
                         <h4>Ventas de <strong>{{ $selectedService->name }}</strong> en
                             <strong>{{ $selectedCentre->name }}</strong>
-                            por <strong>CATEGORÍA</strong> de <strong>EMPLEADO</strong></h4>
+                            por <strong>CATEGORÍA</strong> de <strong>EMPLEADO</strong>
+                        </h4>
                         </h4>
                         <div>
                             <canvas id="chartEmployeeCategory"></canvas>
@@ -646,7 +646,6 @@
                     @endforeach
                     </tbody>
                 </table>
-              
             @endif
 
         </div>
@@ -659,330 +658,103 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const labelsCentre = JSON.parse('@json($labelsCentre)');
-        const dataCentre = JSON.parse('@json($dataCentre)');
-        const labelsService = JSON.parse('@json($labelsService)');
-        const dataService = JSON.parse('@json($dataService)');
-        const labelsServiceAll = JSON.parse('@json($labelsServiceAll)');
-        const dataServiceAll = JSON.parse('@json($dataServiceAll)');
-        const labelsCentreService = JSON.parse('@json($labelsCentreService)');
-        const dataCentreService = JSON.parse('@json($dataCentreService)');
-        const dataTotalService = JSON.parse('@json($dataTotalService)');
-        const labelsEmployeeCategory = JSON.parse('@json($labelsEmployeeCategory)');
-        const dataEmployeeCategory = JSON.parse('@json($dataEmployeeCategory)');
-        const labelsServiceCategory = JSON.parse('@json($labelsServiceCategory)');
-        const dataServiceCategory = JSON.parse('@json($dataServiceCategory)');
-        const labelsServiceEmployee = JSON.parse('@json($labelsServiceEmployee)');
-        const dataServiceEmployee = JSON.parse('@json($dataServiceEmployee)');
-        const labelsServiceAllTotal = JSON.parse('@json($labelsServiceAllTotal)');
-        const dataServiceAllTotal = JSON.parse('@json($dataServiceAllTotal)');
-        const labelsTotalEmployee = JSON.parse('@json($labelsTotalEmployee)');
-        const dataTotalEmployee = JSON.parse('@json($dataTotalEmployee)');
+        const chartConfigs = [{
+                id: 'chartCentre',
+                labels: '@json($labelsCentre)',
+                data: '@json($dataCentre)',
+                label: 'Cantidad de Servicios'
+            },
+            {
+                id: 'chartService',
+                labels: '@json($labelsService)',
+                data: '@json($dataService)',
+                label: 'Cantidad de Servicios'
+            },
+            {
+                id: 'chartServiceAllTotal',
+                labels: '@json($labelsServiceAllTotal)',
+                data: '@json($dataServiceAllTotal)',
+                label: 'Cantidad de Servicios'
+            },
+            {
+                id: 'chartServiceAll',
+                labels: '@json($labelsServiceAll)',
+                data: '@json($dataServiceAll)',
+                label: 'Cantidad de Servicios'
+            },
+            {
+                id: 'chartCentreService',
+                labels: '@json($labelsCentreService)',
+                data: '@json($dataCentreService)',
+                label: 'Cantidad de Servicios por Centro'
+            },
+            {
+                id: 'chartServiceCategory',
+                labels: '@json($labelsServiceCategory)',
+                data: '@json($dataServiceCategory)',
+                label: 'Cantidad de Servicios'
+            },
+            {
+                id: 'chartEmployeeCategory',
+                labels: '@json($labelsEmployeeCategory)',
+                data: '@json($dataEmployeeCategory)',
+                label: 'Cantidad de Servicios'
+            },
+            {
+                id: 'chartTotalEmployee',
+                labels: '@json($labelsTotalEmployee)',
+                data: '@json($dataTotalEmployee)',
+                label: 'Cantidad de Servicios'
+            },
+            {
+                id: 'chartServiceEmployee',
+                labels: '@json($labelsServiceEmployee)',
+                data: '@json($dataServiceEmployee)',
+                label: 'Cantidad de Servicios'
+            }
+        ];
 
-
-        try {
-            var ctxCentre = document.getElementById('chartCentre').getContext('2d');
-            var chartCentre = new Chart(ctxCentre, {
-                type: 'bar',
-                data: {
-                    labels: labelsCentre,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataCentre,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+        function createChart(chartConfig) {
+            try {
+                const ctx = document.getElementById(chartConfig.id).getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: JSON.parse(chartConfig.labels),
+                        datasets: [{
+                            label: chartConfig.label,
+                            data: JSON.parse(chartConfig.data),
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            borderWidth: 1,
+                            maxBarThickness: 50, // Grosor máximo de las barras
+                            minBarLength: 2 // Longitud mínima de las barras
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartCentre:', error);
-            showAlert('error',error);
+                });
+            } catch (error) {
+                console.error(`Error creating ${chartConfig.id}:`, error);
+            }
         }
 
-        try {
-            var ctxService = document.getElementById('chartService').getContext('2d');
-            var chartService = new Chart(ctxService, {
-                type: 'bar',
-                data: {
-                    labels: labelsService,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataService,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartService:', error);
-            showAlert('error',error);
-        }
-
-        try {
-            var ctxServiceAllTotal = document.getElementById('chartServiceAllTotal').getContext('2d');
-            var chartServiceAllTotal = new Chart(ctxServiceAllTotal, {
-                type: 'bar',
-                data: {
-                    labels: labelsServiceAllTotal,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataServiceAllTotal,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartServiceAllTotal:', error);
-            showAlert('error',error);
-
-
-        }
-
-        try {
-            var ctxServiceAll = document.getElementById('chartServiceAll').getContext('2d');
-            var chartServiceAll = new Chart(ctxServiceAll, {
-                type: 'bar',
-                data: {
-                    labels: labelsServiceAll,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataServiceAll,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartServiceAll:', error);
-            showAlert('error',error);
-
-        }
-
-        try {
-            var ctxCentreService = document.getElementById('chartCentreService').getContext('2d');
-            var chartCentreService = new Chart(ctxCentreService, {
-                type: 'bar',
-                data: {
-                    labels: labelsCentreService,
-                    datasets: [{
-                        label: 'Cantidad de Servicios por Centro',
-                        data: dataCentreService,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-                        borderColor: ['rgba(255, 99, 132, 1)'],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartCentreService:', error);
-            showAlert('error',error);
-
-        }
-        //POR CATEGORÍA DE SERVICIO 
-        try {
-            var ctxServiceCategory = document.getElementById('chartServiceCategory').getContext('2d');
-            var chartServiceCategory = new Chart(ctxServiceCategory, {
-                type: 'bar',
-                data: {
-                    labels: labelsServiceCategory,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataServiceCategory,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartServiceCategory:', error);
-            showAlert('error',error);
-
-        }
-        //POR CATEGORÍA DE EMPLEADO
-        try {
-            var ctxEmployeeCategory = document.getElementById('chartEmployeeCategory').getContext('2d');
-            var chartEmployeeCategory = new Chart(ctxEmployeeCategory, {
-                type: 'bar',
-                data: {
-                    labels: labelsEmployeeCategory,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataEmployeeCategory,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartEmployeeCategory:', error);
-            showAlert('error',error);
-
-        }
-
-
-        //POR VENTAS TOTALES DE TODOS LOS EMPLEADOS 
-
-        try {
-            var ctxTotalEmployee = document.getElementById('chartTotalEmployee').getContext('2d');
-            var chartTotalEmployee = new Chart(ctxTotalEmployee, {
-                type: 'bar',
-                data: {
-                    labels: labelsTotalEmployee,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataTotalEmployee,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartTotalEmployee:', error);
-            showAlert('error',error);
-
-        }
-
-        try {
-            var ctxServiceEmployee = document.getElementById('chartServiceEmployee').getContext('2d');
-            var chartServiceEmployee = new Chart(ctxServiceEmployee, {
-                type: 'bar',
-                data: {
-                    labels: labelsServiceEmployee,
-                    datasets: [{
-                        label: 'Cantidad de Servicios',
-                        data: dataServiceEmployee,
-                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1,
-                        maxBarThickness: 50, // Grosor máximo de las barras
-                        minBarLength: 2 // Longitud mínima de las barras
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error creating chartServiceEmployee:', error);
-            showAlert('error',error);
-        }
+        chartConfigs.forEach(createChart);
     });
+
 
     function resetSelectors() {
         window.location.href = window.location.origin + window.location.pathname;
@@ -1001,6 +773,7 @@
         }
     });
 </script>
+
 <style>
     body {
         background-image: url(/assets/img/background_continue.png) !important;

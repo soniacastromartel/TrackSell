@@ -20,19 +20,24 @@
             <form id="rankingForm" method="POST">
               @csrf
               @method('POST')
-              <div class="row">
 
-                    <div id="monthYearPickerContainer">
+              <div class="row bg-white">
+
+                <div class="form-group col-sm-10">
+                    <div id="monthYearPickerContainer"> 
                         <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
                         <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                         <input type="hidden" name="monthYear" id="monthYear" />
                     </div>
 
+              
+
                     <div id="yearPickerContainer">
                         <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
                         <span id="icon-date" class="material-symbols-outlined">calendar_month</span>
                     </div>
-        
+                  </div>
+
                 <div class="form-group col-sm-10">
                   <div class="dropdown bootstrap-select">
             
@@ -54,7 +59,8 @@
                     <input type="hidden" name="centre" id="centre" />
                   </div>
                 </div>
-                <div class="col-md-10">
+
+                <div class="form-group col-sm-10">
                   <div class="row">
                     <button id="btnClear" class="btn-refresh">Limpiar Formulario<span id=icon-refresh
                         class="material-icons">refresh</span>
@@ -63,6 +69,7 @@
                     </button>
                   </div>
                 </div>
+
               </div>
               <div class="btn-radio-container">
                 <div class="form-check">
