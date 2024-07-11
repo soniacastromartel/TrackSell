@@ -83,7 +83,6 @@
     </div>
 </div>
 
-@include('common.modal')
 
 <script type="text/javascript">
 

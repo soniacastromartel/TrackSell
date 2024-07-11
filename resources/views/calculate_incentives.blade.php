@@ -572,7 +572,6 @@
             });
 
             $("#targetInputFile").on('change', function() {
-                // document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
                 $("#importTargetForm").attr('action', '{{ route('target.import') }}');
                 $("#importTargetForm").attr('enctype', "multipart/form-data");
                 $('#btnImportTargets').hide();
@@ -582,7 +581,6 @@
             });
 
             $("#targetInputSalesFile").on('change', function() {
-                // document.getElementById("fileuploadurl").value = this.value.replace(/C:\\fakepath\\/i, '');
                 $("#importTargetForm").attr('action', '{{ route('target.importSales') }}');
                 $("#importTargetForm").attr('enctype', "multipart/form-data");
                 $('#btnImportSales').hide();

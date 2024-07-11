@@ -39,14 +39,7 @@
                                                 año para primera carga de datos</h5>
                                         </div>
                                     </div>
-                                    {{-- <div class="row">
-                                    <div class="col-md-3">
-                                        <h5 class="card-title" style="font-size:18px !important;">Buscar</h5>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <h5 class="card-title" style="font-size:18px !important;">- Seleccionar empresa y obtener datos</h5>
-                                    </div>
-                                </div> --}}
+                                    
                                     <div class="row">
                                         <div class="col-md-3">
                                             <h5 class="card-title" style="font-size:18px !important;">Pagar todos</h5>
@@ -99,11 +92,7 @@
                                 <button id="btnCalculateLoad" type="button" class="btn-calculate" style="display: none">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </button>
-                                     {{-- <button id="btnSubmit" type="submit" class="btn-search">
-                                 <span id="icon-search" class="material-icons">search</span>{{ __('Buscar') }}</button>
-                                 <button id="btnSubmitLoad" type="submit" class="btn btn-success" style="display: none">
-                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                </button> --}}
+                               
                             </div>
 
 
@@ -162,7 +151,6 @@
     <script type="text/javascript">
         var table;
         $(function() {
-            // Inicialización de componentes y eventos
             $('#business_id').change(function() {
                 getEmployeeIncentives();
             });
@@ -244,7 +232,6 @@
                         dataSrc: function(json) {
                             $('#btnSubmit').show();
                             $('#btnSubmitLoad').hide();
-
                             return json.data;
                         }
                     },
@@ -259,7 +246,6 @@
                         });
                     }
                 });
-                // table.columns.adjust().draw();
             }
 
             // Accion PAGAR TODOS
@@ -273,12 +259,12 @@
                 params["business"] = $("#business_id option:selected").text();
 
                 if (table == undefined) {
-                    timeOutAlert($('#alertErrorTrackingDate'), "No hay datos seleccionados");
+                    showAlert('info', 'No hay Datos Seleccionados');
                     return;
                 }
                 var validateData = table.ajax.json();
                 if (validateData['recordsTotal'] == 0) {
-                    timeOutAlert($('#alertErrorTrackingDate'), "No hay datos seleccionados");
+                    showAlert('info', 'No hay Datos Seleccionados');
                     return;
                 }
                 $('#btnValidateLoad').show();
@@ -289,27 +275,24 @@
                     type: 'post',
                     data: params,
                     success: function(data, textStatus, jqXHR) {
-
-                        // if success, HTML response is expected, so replace current
                         if (textStatus === 'success') {
                             $('#btnValidateLoad').hide();
                             $('#btnValidate').show();
-                            timeOutAlert($('#alertTrackingDate'), "Pagado correctamente")
+                            showAlert('success', 'Pagado Correctamente');
                             $('.tracking-validation-datatable').DataTable().ajax.reload();
                         }
                     },
                     error: function(xhr, status, error) {
-                        //$('#btnCalculate').show();
-                        timeOutAlert($('#alertErrorTrackingDate'), "Error al validar")
+                        showAlert('error', error);
                         $('#btnValidateLoad').hide();
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    timeOutAlert($('#alertErrorTrackingDate'), jqXHR.responseText)
+                    showAlert('error', jqXHR.responseText);
                 }).done(function() {
                     $('#btnUnvalidate').show();
                     $('#btnValidateLoad').hide();
                     $('#btnValidate').hide();
-                    timeOutAlert($('#alertTrackingDate'));
+                    showAlert('success', 'Realizado Correctamente');
                 });
             });
 
@@ -324,12 +307,12 @@
                 params["business"] = $("#business_id option:selected").text();
 
                 if (table == undefined) {
-                    timeOutAlert($('#alertErrorTrackingDate'), "No hay datos seleccionados");
+                    showAlert('info', 'No hay Datos Seleccionados');
                     return;
                 }
                 var validateData = table.ajax.json();
                 if (validateData['recordsTotal'] == 0) {
-                    timeOutAlert($('#alertErrorTrackingDate'), "No hay datos seleccionados");
+                    showAlert('info', 'No hay Datos Seleccionados');
                     return;
                 }
                 $('#btnUnvalidateLoad').show();
@@ -340,28 +323,24 @@
                     type: 'post',
                     data: params,
                     success: function(data, textStatus, jqXHR) {
-
-                        // if success, HTML response is expected, so replace current
                         if (textStatus === 'success') {
                             $('#btnUnvalidateLoad').hide();
                             $('#btnUnvalidate').show();
-                            timeOutAlert($('#alertTrackingDate'), "Realizado correctamente")
+                            showAlert('success', 'Realizado Correctamente');
                             $('.tracking-validation-datatable').DataTable().ajax.reload();
                         }
                     },
                     error: function(xhr, status, error) {
-                        //alert('OK calculados incentivos');
-                        //$('#btnCalculate').show();
-                        timeOutAlert($('#alertErrorTrackingDate'), "Error al validar")
+                        showAlert('error', error);
                         $('#btnUnvalidateLoad').hide();
                     }
 
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    alert('Error' + jqXHR.responseText);
+                    showAlert('error', jqXHR.responseText);
                 }).done(function() {
                     $('#btnValidate').show();
                     $('#btnUnvalidate').hide();
-                    timeOutAlert($('#alertTrackingDate'), "Realizado correctamente");
+                    showAlert('success', 'Realizado Correctamente');
                 });
             });
 
@@ -373,8 +352,6 @@
                 params["_token"] = "{{ csrf_token() }}";
                 params["search"] = $('input[type="search"]').val();
                 params["codbusiness"] = $("#business_id option:selected").val();
-                $('#alertTrackingDate').hide();
-                $('#alertErrorTrackingDate').hide();
                 $('#btnCalculate').hide();
                 $('#btnCalculateLoad').show();
                 $.ajax({
@@ -382,39 +359,30 @@
                     type: 'post',
                     data: params,
                     success: function(response, textStatus, jqXHR) {
-                        console.log($("#business_id option:selected").val());
-                        console.log('holi');
-                        // if success, HTML response is expected, so replace current
-                        timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
+                        showAlert('success', 'Datos Calculados');
                         $('#btnCalculate').show();
                         $('#btnCalculateLoad').hide();
                         getEmployeeIncentives();
                     },
                     error: function(xhr, status, error) {
-                        //alert('OK calculados incentivos');
+                        showAlert('error', error);
                         $('#btnCalculate').show();
                         $('#btnCalculateLoad').hide();
                     }
 
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    timeOutAlert($('#alertErrorTrackingDate'), jqXHR.responseText);
+                    showAlert('error', jqXHR.responseText);
                 }).done(function() {
-                    console.log($("#business_id option:selected").val());
-                    console.log('holi');
-                    timeOutAlert($('#alertTrackingDate'), "Datos Calculados");
+                    showAlert('success', 'Datos Calculados');
                 });
             });
 
             // Accion BUSCAR
             $("#btnSubmit").on('click', function(e) {
-                $('#alertTrackingDate').hide();
-                $('#alertErrorTrackingDate').hide();
                 e.preventDefault();
-                $('#alertErrorTrackingDate').hide();
-
                 var codBusiness = $("#business_id option:selected").val();
                 if (codBusiness == "") {
-                    timeOutAlert($('#alertErrorTrackingDate'), "Indique una empresa")
+                    showToast('warning', '¡Indique una empresa!');
                     return false;
                 }
                 $('#btnSubmit').hide();
@@ -426,8 +394,6 @@
 
             // Accion EXPORTAR
             $("#btnExport").on('click', function(e) {
-                $('#alertTrackingDate').hide();
-                $('#alertErrorTrackingDate').hide();
                 exportData();
                 $('#btnExport').hide();
                 $('#btnExportLoad').show();
@@ -437,7 +403,6 @@
             function clearForms() {
                 var textMonthYear = setDate(date);
                 $('#monthYearPicker').val(textMonthYear);
-                // $('select').val('');
                 $('select#business_id').val('');
                 $('select#business_id').selectpicker("refresh");
                 $('.tracking-validation-datatable').DataTable().ajax.reload();
@@ -472,9 +437,9 @@
                 type: 'post',
                 data: params,
                 success: function(response, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
+
                     if (textStatus === 'success') {
-                        timeOutAlert($('#alertTrackingDate'), response.mensaje);
+                        showAlert('success', response.mensaje);
                         $('.tracking-validation-datatable').DataTable().ajax.reload();
                     }
                 },
@@ -482,17 +447,17 @@
                     var response = JSON.parse(xhr.responseText);
                     //alert(response.errors); 
                     window.location = response.url;
-                    $('#alertErrorTrackingDate').text(response.mensaje);
-                    $('#alertErrorTrackingDate').show();
+                    showAlert('error', xhr.responseText);
                     $('#btnSubmitLoad').hide();
                     $('#btnSubmit').show();
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                timeOutAlert(alert, jqXHR.responseText);
-
+                showAlert('error', jqXHR.responseText);
             }).done(function() {
-                timeOutAlert($('#alertTrackingDate', "Realizado correctamente"));
+                showAlert('info', 'Realizado Correctamente')
+                $('#btnExport').show();
+                $('#btnExportLoad').hide();
             });
         }
 
@@ -506,7 +471,6 @@
             params["_token"] = "{{ csrf_token() }}";
             params["business"] = $("#business_id option:selected").text();
 
-
             $.ajax({
                 url: '{{ route('tracking.exportFinalValidation') }}',
                 type: 'post',
@@ -515,11 +479,8 @@
                     'responseType': 'blob'
                 },
                 success: function(data, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
-                        timeOutAlert($('#alertTrackingDate'), 'Exportando los datos...');
-
-
+                        showToast('info', 'Exportando...')
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
 
@@ -532,17 +493,14 @@
                 },
                 error: function(xhr, status, error) {
                     console.log('error ' + error);
-                    timeOutAlert($('#alertErrorTrackingDate', error));
-                    // var response = JSON.parse(xhr.responseText);
-                    // window.location = response.url;
+                    showAlert('error', error);
                     $('#btnSubmitLoad').hide();
                     $('#btnSubmit').show();
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                timeOutAlert($('#alertErrorTrackingDate'), jqXHR.responseText);
+                showAlert('error', jqXHR.responseText);
             }).done(function() {
-                timeOutAlert($('#alertTrackingDate', "Realizado correctamente"));
-
+                showAlert('info', 'Realizado Correctamente')
                 $('#btnExport').show();
                 $('#btnExportLoad').hide();
             });
@@ -555,11 +513,6 @@
             textMonthYear = month >= 10 ? month : '0' + month;
             fecha = textMonthYear + '/' + year;
             return fecha;
-        }
-
-        function timeOutAlert($alert, $message) {
-            $alert.text($message);
-            $alert.show().delay(3000).slideUp(300);
         }
     </script>
 @endsection

@@ -1,247 +1,235 @@
 @extends('layouts.logged')
 @section('content')
-@include('inc.navbar')
-@include('common.alert')
+    @include('inc.navbar')
 
-<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card " style="margin-top:120px">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card " style="margin-top:120px">
 
-                    <div class="card-header card-header-danger">
-                    
+                        <div class="card-header card-header-danger">
+
                             <h4 class="card-title">Cambio De Centro</h4>
-                     
-                    </div>
 
-                    <div class="card-body ">
-                        <form id="createRequestChangeCentre" action="{{ route('tracking.saveRequest') }}" method="POST">
-                            @csrf
-                            @method('POST')
-                            @include('tracking.form_change_centre')
-                        </form>
+                        </div>
+
+                        <div class="card-body ">
+                            <form id="createRequestChangeCentre" action="{{ route('tracking.saveRequest') }}"
+                                method="POST">
+                                @csrf
+                                @method('POST')
+                                @include('tracking.form_change_centre')
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-danger">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card ">
+                        <div class="card-header card-header-danger">
                             <h4 class="card-title">Solicitudes</h4>
-                    </div>
-                    <div class="card-body ">
-                        <table class="table table-bordered request-changes-datatable">
-                            <thead class="table-header">
-                                <tr>
-                                    <th>Fecha inicio</th>
-                                    <th>Fecha fin</th>
-                                    <th>Empleado</th>
-                                    <th>Centro Origen</th>
-                                    <th>Centro Destino</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        </div>
+                        <div class="card-body ">
+                            <table class="table table-bordered request-changes-datatable">
+                                <thead class="table-header">
+                                    <tr>
+                                        <th>Fecha inicio</th>
+                                        <th>Fecha fin</th>
+                                        <th>Empleado</th>
+                                        <th>Centro Origen</th>
+                                        <th>Centro Destino</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-@include('common.modal')
 
-<script type="text/javascript">
-    var columnsFilled = [];
-    columnsFilled.push({
-        data: 'start_date',
-        name: 'start_date'
-    });
-    columnsFilled.push({
-        data: 'end_date',
-        name: 'end_date'
-    });
-    columnsFilled.push({
-        data: 'employee',
-        name: 'employee'
-    });
-    columnsFilled.push({
-        data: 'centre_origin',
-        name: 'centre_origin'
-    });
-    columnsFilled.push({
-        data: 'centre_destination',
-        name: 'centre_destination'
-    });
-    columnsFilled.push({
-        data: 'action',
-        name: 'action',
-        searchable: true,
-        width: 300
-    });
+    <script type="text/javascript">
+        setDate();
 
-    var table;
+        var columnsFilled = [];
+        columnsFilled.push({
+            data: 'start_date',
+            name: 'start_date'
+        });
+        columnsFilled.push({
+            data: 'end_date',
+            name: 'end_date'
+        });
+        columnsFilled.push({
+            data: 'employee',
+            name: 'employee'
+        });
+        columnsFilled.push({
+            data: 'centre_origin',
+            name: 'centre_origin'
+        });
+        columnsFilled.push({
+            data: 'centre_destination',
+            name: 'centre_destination'
+        });
+        columnsFilled.push({
+            data: 'action',
+            name: 'action',
+            searchable: true,
+            width: 300
+        });
 
-    function validateRequest(state, id) {
-        // if (state == -1) {
-            $("#message-validation").html('¿Confirma la eliminación de la solicitud?');
-            $("#modal-title").html('ELIMINACIÓN');
-        // } else if (state == 0) {
-        //     $("#message-validation").html('¿Confirma la invalidación de la solicitud?');
-        //     $("#modal-title").html('CONFIRMACIÓN');
-        // } else {
-        //     $("#message-validation").html('¿Confirma la validación de la solicitud?');
-        //     $("#modal-title").html('CONFIRMACIÓN');
-        // }
-
-        $("#validateVal").val(state);
-        $("#id").val(id);
-        $("#modal-validate").modal('show');
-    }
-
-    function confirmRequest() {
-        var params = {
-            'id': $("#id").val(),
-             'state': $("#validateVal").val(),
-            '_token': "{{ csrf_token() }}"
-        };
-        $.ajax({
-            url: "{{ route('tracking.confirmRequest') }}",
-            type: 'post',
-            data: params,
-            dataType: 'json',
-            success: function(data, textStatus, jqXHR) {
-                if (textStatus === 'success') {
-
+        function confirm(state, id) {
+            confirmedRequest().then((result) => {
+                if (result.isConfirmed) {
+                    destroy(id);
                 }
-            },
-            error: function(xhr, status, error) {
-                var response = JSON.parse(xhr.responseText);
-                alert(response);
-            },
-            complete: function() {
-                $("#modal-validate").modal('hide');
-                table.ajax.reload();
-            }
+            });
+        }
 
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            alert('Error '+jqXHR.responseText);
+        var table;
 
-        });
-    }
 
-    $(function() {
-        $(".nav-item").each(function() {
-            $(this).removeClass("active");
-        });
-        $('#pagesTracking').addClass('show');
-        $('#requestChange').addClass('active');
-
-        $("#btnConfirmRequest").on('click', function(event) {
-            confirmRequest();
-        });
-
-        table = $('.request-changes-datatable').DataTable({
-            order: [0, "desc"],
-            processing: true,
-            serverSide: true,
-            language: {
-                "url": "{{ asset('dataTables/Spanish.json') }}"
-            },
-            ajax: {
-                url: '{{route("tracking.getRequestChanges")}}',
-                type: "POST",
-                data: function(d) {
-                    d._token = "{{ csrf_token() }}"
-                   //  d.centre_id  = $('#centre_id option:selected').val()
-                }
-            },
-            columns: columnsFilled,
-            columnDefs: [{
-                    width: "10%",
-                    targets: 0
-                },
-                {
-                    width: "10%",
-                    targets: 1
-                },
-                {
-                    width: "15%",
-                    targets: 2
-                },
-                {
-                    width: "10%",
-                    targets: 3
-                },
-                {
-                    width: "10%",
-                    targets: 4
-                },
-                {
-                    width: "25%",
-                    targets: 5
-                },
-                // {
-                //     width: "15%",
-                //     targets: 5
-                // },
-                {
-                    targets: '_all',
-                    visible: true,
-                    className: 'dt-body-center'
-                },
-                {
-                    targets: 0,
-                    data: "state_date",
-                    type: "date",
-                    render: function(data, type, row) {
-
-                        var datetime = moment(data, 'YYYY-M-D');
-                        var displayString = moment(datetime).format('D-MM-YYYY');
-
-                        if (type === 'display' || type === 'filter') {
-                            return displayString;
-                        } else {
-                            return datetime; // for sorting
-                        }
+        function destroy(id) {
+            console.log(id);
+            var params = {
+                'id': id,
+                // 'state': $("#validateVal").val(),
+                '_token': "{{ csrf_token() }}"
+            };
+            $.ajax({
+                url: "{{ route('tracking.confirmRequest') }}",
+                type: 'post',
+                data: params,
+                dataType: 'json',
+                success: function(data, textStatus, jqXHR) {
+                    console.log(textStatus);
+                    console.log(data);
+                    console.log(jqXHR);
+                    if (textStatus === 'success') {
+                        showAlert('success', 'Eliminado Correctamente');
                     }
                 },
-                {
-                    targets: 1,
-                    data: "state_date",
-                    type: "date",
-                    render: function(data, type, row) {
-                        var datetime = moment(data, 'YYYY-M-D');
-                        var displayString = moment(datetime).format('D-MM-YYYY');
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    showAlert('error', response);
+                },
+                complete: function(xhr, jqXHR) {
+                    console.log(xhr.responseText);
+                    console.log(jqXHR.responseText);
+                    console.log(jqXHR);
+                    showAlert('success', 'Eliminado Correctamente')
+                    table.ajax.reload();
+                }
 
-                        if (type === 'display' || type === 'filter') {
-                            return displayString;
-                        } else {
-                            return datetime; // for sorting
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                showAlert('error', jqXHR.responseText);
+            });
+        }
+
+        $(function() {
+            $(".nav-item").each(function() {
+                $(this).removeClass("active");
+            });
+            $('#pagesTracking').addClass('show');
+            $('#requestChange').addClass('active');
+
+            table = $('.request-changes-datatable').DataTable({
+                order: [0, "desc"],
+                processing: true,
+                serverSide: true,
+                language: {
+                    "url": "{{ asset('dataTables/Spanish.json') }}"
+                },
+                ajax: {
+                    url: '{{ route('tracking.getRequestChanges') }}',
+                    type: "POST",
+                    data: function(d) {
+                        d._token = "{{ csrf_token() }}"
+                    }
+                },
+                columns: columnsFilled,
+                columnDefs: [{
+                        width: "15%",
+                        targets: 0
+                    },
+                    {
+                        width: "15%",
+                        targets: 1
+                    },
+                    {
+                        width: "20%",
+                        targets: 2
+                    },
+                    {
+                        width: "20%",
+                        targets: 3
+                    },
+                    {
+                        width: "20%",
+                        targets: 4
+                    },
+                    {
+                        width: "10%",
+                        targets: 5
+                    },
+                    {
+                        targets: '_all',
+                        visible: true,
+                        className: 'dt-body-center'
+                    },
+                    {
+                        targets: 0,
+                        data: "state_date",
+                        type: "date",
+                        render: function(data, type, row) {
+
+                            var datetime = moment(data, 'YYYY-M-D');
+                            var displayString = moment(datetime).format('D-MM-YYYY');
+
+                            if (type === 'display' || type === 'filter') {
+                                return displayString;
+                            } else {
+                                return datetime;
+                            }
+                        }
+                    },
+                    {
+                        targets: 1,
+                        data: "state_date",
+                        type: "date",
+                        render: function(data, type, row) {
+                            var datetime = moment(data, 'YYYY-M-D');
+                            var displayString = moment(datetime).format('D-MM-YYYY');
+
+                            if (type === 'display' || type === 'filter') {
+                                return displayString;
+                            } else {
+                                return datetime;
+                            }
                         }
                     }
+                ],
+                search: {
+                    "regex": true,
+                    "smart": true
+                },
+                initComplete: function() {
+                    this.api().columns().every(function() {
+                        var column = this;
+                    });
                 }
-            ],
-            search: {
-                "regex": true,
-                "smart": true
-            },
-            initComplete: function() {
-                this.api().columns().every(function() {
-                    var column = this;
-                });
-            }
-        });
+            });
 
-    });
-    
-</script>
+        });
+    </script>
 @endsection
-

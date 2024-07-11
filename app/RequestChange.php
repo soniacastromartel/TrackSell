@@ -18,7 +18,8 @@ class RequestChange extends Model
         'observations',
         'created_user_id',
         'validated',
-        'validated_user_id'
+        'validated_user_id',
+        'cancellation_date'
     ];
   
 }

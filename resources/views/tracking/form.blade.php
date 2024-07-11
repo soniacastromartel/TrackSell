@@ -305,13 +305,11 @@
                 type: 'get',
                 async: false, //solution
                 success: function(data, textStatus, jqXHR) {
-                      
                       if (data.result == "ok") {
                         var service_name = $('#service_id option:selected').text(); 
                         $('#service_name').val(service_name);
                         $('#btnSubmitLoadSave').show();
                         $('#btnSubmitLoadSave').prop('disabled', true);
-                        $('#alertErrorTrackingDate').hide(); 
                         if (action == 'create') {
                           $('form#createTracking').submit(); 
                         } else {
@@ -320,11 +318,9 @@
                       } else {
                         $('#btnSubmitLoadSave').hide();
                         $('#btnSubmitSave').show();
-                        $('#alertErrorTrackingDate').text(data.message); 
-                        $('#alertErrorTrackingDate').show().delay(2000).slideUp(300); 
+                    
                       }
                     
-                    // if success, HTML response is expected, so replace current
                 },
                 error: function(xhr, status, error) {
                   alert('Error de validación de fecha');

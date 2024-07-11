@@ -157,11 +157,7 @@
                         </form>
                     </div>
                 </div>
-                
-                <!-- tabla-->
-
-              
-            
+   
                 <div class="col-12 text-right">
                         <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="service-btn-add"><span
                                 class="material-icons">add</span></a>
@@ -178,8 +174,6 @@
                             <th>Servicio</th>
                             <th>Estado</th>
                             <th>F. Inicio</th>
-                            {{-- <th>F. Actualización</th>
-                            <th>F. Cancelación</th> --}}
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -226,14 +220,7 @@
             name: 'started_date',
             data: 'started_date'
         });
-        // columnsFilled.push({
-        //     name: 'state_date',
-        //     data: 'state_date'
-        // });
-        // columnsFilled.push({
-        //     name: 'cancellation_date',
-        //     data: 'cancellation_date'
-        // });
+
         columnsFilled.push({
             data: 'action',
             name: 'action',

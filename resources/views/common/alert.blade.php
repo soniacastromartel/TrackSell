@@ -40,9 +40,9 @@
     }
 
     function showToast(icon, message) {
-        const Toast = Swal.mixin({
+        const notification = Swal.mixin({
             toast: true,
-            position: 'center',
+            position: 'top-end',
             iconColor: 'white',
             customClass: {
                 popup: 'colored-toast',
@@ -51,7 +51,7 @@
             timer: time,
             timerProgressBar: true,
         });
-        Toast.fire({
+        notification.fire({
             icon: icon,
             title: message,
         });

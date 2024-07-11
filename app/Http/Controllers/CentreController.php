@@ -219,7 +219,6 @@ class CentreController extends Controller
             $centre = Centre::find($id);
             $fields['cancellation_date'] = date("Y-m-d H:i:s");
             $centre->update($fields);
-
             return response()->json([
                 'success' => true,
                 'mensaje' => 'Centro eliminado correctamente'

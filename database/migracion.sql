@@ -3525,6 +3525,8 @@ where
     s.cancellation_date is null
     and spd.cancellation_date is null
 
+
+-- crear vista export_target con definer
 CREATE
 OR REPLACE ALGORITHM = UNDEFINED DEFINER = `root` @`%` SQL SECURITY DEFINER VIEW `export_target` AS
 select
@@ -3715,3 +3717,8 @@ group by
     round(`spd`.`incentive2`, 2),
     round(`spd`.`super_incentive1`, 2),
     round(`spd`.`super_incentive2`, 2);
+
+
+-- añadir cancellation_date a tabla request_changes
+ALTER TABLE request_changes
+ADD COLUMN cancellation_date DATE DEFAULT NULL;

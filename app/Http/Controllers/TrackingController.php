@@ -74,14 +74,14 @@ class TrackingController extends Controller
             $title = 'Recomendaciones';
             if ($request->ajax()) {
                 $params = $request->all();
-                $currentDay   = substr($params['dateTo'], -2, strpos($params['dateTo'], '/'));
+                $currentDay = substr($params['dateTo'], -2, strpos($params['dateTo'], '/'));
                 $beforeDay = substr($params['dateFrom'], -2, strpos($params['dateFrom'], '/'));
-                $currentMonth = substr($params['dateFrom'], -5,  2);
-                $nextMonth = substr($params['dateTo'], -5,  2);
-                $year         = substr($params['dateFrom'], 0, strpos($params['dateFrom'], '/'));
-                $nextYear  = substr($params['dateTo'], 0, strpos($params['dateTo'], '/'));
+                $currentMonth = substr($params['dateFrom'], -5, 2);
+                $nextMonth = substr($params['dateTo'], -5, 2);
+                $year = substr($params['dateFrom'], 0, strpos($params['dateFrom'], '/'));
+                $nextYear = substr($params['dateTo'], 0, strpos($params['dateTo'], '/'));
                 $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . $beforeDay;
-                $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
+                $endPeriod = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . $currentDay;
                 $query = Tracking::getTrackings();
                 $trackings = $query
                     //->orderByRaw($orderBy)
@@ -119,7 +119,7 @@ class TrackingController extends Controller
                             if ($params['state'] == 'Cancelado') {
                                 $q->whereNotNull('trackings.cancellation_date')
                                     ->whereBetween('trackings.cancellation_date', [$initPeriod, $endPeriod]);
-                            } else  if ($params['state'] == 'SIN SELECCION') {
+                            } else if ($params['state'] == 'SIN SELECCION') {
                                 $params['state'] = null;
                             } else {
                                 $q->where('trackings.state', $params['state'])
@@ -153,20 +153,19 @@ class TrackingController extends Controller
                         }
                     })
 
-                      ->addColumn('action', function ($tracking) {
+                    ->addColumn('action', function ($tracking) {
                         $btn = '';
-                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) 
-                        {
+                        if ($tracking->state != env('STATE_VALIDATE') && $tracking->state != env('STATE_PAID') && $tracking->state != env('STATE_CANCELLED')) {
                             $state = Service::getStateService($tracking->state);
                             //TODO -EDIT BUTTON
                             $btn .= '<div class="col-md-12">';
                             $btn .= '<a href="edit/' . $state . '/' . $tracking->id . '" class="btn btn-warning a-btn-slide-text btn-sm btn-round">Editar</a>';
                             $btn .= '</div>';
                             //TODO - DATE
-                            $trackingDate =  date('Y-m-d');
+                            $trackingDate = date('Y-m-d');
                             $state = substr($state, 0, strpos($state, "_"));
                             //!PENDIENTE
-                            if ($tracking->state == env('STATE_PENDING')) { 
+                            if ($tracking->state == env('STATE_PENDING')) {
                                 // $trackingDate = isset($tracking->started_date) ? date('Y-m-d', strtotime($tracking->started_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6" >';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -177,9 +176,9 @@ class TrackingController extends Controller
                                 //TODO - BUTTON CITAR
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-success a-btn-slide-text btn-sm btn-round ">Citar</a>';
                                 $btn .= '</div></div>';
-                            } 
+                            }
                             //!CITADOS
-                            if ($tracking->state == env('STATE_APOINTMENT')) { 
+                            if ($tracking->state == env('STATE_APOINTMENT')) {
                                 // $trackingDate = isset($tracking->apointment_date) ? date('Y-m-d', strtotime($tracking->apointment_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -195,9 +194,9 @@ class TrackingController extends Controller
                                 $fnCall = 'updateDateTracking(\'' . $state . '\',' . $tracking->id . ',1 )';
                                 $btn .= '<a onclick="' . $fnCall . '" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round">Reiniciar</a>';
                                 $btn .= '</div></div>';
-                            } 
+                            }
                             //!REALIZADOS
-                            if ($tracking->state == env('STATE_SERVICE')) { 
+                            if ($tracking->state == env('STATE_SERVICE')) {
                                 // $trackingDate = isset($tracking->service_date) ? date('Y-m-d', strtotime($tracking->service_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-6 ">';
                                 $btn .= '<input style="resize:horizontal;width: 160px; " type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -215,7 +214,7 @@ class TrackingController extends Controller
                                 $btn .= '</div></div>';
                             }
                             //!FACTURADOS
-                            if ($tracking->state == env('STATE_INVOICED')) { 
+                            if ($tracking->state == env('STATE_INVOICED')) {
                                 // $trackingDate = isset($tracking->invoiced_date) ? date('Y-m-d', strtotime($tracking->invoiced_date)) :  date('Y-m-d');
                                 $btn .= '<div class="col-md-4">';
                                 $btn .= '<input style="resize:horizontal; width: 160px;" type="date" id="tracking_date_' . $tracking->id . '" name="tracking_date" max="3000-12-31" 
@@ -244,37 +243,37 @@ class TrackingController extends Controller
             $patients = Tracking::getPatients();
             $employees = Employee::getEmployeesActive();
             $states = array(
-                (object)
+                (object) 
                 [
                     'nombre' => env('STATE_PENDING'),
                     'texto' => 'pending'
                 ],
-                (object)
+                (object) 
                 [
                     'nombre' => env('STATE_APOINTMENT'),
                     'texto' => 'apointment'
                 ],
-                (object)
+                (object) 
                 [
                     'nombre' => env('STATE_SERVICE'),
                     'texto' => 'service'
                 ],
-                (object)
+                (object) 
                 [
                     'nombre' => env('STATE_INVOICED'),
                     'texto' => 'invoiced'
                 ],
-                (object)
+                (object) 
                 [
                     'nombre' => env('STATE_VALIDATE'),
                     'texto' => 'validation'
                 ],
-                (object)
+                (object) 
                 [
                     'nombre' => env('STATE_PAID'),
                     'texto' => 'paid'
                 ],
-                (object)
+                (object) 
                 [
                     'nombre' => env('STATE_CANCELLED'),
                     'texto' => 'cancellation'
@@ -286,12 +285,12 @@ class TrackingController extends Controller
             return view('tracking.index', [
                 'title' => $title,
                 'mensaje' => '',
-                'centres'  => $centres,
-                'states'   => $states,
-                'employees'  => $employees,
-                'services'  => $services,
-                'patients'  => $patients,
-                'user'      => $this->user,
+                'centres' => $centres,
+                'states' => $states,
+                'employees' => $employees,
+                'services' => $services,
+                'patients' => $patients,
+                'user' => $this->user,
 
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -323,7 +322,7 @@ class TrackingController extends Controller
                 'services' => $services,
                 'employees' => $employees,
                 'disabledService' => $disabledService,
-                'discounts'  => $discounts
+                'discounts' => $discounts
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar formulario de nuevo seguimiento, contacte con el administrador');
@@ -342,12 +341,12 @@ class TrackingController extends Controller
         try {
             $user = session()->get('user');
             $request->validate([
-                'employee_id'           => 'required',
-                'patient_name'          => 'required',
-                'centre_id'             => 'required',
-                'centre_employee_id'    => 'required',
-                'service_id'            => 'required',
-                'tracking_date'         => 'before:tomorrow'
+                'employee_id' => 'required',
+                'patient_name' => 'required',
+                'centre_id' => 'required',
+                'centre_employee_id' => 'required',
+                'service_id' => 'required',
+                'tracking_date' => 'before:tomorrow'
             ]);
 
             $params = [];
@@ -355,10 +354,10 @@ class TrackingController extends Controller
             $params['started_user_id'] = $user->id;
             $params['apointment_done'] = 0;
             $params['started_date'] = $params['tracking_date'];
-            $params['state_date']   = $params['tracking_date'];
+            $params['state_date'] = $params['tracking_date'];
 
             $service = DB::table('services')->where('name', $params['service_name'])->first();
-            $params['service_id']  = $service->id;
+            $params['service_id'] = $service->id;
 
             if (empty($params['hc']) && empty($params['dni']) && empty($params['phone'])) {
                 throw new \Illuminate\Validation\ValidationException('¡Error!, tipo de identificación vacía');
@@ -403,7 +402,7 @@ class TrackingController extends Controller
             $currentDate = date('Y-m-d H:i:s');
             $disabledService = false;
             foreach ($services as $service) {
-                if ($service->id ==  $tracking->service_id) {
+                if ($service->id == $tracking->service_id) {
                     if (!empty($service->cancellation_date) && $service->cancellation_date <= $currentDate) {
                         $disabledService = true;
                     }
@@ -415,13 +414,13 @@ class TrackingController extends Controller
             return view('tracking.edit', [
                 'title' => 'Modificar recomendación',
                 'tracking' => $tracking,
-                'centres'  => $centres,
+                'centres' => $centres,
                 'services' => $services,
                 'employees' => $employees,
-                'state'  => $state,
-                'employee'  => $employee,
+                'state' => $state,
+                'employee' => $employee,
                 'tracking_date' => $tracking[$state],
-                'discounts'  => $discounts,
+                'discounts' => $discounts,
                 'disabledService' => $disabledService
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -438,11 +437,11 @@ class TrackingController extends Controller
         try {
             \Log::debug($request->all());
             $validator = Validator::make($request->all(), [
-                'centre_id'          => 'required',
+                'centre_id' => 'required',
                 'centre_employee_id' => 'required',
-                'service_id'         => 'required',
-                'employee_id'        => 'required',
-                'patient_name'       => 'required'
+                'service_id' => 'required',
+                'employee_id' => 'required',
+                'patient_name' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -553,12 +552,19 @@ class TrackingController extends Controller
 
             if ($paramsRequest['back'] == 0) {
                 $params = [
-                    'paid_date'     => date('Y-m-d', strtotime($paramsRequest['trackingDate'])), 'paid_user_id' => $user->id, 'paid_done'    => true, 'state'        => env('STATE_PAID'), 'state_date'   => date('Y-m-d', strtotime($paramsRequest['trackingDate']))
+                    'paid_date' => date('Y-m-d', strtotime($paramsRequest['trackingDate'])),
+                    'paid_user_id' => $user->id,
+                    'paid_done' => true,
+                    'state' => env('STATE_PAID'),
+                    'state_date' => date('Y-m-d', strtotime($paramsRequest['trackingDate']))
                 ];
                 $paramUpdateVal = ['paid_date' => $paramsRequest['trackingDate']];
             } else {
                 $params = [
-                    'paid_date'     => null, 'paid_user_id' => null, 'paid_done'    => false, 'state'        => env('STATE_VALIDATE')
+                    'paid_date' => null,
+                    'paid_user_id' => null,
+                    'paid_done' => false,
+                    'state' => env('STATE_VALIDATE')
                 ];
                 $paramUpdateVal = ['paid_date' => null];
             }
@@ -570,18 +576,20 @@ class TrackingController extends Controller
                 if (!empty($tId)) {
                     $tracking = Tracking::find($tId);
                     if ($request->back == 1) {
-                        $paramsRequest['trackingDate']  = $tracking->validation_date;
+                        $paramsRequest['trackingDate'] = $tracking->validation_date;
                     }
                     /** Validar que las fechas, son las que están dentro del corte actual */
                     $validateFechas = Tracking::checkDate($paramsRequest['trackingDate']);
                     if ($validateFechas['result'] === false) {
                         session()->flash('error', $validateFechas['message']);
                         return response()->json([
-                            'success' => false, 'url'    => '/tracking/indexvalidation', 'mensaje' => $validateFechas['message']
+                            'success' => false,
+                            'url' => '/tracking/indexvalidation',
+                            'mensaje' => $validateFechas['message']
                         ], 400);
                     }
                     if ($paramsRequest['back'] == 1) {
-                        $params['state_date']   = $tracking->validation_date;
+                        $params['state_date'] = $tracking->validation_date;
                     }
                     $tracking->update($params);
                 }
@@ -606,23 +614,26 @@ class TrackingController extends Controller
             $mensaje = 'Realizado correctamente';
 
             return response()->json([
-                'success' => true, 'mensaje' => $mensaje
+                'success' => true,
+                'mensaje' => $mensaje
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $mensajeError = "Error de validacion: ";
-            foreach (collect($e->validator->errors())  as $key => $value) {
+            foreach (collect($e->validator->errors()) as $key => $value) {
                 $mensajeError .= $value[0];
             }
             session()->flash('error', $mensajeError);
             return response()->json([
-                'success' => false, 'url'    => '/tracking/indexvalidation', 'mensaje' => $mensajeError
+                'success' => false,
+                'url' => '/tracking/indexvalidation',
+                'mensaje' => $mensajeError
             ], 400);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al actualizar estado de seguimiento , contacte con el administrador');
         }
     }
 
-    public function updateState($state, $tracking_id, $tracking_date,  $back = false)
+    public function updateState($state, $tracking_id, $tracking_date, $back = false)
     {
         try {
             if ($state != 'paid') {
@@ -640,7 +651,9 @@ class TrackingController extends Controller
             if ($validateFechas['result'] === false) {
                 session()->flash('error', $validateFechas['message']);
                 return response()->json([
-                    'success' => false, 'url'    => $state != 'paid' ? '/tracking/index_' . $state : '/tracking/indexvalidation', 'mensaje' => $validateFechas['message']
+                    'success' => false,
+                    'url' => $state != 'paid' ? '/tracking/index_' . $state : '/tracking/indexvalidation',
+                    'mensaje' => $validateFechas['message']
                 ], 400);
             }
             switch ($state) {
@@ -654,7 +667,12 @@ class TrackingController extends Controller
                     //     $mensaje = 'Recomendacion iniciada correctamente';
                     // } else {
                     $params = [
-                        'apointment_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'apointment_user_id' => $user->id, 'apointment_done'    => true, 'service_done'       => 0, 'state'              => env('STATE_APOINTMENT'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                        'apointment_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                        'apointment_user_id' => $user->id,
+                        'apointment_done' => true,
+                        'service_done' => 0,
+                        'state' => env('STATE_APOINTMENT'),
+                        'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                     ];
                     $mensaje = 'Recomendacion citada correctamente';
                     $responseUrl = '/tracking/index_apointment';
@@ -671,13 +689,26 @@ class TrackingController extends Controller
                 case 'apointment':
                     if ($back) {
                         $params = [
-                            'apointment_date'     => null, 'apointment_user_id' => null, 'apointment_done'    => 0, 'started_date'       => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'started_user_id'    => $user->id, 'state'              => env('STATE_PENDING'), 'state_date'         => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'apointment_date' => null,
+                            'apointment_user_id' => null,
+                            'apointment_done' => 0,
+                            'started_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'started_user_id' => $user->id,
+                            'state' => env('STATE_PENDING'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion citada correctamente';
                         $responseUrl = '/tracking/index_apointment';
                     } else {
                         $params = [
-                            'service_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'service_user_id' => $user->id, 'service_done'    => true, 'invoiced_done'   => 0, 'state'           => env('STATE_SERVICE'), 'state_date'      => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'service_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'service_user_id' => $user->id,
+                            'service_done' => true,
+                            'invoiced_done' => 0,
+                            'state' => env('STATE_SERVICE'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $responseUrl = '/tracking/index_service';
                         $mensaje = 'Recomendacion realizado servicio correctamente';
@@ -692,14 +723,26 @@ class TrackingController extends Controller
                 case 'service':
                     if ($back) {
                         $params = [
-                            'service_date'        => null, 'service_user_id'    => null, 'service_done'       => 0, 'apointment_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'apointment_user_id'  => $user->id, 'state'               => env('STATE_APOINTMENT'), 'state_date'          => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'service_date' => null,
+                            'service_user_id' => null,
+                            'service_done' => 0,
+                            'apointment_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'apointment_user_id' => $user->id,
+                            'state' => env('STATE_APOINTMENT'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $rules = ['tracking_date' => 'before_or_equal:' . $tracking['service_date'] . '|before:tomorrow'];
                         $mensaje = 'Recomendacion realizado servicio correctamente';
                         $responseUrl = '/tracking/index_service';
                     } else {
                         $params = [
-                            'invoiced_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'invoiced_user_id' => $user->id, 'invoiced_done'    => true, 'validation_done'  => 0, 'state'            => env('STATE_INVOICED'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'invoiced_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'invoiced_user_id' => $user->id,
+                            'invoiced_done' => true,
+                            'validation_done' => 0,
+                            'state' => env('STATE_INVOICED'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion facturada correctamente';
                         $responseUrl = '/tracking/index_invoiced';
@@ -714,13 +757,23 @@ class TrackingController extends Controller
                 case 'invoiced':
                     if ($back) {
                         $params = [
-                            'invoiced_date'     => null, 'invoiced_user_id' => null, 'invoiced_done'    => 0, 'service_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'service_user_id'  => $user->id, 'state'            => env('STATE_SERVICE'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'invoiced_date' => null,
+                            'invoiced_user_id' => null,
+                            'invoiced_done' => 0,
+                            'service_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'service_user_id' => $user->id,
+                            'state' => env('STATE_SERVICE'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion facturada correctamente';
                         $responseUrl = '/tracking/index_invoiced';
                     } else {
                         $params = [
-                            'validation_date'     => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'), 'validation_user_id' => $user->id, 'validation_done'    => true, 'state'              => env('STATE_VALIDATE'), 'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
+                            'validation_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d'),
+                            'validation_user_id' => $user->id,
+                            'validation_done' => true,
+                            'state' => env('STATE_VALIDATE'),
+                            'state_date' => isset($tracking_date) ? date('Y-m-d', strtotime($tracking_date)) : date('Y-m-d')
                         ];
                         $mensaje = 'Recomendacion validada correctamente';
                         $responseUrl = '/tracking/index_validation';
@@ -736,16 +789,20 @@ class TrackingController extends Controller
             }
             $tracking->update($params);
             return response()->json([
-                'success' => true, 'url'    => $responseUrl, 'mensaje' => $mensaje
+                'success' => true,
+                'url' => $responseUrl,
+                'mensaje' => $mensaje
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $mensajeError = "Error de validacion: ";
-            foreach (collect($e->validator->errors())  as $key => $value) {
+            foreach (collect($e->validator->errors()) as $key => $value) {
                 $mensajeError .= $value[0];
             }
             session()->flash('error', $mensajeError);
             return response()->json([
-                'success' => false, 'url'    => '/tracking/index_' . $state, 'mensaje' => $mensajeError
+                'success' => false,
+                'url' => '/tracking/index_' . $state,
+                'mensaje' => $mensajeError
             ], 400);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al actualizar estado de seguimiento , contacte con el administrador');
@@ -761,7 +818,7 @@ class TrackingController extends Controller
 
             return view('tracking.delete', [
                 'title' => 'Borrar Seguimiento',
-                'centres'  => $centres,
+                'centres' => $centres,
                 'services' => $services,
                 'employees' => $employees
             ]);
@@ -868,17 +925,17 @@ class TrackingController extends Controller
                 ->get();
 
             $filters = [
-                'centre'        => isset($params['centre'])       ?  $params['centre']       : 'TODOS',
-                'service'       => isset($params['service'])      ?  $params['service']      : 'TODOS',
-                'trackingState' => isset($params['trackingState'])      ?  $params['trackingState']      : 'TODOS',
-                'employee'      => isset($params['employee'])     ?  $params['employee']     : 'TODOS',
-                'patient_name'  => isset($params['patient_name']) ?  $params['patient_name'] : 'TODOS',
-                'date_from'     => isset($params['date_from'])    ?  date('d/m/Y', strtotime($params['date_from'])) : 'TODOS',
-                'date_to'       => isset($params['date_to'])      ?  date('d/m/Y', strtotime($params['date_to']))   : 'TODOS'
+                'centre' => isset($params['centre']) ? $params['centre'] : 'TODOS',
+                'service' => isset($params['service']) ? $params['service'] : 'TODOS',
+                'trackingState' => isset($params['trackingState']) ? $params['trackingState'] : 'TODOS',
+                'employee' => isset($params['employee']) ? $params['employee'] : 'TODOS',
+                'patient_name' => isset($params['patient_name']) ? $params['patient_name'] : 'TODOS',
+                'date_from' => isset($params['date_from']) ? date('d/m/Y', strtotime($params['date_from'])) : 'TODOS',
+                'date_to' => isset($params['date_to']) ? date('d/m/Y', strtotime($params['date_to'])) : 'TODOS'
             ];
             ob_end_clean();
             ob_start();
-            return  Excel::download((new TrackingsExport($exportData, $filters)), 'tracking.xls');
+            return Excel::download((new TrackingsExport($exportData, $filters)), 'tracking.xls');
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al exportar seguimientos , contacte con el administrador');
         }
@@ -893,7 +950,11 @@ class TrackingController extends Controller
             $employees = Employee::getEmployeesActive();
 
             return view('tracking.export', [
-                'title'      => 'Exportar recomendaciones', 'centres'   => $centres, 'services'  => $services, 'patients'  => $patients, 'employees' => $employees
+                'title' => 'Exportar recomendaciones',
+                'centres' => $centres,
+                'services' => $services,
+                'patients' => $patients,
+                'employees' => $employees
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar formulario exportar seguimientos , contacte con el administrador');
@@ -904,7 +965,7 @@ class TrackingController extends Controller
     {
         try {
             $params = $request->all();
-            $id =  $params['id'];
+            $id = $params['id'];
 
             $tracking = Tracking::find($id);
             $fields['cancellation_date'] = date("Y-m-d H:i:s");
@@ -917,13 +978,17 @@ class TrackingController extends Controller
             $validateFechas = Tracking::checkDate($tracking['validation_date']);
             if ($validateFechas['result'] === false) {
                 return response()->json([
-                    'success' => false, 'url'    => '/tracking/deleteForm', 'mensaje' => 'La fecha de cancelación no puede ser fuera del corte actual'
+                    'success' => false,
+                    'url' => '/tracking/deleteForm',
+                    'mensaje' => 'La fecha de cancelación no puede ser fuera del corte actual'
                 ], 400);
             }
 
             $tracking->update($fields);
             return response()->json([
-                'success' => true, 'url'    => '/tracking/deleteForm', 'mensaje' => 'Recomendacion eliminada correctamente'
+                'success' => true,
+                'url' => '/tracking/deleteForm',
+                'mensaje' => 'Recomendacion eliminada correctamente'
             ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al borrar seguimiento, contacte con el administrador');
@@ -1011,7 +1076,8 @@ class TrackingController extends Controller
     {
         $error = false;
         $serviceAvailable = ServicePrice::where([
-            'service_id' => $params['service_id'], 'centre_id'  => $params['centre_id']
+            'service_id' => $params['service_id'],
+            'centre_id' => $params['centre_id']
         ])->get();
 
         if (empty($serviceAvailable->toArray())) {
@@ -1038,7 +1104,7 @@ class TrackingController extends Controller
         $centres = Centre::getCentresActive();
         $targetService = new TargetService();
 
-        $year  = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
+        $year = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
         $month = substr($params['monthYear'], 0, strpos($params['monthYear'], '/'));
         $targetDefined = $targetService->getTarget($centres, $month, $year);
         $detailedSales = [];
@@ -1082,9 +1148,9 @@ class TrackingController extends Controller
                             ->where('paid_done', 1)->get();
 
                         //Accion poner boton o poner texto de Pagado con fecha
-                        if (count($detailSale['tracking_ids']) > 0  && count($trackingsPaid->toArray())  > 0) {
+                        if (count($detailSale['tracking_ids']) > 0 && count($trackingsPaid->toArray()) > 0) {
                             $trackingPaid = $trackingsPaid->toArray()[0];
-                            $detailedSales[$eId]['paid_date'] =  date('d/m/Y', strtotime($trackingPaid['paid_date']));
+                            $detailedSales[$eId]['paid_date'] = date('d/m/Y', strtotime($trackingPaid['paid_date']));
                         }
                     }
                     $detailedSales[$eId]['month_year'] = $params['monthYear'];
@@ -1100,7 +1166,8 @@ class TrackingController extends Controller
             if (isset($params['monthYear']) && !empty($params['monthYear'])) {
                 $trackingBonus = TrackingBonus::select('id', 'paid_date')
                     ->where([
-                        'employee_id' => $detailedSale['employee_id'], 'month_year' => $params['monthYear']
+                        'employee_id' => $detailedSale['employee_id'],
+                        'month_year' => $params['monthYear']
                     ])
                     ->first();
                 if (!empty($trackingBonus)) {
@@ -1168,15 +1235,15 @@ class TrackingController extends Controller
                             $m = substr($finalDetailSale['paid_date'], 3, 2);
                             $y = substr($finalDetailSale['paid_date'], 6, 4);
                             $validation = new ValidationRrhh;
-                            $validation->cod_business               = $finalDetailSale['cod_business'];
-                            $validation->cod_employee               = $finalDetailSale['cod_employee'];
-                            $validation->dni                        = $finalDetailSale['dni'];
-                            $validation->centre                     = $finalDetailSale['centre'];
-                            $validation->name                       = $finalDetailSale['name'];
-                            $validation->cancellation_date          =  !empty($finalDetailSale['cancellation_date']) ? $finalDetailSale['cancellation_date'] : null;
-                            $validation->paid_date                  =  !empty($finalDetailSale['paid_date'])         ? date('Y-m-d', strtotime($y . '-' . $m . '-' . $d)) : null;
-                            $validation->total_income               = $finalDetailSale['total_income'];
-                            $validation->employee_id                = $finalDetailSale['employee_id'];
+                            $validation->cod_business = $finalDetailSale['cod_business'];
+                            $validation->cod_employee = $finalDetailSale['cod_employee'];
+                            $validation->dni = $finalDetailSale['dni'];
+                            $validation->centre = $finalDetailSale['centre'];
+                            $validation->name = $finalDetailSale['name'];
+                            $validation->cancellation_date = !empty($finalDetailSale['cancellation_date']) ? $finalDetailSale['cancellation_date'] : null;
+                            $validation->paid_date = !empty($finalDetailSale['paid_date']) ? date('Y-m-d', strtotime($y . '-' . $m . '-' . $d)) : null;
+                            $validation->total_income = $finalDetailSale['total_income'];
+                            $validation->employee_id = $finalDetailSale['employee_id'];
 
                             $trackingIds = null;
                             if (isset($finalDetailSale['tracking_ids'])) {
@@ -1187,10 +1254,10 @@ class TrackingController extends Controller
                                 }
                             }
 
-                            $validation->tracking_ids               = $trackingIds;
-                            $validation->is_supervisor              = $finalDetailSale['is_supervisor'];
-                            $validation->total_super_incentive      = $finalDetailSale['total_super_incentive'];
-                            $validation->month_year                 = $finalDetailSale['month_year'];
+                            $validation->tracking_ids = $trackingIds;
+                            $validation->is_supervisor = $finalDetailSale['is_supervisor'];
+                            $validation->total_super_incentive = $finalDetailSale['total_super_incentive'];
+                            $validation->month_year = $finalDetailSale['month_year'];
 
                             $validation->save();
                         }
@@ -1202,7 +1269,7 @@ class TrackingController extends Controller
                     $conditions['cod_business'] = $request->codbusiness;
                 }
                 if (isset($request->monthYear)) {
-                    $conditions['month_year']   = $request->monthYear;
+                    $conditions['month_year'] = $request->monthYear;
                     // $request->monthYear;
                 }
                 $query = ValidationRrhh::select(
@@ -1243,7 +1310,7 @@ class TrackingController extends Controller
 
                             //$trackingDate = date('Y-m-d');
                             //$trackingIds = isset($detailedSale->tracking_ids) ? $detailedSale->tracking_ids : '';
-
+    
                             // $btn .= '<div class="col-md-7" >';
                             // $btn .= '<input style="resize:horizontal; width: 120px;" type="date" id="tracking_date_'. $detailedSale->employee_id . '" name="tracking_date" max="3000-12-31" 
                             // min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>'; 
@@ -1291,7 +1358,10 @@ class TrackingController extends Controller
             $centres = Centre::getCentresActive();
             $a3business = A3Centre::select('code_business', 'name_business')->distinct()->get();
             return view('tracking.indexvalidation', [
-                'title'            => 'Validar RRHH', 'mensaje'        => '', 'centres'        => $centres, 'a3business'     => $a3business
+                'title' => 'Validar RRHH',
+                'mensaje' => '',
+                'centres' => $centres,
+                'a3business' => $a3business
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al buscar seguimientos , contacte con el administrador');
@@ -1304,13 +1374,13 @@ class TrackingController extends Controller
         $validateData = Tracking::checkDate($trackDate);
         $response = [
             'success' => true,
-            'result'    => 'ok',
+            'result' => 'ok',
             'message' => '',
         ];
         if ($validateData['result'] === false) {
             $response['success'] = false;
             $response['message'] = 'Error de fecha';
-            $response['result']  = 'error';
+            $response['result'] = 'error';
         }
         return response()->json($response);
     }
@@ -1376,7 +1446,11 @@ class TrackingController extends Controller
             $user = session()->get('user');
             $data = $request->all();
             $params = [
-                'paid_date'      => date('Y-m-d'), 'paid_user_id' => $user->id, 'paid_done'    => true, 'state'        => env('STATE_PAID'), 'state_date'   => date('Y-m-d')
+                'paid_date' => date('Y-m-d'),
+                'paid_user_id' => $user->id,
+                'paid_done' => true,
+                'state' => env('STATE_PAID'),
+                'state_date' => date('Y-m-d')
             ];
 
             if (isset($request->trackingIds)) {
@@ -1397,7 +1471,9 @@ class TrackingController extends Controller
                 }
                 if (empty($validations)) {
                     return response()->json([
-                        'success' => false, 'url'    => '/tracking/indexvalidation', 'mensaje' => 'Vuelva a calcular, no hay datos'
+                        'success' => false,
+                        'url' => '/tracking/indexvalidation',
+                        'mensaje' => 'Vuelva a calcular, no hay datos'
                     ], 400);
                 }
                 /** Contemplar casos de baja, antes de fecha fin de corte */
@@ -1407,12 +1483,13 @@ class TrackingController extends Controller
 
                     if ($val->is_supervisor == 1) {
                         $tbonus = TrackingBonus::where([
-                            'month_year' => $request->monthYear, 'employee_id' => $val->employee_id
+                            'month_year' => $request->monthYear,
+                            'employee_id' => $val->employee_id
                         ])->get();
                         if (empty($tbonus->toArray())) {
                             $params['employee_id'] = $val->employee_id;
                             $params['total_income'] = $val->total_income;
-                            $params['month_year']   = $request->monthYear;
+                            $params['month_year'] = $request->monthYear;
                             TrackingBonus::create($params);
                             unset($params['employee_id']);
                         }
@@ -1441,7 +1518,11 @@ class TrackingController extends Controller
             $user = session()->get('user');
             $data = $request->all();
             $params = [
-                'paid_date'      => null, 'paid_user_id' => $user->id, 'paid_done'    => false, 'state'        => env('STATE_VALIDATE'), 'state_date'   => date('Y-m-d')
+                'paid_date' => null,
+                'paid_user_id' => $user->id,
+                'paid_done' => false,
+                'state' => env('STATE_VALIDATE'),
+                'state_date' => date('Y-m-d')
             ];
 
             if (isset($request->trackingIds)) {
@@ -1462,7 +1543,9 @@ class TrackingController extends Controller
                 }
                 if (empty($validations)) {
                     return response()->json([
-                        'success' => false, 'url'    => '/tracking/indexvalidation', 'mensaje' => 'Vuelva a calcular, no hay datos'
+                        'success' => false,
+                        'url' => '/tracking/indexvalidation',
+                        'mensaje' => 'Vuelva a calcular, no hay datos'
                     ], 400);
                 }
                 /** Contemplar casos de baja, antes de fecha fin de corte */
@@ -1472,12 +1555,13 @@ class TrackingController extends Controller
 
                     if ($val->is_supervisor == 1) {
                         $tbonus = TrackingBonus::where([
-                            'month_year' => $request->monthYear, 'employee_id' => $val->employee_id
+                            'month_year' => $request->monthYear,
+                            'employee_id' => $val->employee_id
                         ])->get();
                         if (empty($tbonus->toArray())) {
                             $params['employee_id'] = $val->employee_id;
                             $params['total_income'] = $val->total_income;
-                            $params['month_year']   = $request->monthYear;
+                            $params['month_year'] = $request->monthYear;
                             TrackingBonus::create($params);
                             unset($params['employee_id']);
                         }
@@ -1505,7 +1589,9 @@ class TrackingController extends Controller
                 if ($validateFechas['result'] === false) {
                     session()->flash('error', $validateFechas['message']);
                     return response()->json([
-                        'success' => false, 'url'    => '/tracking/indexvalidation', 'mensaje' => $validateFechas['message']
+                        'success' => false,
+                        'url' => '/tracking/indexvalidation',
+                        'mensaje' => $validateFechas['message']
                     ], 400);
                 }
                 $tracking = Tracking::find($tId);
@@ -1518,11 +1604,9 @@ class TrackingController extends Controller
     {
         $centres = Centre::getCentresActive();
         $employees = Employee::getEmployeesActive();
-
-
         return view('tracking.request_change_centre', [
-            'title'     => 'Solicitudes de cambio',
-            'centres'   => $centres,
+            'title' => 'Solicitudes de cambio',
+            'centres' => $centres,
             'employees' => $employees
         ]);
     }
@@ -1530,31 +1614,29 @@ class TrackingController extends Controller
     public function saveRequest(Request $request)
     {
         try {
-            $user = session()->get('user');
+            $
             $request->validate([
-                'start_date'            => 'required',
-                'end_date'              => 'required',
-                'centre_origin_id'      => 'required',
-                'centre_destination_id' => 'required',
-                'employee_id'           => 'required'
+                'date_from' => '',
+                'date_to' => '',
+                'centre_origin_id' => '',
+                'centre_destination_id' => '',
+                'employee_id' => ''
             ]);
 
             $params = [];
             $params = $request->all();
             $params['created_user_id'] = $user->id;
 
-            $validateData = Tracking::checkRequestChangeDate($params['start_date'], $params['end_date']);
+            $validateData = Tracking::checkRequestChangeDate($params['date_from'], $params['date_to']);
             if ($validateData['result'] === false) {
                 return back()->with('error', $validateData['message']);
             }
-
             $request_id = RequestChange::create($params)->id;
-
-            return redirect()->action('TrackingController@requestChange')
-
-                ->with('success', 'Solicitud creada correctamente');
+            return redirect()->action('TrackingController@requestChange')->with('success', 'Solicitud Creada Correctamente');
+        }catch (\Exception $e){
+            return back()->with('error', $e->getMessage());
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->with('error', 'Formulario incompleto, faltan campos requeridos');
+            return back()->with('error', 'Formulario incompleto, faltan campos requeridos '. $e->getMessage());
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }
@@ -1564,7 +1646,7 @@ class TrackingController extends Controller
     {
         try {
             $whereFields = "";
-            $query =  DB::table('request_changes')
+            $query = DB::table('request_changes')
                 ->select(
                     'request_changes.id',
                     'request_changes.start_date',
@@ -1581,26 +1663,18 @@ class TrackingController extends Controller
             $user = session()->get('user');
             $centrUserId = $user->centre_id;
             if (!empty($centrUserId)) {
-                $whereFields .=  " request_changes.centre_origin_id = " . $centrUserId;
+                $whereFields .= " request_changes.centre_origin_id = " . $centrUserId;
                 $query = $query
                     ->whereRaw($whereFields)
-                    ;
+                ;
             }
             $requests = $query
-            ->get();
+                ->get();
 
             return DataTables::of($requests)
                 ->addColumn('action', function ($request) {
-                    // $btn  = '<div class="row col-md-12">';
                     $btn = '';
-                    // if ($request->validated == 0) {
-                        // $btn .= '<a onClick="validateRequest(1,' . $request->id . ')" class="btn btn-success a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">check</span>Validar</a>';
-                        $btn .= '<a onClick="validateRequest(-1,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Cancelar</a>';
-                    // } else {
-                        // $btn .= '<a onClick="validateRequest(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm btn-round"> <span class="material-icons mr-1">close</span>Invalidar</a>';
-                    // }
-                    // $btn .= '</div>';
-
+                    $btn .= '<a onClick="confirm(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Cancelar</a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -1616,16 +1690,18 @@ class TrackingController extends Controller
         try {
             $params = [];
             $params = $request->all();
-            //  $now = new DateTime();
+            $id = $params['id'];
+            $requestChange = RequestChange::find($id);
+            // $user = session()->get('user');
+            $fields['cancellation_date'] = date("Y-m-d H:i:s");
+            $requestChange->update($fields);
+            return response()->json([
+                'success' => true,
+                'mensaje' => 'Solicitud Eliminada Correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'mensaje' => 'Error general: ' . $e->getMessage()], 500);
 
-            $requestChange =  RequestChange::where(['id' => $params['id']]);
-            $user = session()->get('user');
-            $requestChange->update([
-                'cancellation_date' => now()
-            ]);
-
-
-            return json_encode(['data' =>  ['id'  => $params['id']]]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }

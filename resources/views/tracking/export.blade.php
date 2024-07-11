@@ -163,7 +163,6 @@
             $(this).parent().attr('id','selected-label');
         });
 
-        // Default functionality datePicker.
         $('#monthYearPicker').datepicker();
         $('#monthPicker').datepicker($.datepicker.regional["es"]);
 
