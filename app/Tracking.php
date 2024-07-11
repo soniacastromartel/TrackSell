@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Http\Request;
 
 
 class Tracking extends Model
@@ -46,7 +47,7 @@ class Tracking extends Model
         'state_date',
         'discount'
     ];
-    
+
     //!RELATIONS
 
     public function service()
@@ -62,7 +63,7 @@ class Tracking extends Model
         return $this->belongsTo(Employee::class);
     }
 
-  
+
 
     public function scopeGetPatients()
     {
@@ -127,10 +128,10 @@ class Tracking extends Model
             ->join('services', 'services.id', '=', 'service_id')
             ->join('employees', 'employees.id', '=', 'employee_id')
             ->join('centres', 'centres.id', '=', 'centre_employee_id')
-            ->whereNull('trackings.cancellation_date'); 
+            ->whereNull('trackings.cancellation_date');
         return $query;
     }
-    
+
     public function scopeGetCancelledTrackings()
     {
         $query = DB::table('trackings')
@@ -157,37 +158,37 @@ class Tracking extends Model
             ->join('employees', 'employees.id', '=', 'employee_id')
             ->join('centres', 'centres.id', '=', 'centre_employee_id')
             ->whereNotNull('trackings.cancellation_date')
-            -> get(); 
+            ->get();
         return $query;
     }
-    
+
     public function scopeCheckDate($query, $trackingDate)
     {
         $result = true;
         $message = '';
         $currentMonth = date('m');
-        $currentDay   = date('d');
-        $year         = date('Y');
+        $currentDay = date('d');
+        $year = date('Y');
 
-        $beforeYear  = $year;
-        $nextYear  = $year;
+        $beforeYear = $year;
+        $nextYear = $year;
         $beforeMonth = $currentMonth - 1;
         $nextMonth = $currentMonth + 1;
         if ($currentMonth == 1) {
             $beforeMonth = 12;
-            $beforeYear  = $year - 1;
+            $beforeYear = $year - 1;
         }
         if ($currentMonth == 12) {
             $nextMonth = 1;
-            $nextYear  = $year + 1;
+            $nextYear = $year + 1;
         }
 
         if ($currentDay <= 20) {
             $initPeriod = $beforeYear . '-' . str_pad($beforeMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-            $endPeriod  = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
+            $endPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
         } else {
             $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-            $endPeriod  = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
+            $endPeriod = $nextYear . '-' . str_pad($nextMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
         }
         $dias = array("domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado");
         $endPreviousPeriod = date("d-m-Y", strtotime($initPeriod . "- 1 days"));
@@ -211,40 +212,7 @@ class Tracking extends Model
         if (!empty($this->user) && $this->user->rol_id == 1) { //ROL_ID admin se permiten cambios
             $controlFecha = false;
         }
-        if ($controlFecha === true && $trackingDate != null && ($trackingDate < $initPeriod  ||  $trackingDate > $endPeriod)) {
-            $result = false;
-            $message = 'Fecha fuera de periodo de corte, corrijalo por favor';
-        }
-        return ['result' => $result, 'message' => $message];
-    }
-
-    public function scopeCheckRequestChangeDate($query, $startDate, $endDate)
-    {
-        $result = true;
-        $currentDay   = date('d');
-        $currentMonth = date('m');
-        $year         = date('Y');
-        $beforeYear   = $year;
-        $message = '';
-        if ($currentMonth == 1) {
-            $beforeMonth = 12;
-            $beforeYear  -= 1;
-        } else {
-            $beforeMonth = $currentMonth - 1;
-        }
-
-        // Request change can't alterate previous data 
-        $fini = date("Y-m-d H:i:s", strtotime($startDate));
-        $ffin = date("Y-m-d H:i:s", strtotime($endDate));
-
-        if ($currentDay <= 20) {
-            $initPeriod = $beforeYear . '-' . str_pad($beforeMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-        } else {
-            $initPeriod = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-        }
-        $finiperiod = date("Y-m-d H:i:s", strtotime($initPeriod));
-
-        if ($fini < $finiperiod || $ffin < $finiperiod) {
+        if ($controlFecha === true && $trackingDate != null && ($trackingDate < $initPeriod || $trackingDate > $endPeriod)) {
             $result = false;
             $message = 'Fecha fuera de periodo de corte, corrijalo por favor';
         }

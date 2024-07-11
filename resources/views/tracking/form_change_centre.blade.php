@@ -80,61 +80,74 @@
 
 <script type="text/javascript">
     // setDate();
-    $(function() {
+    $(document).ready(function() {
         $("#btnSubmit").on('click', function(e) {
-            console.log( $('#centre_origin_id').selectpicker('val'));
-            console.log($('#centre_destination_id').selectpicker('val'));
-            console.log($("#employee_id option:selected").text());
-            console.log($('#date_from').val());
-            console.log($('#date_to').val());
+            e.preventDefault();
             $('#btnSubmit').hide();
             $('#btnSubmitLoad').show();
-            $('#btnSubmitLoad').prop('disabled', true);
-            $('form#createRequestChangeCentre').submit();
-        });
 
+            var form = $('#createRequestChangeCentre');
+            var formData = form.serialize();
+
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    console.log(response);
+                    showAlert('success', response.mensaje);
+                    window.location.href = '{{ route('tracking.requestChange') }}';
+                },
+                error: function(xhr) {
+                    $('#btnSubmit').show();
+                    $('#btnSubmitLoad').hide();
+
+                    if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        var errorMessages = '';
+                        $.each(xhr.responseJSON.errors, function(key, messages) {
+                            errorMessages += messages.join('<br>') + '<br>';
+                        });
+
+                        showAlert('error', errorMessages);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An unexpected error occurred.',
+                        });
+                    }
+                }
+            });
+        });
         $("#btnClear").on('click', function(e) {
             e.preventDefault();
             clearForms();
         });
-
-        function clearForms() {
-            setDate();
-            $('#centre_origin_id').selectpicker('val', '');
-            $('#centre_destination_id').selectpicker('val', '');
-            $('#employee_id').selectpicker('val', '');
-            $('#date_from').val('');
-            $('#date_to').val('');
-        }
     });
+
+
+    function clearForms() {
+        setDate();
+        $('#centre_origin_id').selectpicker('val', '');
+        $('#centre_destination_id').selectpicker('val', '');
+        $('#employee_id').selectpicker('val', '');
+        $('#date_from').val('');
+        $('#date_to').val('');
+    }
+
 
     function setDate() {
         var date = new Date();
         var day = date.getDate();
-        var month = date.getMonth() + 1;
+        var month = date.getMonth() + 1; // JavaScript months are 0-11
         var year = date.getFullYear();
-        var startDay = 20;
 
         day = day < 10 ? '0' + day : day;
         month = month < 10 ? '0' + month : month;
 
-        var dateTo = year + '-' + month + '-' + day;
+        var todayDate = year + '-' + month + '-' + day;
 
-        var previousMonth = month;
-        var previousYear = year;
-
-        if (month === '01' && day < 21) {
-            previousMonth = '12';
-            previousYear = year - 1;
-
-        } else {
-            previousMonth = parseInt(month, 10);
-            previousMonth = (day < 21) ? previousMonth - 1 : previousMonth;
-            previousMonth = previousMonth < 10 ? '0' + previousMonth : previousMonth.toString();
-        }
-
-        var dateFrom = previousYear + '-' + previousMonth + '-' + startDay;
-        document.getElementById("date_from").value = dateFrom;
-        document.getElementById("date_to").value = dateTo;
+        document.getElementById("date_from").value = todayDate;
+        document.getElementById("date_to").value = todayDate;
     }
 </script>

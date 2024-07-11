@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\FormValidatorRequest;
+
 // use Adldap\Laravel\Facades\Adldap;
 use DataTables;
 use App\Tracking;
@@ -1611,33 +1613,20 @@ class TrackingController extends Controller
         ]);
     }
 
-    public function saveRequest(Request $request)
+    public function saveRequest(FormValidatorRequest $request)
     {
         try {
-            $
-            $request->validate([
-                'date_from' => '',
-                'date_to' => '',
-                'centre_origin_id' => '',
-                'centre_destination_id' => '',
-                'employee_id' => ''
-            ]);
-
-            $params = [];
-            $params = $request->all();
+            $user = session()->get('user');
+            $params = $request->validated();
+            $params['start_date'] =$params['date_from'];
+            $params['end_date'] =$params['date_to'];
             $params['created_user_id'] = $user->id;
 
-            $validateData = Tracking::checkRequestChangeDate($params['date_from'], $params['date_to']);
-            if ($validateData['result'] === false) {
-                return back()->with('error', $validateData['message']);
-            }
-            $request_id = RequestChange::create($params)->id;
+            RequestChange::create($params)->id;
             return redirect()->action('TrackingController@requestChange')->with('success', 'Solicitud Creada Correctamente');
-        }catch (\Exception $e){
-            return back()->with('error', $e->getMessage());
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->with('error', 'Formulario incompleto, faltan campos requeridos '. $e->getMessage());
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (\Exception $e) {
+            return redirect()->action('TrackingController@requestChange')->with('error', $e->getMessage());
+        }  catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }
     }
