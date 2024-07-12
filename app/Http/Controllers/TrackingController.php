@@ -33,11 +33,13 @@ use Carbon\Carbon;
 class TrackingController extends Controller
 {
     protected $finalDetailedSales = [];
+    protected $user;
 
 
     public function __construct()
     {
         $this->user = session()->get('user');
+        $user = session()->get('user');
     }
 
     private function getTitle($state)
@@ -1618,23 +1620,25 @@ class TrackingController extends Controller
         try {
             $user = session()->get('user');
             $params = $request->validated();
-            $params['start_date'] =$params['date_from'];
-            $params['end_date'] =$params['date_to'];
+            $params['start_date'] = $params['date_from'];
+            $params['end_date'] = $params['date_to'];
             $params['created_user_id'] = $user->id;
 
             RequestChange::create($params)->id;
             return redirect()->action('TrackingController@requestChange')->with('success', 'Solicitud Creada Correctamente');
         } catch (\Exception $e) {
             return redirect()->action('TrackingController@requestChange')->with('error', $e->getMessage());
-        }  catch (\Illuminate\Database\QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }
     }
 
     public function getRequestChanges()
     {
+        $user = session()->get('user');
+        $centrUserId = $user->centre_id;
+
         try {
-            $whereFields = "";
             $query = DB::table('request_changes')
                 ->select(
                     'request_changes.id',
@@ -1644,30 +1648,28 @@ class TrackingController extends Controller
                     'cd.name as centre_destination',
                     'employees.name as employee'
                 )
-                ->join('employees', 'employees.id', '=', 'employee_id')
-                ->join('centres as co', 'co.id', '=', 'centre_origin_id')
-                ->join('centres as cd', 'cd.id', '=', 'centre_destination_id')
+                ->join('employees', 'employees.id', '=', 'request_changes.employee_id')
+                ->join('centres as co', 'co.id', '=', 'request_changes.centre_origin_id')
+                ->join('centres as cd', 'cd.id', '=', 'request_changes.centre_destination_id')
                 ->whereNull('request_changes.cancellation_date');
 
-            $user = session()->get('user');
-            $centrUserId = $user->centre_id;
             if (!empty($centrUserId)) {
-                $whereFields .= " request_changes.centre_origin_id = " . $centrUserId;
-                $query = $query
-                    ->whereRaw($whereFields)
-                ;
+                $query = $query->where(function ($query) use ($centrUserId) {
+                    $query->where('request_changes.centre_origin_id', $centrUserId)
+                        ->orWhere('request_changes.centre_destination_id', $centrUserId);
+                });
             }
-            $requests = $query
-                ->get();
+
+            $requests = $query->get();
 
             return DataTables::of($requests)
                 ->addColumn('action', function ($request) {
-                    $btn = '';
-                    $btn .= '<a onClick="confirm(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Cancelar</a>';
+                    $btn = '<a onClick="confirm(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Cancelar</a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }

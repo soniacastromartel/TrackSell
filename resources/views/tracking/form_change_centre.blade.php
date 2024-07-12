@@ -3,7 +3,8 @@
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
-
+<!-- tracking/form_change_centre.blade.php -->
+<input type="hidden" name="form_type" value="change_centre">
 <div class=" solicitud-container">
 
     <div class="date-solicitud-container">
@@ -93,28 +94,23 @@
                 url: form.attr('action'),
                 method: 'POST',
                 data: formData,
-                success: function(response) {
-                    console.log(response);
-                    showAlert('success', response.mensaje);
+                success: function( textStatus) {
+                    showAlert('success', 'Creado Correctamente');
                     window.location.href = '{{ route('tracking.requestChange') }}';
                 },
                 error: function(xhr) {
+                    console.log (xhr);
                     $('#btnSubmit').show();
                     $('#btnSubmitLoad').hide();
-
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
                         var errorMessages = '';
                         $.each(xhr.responseJSON.errors, function(key, messages) {
                             errorMessages += messages.join('<br>') + '<br>';
                         });
-
                         showAlert('error', errorMessages);
                     } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'An unexpected error occurred.',
-                        });
+                        showAlert('error', 'Ha habido algún error al crear la solicitud')
+                 
                     }
                 }
             });

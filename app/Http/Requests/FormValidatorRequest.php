@@ -25,7 +25,7 @@ class FormValidatorRequest extends FormRequest
     {
         return [
             'centre_origin_id' => 'required|string',
-            'centre_destination_id' => 'required|different:field_one',
+            'centre_destination_id' => 'required|different:centre_origin_id',
             'date_from' => 'required|after_or_equal:today',
             'date_to' => 'required|after_or_equal:today',
             'employee_id' => 'required',

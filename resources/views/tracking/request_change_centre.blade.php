@@ -103,7 +103,6 @@
             console.log(id);
             var params = {
                 'id': id,
-                // 'state': $("#validateVal").val(),
                 '_token': "{{ csrf_token() }}"
             };
             $.ajax({
@@ -112,9 +111,6 @@
                 data: params,
                 dataType: 'json',
                 success: function(data, textStatus, jqXHR) {
-                    console.log(textStatus);
-                    console.log(data);
-                    console.log(jqXHR);
                     if (textStatus === 'success') {
                         showAlert('success', 'Eliminado Correctamente');
                     }
