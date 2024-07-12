@@ -7,6 +7,7 @@ use App\Exports\Sheets\DinamicServicesSheet\AllServiceCentreSheet;
 use App\Exports\Sheets\DinamicServicesSheet\CategoryEmployeeSheet;
 use App\Exports\Sheets\DinamicServicesSheet\CategoryServiceSheet;
 use App\Exports\Sheets\DinamicServicesSheet\CentreSheet;
+use App\Exports\Sheets\DinamicServicesSheet\RecommendationsSheet;
 use App\Exports\Sheets\DinamicServicesSheet\EmployeeSheet;
 use App\Exports\Sheets\DinamicServicesSheet\ServiceAndCentreSheet;
 use App\Exports\Sheets\DinamicServicesSheet\ServiceSheet;
@@ -52,6 +53,7 @@ class DinamicServicesExport implements  WithMultipleSheets
         }elseif (!empty($this->request->input('service_id')) && empty($this->request->input('centre_id'))) {
             $sheets[] = new ServiceAndCentreSheet($this->request, $this->selectedCentre, $this->selectedService, $this->totalServices, $this->grandTotal);
             $sheets[] = new CentreSheet($this->request);
+            $sheets[] = new RecommendationsSheet($this->request);
             $sheets[] = new CategoryServiceSheet($this->request);
             $sheets[] = new CategoryEmployeeSheet($this->request);
             $sheets[] = new EmployeeSheet($this->request);

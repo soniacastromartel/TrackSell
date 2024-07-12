@@ -35,6 +35,7 @@
      height: 550px;
      width: 100%;
      position: absolute;
+     background-repeat: no-repeat;
 }
 
 .minimize-sidebar-home {
