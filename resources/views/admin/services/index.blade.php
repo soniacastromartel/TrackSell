@@ -144,7 +144,6 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    // console.log(xhr.responseText);
                     console.log(error);
                     var errorMessage = "Error occurred: " + xhr.responseText;
                     Swal.fire({
