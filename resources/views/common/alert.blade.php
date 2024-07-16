@@ -105,28 +105,33 @@
                     }, 3000);
                 });
             }
-        }); 
+        });
     }
 
-        async function confirmWithInput() {
-            const {
-                value: reason,
-                isConfirmed
-            } = await Swal.fire({
-                title: '¿Está seguro?',
-                text: "Está a punto de eliminar. ¡No podrá revertir esto!",
-                icon: 'question',
-                input: "text",
-                inputLabel: "Motivo:",
-                inputValue: "",
-                showCancelButton: true,
-                inputValidator: (value) => {
-                    if (!value) {
-                        return "Debe escribir un motivo";
-                    }
+    async function confirmWithInput() {
+        const {
+            value: reason,
+            isConfirmed
+        } = await Swal.fire({
+            title: '¿Está seguro?',
+            text: "Está a punto de eliminar. ¡No podrá revertir esto!",
+            icon: 'question',
+            input: "text",
+            inputLabel: "Motivo:",
+            inputValue: "",
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return "Debe escribir un motivo";
                 }
-            });
+            }
 
-            return isConfirmed ? reason : null;
-        }
+        });
+        // if (reason) {
+        //     Swal.fire(`La razón es ${isConfirmed}`);
+        // }
+
+
+        return isConfirmed ? reason : null;
+    }
 </script>
