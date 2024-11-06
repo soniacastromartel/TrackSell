@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Adldap\Laravel\Facades\Adldap;
+use App\JobCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -126,7 +127,6 @@ class EmployeeController extends DefaultLoginController
     }
 
     //! PENDING OF VALIDATION
-
     public function indexPending(Request $request)
     {
         try {
@@ -161,7 +161,6 @@ class EmployeeController extends DefaultLoginController
     }
 
     //! EMPPLOYEE HISTORY
-
     public function history($id)
     {
 
@@ -184,13 +183,13 @@ class EmployeeController extends DefaultLoginController
     }
 
     //! EDIT USER
-
     public function edit($id)
     {
         try {
             $employee = Employee::find($id);
             $roles = Role::getRolesActive();
             $centres = Centre::getCentresActive();
+            $categories = JobCategory::all();
             $excludeMotives = (explode(',', env('EXCLUDE_RANKINGS')));
 
             $dayNow = date('Y-m-d');
@@ -202,7 +201,8 @@ class EmployeeController extends DefaultLoginController
                 'centres' => $centres,
                 'dayNow' => $dayNow,
                 'dayYesterday' => $dayYesterday,
-                'motives' => $excludeMotives
+                'motives' => $excludeMotives,
+                'categories' => $categories
 
             ]);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -211,7 +211,6 @@ class EmployeeController extends DefaultLoginController
     }
 
     //! UPDATE USER
-
     public function update(Request $request, $id)
     {
         try {

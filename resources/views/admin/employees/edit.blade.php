@@ -26,7 +26,7 @@
                                     <div class="col-md-4">
                                             <div class="row">
                                                 <div class="form-group col-md-10 mx-auto">
-                                                    <label for="login">Login <span class="obligatory">*</span></label>
+                                                    <label for="login">Username <span class="obligatory">*</span></label>
                                                     <input type="text" class="form-control px-2" name="username" id="username" placeholder="" value="{{ isset($employee) ? $employee->username : ''}}" readonly>
                                                 </div>
                                             </div>
@@ -40,6 +40,24 @@
                                                 <div class=" form-group col-md-10 mx-auto">
                                                     <label for="login">Password <span class="obligatory">*</span></label>
                                                     <input type="password" class="form-control px-2" name="password" id="password" placeholder="" value="{{ isset($employee) ? $employee->password : ''}}" readonly>
+                                                </div>
+                                            </div>                                        
+                                            <div class="row">
+                                                <div class=" form-group col-md-10 mx-auto">
+                                                    <label for="email">Email</label>
+                                                    <input type="email" class="form-control px-2" name="email" id="email" placeholder="" value="{{ isset($employee) ? $employee->email : ''}}">
+                                                </div>
+                                            </div>                                        
+                                            <div class="row">
+                                                <div class=" form-group col-md-10 mx-auto">
+                                                    <label for="dni">DNI</label>
+                                                    <input type="text" class="form-control px-2" name="dni" id="dni" placeholder="" value="{{ isset($employee) ? $employee->dni : ''}}">
+                                                </div>
+                                            </div>                                        
+                                            <div class="row">
+                                                <div class=" form-group col-md-10 mx-auto">
+                                                    <label for="phone">Teléfono</label>
+                                                    <input type="text" class="form-control px-2" name="phone" id="phone" placeholder="" value="{{ isset($employee) ? $employee->phone : ''}}">
                                                 </div>
                                             </div>                                        
                                         <div class="row mt-5">
@@ -63,6 +81,19 @@
                                                         selected="selected"
                                                         @endif
                                                         >{{$role->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-10 mx-auto">
+                                                <label class="label">Categoría<span class="obligatory">*</span></label>
+                                                <select class="selectpicker" name="job_id" id="job_id" data-size="7" data-style="btn btn-red-icot btn-round" title="* Seleccione Categoría" tabindex="-98">
+                                                    @foreach ($categories as $category)
+                                                    <option value="{{$category->category_name}}" @if (isset($employee) && $category->category_name == $employee->category )
+                                                        selected="selected"
+                                                        @endif
+                                                        >{{$category->category_name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
