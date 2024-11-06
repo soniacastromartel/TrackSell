@@ -229,6 +229,8 @@ class HomeController extends Controller
             $updateParams = [
                 'centre_id' => isset($params['centre_id']) ? $params['centre_id'] : $employee->centre_id
                 ,
+                'job_id' => isset($params['job_id']) ? $params['job_od'] : $employee->category
+                ,
                 'email' => isset($params['email']) ? $params['email'] : null
                 ,
                 'dni' => isset($params['dni']) ? $params['dni'] : null
