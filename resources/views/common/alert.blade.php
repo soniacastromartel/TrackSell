@@ -127,11 +127,6 @@
             }
 
         });
-        // if (reason) {
-        //     Swal.fire(`La razón es ${isConfirmed}`);
-        // }
-
-
         return isConfirmed ? reason : null;
     }
 </script>

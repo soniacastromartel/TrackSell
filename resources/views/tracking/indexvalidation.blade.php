@@ -65,7 +65,7 @@
                 </div>
                 <div class="card">
                     <div class="card-header card-header-danger">
-                        <h4 class="card-title">Seguimiento</h4>
+                        <h4 class="card-title">Validar RRHH</h4>
                     </div>
                     <div class="container-fluid">
                         <div class="row justify-content-lg-between m-4">

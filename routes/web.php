@@ -88,6 +88,8 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/target/targetReportView', 'TargetController@targetsReportView')->name('target.targetsReportView');
     Route::post('/target/incentivesReportView', 'TargetController@incentivesReportView')->name('target.incentivesReportView');
     Route::post('/target/incentivesSummaryView', 'TargetController@incentivesSummaryView')->name('target.incentivesSummaryView');
+    Route::post('/target/incentivesSummaryView', 'TargetController@incentivesSummaryView')->name('target.incentivesSummaryView');
+    Route::post('/target/importPrivateSales', 'TargetController@importPrivateSales')->name('target.importPrivateSales');
     //!Ranking
     Route::get('/calculateRanking', 'RankingController@index')->name('calculateRanking');
     Route::post('/ranking/calculateRankings', 'RankingController@calculateRankings')->name('ranking.calculateRankings');

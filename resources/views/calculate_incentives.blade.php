@@ -386,7 +386,11 @@
         var table;
 
         $(function() {
-            // console.log($user);
+            //console.log($user);
+            var user = @json($user);
+
+            // Hacer un console.log del usuario
+            console.log(user);
 
             $('#centreName').hide();
 
@@ -396,7 +400,85 @@
             $('#pagesReport').addClass('show');
             $('#targetsData').hide();
             $('#incentivesData').hide();
-            $('#summaryData').hide();
+            $(
+                '#summaryData').hide();
+
+            /**
+             * Importar Venta Privada
+             */
+            $("#btnImportSales").on("click", function(e) {
+                e.preventDefault();
+                console.log("Importa Tu Venta Privada");
+
+                Swal.fire({
+                    title: "Importa Tu Venta Privada",
+                    input: "number",
+                    inputAttributes: {
+                        autocapitalize: "off",
+                        step: "0.01", // Allows decimal values
+                        min: "0", // Optional: Ensure non-negative values
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "Importar",
+                    cancelButtonText: "Cancelar",
+                    inputValidator: (value) => {
+                        // Validate input: ensure it's a number and not empty
+                        if (!value || isNaN(value) || parseFloat(value) <= 0) {
+                            return "Por favor, inserta una cantidad valida y mayor que 0";
+                        }
+                    },
+                    showLoaderOnConfirm: true,
+                    preConfirm: async (amount) => {
+                        try {
+                            const result = await importPrivateSales(amount);
+                            return result;
+                        } catch (error) {
+                            Swal.showValidationMessage(`Solicitud Cancelada. ${error}`);
+                        }
+                    },
+                    allowOutsideClick: () => !Swal.isLoading(),
+                });
+            });
+
+            // Define the importPrivateSales function to handle the AJAX request
+            async function importPrivateSales(amount) {
+                console.log(amount);
+                try {
+                    // Get current date in YYYY-MM-DD format
+                    const currentDate = new Date().toISOString().split('T')[0]; // e.g., "2024-11-14"
+                    const params = {
+                        "_token": "{{ csrf_token() }}",
+                        "privateSales": amount,
+                        "date": currentDate
+                    };
+
+                    console.log(params);
+
+                    const response = await $.ajax({
+                        url: "{{ route('target.importPrivateSales') }}",
+                        type: 'post',
+                        data: params,
+                        // dataType: "json", // Expect JSON response from the server
+                        success: function(response) {
+                            if (response.success) {
+                                showAlert('success', "Venta Importada Correctamente");
+                            } else {
+                                showAlert('error', response.message || "Error en la importación");
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("Error al Importar:", textStatus, errorThrown);
+                            showAlert('error', `Error en la solicitud: ${textStatus}`);
+                        }
+                    });
+
+                    return response;
+
+                } catch (error) {
+                    console.error("Error al Importar:", error);
+                    throw new Error(error.statusText || "Error en la solicitud");
+                }
+            }
 
 
             // $("#centre_id").on('change', function() {
@@ -416,7 +498,7 @@
                 } else {
                     $('#centreName').show();
                     document.getElementById('centreName').innerHTML = $("#centre_id option:selected")
-                .text();
+                        .text();
                     $('#btnTargetsPreview').hide();
                     $('#btnTargetsLoad').show();
                     $('#btnTargetsLoad').prop('disabled', true);
@@ -546,7 +628,7 @@
                     complete: function() {
                         $("#btnSubmit").html(
                             "<span class='material-icons mr-1'>download</span> Exportar");
-                            showToast('info', 'Archivo Descargado');
+                        showToast('info', 'Archivo Descargado');
                     }
 
                 });
@@ -555,9 +637,10 @@
             var date = new Date();
             var textMonthYear = setDate(date);
             $('#monthYearPicker').val(textMonthYear);
-            $('#monthYearPicker').MonthPicker({
-                ShowIcon: false
-            });
+            $('#monthYearPicker')
+                .MonthPicker({
+                    ShowIcon: false
+                });
 
             $('#yearTargetPicker').val(date.getFullYear());
             $('#yearTargetPicker').datepicker({

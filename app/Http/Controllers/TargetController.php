@@ -25,10 +25,13 @@ class TargetController extends Controller
 
     public $user;
     public $centreId;
+    protected $targetService;
 
-    public function __construct()
+    // Constructor Injection
+    public function __construct(TargetService $targetService)
     {
         $this->user = session()->get('user');
+        $this->targetService = $targetService;
     }
 
     public function index()
@@ -44,7 +47,10 @@ class TargetController extends Controller
         return view(
             'calculate_incentives',
             [
-                'title'      => $title, 'centres'   => $centres, 'employees' => $employees, 'user'      => $this->user
+                'title' => $title,
+                'centres' => $centres,
+                'employees' => $employees,
+                'user' => $this->user
             ]
         );
     }
@@ -77,7 +83,7 @@ class TargetController extends Controller
                 Storage::delete(['example_target_input.xls']);
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            return redirect('calculateIncentive')->with('error',$e->getMessage());
+            return redirect('calculateIncentive')->with('error', $e->getMessage());
         } catch (\Exception $e) {
             return redirect('calculateIncentive')->with('error', $e->getMessage());
         } catch (SheetNotFoundException $e) {
@@ -95,7 +101,8 @@ class TargetController extends Controller
             if ($request->hasFile('targetInputFile')) {
                 $this->importData($request);
                 return redirect('calculateIncentive')->with([
-                    'title' => 'Calculadora de incentivos', 'success' =>  'Importados objetivos!'
+                    'title' => 'Calculadora de incentivos',
+                    'success' => 'Importados objetivos!'
                 ]);
             } else {
                 return redirect('calculateIncentive')->with('error', 'Error!');
@@ -107,6 +114,38 @@ class TargetController extends Controller
         }
     }
 
+    public function importPrivateSales(Request $request)
+{
+    try {
+        $this->user = session()->get('user');
+        $centreId = $this->user['centre_id']; 
+
+        // Check if centreId is null or empty
+        if (empty($centreId) || $centreId == null) {
+            return redirect()->back()->with('error', 'El ID del centro es obligatorio.');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'privateSales' => 'required|numeric', // Ensure it's not empty and is a number
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', 'El campo de cantidad es obligatorio y debe ser un número.');
+        }
+
+        $amount = is_float($request->privateSales) ? $request->privateSales : (float) $request->privateSales;
+        $currentDate = $request->has('date') ? $request->date : now()->format('Y-m-d');
+
+        return $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
+
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Error durante la importación: ' . $e->getMessage());
+    }
+}
+
+
+
+
     /** Funcion que se encarga de importar valores de venta privada - Incluido por supervisores */
     public function importSales(Request $request)
     {
@@ -115,7 +154,8 @@ class TargetController extends Controller
                 $this->importData($request, true);
                 return redirect('calculateIncentive')->with(
                     [
-                        'title' => 'Calculadora de incentivos', 'success' =>  'Importada Venta Privada!'
+                        'title' => 'Calculadora de incentivos',
+                        'success' => 'Importada Venta Privada!'
                     ]
                 );
             } else {
@@ -149,7 +189,7 @@ class TargetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => 'false',
-                'errors'  => $e->getMessage(),
+                'errors' => $e->getMessage(),
             ], 400);
         }
     }
@@ -164,9 +204,9 @@ class TargetController extends Controller
             $params = $request->all();
 
             $currentMonth = date('m');
-            $year         = date('Y');
+            $year = date('Y');
             if (isset($params['monthYear']) && !empty($params['monthYear'])) {
-                $year         = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
+                $year = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
                 $currentMonth = substr($params['monthYear'], 0, strpos($params['monthYear'], '/'));
                 $previousMonth = $currentMonth - 1;
                 $beginYear = $year;
@@ -174,22 +214,22 @@ class TargetController extends Controller
                     $previousMonth = "12";
                     $beginYear -= 1;
                 }
-                $whereLikeBegin   = $beginYear . '-' . str_pad($previousMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-                $whereLikeLast    = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
+                $whereLikeBegin = $beginYear . '-' . str_pad($previousMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
+                $whereLikeLast = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
             }
 
             $filters = [
-                'centre'       =>  isset($params['centre'])             ?  $params['centre']             : 'TODOS',
-                'employee'     =>  isset($params['employee'])     ?  $params['employee']     : 'TODOS',
-                'month'        =>  ltrim($currentMonth, "0"),
-                'year'         =>  $year,
-                'date_from'    =>  date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
-                'date_to'      =>  date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
+                'centre' => isset($params['centre']) ? $params['centre'] : 'TODOS',
+                'employee' => isset($params['employee']) ? $params['employee'] : 'TODOS',
+                'month' => ltrim($currentMonth, "0"),
+                'year' => $year,
+                'date_from' => date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
+                'date_to' => date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
             ];
 
             ob_end_clean();
             ob_start();
-            return  Excel::download((new TargetsExport($exportData, $filters)), 'target.xls');
+            return Excel::download((new TargetsExport($exportData, $filters)), 'target.xls');
         } catch (\Exception $e) {
             return redirect('calculateIncentive')->with('error', $e->getMessage());
         }
@@ -237,8 +277,8 @@ class TargetController extends Controller
                                 $params = $filters;
                                 unset($params['employee']);
                                 $params['monthYear'] = $params['month'] . '/' . $params['year'];
-                                $params['centre']    = $centreData;
-                                $salesCentres =  $targetService->getExportTarget($params);
+                                $params['centre'] = $centreData;
+                                $salesCentres = $targetService->getExportTarget($params);
                                 $targetCentre = $targetService->normalizeData($salesCentres);
 
                                 $targets = [];
@@ -261,7 +301,7 @@ class TargetController extends Controller
                         }
                         // Cogemos el grupo de supervisores por centro
                         if ($i == 0) {
-                            $totalSuperIncentive  = [];
+                            $totalSuperIncentive = [];
                         }
                         //REPARTO BONUS HCT - Agrupamos todos los supervisores que haya - Multisupervisor
                         $supervisors = explode(", ", trim($targetRow->supervisor));
@@ -290,9 +330,9 @@ class TargetController extends Controller
                             //Solo aplica bonus de venta, para empleados activos en fecha fin de corte 
                             if ($isActive === true) {
                                 if ($result['obj1'] === true) {
-                                    $auxIncentive  = $valueSuperIncentive1;
+                                    $auxIncentive = $valueSuperIncentive1;
                                     if ($result['obj2'] === true) {
-                                        $auxIncentive  = $valueSuperIncentive2;
+                                        $auxIncentive = $valueSuperIncentive2;
                                     }
                                 }
                             }
@@ -306,14 +346,14 @@ class TargetController extends Controller
                                     $centre->id == env('ID_CENTRE_HCT') && $totalBonus == 0
                                     || $centre->id != env('ID_CENTRE_HCT')
                                 ) {
-                                    if ($supervisorId  == $targetRow->employee_id) {
+                                    if ($supervisorId == $targetRow->employee_id) {
                                         $totalIncomeSuperv += $totalIncentive * $targetRow->quantity;
                                     }
                                     $totalBonus += $auxIncentive * $targetRow->quantity;
                                 }
                             }
-                            if ($auxIncentive == 0 && $supervisorId  == $targetRow->employee_id) {
-                                $totalIncome[$supervisorId] +=  $totalIncentive * $targetRow->quantity;
+                            if ($auxIncentive == 0 && $supervisorId == $targetRow->employee_id) {
+                                $totalIncome[$supervisorId] += $totalIncentive * $targetRow->quantity;
                             }
                             $totalColIncentive[$supervisorId] += $totalIncentive * $targetRow->quantity;
                         }
@@ -343,10 +383,10 @@ class TargetController extends Controller
 
                                     $supervisor = Employee::find($supervisorId);
 
-                                    $totalSuperInc    = $totalSuperIncentive[$supervisorId];
+                                    $totalSuperInc = $totalSuperIncentive[$supervisorId];
                                     $totalSuperIncome = $totalIncome[$supervisorId];
                                     if ($centre->id == env('ID_CENTRE_HCT')) {
-                                        $totalSuperInc /=  count($supervisors);
+                                        $totalSuperInc /= count($supervisors);
                                     }
                                     $totalSuperIncome += $totalSuperInc;
                                 }
@@ -364,8 +404,8 @@ class TargetController extends Controller
                         $params = $filters;
                         unset($params['employee']);
                         $params['monthYear'] = $params['month'] . '/' . $params['year'];
-                        $params['centre']    = $centreData;
-                        $salesCentres =  $targetService->getExportTarget($params);
+                        $params['centre'] = $centreData;
+                        $salesCentres = $targetService->getExportTarget($params);
                         $targetCentre = $targetService->normalizeData($salesCentres);
 
                         $targets = [];
@@ -402,8 +442,8 @@ class TargetController extends Controller
                 $params = $filters;
                 unset($params['employee']);
                 // $params['monthYear'] = $params['month'] . '/' . $params['year']; 
-                $params['centre']    = $centresData;
-                $salesCentres =  $targetService->getExportTarget($params);
+                $params['centre'] = $centresData;
+                $salesCentres = $targetService->getExportTarget($params);
                 $targetCentre = $targetService->normalizeData($salesCentres);
 
                 //$vcTotal =  $targetService->getVC($centresData, $targetCentre); 
@@ -464,7 +504,8 @@ class TargetController extends Controller
                 Storage::delete(['example_incentive_input.xls']);
                 return redirect('/admin/incentives')->with(
                     [
-                        'title' => 'Calculadora de incentivos', 'success' =>  'Importados incentivos!'
+                        'title' => 'Calculadora de incentivos',
+                        'success' => 'Importados incentivos!'
                     ]
                 );
             } else {
@@ -516,14 +557,14 @@ class TargetController extends Controller
                 if (!empty($target)) {
                     $tracking = $targetService->normalizeData($exportData);
                     foreach ($centres as $centre) {
-                        if (!isset($targetData[$centre->name])  && isset($target[$centre->id])) {
+                        if (!isset($targetData[$centre->name]) && isset($target[$centre->id])) {
                             $targetData[$centre->name] = [];
                             $targetData[$centre->name][$currentYear] = [];
                         }
 
                         $employee_sales = [];
                         $cont_employees = 0;
-                        $totalCentre    = [];
+                        $totalCentre = [];
                         $vcTotal = 0;
                         if (isset($tracking[$centre->name])) {
                             foreach ($tracking[$centre->name] as $i => $trackingData) {
@@ -534,19 +575,19 @@ class TargetController extends Controller
                             }
 
                             $centresData = Centre::where('name', $centre->name)->get();
-                            $vcTotal =  $targetService->getVC($centresData, $tracking);
+                            $vcTotal = $targetService->getVC($centresData, $tracking);
                             $totalCentre = $targetService->getSummarySales([$centre->name => $tracking[$centre->name]], $target, $params['monthYear'], $centresData, $tracking);
                         }
 
                         if (isset($target[$centre->id]) && !empty($target[$centre->id])) {
                             $targetData[$centre->name][$currentYear][$month] = [
-                                'obj_vc'        => $target[$centre->id]->obj1,
-                                'obj_vp'            => $target[$centre->id]->obj2,
-                                'vc'                => $vcTotal,
-                                'vp'                => $target[$centre->id]->vd,
-                                'cont_employees'    => $cont_employees,
-                                'salesPerEmployee'  => $cont_employees > 0 ? $vcTotal / $cont_employees : 0,
-                                'total_incentive'   => isset($totalCentre[$centre->name]) ? $totalCentre[$centre->name]['total_income'] : 0,
+                                'obj_vc' => $target[$centre->id]->obj1,
+                                'obj_vp' => $target[$centre->id]->obj2,
+                                'vc' => $vcTotal,
+                                'vp' => $target[$centre->id]->vd,
+                                'cont_employees' => $cont_employees,
+                                'salesPerEmployee' => $cont_employees > 0 ? $vcTotal / $cont_employees : 0,
+                                'total_incentive' => isset($totalCentre[$centre->name]) ? $totalCentre[$centre->name]['total_income'] : 0,
                                 'incentive_percent' => $vcTotal > 0 && isset($totalCentre[$centre->name]) ? $totalCentre[$centre->name]['total_income'] / $vcTotal : 0
                             ];
                             //En table centre se añade exception island - centros independientes como HCT
@@ -562,16 +603,23 @@ class TargetController extends Controller
                         if (!isset($totalTargetByIsland[$centre->island][$currentYear][$month])) {
                             $totalTargetByIsland[$centre->island][$currentYear][$month] = [];
                             $totalTargetByIsland[$centre->island][$currentYear][$month] = [
-                                'obj_vc'             => 0, 'obj_vp'            => 0, 'vc'                => 0, 'vp'                => 0, 'cont_employees'    => 0, 'salesPerEmployee'  => 0, 'total_incentive'   => 0, 'incentive_percent' => 0
+                                'obj_vc' => 0,
+                                'obj_vp' => 0,
+                                'vc' => 0,
+                                'vp' => 0,
+                                'cont_employees' => 0,
+                                'salesPerEmployee' => 0,
+                                'total_incentive' => 0,
+                                'incentive_percent' => 0
                             ];
                         }
                         if (isset($targetData[$centre->name][$currentYear][$month])) {
-                            $totalTargetByIsland[$centre->island][$currentYear][$month]['obj_vc']             +=  $targetData[$centre->name][$currentYear][$month]['obj_vc'];
-                            $totalTargetByIsland[$centre->island][$currentYear][$month]['obj_vp']             +=  $targetData[$centre->name][$currentYear][$month]['obj_vp'];
-                            $totalTargetByIsland[$centre->island][$currentYear][$month]['vc']                 +=  $targetData[$centre->name][$currentYear][$month]['vc'];
-                            $totalTargetByIsland[$centre->island][$currentYear][$month]['vp']                 +=  $targetData[$centre->name][$currentYear][$month]['vp'];
-                            $totalTargetByIsland[$centre->island][$currentYear][$month]['cont_employees']     +=  $targetData[$centre->name][$currentYear][$month]['cont_employees'];
-                            $totalTargetByIsland[$centre->island][$currentYear][$month]['total_incentive']    +=  $targetData[$centre->name][$currentYear][$month]['total_incentive'];
+                            $totalTargetByIsland[$centre->island][$currentYear][$month]['obj_vc'] += $targetData[$centre->name][$currentYear][$month]['obj_vc'];
+                            $totalTargetByIsland[$centre->island][$currentYear][$month]['obj_vp'] += $targetData[$centre->name][$currentYear][$month]['obj_vp'];
+                            $totalTargetByIsland[$centre->island][$currentYear][$month]['vc'] += $targetData[$centre->name][$currentYear][$month]['vc'];
+                            $totalTargetByIsland[$centre->island][$currentYear][$month]['vp'] += $targetData[$centre->name][$currentYear][$month]['vp'];
+                            $totalTargetByIsland[$centre->island][$currentYear][$month]['cont_employees'] += $targetData[$centre->name][$currentYear][$month]['cont_employees'];
+                            $totalTargetByIsland[$centre->island][$currentYear][$month]['total_incentive'] += $targetData[$centre->name][$currentYear][$month]['total_incentive'];
                         }
                     }
                 }
@@ -592,8 +640,8 @@ class TargetController extends Controller
                                     $totalByIsland[$island] = [];
                                     $totalByIsland[$island][$month] = [];
                                 }
-                                $totalByIsland[$island][$month]['salesPerEmployee']  = $totalTarget['cont_employees'] > 0 ? $totalTarget['vc'] / $totalTarget['cont_employees']  : 0;
-                                $totalByIsland[$island][$month]['incentive_percent'] = $totalTarget['vc'] > 0             ? $totalTarget['total_incentive'] / $totalTarget['vc'] : 0;
+                                $totalByIsland[$island][$month]['salesPerEmployee'] = $totalTarget['cont_employees'] > 0 ? $totalTarget['vc'] / $totalTarget['cont_employees'] : 0;
+                                $totalByIsland[$island][$month]['incentive_percent'] = $totalTarget['vc'] > 0 ? $totalTarget['total_incentive'] / $totalTarget['vc'] : 0;
 
                                 if (!isset($targetData[$island])) {
                                     $targetData[$island] = [];
@@ -601,7 +649,7 @@ class TargetController extends Controller
                                 }
                                 $targetData[$island][$year][$month] = [];
                                 $targetData[$island][$year][$month] = $totalTarget;
-                                $targetData[$island][$year][$month]['salesPerEmployee']  = $totalByIsland[$island][$month]['salesPerEmployee'];
+                                $targetData[$island][$year][$month]['salesPerEmployee'] = $totalByIsland[$island][$month]['salesPerEmployee'];
                                 $targetData[$island][$year][$month]['incentive_percent'] = $totalByIsland[$island][$month]['incentive_percent'];
 
                                 if (!isset($totalTargetICOT[$year])) {
@@ -609,15 +657,22 @@ class TargetController extends Controller
                                 }
                                 if (!isset($totalTargetICOT[$year][$month])) {
                                     $totalTargetICOT[$year][$month] = [
-                                        'obj_vc'              => 0, 'obj_vp'            => 0, 'vc'                => 0, 'vp'                => 0, 'cont_employees'    => 0, 'salesPerEmployee'  => 0, 'total_incentive'   => 0, 'incentive_percent' => 0
+                                        'obj_vc' => 0,
+                                        'obj_vp' => 0,
+                                        'vc' => 0,
+                                        'vp' => 0,
+                                        'cont_employees' => 0,
+                                        'salesPerEmployee' => 0,
+                                        'total_incentive' => 0,
+                                        'incentive_percent' => 0
                                     ];
                                 }
                                 if ($island != 'HOSPITAL ICOT CIUDAD DE TELDE') {
-                                    $totalTargetICOT[$year][$month]['obj_vc']          += $targetData[$island][$year][$month]['obj_vc'];
-                                    $totalTargetICOT[$year][$month]['obj_vp']          += $targetData[$island][$year][$month]['obj_vp'];
-                                    $totalTargetICOT[$year][$month]['vc']              += $targetData[$island][$year][$month]['vc'];
-                                    $totalTargetICOT[$year][$month]['vp']              += $targetData[$island][$year][$month]['vp'];
-                                    $totalTargetICOT[$year][$month]['cont_employees']  += $targetData[$island][$year][$month]['cont_employees'];
+                                    $totalTargetICOT[$year][$month]['obj_vc'] += $targetData[$island][$year][$month]['obj_vc'];
+                                    $totalTargetICOT[$year][$month]['obj_vp'] += $targetData[$island][$year][$month]['obj_vp'];
+                                    $totalTargetICOT[$year][$month]['vc'] += $targetData[$island][$year][$month]['vc'];
+                                    $totalTargetICOT[$year][$month]['vp'] += $targetData[$island][$year][$month]['vp'];
+                                    $totalTargetICOT[$year][$month]['cont_employees'] += $targetData[$island][$year][$month]['cont_employees'];
                                     $totalTargetICOT[$year][$month]['total_incentive'] += $targetData[$island][$year][$month]['total_incentive'];
                                 }
                             }
@@ -631,7 +686,7 @@ class TargetController extends Controller
                 foreach ($totalTargetICOT as $y => $totalYear) {
                     foreach ($totalYear as $month => $totalTargetIcotMonthYear) {
                         $totalIcot[$y][$month] = $totalTargetICOT[$y][$month];
-                        $totalIcot[$y][$month]['salesPerEmployee']  =  $totalTargetIcotMonthYear['cont_employees'] > 0 ? $totalTargetIcotMonthYear['vc'] / $totalTargetIcotMonthYear['cont_employees'] : 0;
+                        $totalIcot[$y][$month]['salesPerEmployee'] = $totalTargetIcotMonthYear['cont_employees'] > 0 ? $totalTargetIcotMonthYear['vc'] / $totalTargetIcotMonthYear['cont_employees'] : 0;
                         $totalIcot[$y][$month]['incentive_percent'] = $totalTargetIcotMonthYear['vc'] > 0 ? $totalTargetIcotMonthYear['total_incentive'] / $totalTargetIcotMonthYear['vc'] : 0;
 
                         $targetData['GRUPO ICOT ' . $year][$year][$month] = $totalIcot[$y][$month];
@@ -648,7 +703,7 @@ class TargetController extends Controller
 
             return response()->json([
                 'success' => 'false',
-                'errors'  => $e->getMessage(),
+                'errors' => $e->getMessage(),
             ], 400);
         }
     }
@@ -679,12 +734,12 @@ class TargetController extends Controller
 
             ob_end_clean();
             ob_start();
-            return  Excel::download((new TracingTargetsExport($targetData, $data)), 'target.xls');
+            return Excel::download((new TracingTargetsExport($targetData, $data)), 'target.xls');
         } catch (\Exception $e) {
 
             return response()->json([
                 'success' => 'false',
-                'errors'  => $e->getMessage(),
+                'errors' => $e->getMessage(),
             ], 400);
         }
     }
@@ -738,7 +793,7 @@ class TargetController extends Controller
             return response()->json(
                 [
                     'success' => 'false',
-                    'errors'  => $e->getMessage(),
+                    'errors' => $e->getMessage(),
                 ],
                 400
             );
@@ -756,9 +811,9 @@ class TargetController extends Controller
             $params = $request->all();
             $centres = $params['centre'] == null ? Centre::getCentresActive() : Centre::where('name', $params['centre'])->get();
             $currentMonth = date('m');
-            $year         = date('Y');
+            $year = date('Y');
             if (isset($params['monthYear']) && !empty($params['monthYear'])) {
-                $year         = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
+                $year = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
                 $currentMonth = substr($params['monthYear'], 0, strpos($params['monthYear'], '/'));
                 $previousMonth = $currentMonth - 1;
                 $beginYear = $year;
@@ -766,17 +821,17 @@ class TargetController extends Controller
                     $previousMonth = "12";
                     $beginYear -= 1;
                 }
-                $whereLikeBegin   = $beginYear . '-' . str_pad($previousMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-                $whereLikeLast    = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
+                $whereLikeBegin = $beginYear . '-' . str_pad($previousMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
+                $whereLikeLast = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
             }
 
             $filters = [
-                'centre'       =>  isset($params['centre'])             ?  $params['centre']             : 'TODOS',
-                'employee'     =>  isset($params['employee'])     ?  $params['employee']     : 'TODOS',
-                'month'        =>  ltrim($currentMonth, "0"),
-                'year'         =>  $year,
-                'date_from'    =>  date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
-                'date_to'      =>  date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
+                'centre' => isset($params['centre']) ? $params['centre'] : 'TODOS',
+                'employee' => isset($params['employee']) ? $params['employee'] : 'TODOS',
+                'month' => ltrim($currentMonth, "0"),
+                'year' => $year,
+                'date_from' => date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
+                'date_to' => date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
             ];
 
 
@@ -796,7 +851,7 @@ class TargetController extends Controller
             return response()->json(
                 [
                     'success' => 'false',
-                    'errors'  => $e->getMessage(),
+                    'errors' => $e->getMessage(),
                 ],
                 400
             );
@@ -813,10 +868,10 @@ class TargetController extends Controller
             $params = $request->all();
             // $centres = $params['centre'] == null ? Centre::getCentresActive() : Centre::where('name', $params['centre'])->get();
             $currentMonth = date('m');
-            $year         = date('Y');
+            $year = date('Y');
 
             if (isset($params['monthYear']) && !empty($params['monthYear'])) {
-                $year         = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
+                $year = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
                 $currentMonth = substr($params['monthYear'], 0, strpos($params['monthYear'], '/'));
                 $previousMonth = $currentMonth - 1;
                 $beginYear = $year;
@@ -824,8 +879,8 @@ class TargetController extends Controller
                     $previousMonth = "12";
                     $beginYear -= 1;
                 }
-                $whereLikeBegin   = $beginYear . '-' . str_pad($previousMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
-                $whereLikeLast    = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
+                $whereLikeBegin = $beginYear . '-' . str_pad($previousMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
+                $whereLikeLast = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
             }
 
             $targetData = $this->calculateIncentives($request);
@@ -834,12 +889,12 @@ class TargetController extends Controller
                 $centres = Centre::whereIn('name', array_keys($resultData))->get();
                 $filters = [
                     //'centre'       =>  isset($params['centre'])             ?  $params['centre']             : 'TODOS',
-                    'employee'     =>  isset($params['employee'])     ?  $params['employee']     : 'TODOS',
-                    'monthYear'     =>  $params['monthYear'],
-                    'month'        =>  ltrim($currentMonth, "0"),
-                    'year'         =>  $year,
-                    'date_from'    =>  date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
-                    'date_to'      =>  date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
+                    'employee' => isset($params['employee']) ? $params['employee'] : 'TODOS',
+                    'monthYear' => $params['monthYear'],
+                    'month' => ltrim($currentMonth, "0"),
+                    'year' => $year,
+                    'date_from' => date('d/m/Y', strtotime($whereLikeBegin)), //substr($params['monthYear'], 0,4) 
+                    'date_to' => date('d/m/Y', strtotime($whereLikeLast)) //substr($params['monthYear'], 0,4) 
                 ];
 
                 $summaryData = $this->getIncentivesSummary($resultData, $centres, $filters);
@@ -854,7 +909,7 @@ class TargetController extends Controller
             return response()->json(
                 [
                     'success' => 'false',
-                    'errors'  => $e->getMessage(),
+                    'errors' => $e->getMessage(),
                 ],
                 400
             );

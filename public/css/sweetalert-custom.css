@@ -3,12 +3,18 @@
     font-size: 1.6rem !important;
     font-weight: bold;
     background-color: #333 !important;
-    color: whitesmoke !important;
+    color: white !important;
 }
 
+/* Style to make the title text solid white without shadows or translucency */
 .swal2-title {
-    color: white;
+    color: #ffffff !important;
+    text-shadow: none !important; /* Removes shadow */
+    opacity: 1 !important; /* Ensures full opacity */
+    text-stroke: 0 !important; /* Removes any text outline */
+    font-weight: bold; /* Optional: ensure the title is bold */
 }
+
 
 .swal2-confirm {
     background-color: #2563EB !important;
@@ -19,4 +25,19 @@
     background-color: #bc012e !important;
     font-weight: bold;
 
+}
+
+/* Set background of validation message to transparent */
+.swal2-validation-message {
+    background: transparent !important;
+    color: #ffffff !important; /* Set text color to white for better contrast on black background */
+    box-shadow: none !important; /* Remove any shadow */
+    border: none !important;
+}
+
+/* Optional: Customize font size and padding if necessary */
+.swal2-validation-message {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px 10px;
 }

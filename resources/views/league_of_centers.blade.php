@@ -14,7 +14,7 @@
                     <div class="card">
                         <div class="card-header card-header-info card-header-text">
                             <div class="card-text" style="border-radius: 50px">
-                                <h4 class="card-title">Informes</h4>
+                                <h4 class="card-title">Liga de Centros</h4>
                             </div>
                         </div>
                         <div class="card-body">
