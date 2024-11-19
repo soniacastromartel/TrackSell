@@ -126,7 +126,7 @@ class TargetController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'privateSales' => 'required|numeric', // Ensure it's not empty and is a number
+            'privateSales' => 'required|numeric', 
         ]);
 
         if ($validator->fails()) {
@@ -138,13 +138,10 @@ class TargetController extends Controller
 
         return $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
 
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return redirect()->back()->with('error', 'Error durante la importación: ' . $e->getMessage());
     }
 }
-
-
-
 
     /** Funcion que se encarga de importar valores de venta privada - Incluido por supervisores */
     public function importSales(Request $request)
