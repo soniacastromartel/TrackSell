@@ -109,7 +109,7 @@ class TargetController extends Controller
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             return redirect('calculateIncentive')->with('error', 'Error de formato de fichero a importar');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect('calculateIncentive')->with('error', $e->getMessage());
         }
     }
@@ -138,7 +138,7 @@ class TargetController extends Controller
 
         return $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
 
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return redirect()->back()->with('error', 'Error durante la importación: ' . $e->getMessage());
     }
 }

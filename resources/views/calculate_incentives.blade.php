@@ -422,6 +422,13 @@
                     confirmButtonText: "Importar",
                     cancelButtonText: "Cancelar",
                     inputValidator: (value) => {
+                        const today = new Date();
+                        const day = today.getDate();
+
+                        // Validate day range (20th to 24th)
+                        if (day < 20 || day > 24) {
+                            return "Aún no puedes importar tu venta privada";
+                        }
                         // Validate input: ensure it's a number and not empty
                         if (!value || isNaN(value) || parseFloat(value) <= 0) {
                             return "Por favor, inserta una cantidad valida y mayor que 0";
