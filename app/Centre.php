@@ -81,4 +81,15 @@ class Centre extends Model
         ->groupBy('centres.id')
         ->get();
     }
+
+
+    /**
+     * Devuelve el email de un centro por su ID
+     */
+    public function scopeGetEmailByCenterId($query, $centerId)
+    {
+        $centre = $query->where('id', $centerId)->first();
+
+        return $centre ? $centre->email : null;
+    }
 }

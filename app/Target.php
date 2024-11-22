@@ -48,10 +48,10 @@ class Target extends Model
     public static function updateTarget($year, $month, $centre_id, $data = null)
     {
         $target = self::getTargetByYearMonthAndCentre($year, $month, $centre_id);
-    
+
         if ($target) {
             $updatedRows = $target->update($data);
-    
+
             if ($updatedRows > 0) {
                 return $target;
             } else {
@@ -61,5 +61,22 @@ class Target extends Model
             throw new \Exception('El objetivo especificado no existe.');
         }
     }
-    
+
+    /**
+     * Obtiene los Targets que no tienen el campo 'vd' actualizado para un mes y año específicos.
+     *
+     * @param int $year
+     * @param int $month
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getUnupdatedVDTargets($year, $month)
+    {
+        return self::where('year', $year)
+            ->where('month', $month)
+            ->whereNull('vd')
+            ->orWhere('vd', '=', 0) 
+            ->get();
+    }
+
+
 }

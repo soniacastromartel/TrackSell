@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\A3EmpleadosCron::class,
         \App\Console\Commands\A3Download::class,
         \App\Console\Commands\UpdateOldPendingServicesCron::class,
+        \App\Console\Commands\CheckUnupdatedVDCommand::class,
     ];
     
     /**
@@ -31,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('a3:download');
         $schedule->command('a3empleados:cron');
         $schedule->command('services:update_old_pending_services')->daily();
+        $schedule->command('targets:check-vd')->monthlyOn(21, '10:00');
      
     }
 
