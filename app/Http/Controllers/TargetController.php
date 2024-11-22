@@ -58,38 +58,45 @@ class TargetController extends Controller
     /**
      * Importar Objetivos
      */
-    private function importData($request, $onlySales = false)
+    private function importData($request, $isEdit = null)
     {
         try {
+            $fileName = $isEdit ? 'editTargetsFile' : 'targetInputFile';
+            $storageFileName = $isEdit ? 'example_target_edit.xls' : 'example_target_input.xls'; // Adjust the filename based on isEdit
+
+            // Validate the file
             $validator = Validator::make($request->all(), [
-                'targetInputFile' => 'max:2048|mimes:xls',
+                $fileName => 'max:2048|mimes:xls',
             ]);
+
             if ($validator->fails()) {
-                throw new \Exception('Error, superado tamaño de fichero o formato no excel');
+                throw new Exception('Error, superado tamaño de fichero o formato no excel');
             }
-            $fileName = 'targetInputFile';
-            //Importar importe de venta privada  - SOLO UN CENTRO
-            if ($onlySales === true) {
-                $fileName = 'targetInputSalesFile';
-                $centres = Centre::where('id', 1)->pluck('id');
-                $centres = collect($centres->toArray());
-            } else {
-                $centres = Centre::getCentresActive();
-            }
+
+            // Get centers if not editing
+            $centres = $isEdit ? [] : Centre::getCentresActive();
             $year = isset($request->yearTarget) ? $request->yearTarget : date('Y');
+
             if ($request->hasFile($fileName)) {
-                $request->file($fileName)->move(storage_path(), 'example_target_input.xls');
-                Excel::import(new TargetsImport($centres, $year, $onlySales), storage_path() . '/example_target_input.xls');
-                Storage::delete(['example_target_input.xls']);
+                // Move the file to the storage path with the correct name
+                $request->file($fileName)->move(storage_path(), $storageFileName);
+
+                // Import the file
+                Excel::import(new TargetsImport($centres, $year, $isEdit), storage_path() . '/' . $storageFileName);
+
+                // Delete the file after import
+                Storage::delete([$storageFileName]);
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             return redirect('calculateIncentive')->with('error', $e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect('calculateIncentive')->with('error', $e->getMessage());
         } catch (SheetNotFoundException $e) {
-            return redirect('calculateIncentive')->with('error', 'El numero de centros es mayor que el numero de hojas definidos en el documento');
+            return redirect('calculateIncentive')->with('error', 'El número de centros es mayor que el número de hojas definidos en el documento');
         }
     }
+
+
 
     /**
      * Funcion que se encarga de importar todos los objetivos - Todos los centros
@@ -98,14 +105,16 @@ class TargetController extends Controller
     public function import(Request $request)
     {
         try {
-            if ($request->hasFile('targetInputFile')) {
-                $this->importData($request);
+            if ($request->hasFile('targetInputFile') || $request->hasFile('editTargetsFile')) {
+                $isEdit = $request->hasFile('editTargetsFile');
+                $this->importData($request, $isEdit);
+                $message = $isEdit ? '¡Editados objetivos!' : '¡Importados objetivos!';
                 return redirect('calculateIncentive')->with([
                     'title' => 'Calculadora de incentivos',
-                    'success' => 'Importados objetivos!'
+                    'success' => $message,
                 ]);
             } else {
-                return redirect('calculateIncentive')->with('error', 'Error!');
+                return redirect('calculateIncentive')->with('error', 'Error! No se seleccionó ningún archivo.');
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             return redirect('calculateIncentive')->with('error', 'Error de formato de fichero a importar');
@@ -114,29 +123,30 @@ class TargetController extends Controller
         }
     }
 
+
     public function importPrivateSales(Request $request)
-{
-    try {
-        $this->user = session()->get('user');
-        $centreId = $this->user['centre_id']; 
+    {
+        try {
+            $this->user = session()->get('user');
+            $centreId = $this->user['centre_id'];
 
-        // Check if centreId is null or empty
-        if (empty($centreId) || $centreId == null) {
-            return redirect()->back()->with('error', 'El ID del centro es obligatorio.');
-        }
+            // Check if centreId is null or empty
+            if (empty($centreId) || $centreId == null) {
+                return redirect()->back()->with('error', 'El ID del centro es obligatorio.');
+            }
 
-        $validator = Validator::make($request->all(), [
-            'privateSales' => 'required|numeric', 
-        ]);
+            $validator = Validator::make($request->all(), [
+                'privateSales' => 'required|numeric', // Ensure it's not empty and is a number
+            ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->with('error', 'El campo de cantidad es obligatorio y debe ser un número.');
-        }
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', 'El campo de cantidad es obligatorio y debe ser un número.');
+            }
 
-        $amount = is_float($request->privateSales) ? $request->privateSales : (float) $request->privateSales;
-        $currentDate = $request->has('date') ? $request->date : now()->format('Y-m-d');
+            $amount = is_float($request->privateSales) ? $request->privateSales : (float) $request->privateSales;
+            $currentDate = $request->has('date') ? $request->date : now()->format('Y-m-d');
 
-        return $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
+            return $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
 
     } catch (Exception $e) {
         return redirect()->back()->with('error', 'Error durante la importación: ' . $e->getMessage());
@@ -426,6 +436,7 @@ class TargetController extends Controller
      */
     private function getIncentivesSummary($target, $centres, $filters)
     {
+        $resultData[] = [];
         try {
             $targetService = new TargetService();
             $targetDefined = $targetService->getTarget($centres, $filters['month'], $filters['year']);

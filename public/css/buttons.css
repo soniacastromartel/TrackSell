@@ -36,6 +36,7 @@
   border-radius: 50px;
   padding-left: 20px;
 }
+
 .icon-container {
   position: relative;
   display: flex;
@@ -44,6 +45,7 @@
 button:focus {
   outline: none;
 }
+
 button:focus {
   outline: none;
   box-shadow: 0 0 0 2px #ffffff;
@@ -92,6 +94,7 @@ button:focus {
   border-radius: 50px;
   padding-left: 20px;
 }
+
 /*CARD HEADER*/
 
 .card-header-danger {
@@ -99,11 +102,11 @@ button:focus {
 }
 
 /*INPUT*/
-.form-control{
+.form-control {
   border-radius: 50px !important;
 }
 
- /* BUTTON SELECTPICKER  */
+/* BUTTON SELECTPICKER  */
 
 .bootstrap-select .btn {
   width: 230px;
@@ -129,7 +132,7 @@ button:focus {
 /*BUTTONS CIRCLE*/
 
 .btn-search-circle {
-  position: relative ;
+  position: relative;
   background-color: green;
   border: none;
   color: white;
@@ -172,73 +175,49 @@ button:focus {
 }
 
 .btn-refresh-circle {
-  position: relative;   
-  background-color: orange ;
+  position: relative;
+  background-color: orange;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%;
-  width: 40px; 
+  width: 40px;
   height: 40px;
-  padding: 0; display: inline-flex;
+  padding: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
-  }
-  .btn-refresh-circle::after {
+}
+
+.btn-refresh-circle::after {
   position: absolute;
-  bottom: 100%; 
+  bottom: 100%;
   left: 50%;
-  transform: translateX(-50%); 
-  white-space: nowrap; 
-  visibility: hidden; 
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s; 
+  transition: opacity 0.2s, visibility 0.2s;
   border-radius: 4px;
   font-size: 12px;
-  }
-  
-  .btn-refresh-circle:hover {
-  background-color: white; 
-  color: orange; 
-  }
-  
-  .btn-refresh-circle:hover::after {
+}
+
+.btn-refresh-circle:hover {
+  background-color: white;
+  color: orange;
+}
+
+.btn-refresh-circle:hover::after {
   visibility: visible;
   opacity: 1;
-  }
+}
 
 
 /* ICONS */
-#icon-export {
-  position: absolute;
-  left: 0;
-  background-color: white;
-  color: var(--gray-dark);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--gray-dark);
-}
-
-#icon-import {
-  position: absolute;
-  left: 0;
-  background-color: white;
-  color: var(--gray-dark);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--gray-dark);
-}
-
+#icon-export,
+#icon-import,
 #icon-watch {
   position: absolute;
   left: 0;
@@ -253,60 +232,130 @@ button:focus {
   border: 1px solid var(--gray-dark);
 }
 
-#icon-refresh {
+/* Contenedor principal para el select con icono */
+.select-with-icon {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Estilo del icono dentro del select */
+#icon-select, .material-symbols-outlined {
   position: absolute;
-  left: 0;
+  left: 38%; /* Usa porcentaje para mantenerlo proporcional */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 25px; /* Tamaño fijo del icono */
   background-color: white;
-  color: var(--orange);
+  color: var(--red-icot) !important;
   border-radius: 50%;
+  pointer-events: none;
   width: 40px;
   height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--orange);
+  z-index: 2;
+  border: 1px solid var(--red-icot);
 }
 
-#icon-search {
-  position: absolute;
-  left: 0;
-  background-color: white;
-  color: var(--green);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--green);
+/* Estilo para el select, asegurando que tenga suficiente espacio para el icono */
+.selectpicker {
+  padding-left: 50px !important; /* Usa padding fijo para mantener espacio para el icono */
+  width: 100%;
+  z-index: 1;
+  height: auto; /* Permite que la altura del select se ajuste */
 }
 
-#icon-calculate {
-  position: absolute;
-  left: 0;
-  background-color: white;
-  color: var(--primary);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--primary);
+@media (min-width: 1400px) and (max-width: 1600px) {
+  #icon-select {
+    left: 34.3%; /* Mantiene el icono en la misma posición proporcional */
+    width: 40px; /* Tamaño fijo del icono */
+    height: 40px; /* Tamaño fijo del icono */
+    font-size: 25px; /* Tamaño fijo del icono */
+  }
 }
 
+@media (min-width: 1000px) and (max-width: 1200px) {
+  #icon-select {
+    left: 18.5%; /* Mantiene el icono en la misma posición proporcional */
+    width: 40px; /* Tamaño fijo del icono */
+    height: 40px; /* Tamaño fijo del icono */
+    font-size: 25px; /* Tamaño fijo del icono */
+  }
+}
+
+@media (max-width: 900px) {
+  #icon-select {
+    left: 34.3%; /* Mantiene el icono en la misma posición proporcional */
+    width: 40px; /* Tamaño fijo del icono */
+    height: 40px; /* Tamaño fijo del icono */
+    font-size: 25px; /* Tamaño fijo del icono */
+  }
+}
+
+/* Para dispositivos con pantallas más pequeñas, ajustamos el padding y los iconos */
+@media (max-width: 768px) {
+  #icon-select {
+    left: 28.5%; /* Mantiene el icono en la misma posición proporcional */
+    width: 40px; /* Tamaño fijo del icono */
+    height: 40px; /* Tamaño fijo del icono */
+    font-size: 25px; /* Tamaño fijo del icono */
+  }
+
+  .selectpicker {
+  }
+}
+
+/* Aseguramos que el icono se mantiene centrado cuando se redimensiona */
+@media (max-width: 480px) {
+  #icon-select {
+    left: 2.7%; /* Mantiene el icono en la misma posición proporcional */
+    width: 40px; /* Tamaño fijo del icono */
+    height: 40px; /* Tamaño fijo del icono */
+    font-size: 25px; /* Tamaño fijo del icono */
+  }
+
+  .selectpicker {
+  }
+}
+
+
+/* Common styles for all icons */
+#icon-refresh,
+#icon-search,
+#icon-calculate,
 #icon-pay {
   position: absolute;
   left: 0;
   background-color: white;
-  color: var(--success);
   border-radius: 50%;
   width: 40px;
   height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--sucess);
+}
+
+/* Unique styles for each icon */
+#icon-refresh {
+  color: var(--orange);
+  border: 1px solid var(--orange);
+}
+
+#icon-search {
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+#icon-calculate {
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+#icon-pay {
+  color: var(--success);
+  border: 1px solid var(--success);
 }
 
 #icon-send {
@@ -387,6 +436,9 @@ button:focus {
 #btnValidate,
 #btnExport,
 #btnImportTargets,
+#btnImportTargetsLoad,
+#btnEditTargets,
+/* #btnEditTargetsLoad, */
 #btnImportSales,
 #btnTracingTargets,
 #btnExportLoad,
@@ -399,10 +451,7 @@ button:focus {
 #btnSummaryPreview,
 #btnSummaryLoad,
 #btnTargetsPreview,
-#btnTargetsLoad
-
-
- {
+#btnTargetsLoad {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -417,6 +466,47 @@ button:focus {
   height: 45px;
 }
 
+/* Ensure the spinner replaces the icon */
+#btnEditTargetsLoad .spinner-border {
+  position: absolute;
+  left: 10px;
+  /* Adjust based on your layout */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#btnEditTargetsLoad {
+  position: relative;
+  text-align: left;
+  padding-left: 30px;
+  /* Space for the spinner */
+}
+
+.file-upload.btn-import {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-upload.btn-import .material-icons,
+.file-upload.btn-import .spinner-border {
+  margin-right: 8px;
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+  vertical-align: middle;
+}
 
 .btn-refresh {
   padding-left: 60px !important;
@@ -431,27 +521,34 @@ button:focus {
   padding-left: 60px !important;
   background-color: var(--gray-dark);
 }
+
 .btn-import {
   padding-left: 60px !important;
   background-color: var(--gray-dark);
 }
+
 .file-upload btn-import {
   padding-left: 60px !important;
   background-color: var(--gray-dark);
 }
+
 .btn-export:hover {
   box-shadow: 8px 8px 15px rgba(36, 35, 35, 0.63);
 }
+
 .btn-import:hover {
   box-shadow: 8px 8px 15px rgba(36, 35, 35, 0.63);
 }
+
 .btn-watch {
   padding-left: 60px !important;
-  background-color: var(--light-grey)!important;
+  background-color: var(--light-grey) !important;
 }
+
 .btn-watch:hover {
   box-shadow: 8px 8px 15px rgba(36, 35, 35, 0.63);
 }
+
 .btn-search {
   padding-left: 60px !important;
   background-color: var(--green);
@@ -465,6 +562,7 @@ button:focus {
 .btn-search:hover {
   box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
 }
+
 .btn-send:hover {
   box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
 }
@@ -482,10 +580,12 @@ button:focus {
   padding-left: 60px !important;
   background-color: var(--success);
 }
-.btn-deshacer-pagar{
+
+.btn-deshacer-pagar {
   padding-left: 60px !important;
   background-color: var(--red-icot);
 }
+
 .btn-deshacer-pagar:hover {
   box-shadow: 8px 8px 15px rgba(121, 3, 3, 0.63);
 }
@@ -526,6 +626,7 @@ button:focus {
   margin-top: 80px;
   margin: 20px;
 }
+
 .header-btn-add {
   position: relative;
   background-color: var(--red-icot);
@@ -546,7 +647,7 @@ button:focus {
 
 .service-btn-add {
   position: relative;
-  background-color:var(--red-icot);
+  background-color: var(--red-icot);
   border: none;
   color: white !important;
   cursor: pointer;
@@ -561,9 +662,13 @@ button:focus {
   margin-top: 80px;
   margin-top: 120px;
 }
+
 /* ADD BUTTON */
 
-.btn-add::after,.service-btn-add::after ,.service-btn-add::after , .header-btn-add::after {
+.btn-add::after,
+.service-btn-add::after,
+.service-btn-add::after,
+.header-btn-add::after {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -579,12 +684,16 @@ button:focus {
   font-size: 12px;
 }
 
-.btn-add:hover,.service-btn-add:hover , .header-btn-add:hover {
+.btn-add:hover,
+.service-btn-add:hover,
+.header-btn-add:hover {
   background-color: white;
   color: var(--red-icot);
 }
 
-.btn-add::after,.service-btn-add::after , .header-btn-add:hover::after {
+.btn-add::after,
+.service-btn-add::after,
+.header-btn-add:hover::after {
   visibility: visible;
   opacity: 1;
 }
@@ -631,236 +740,242 @@ button:focus {
   opacity: 1;
 }
 
-/* BTN RESET */ 
+/* BTN RESET */
 
-.btn-reset-access{
-  position: relative;   
+.btn-reset-access {
+  position: relative;
   background-color: green;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%;
-  width: 40px; 
+  width: 40px;
   height: 40px;
-  padding: 0; display: inline-flex;
+  padding: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
-  }
-  .btn-reset-access::after {
-  content: attr(data-access); 
+}
+
+.btn-reset-access::after {
+  content: attr(data-access);
   position: absolute;
-  bottom: 100%; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  white-space: nowrap; 
-  visibility: hidden; 
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s; 
-  background-color: black; 
-  color: white; 
+  transition: opacity 0.2s, visibility 0.2s;
+  background-color: black;
+  color: white;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
-  }
-  
-  .btn-reset-access:hover {
-  background-color: white; 
-  color: green;   
-  }
-  
-  .btn-reset-access:hover::after {
+}
+
+.btn-reset-access:hover {
+  background-color: white;
+  color: green;
+}
+
+.btn-reset-access:hover::after {
   visibility: visible;
   opacity: 1;
-  }
+}
 
-/* BUTTON VALIDATE-PASSWORD */ 
+/* BUTTON VALIDATE-PASSWORD */
 
-.btn-validate-password{
-  position: relative;   
+.btn-validate-password {
+  position: relative;
   background-color: blue;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%;
-  width: 40px; 
+  width: 40px;
   height: 40px;
-  padding: 0; display: inline-flex;
+  padding: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
-  }
-  
-  .btn-validate-password::after{
-  content: attr(data-validate); 
+}
+
+.btn-validate-password::after {
+  content: attr(data-validate);
   position: absolute;
-  bottom: 100%; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  white-space: nowrap; 
-  visibility: hidden; 
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s, visibility 0.2s;
-  background-color: black; 
-  color: white; 
+  background-color: black;
+  color: white;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
-  }
-  
-  .btn-validate-password:hover {
-  background-color: white; 
-  color:blue; 
-  }
-  
-  .btn-validate-password:hover::after {
+}
+
+.btn-validate-password:hover {
+  background-color: white;
+  color: blue;
+}
+
+.btn-validate-password:hover::after {
   visibility: visible;
   opacity: 1;
-  }
-  
-  /* BUTTON DENEGATE ACCESS */ 
-  
-  .btn-denegate-access{
-  position: relative;   
+}
+
+/* BUTTON DENEGATE ACCESS */
+
+.btn-denegate-access {
+  position: relative;
   background-color: red;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%;
-  width: 40px; 
+  width: 40px;
   height: 40px;
-  padding: 0; display: inline-flex;
+  padding: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
-  }
-  
-  .btn-denegate-access::after{
-  content: attr(data-denegate); 
+}
+
+.btn-denegate-access::after {
+  content: attr(data-denegate);
   position: absolute;
-  bottom: 100%; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  white-space: nowrap; 
-  visibility: hidden; 
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s; 
-  background-color: black; 
-  color: white; 
+  transition: opacity 0.2s, visibility 0.2s;
+  background-color: black;
+  color: white;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
-  }
-  
-  .btn-denegate-access:hover {
-  background-color: white; 
-  color:red; 
-  }
-  
-  .btn-denegate-access:hover::after {
+}
+
+.btn-denegate-access:hover {
+  background-color: white;
+  color: red;
+}
+
+.btn-denegate-access:hover::after {
   visibility: visible;
   opacity: 1;
-  }
-  
-  /* BUTTON SINCRO A3 */ 
-  
-  .btn-sincro-a3{
-  position: relative;   
+}
+
+/* BUTTON SINCRO A3 */
+
+.btn-sincro-a3 {
+  position: relative;
   background-color: teal;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%;
-  width: 40px; 
+  width: 40px;
   height: 40px;
-  padding: 0; display: inline-flex;
+  padding: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
-  }
-  
-  .btn-sincro-a3::after{
-  content: attr(data-sincro); 
+}
+
+.btn-sincro-a3::after {
+  content: attr(data-sincro);
   position: absolute;
-  bottom: 100%; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  white-space: nowrap; 
-  visibility: hidden; 
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s; 
-  background-color: black; 
-  color: white; 
+  transition: opacity 0.2s, visibility 0.2s;
+  background-color: black;
+  color: white;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
-  }
-  
-  .btn-sincro-a3:hover {
-  background-color: white; 
-  color:teal; 
-  }
-  
-  .btn-sincro-a3:hover::after {
+}
+
+.btn-sincro-a3:hover {
+  background-color: white;
+  color: teal;
+}
+
+.btn-sincro-a3:hover::after {
   visibility: visible;
   opacity: 1;
-  }
+}
 
-    /* BUTTON SINCRO ALL A3 */ 
+/* BUTTON SINCRO ALL A3 */
 
-    #btnSyncA3 {
-      font-weight: 900;
-      font-size: large;
-      background-color: #eeeeee;
-      color: var(--red-icot);
-      margin-top: 120px;
-  }
+#btnSyncA3 {
+  font-weight: 900;
+  font-size: large;
+  background-color: #eeeeee;
+  color: var(--red-icot);
+  margin-top: 120px;
+}
 
-  .btn-sincro-all{
-    position: relative;
-    background-color: var(--red-icot)!important;
-    border: none;
-    color: white !important;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 80px;
-    }
-    .btn-sincro-all::after{
-        position: absolute;
-        bottom: 100%; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        white-space: nowrap; 
-        visibility: hidden; 
-        opacity: 0;
-        transition: opacity 0.2s, visibility 0.2s;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 12px;
-        }
+.btn-sincro-all {
+  position: relative;
+  background-color: var(--red-icot) !important;
+  border: none;
+  color: white !important;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
+}
 
-        .btn-sincro-all:hover {
-            background-color: white !important; 
-            color:var(--red-icot) !important;
-            }
+.btn-sincro-all::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
 
-            .btn-sincro-all:hover::after {
-            visibility: visible;
-            opacity: 1;
-            }
+.btn-sincro-all:hover {
+  background-color: white !important;
+  color: var(--red-icot) !important;
+}
 
-  /* BTN DELETE */ 
+.btn-sincro-all:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* BTN DELETE */
 
 .btn-delete {
   position: relative;
@@ -904,165 +1019,165 @@ button:focus {
 
 /*BUTTON SAVE & RETURN */
 
-     
-.btn-save{
-  position: relative;   
+
+.btn-save {
+  position: relative;
   background-color: green;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%;
-  width: 40px; 
+  width: 40px;
   height: 40px;
-  padding: 0; 
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
-  }
+}
 
-  .btn-save::after {
+.btn-save::after {
   position: absolute;
-  bottom: 100%; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  white-space: nowrap; 
-  visibility: hidden; 
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
   opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s; 
+  transition: opacity 0.2s, visibility 0.2s;
   border-radius: 4px;
   font-size: 12px;
-  }
-  
-  .btn-save:hover {
-  background-color: white; 
-  color: green;   
-  }
-  
-  .btn-save:hover::after {
+}
+
+.btn-save:hover {
+  background-color: white;
+  color: green;
+}
+
+.btn-save:hover::after {
   visibility: visible;
   opacity: 1;
-  }
+}
 
-  .btn-return{
-      position: relative;   
-      background-color:var(--red-icot);
-      border: none;
-      color: white;
-      cursor: pointer;
-      border-radius: 50%;
-      width: 40px; 
-      height: 40px;
-      padding: 0; 
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-      margin: 10px;
-      }
+.btn-return {
+  position: relative;
+  background-color: var(--red-icot);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
 
-      .btn-return::after {
-      position: absolute;
-      bottom: 100%; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      white-space: nowrap; 
-      visibility: hidden; 
-      opacity: 0;
-      transition: opacity 0.2s, visibility 0.2s; 
-      border-radius: 4px;
-      font-size: 12px;
-      }
-      
-      .btn-return:hover {
-      background-color: white; 
-      color:var(--red-icot);   
-      }
-      
-      .btn-return:hover::after {
-      visibility: visible;
-      opacity: 1;
-      }
+.btn-return::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  border-radius: 4px;
+  font-size: 12px;
+}
 
-      /*BUTTON SAVE AND RETURN */
+.btn-return:hover {
+  background-color: white;
+  color: var(--red-icot);
+}
 
-      .btn-save{
-        position: relative;   
-        background-color: green;
-        border: none;
-        color: white;
-        cursor: pointer;
-        border-radius: 50%;
-        width: 40px; 
-        height: 40px;
-        padding: 0; 
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-        margin: 10px;
-        }
+.btn-return:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
 
-        .btn-save::after {
-        position: absolute;
-        bottom: 100%; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        white-space: nowrap; 
-        visibility: hidden; 
-        opacity: 0;
-        transition: opacity 0.2s, visibility 0.2s; 
-        border-radius: 4px;
-        font-size: 12px;
-        }
-        
-        .btn-save:hover {
-        background-color: white; 
-        color: green;   
-        }
-        
-        .btn-save:hover::after {
-        visibility: visible;
-        opacity: 1;
-        }
+/*BUTTON SAVE AND RETURN */
 
-        .btn-return{
-            position: relative;   
-            background-color:var(--red-icot);
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 50%;
-            width: 40px; 
-            height: 40px;
-            padding: 0; 
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            }
+.btn-save {
+  position: relative;
+  background-color: green;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
 
-            .btn-return::after {
-            position: absolute;
-            bottom: 100%; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            white-space: nowrap; 
-            visibility: hidden; 
-            opacity: 0;
-            transition: opacity 0.2s, visibility 0.2s; 
-            border-radius: 4px;
-            font-size: 12px;
-            }
-            
-            .btn-return:hover {
-            background-color: white; 
-            color:var(--red-icot);   
-            }
-            
-            .btn-return:hover::after {
-            visibility: visible;
-            opacity: 1;
-            }
+.btn-save::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-save:hover {
+  background-color: white;
+  color: green;
+}
+
+.btn-save:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+.btn-return {
+  position: relative;
+  background-color: var(--red-icot);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.btn-return::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-return:hover {
+  background-color: white;
+  color: var(--red-icot);
+}
+
+.btn-return:hover::after {
+  visibility: visible;
+  opacity: 1;
+}

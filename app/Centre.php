@@ -73,23 +73,30 @@ class Centre extends Model
     /**
      * Devuelve la lista de centros para un servicio determinado
      */
-    public function scopeGetCentersByServiceId($query, $serviceId){
+    public function scopeGetCentersByServiceId($query, $serviceId)
+    {
         return $query->select('centres.*')
-        ->join('service_prices', 'centres.id', '=', 'service_prices.centre_id')
-        ->join('services', 'services.id', '=', 'service_prices.service_id')
-        ->where('services.id', $serviceId)
-        ->groupBy('centres.id')
-        ->get();
+            ->join('service_prices', 'centres.id', '=', 'service_prices.centre_id')
+            ->join('services', 'services.id', '=', 'service_prices.service_id')
+            ->where('services.id', $serviceId)
+            ->groupBy('centres.id')
+            ->get();
     }
-
 
     /**
-     * Devuelve el email de un centro por su ID
+     * Find a center where the name is like the given string.
      */
-    public function scopeGetEmailByCenterId($query, $centerId)
+    public function scopeGetCentreByNameLike($query, $name)
     {
-        $centre = $query->where('id', $centerId)->first();
-
-        return $centre ? $centre->email : null;
+        return $query->where('name', 'like', '%' . $name . '%')->get();
     }
+
+    /**
+     * Find the ID of a center where the name is like the given string.
+     */
+    public function scopeGetCentreIdByNameLike($query, $name)
+    {
+        return $query->where('name', 'like', '%' . $name . '%')->value('id');
+    }
+
 }

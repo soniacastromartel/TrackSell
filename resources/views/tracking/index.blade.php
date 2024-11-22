@@ -1,4 +1,3 @@
-
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
@@ -24,7 +23,7 @@
 
                                 <div class="date-informes-container">
 
-                                    <label class="label" for="dateFrom" style="padding: 10px" >Fecha desde </label>
+                                    <label class="label" for="dateFrom" style="padding: 10px">Fecha desde </label>
                                     <div class="icon-container">
                                         <input type="date" id="date_from" name="date_from" max="3000-12-31"
                                             min="1000-01-01"class="form-date">
@@ -32,7 +31,7 @@
                                     </div>
                                     </input>
 
-                                    <label class="label" for="dateTo" style="padding: 10px" >Fecha hasta </label>
+                                    <label class="label" for="dateTo" style="padding: 10px">Fecha hasta </label>
                                     <div class="icon-container">
                                         <input type="date" id="date_to" name="date_to" max="3000-12-31"
                                             min="1000-01-01" class="form-date">
@@ -45,110 +44,139 @@
                                 <div class="picker-btn-container">
 
                                     <div class="picker-container">
-
-                                        <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                            data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
-                                            @if ($user->rol_id != 1)
-                                                @foreach ($centres as $centre)
-                                                    @if ($centre->id == $user->centre_id)
-                                                        <option class="text-uppercase" value="{{ $centre->id }}" selected
+                                        <div class="select-with-icon">
+                                            <!-- Icon -->
+                                            <span id="icon-select" class="material-icons">
+                                                home_work
+                                            </span>
+                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                                data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
+                                                @if ($user->rol_id != 1)
+                                                    @foreach ($centres as $centre)
+                                                        @if ($centre->id == $user->centre_id)
+                                                            <option class="text-uppercase" value="{{ $centre->id }}"
+                                                                selected
+                                                                @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                                {{ $centre->name }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    @foreach ($centres as $centre)
+                                                        <option class="text-uppercase" value="{{ $centre->id }}"
                                                             @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
                                                             {{ $centre->name }}
                                                         </option>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                @foreach ($centres as $centre)
-                                                    <option class="text-uppercase" value="{{ $centre->id }}"
-                                                        @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
-                                                        {{ $centre->name }}
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            <input type="hidden" name="centre" id="centre" />
+                                        </div>
+                                        <div class="select-with-icon">
+                                            <!-- Icon -->
+                                            <span id="icon-select" class="material-icons">
+                                                engineering
+                                            </span>
+                                            <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
+                                                data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
+                                                <option>SIN SELECCION </option>
+                                                @if ($user->rol_id != 1)
+                                                    @foreach ($employees as $employee)
+                                                        @if ($employee->centre_id == $user->centre_id)
+                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    @foreach ($employees as $employee)
+                                                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            <input type="hidden" name="employee" id="employee" />
+                                        </div>
+                                        <div class="select-with-icon">
+                                            <!-- Icon -->
+                                            <span id="icon-select" class="material-icons">
+                                                medical_services
+                                            </span>
+                                            <select class="selectpicker" name="service_id" id="service_id" data-size="7"
+                                                data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
+                                                <option>SIN SELECCION </option>
+                                                @foreach ($services as $service)
+                                                    <option value="{{ $service->id }}"
+                                                        @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
+                                                        {{ $service->name }}
                                                     </option>
                                                 @endforeach
-                                            @endif
-                                        </select>
-                                        <input type="hidden" name="centre" id="centre" />
-                                        <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
-                                            data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
-                                            <option>SIN SELECCION </option>
-                                            @if ($user->rol_id != 1)
-                                                @foreach ($employees as $employee)
-                                                    @if ($employee->centre_id == $user->centre_id)
-                                                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                                    @endif
+
+                                            </select>
+                                            <input type="hidden" name="service" id="service" />
+                                        </div>
+                                        <div class="select-with-icon">
+                                            <span class="material-symbols-outlined">
+                                                personal_injury
+                                                </span>
+                                            <select class="selectpicker" name="patient_name" id="patient_name"
+                                                data-size="7" data-style="btn btn-red-icot btn-round" title=" Paciente"
+                                                tabindex="-98">
+                                                <option>SIN SELECCION </option>
+                                                @foreach ($patients as $patient)
+                                                    <option value="{{ $patient->patient_name }}">
+                                                        {{ $patient->patient_name }}
+                                                    </option>
                                                 @endforeach
-                                            @else
-                                                @foreach ($employees as $employee)
-                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                            </select>
+                                            <input type="hidden" name="patient" id="patient" />
+                                        </div>
+                                        <div class="select-with-icon">
+                                            <span class="material-symbols-outlined">
+                                                list_alt_check
+                                                </span>
+                                            <select class="selectpicker" name="state_id" id="state_id" data-size="7"
+                                                data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
+                                                <option>SIN SELECCION </option>
+                                                @foreach ($states as $state)
+                                                    <option class="text-uppercase" value="{{ $state->texto }}">
+                                                        {{ $state->nombre }}</option>
                                                 @endforeach
-                                            @endif
-                                        </select>
-                                        <input type="hidden" name="employee" id="employee" />
-
-                                        <select class="selectpicker" name="service_id" id="service_id" data-size="7"
-                                            data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
-                                            <option>SIN SELECCION </option>
-                                            @foreach ($services as $service)
-                                                <option value="{{ $service->id }}"
-                                                    @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
-                                                    {{ $service->name }}
-                                                </option>
-                                            @endforeach
-
-                                        </select>
-                                        <input type="hidden" name="service" id="service" />
-
-                                        <select class="selectpicker" name="patient_name" id="patient_name" data-size="7"
-                                            data-style="btn btn-red-icot btn-round" title=" Paciente" tabindex="-98">
-                                            <option>SIN SELECCION </option>
-                                            @foreach ($patients as $patient)
-                                                <option value="{{ $patient->patient_name }}">
-                                                    {{ $patient->patient_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <select class="selectpicker" name="state_id" id="state_id" data-size="7"
-                                            data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
-                                            <option>SIN SELECCION </option>
-                                            @foreach ($states as $state)
-                                                <option class="text-uppercase" value="{{ $state->texto }}">
-                                                    {{ $state->nombre }}</option>
-                                            @endforeach
-                                        </select>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="btn-container-box">
 
-                                            <button id="btnClear" href="#" class="btn-refresh">
-                                                Limpiar Formulario
-                                                <span id=icon-refresh class="material-icons">
-                                                    refresh
-                                                </span>
-                                            </button>
+                                        <button id="btnClear" href="#" class="btn-refresh">
+                                            Limpiar Formulario
+                                            <span id=icon-refresh class="material-icons">
+                                                refresh
+                                            </span>
+                                        </button>
 
-                                            {{-- <button id="btnSubmitFind" type="submit" class="btn-search">
+                                        {{-- <button id="btnSubmitFind" type="submit" class="btn-search">
                                                 Buscar
                                                 <span id=icon-search class="material-icons">
                                                     search
                                                 </span>
                                             </button> --}}
 
-                                            {{-- <button id="btnSubmitFindLoad" type="submit" class="btn-search"
+                                        {{-- <button id="btnSubmitFindLoad" type="submit" class="btn-search"
                                                 style="display: none">
                                                 <span class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                             </button> --}}
 
-                                            <button id="btnSubmit" type="submit" class="btn-export">
-                                                Exportar
-                                                <span id=icon-export class="material-icons">file_download</span>
-                                            </button>
+                                        <button id="btnSubmit" type="submit" class="btn-export">
+                                            Exportar
+                                            <span id=icon-export class="material-icons">file_download</span>
+                                        </button>
 
-                                            <button id="btnSubmitLoad" type="submit" class="btn-export"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                            </button>
-                                     
+                                        <button id="btnSubmitLoad" type="submit" class="btn-export"
+                                            style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                        </button>
+
                                     </div>
 
                                 </div>
@@ -157,30 +185,30 @@
                         </form>
                     </div>
                 </div>
-   
-                <div class="col-12 text-right">
-                        <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="service-btn-add"><span
-                                class="material-icons">add</span></a>
-                    </div> 
 
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered tracking-datatable ">
-                    <thead class="table-header">
-                        <tr>
-                            <th>Centro Prescriptor</th>
-                            <th>Empleado</th>
-                            <th>H.C.</th>
-                            <th>Paciente</th>
-                            <th>Servicio</th>
-                            <th>Estado</th>
-                            <th>F. Inicio</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+                <div class="col-12 text-right">
+                    <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="service-btn-add"><span
+                            class="material-icons">add</span></a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered tracking-datatable ">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Centro Prescriptor</th>
+                                <th>Empleado</th>
+                                <th>H.C.</th>
+                                <th>Paciente</th>
+                                <th>Servicio</th>
+                                <th>Estado</th>
+                                <th>F. Inicio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -225,7 +253,7 @@
             data: 'action',
             name: 'action',
             searchable: true,
-            
+
         });
 
 
@@ -243,11 +271,11 @@
             var state = "{{ collect(request()->segments())->last() }}";
             state = state.split("_")[1];
 
-             var tableHtml = '';
+            var tableHtml = '';
 
-             tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
-             getTrackingData();
-         
+            tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
+            getTrackingData();
+
             // Buscar
             // $("#btnSubmitFind").on('click', function(e) {
             //     e.preventDefault();
@@ -276,9 +304,9 @@
                 $('input[type="search"]').val('');
                 // $('input[type="search"]').selectpicker("refresh");
                 //table.ajax.draw();
-                 table.search('').draw();
-                 table.ajax.reload();
-             
+                table.search('').draw();
+                table.ajax.reload();
+
             }
 
 
@@ -441,7 +469,7 @@
                         },
                         {
                             width: "10%",
-                            targets:  7
+                            targets: 7
                         },
                         {
                             targets: -1,
@@ -521,215 +549,219 @@
 @endsection
 
 <style>
+    .btn-add-container {
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
+    }
 
-    
-.btn-add-container{
-   position: relative;
-   display: flex;
-  justify-content: flex-end; 
-}
+    .service-btn-add {
+        position: absolute;
+        bottom: 50px;
+        background-color: var(--red-icot);
+        border: none;
+        color: white !important;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    }
 
-.service-btn-add {
-  position: absolute;
-  bottom: 50px;
-  background-color:var(--red-icot);
-  border: none;
-  color: white !important;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
-/* ADD BUTTON */
+    /* ADD BUTTON */
 
-.service-btn-add::after {
-  position: absolute;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-.service-btn-add:hover  {
-  background-color: white;
-  color: var(--red-icot) !important;
-}
-.service-btn-add::after  {
-  visibility: visible;
-  opacity: 1;
-}
-.content {
-  background-image: url(/assets/img/background_continue.png) !important;
-  background-position: center center !important;
-  background-size: 1000px;
-  height: 300vh !important;
-}
+    .service-btn-add::after {
+        position: absolute;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s, visibility 0.2s;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
 
-/*VIEW : traking/index,requestChange,calculateServices*/
+    .service-btn-add:hover {
+        background-color: white;
+        color: var(--red-icot) !important;
+    }
 
-.informes-container,
-.solicitud-container,
-.service-container {
-  display: flex;
-  flex-direction: row;
-  min-height: 420px;
-}
+    .service-btn-add::after {
+        visibility: visible;
+        opacity: 1;
+    }
 
-.date-informes-container,
-.date-solicitud-container,
-.date-services-container {
-  /* margin-left: 80px; */
-  padding-top: 50px;
-  background-image: url(/assets/img/calendarImage.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+    .content {
+        background-image: url(/assets/img/background_continue.png) !important;
+        background-position: center center !important;
+        background-size: 1000px;
+        height: 300vh !important;
+    }
 
-.form-date {
-  position: relative !important;
-  background-color: var(--info) !important;
-  width: 230px;
-  height: 45px;
-  margin: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center !important;
-  border: none;
-  border-radius: 50px;
-  padding-left: 20px;
-}
+    /*VIEW : traking/index,requestChange,calculateServices*/
 
-.icon-container {
-  position: relative;
-  display: flex;
-}
+    .informes-container,
+    .solicitud-container,
+    .service-container {
+        display: flex;
+        flex-direction: row;
+        min-height: 420px;
+    }
 
+    .date-informes-container,
+    .date-solicitud-container,
+    .date-services-container {
+        /* margin-left: 80px; */
+        padding-top: 50px;
+        background-image: url(/assets/img/calendarImage.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
-.picker-btn-container {
-  width: 100%;
-  display: flex;
-}
+    .form-date {
+        position: relative !important;
+        background-color: var(--info) !important;
+        width: 230px;
+        height: 45px;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center !important;
+        border: none;
+        border-radius: 50px;
+        padding-left: 20px;
+    }
 
-.observaciones-container {
-  border: 4px solid var(--red-icot);
-  box-shadow: 0px 4px 8px rgba(255, 0, 0, 0.6);
-  padding: 30px;
-  border-radius: 20px;
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  height: 200px;
-
-}
-
-.picker-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+    /* .icon-container {
+        position: relative;
+        display: flex;
+    } */
 
 
-.col-md-6 {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
+    .picker-btn-container {
+        width: 100%;
+        display: flex;
+    }
 
-.myclass {
-  text-transform: capitalize;
-}
+    .observaciones-container {
+        border: 4px solid var(--red-icot);
+        box-shadow: 0px 4px 8px rgba(255, 0, 0, 0.6);
+        padding: 30px;
+        border-radius: 20px;
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        height: 200px;
 
+    }
 
-#lbl {
-  color: black;
-  font-weight: 600;
-  font-family: "Helvetica", "Arial", sans-serif;
-  font-size: 12px;
-}
-
-.card-container {
-  display: flex;
-}
-
-
-.tracking-validation-datatable tr > :nth-child(6) {
-  color: #959ba3;
-}
-
-.month-picker-open-button {
-  margin-right: 15px;
-}
-
-.actions-container {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  height: 100%;
-}
+    .picker-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
 
-.btn-container-box {
+    .col-md-6 {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-
-  
-}
-.date-container {
-  background-color: #959ba3;
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
+    .myclass {
+        text-transform: capitalize;
+    }
 
 
-#subLabel {
-  color: var(--red-icot);
-  font-weight: bold !important;
-  font-size: 11px;
-}
-#lbl {
-  color: black;
-  font-weight: 800;
-  font-family: "Helvetica", "Arial", sans-serif;
-  margin-top: 25px;
-  font-size: 12px;
-}
+    #lbl {
+        color: black;
+        font-weight: 600;
+        font-family: "Helvetica", "Arial", sans-serif;
+        font-size: 12px;
+    }
 
-#containerBtns {
-  margin-top: 40px;
-}
+    .card-container {
+        display: flex;
+    }
 
-.btn-back-container {
-  display: flex;
-  justify-content: flex-end;
-}
 
-/*VIEW INDEX VALIDATION*/
+    .tracking-validation-datatable tr> :nth-child(6) {
+        color: #959ba3;
+    }
 
-.btn-container{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+    .month-picker-open-button {
+        margin-right: 15px;
+    }
 
-}
+    .actions-container {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        height: 100%;
+    }
 
-/*VIEW CALCULATE INCENTIVE*/
-    </style>
+
+    .btn-container-box {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+
+    }
+
+    .date-container {
+        background-color: #959ba3;
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+
+    #subLabel {
+        color: var(--red-icot);
+        font-weight: bold !important;
+        font-size: 11px;
+    }
+
+    #lbl {
+        color: black;
+        font-weight: 800;
+        font-family: "Helvetica", "Arial", sans-serif;
+        margin-top: 25px;
+        font-size: 12px;
+    }
+
+    #containerBtns {
+        margin-top: 40px;
+    }
+
+    .btn-back-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /*VIEW INDEX VALIDATION*/
+
+    .btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
+    }
+
+    /*VIEW CALCULATE INCENTIVE*/
+</style>
