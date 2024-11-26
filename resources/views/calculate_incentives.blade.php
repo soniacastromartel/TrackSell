@@ -63,15 +63,16 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <div class="row justify-content-center">
+                                        <div class="row d-flex justify-content-center" style="padding-top:30px;">
 
                                             {{-- <label class="label">Año <span class="obligatory">*</span> </label> --}}
                                             <div id="yearPickerContainer">
                                                 <div id="yearPicker">
-                                                    <input id="yearTargetPicker" class='form-control' type="text"
-                                                        placeholder="yyyy" />
                                                     <span id="icon-date" class="material-symbols-outlined">
                                                         calendar_month</span>
+                                                    <input id="yearTargetPicker" class='form-control' type="text"
+                                                        placeholder="yyyy" />
+
                                                     <input type="hidden" name="yearTarget" id="yearTarget" />
                                                 </div>
                                             </div>
@@ -81,47 +82,51 @@
                                             <span class="m-5"></span>
                                         @endif --}}
                                             @if ($user->rol_id == 1)
-                                                <button id="btnImportTargets" class="file-upload btn-import">
-                                                    <span id="icon-import" class="material-icons">upload</span>Importar
-                                                    Objetivos
-                                                    <input type="file" name="targetInputFile" id="targetInputFile"
-                                                        class="upload" />
-                                                </button>
-                                                <button id="btnEditTargets" class="file-upload btn-import">
-                                                    <span id="icon-import" class="material-icons">edit</span>Editar
-                                                    Objetivos
-                                                    <input type="file" name="editTargetsFile" id="editTargetsFile"
-                                                        class="upload" />
-                                                </button>
-
-                                                <button id="btnEditTargetsLoad" class="file-upload btn-import"
-                                                    style="display: none">
-                                                    <span id="spinner" class="spinner-border spinner-border-sm"
-                                                        role="status" aria-hidden="true"></span> Editar Objetivos
-                                                </button>
+                                                <div class="interspace">
+                                                    <button id="btnImportTargets" class="file-upload btn-import">
+                                                        <span id="icon-import" class="material-icons">upload</span>Importar
+                                                        Objetivos
+                                                        <input type="file" name="targetInputFile" id="targetInputFile"
+                                                            class="upload" />
+                                                    </button>
+                                                </div>
+                                                <div class="interspace">
+                                                    <button id="btnEditTargets" class="file-upload btn-import">
+                                                        <span id="icon-import" class="material-icons">edit</span>Editar
+                                                        Objetivos
+                                                        <input type="file" name="editTargetsFile" id="editTargetsFile"
+                                                            class="upload" />
+                                                    </button>
+                                                    <button id="btnEditTargetsLoad" class="file-upload btn-import"
+                                                        style="display: none">
+                                                        <span id="spinner" class="spinner-border spinner-border-sm"
+                                                            role="status" aria-hidden="true"></span> Editar Objetivos
+                                                    </button>
+                                                </div>
                                             @endif
+                                            <div class="interspace">
+                                                <button id="btnImportSales" class="file-upload btn-import">
+                                                    <span id="icon-import"
+                                                        class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
+                                                    <input type="file" name="targetInputSalesFile"
+                                                        id="targetInputSalesFile" class="upload" />
+                                                </button>
+                                            </div>
 
-                                            <button id="btnImportSales" class="file-upload btn-import">
-                                                <span id="icon-import"
-                                                    class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
-                                                <input type="file" name="targetInputSalesFile" id="targetInputSalesFile"
-                                                    class="upload" />
-                                            </button>
-                                            {{-- 
-                                        @if ($user->rol_id != 1)
-                                            <span class="m-3"></span>
-                                        @endif --}}
-
-                                            <button id="btnTracingTargets" class="file-upload btn-import">
-                                                <span id="icon-export"
-                                                    class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
-                                            </button>
-                                            <button id="btnTracingTargetsLoad" class="file-upload btn-import"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span> Obteniendo Datos...
-                                            </button>
-
+                                            @if ($user->rol_id != 1)
+                                                <span class="m-3"></span>
+                                            @endif
+                                            <div class="interspace">
+                                                <button id="btnTracingTargets" class="file-upload btn-import">
+                                                    <span id="icon-export"
+                                                        class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
+                                                </button>
+                                                <button id="btnTracingTargetsLoad" class="file-upload btn-import"
+                                                    style="display: none">
+                                                    <span class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span> Obteniendo Datos...
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -133,23 +138,16 @@
                                         <h5 class="card-title">Incentivos</h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row d-flex justify-content-center">
-                                            {{--        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
+                                        <div class="row d-flex justify-content-center" style="padding-top:30px;">
                                             <div id="monthYearPickerContainer">
-                                                <input type="hidden" name="monthYear" id="monthYear" />
-                                                <span id="icon-date" class="material-symbols-outlined">
-                                                    calendar_month</span>
-                                                <input id="monthYearPicker" class='form-control' type="text"
+                                                <span id="icon-date"
+                                                    class="material-symbols-outlined">calendar_month</span>
+                                                <input id="monthYearPicker" class="form-control" type="text"
                                                     placeholder="yyyy/mm" />
                                             </div>
-
-                                        </div>
-
-                                        <div class=" ">
-                                            <div class="select-with-icon">
-                                                <!-- Icon -->
-                                                <span id="icon-select" class="material-icons">
-                                                    home_work
+                                            <div class="select-wrapper">
+                                                <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                    business
                                                 </span>
                                                 <!-- Select dropdown -->
                                                 <select class="selectpicker" name="centre_id" id="centre_id"
@@ -170,13 +168,15 @@
                                                     @endif
                                                 </select>
                                             </div>
-                                            <div class="select-with-icon">
-                                                <span id="icon-select" class="material-icons">
-                                                    engineering </span>
+
+                                            <div class="select-wrapper">
+                                                <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                    engineering
+                                                </span>
                                                 <select class="selectpicker" name="employee_id" id="employee_id"
                                                     data-size="7" data-style="btn btn-red-icot btn-round"
-                                                    title=" Seleccione Empleado" tabindex="-98">
-                                                    <option>SIN SELECCION </option>
+                                                    title="Seleccione Empleado">
+                                                    <option>SIN SELECCION</option>
                                                     @if ($user->rol_id != 1)
                                                         @foreach ($employees as $employee)
                                                             @if ($employee->centre_id == $user->centre_id)
@@ -193,8 +193,8 @@
                                                 </select>
                                                 <input type="hidden" name="employee" id="employee" />
                                             </div>
-                                        </div>
 
+                                        </div>
                                         <hr class="mt-4">
 
                                         <div class="" style="display: flex; justify-content:center;">
@@ -240,8 +240,6 @@
                                         <hr class="mt-4">
 
                                         <div class="row" style="padding:10px; display:flex; justify-content:center; ">
-
-
                                             <button id="btnClear" href="#" class="btn-refresh">
                                                 <span id="icon-refresh"
                                                     class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
@@ -257,13 +255,9 @@
                                                 <span class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span> Obteniendo Datos...
                                             </button>
-
                                         </div>
-
-
                                     </div>
                                 </div>
-
                             </div>
 
                         </div>
@@ -658,8 +652,6 @@
                         $('#btnSubmit').show();
                     },
                     complete: function() {
-                        // $("#btnSubmit").html(
-                        //     "<span class='material-icons mr-1'>download</span> Exportar");
                         $('#btnSubmitLoad').hide();
                         $('#btnSubmit').show();
                         showToast('info', 'Archivo Descargado');

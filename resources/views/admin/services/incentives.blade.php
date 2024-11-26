@@ -16,7 +16,10 @@
                     <div class="row col-md-12 mb-4 ">
                         <div class="row col-lg-8 ">
                             <div class="form-group ">
-                                <div class="dropdown bootstrap-select">
+                                <div class="select-wrapper">
+                                    <span id="icon-select" class="icon-select material-symbols-outlined">
+                                        business
+                                    </span>
                                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
                                         data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98"
                                         onchange="getServiceIncentives()">
@@ -28,7 +31,9 @@
                             </div>
 
                             <div class="form-group col-md-4">
-                                <div class="dropdown bootstrap-select">
+                                <div class="select-wrapper">
+                                    <span id="icon-select" class="icon-select material-symbols-outlined">
+                                        medical_services </span>
                                     <select class="selectpicker" name="service_id" id="service_id" data-size="7"
                                         data-style="btn btn-red-icot btn-round" title="Servicio" tabindex="-98"
                                         onchange="getServiceIncentives()">

@@ -26,34 +26,40 @@
 
 
     <div class="picker-container">
+        <div class="select-wrapper">
+            <!-- Icon -->
+            <span class="icon-select material-symbols-outlined">move_item</span>
+            <select class="selectpicker" name="centre_origin_id" id="centre_origin_id" data-size="7"
+                data-style="btn btn-red-icot" title="Centro Origen" tabindex="-98">
+                @foreach ($centres as $centre)
+                    <option value="{{ $centre->id }}" @if (isset($employee) && $centre->id == $employee->centre_id) selected="selected" @endif>
+                        {{ $centre->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="select-wrapper">
+            <span class="icon-select material-symbols-outlined">login</span>
+            <select class="selectpicker" name="centre_destination_id" id="centre_destination_id" data-size="7"
+                data-style="btn btn-red-icot" title="Centro Destino" tabindex="-98">
+                @foreach ($centres as $centre)
+                    <option value="{{ $centre->id }}" @if (isset($employee) && $centre->id == $employee->centre_id) selected="selected" @endif>
+                        {{ $centre->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="select-wrapper">
+            <span class="icon-select material-symbols-outlined">engineering</span>
+            <select class="selectpicker pl-0" name="employee_id" id="employee_id" data-size="7"
+                data-style="btn btn-red-icot" title=" Empleado" tabindex="-98">
 
-        <select class="selectpicker" name="centre_origin_id" id="centre_origin_id" data-size="7"
-            data-style="btn btn-red-icot" title="Centro Origen" tabindex="-98">
-            @foreach ($centres as $centre)
-                <option value="{{ $centre->id }}" @if (isset($employee) && $centre->id == $employee->centre_id) selected="selected" @endif>
-                    {{ $centre->name }}</option>
-            @endforeach
-        </select>
+                @foreach ($employees as $employee)
+                    <option value="{{ $employee->id }}" @if (isset($tracking) && $employee->id == $tracking->employee_id) selected="selected" @endif>
+                        {{ $employee->name }}</option>
+                @endforeach
+            </select>
+            <input type="hidden" name="employee" id="employee" />
 
-        <select class="selectpicker" name="centre_destination_id" id="centre_destination_id" data-size="7"
-            data-style="btn btn-red-icot" title="Centro Destino" tabindex="-98">
-            @foreach ($centres as $centre)
-                <option value="{{ $centre->id }}" @if (isset($employee) && $centre->id == $employee->centre_id) selected="selected" @endif>
-                    {{ $centre->name }}</option>
-            @endforeach
-        </select>
-
-        <select class="selectpicker pl-0" name="employee_id" id="employee_id" data-size="7"
-            data-style="btn btn-red-icot" title=" Empleado" tabindex="-98">
-
-            @foreach ($employees as $employee)
-                <option value="{{ $employee->id }}" @if (isset($tracking) && $employee->id == $tracking->employee_id) selected="selected" @endif>
-                    {{ $employee->name }}</option>
-            @endforeach
-        </select>
-        <input type="hidden" name="employee" id="employee" />
-
-
+        </div>
     </div>
 
     <div class="btn-container-box">
@@ -94,12 +100,12 @@
                 url: form.attr('action'),
                 method: 'POST',
                 data: formData,
-                success: function( textStatus) {
+                success: function(textStatus) {
                     showAlert('success', 'Creado Correctamente');
                     window.location.href = '{{ route('tracking.requestChange') }}';
                 },
                 error: function(xhr) {
-                    console.log (xhr);
+                    console.log(xhr);
                     $('#btnSubmit').show();
                     $('#btnSubmitLoad').hide();
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
@@ -110,7 +116,7 @@
                         showAlert('error', errorMessages);
                     } else {
                         showAlert('error', 'Ha habido algún error al crear la solicitud')
-                 
+
                     }
                 }
             });

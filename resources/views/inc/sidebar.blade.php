@@ -46,8 +46,8 @@
                 <li id="menuConfig" class="nav-item ">
 
                     <a class="nav-link collapsed" data-toggle="collapse" href="#pagesConfig" aria-expanded="false">
-                        <i class="material-icons">settings</i>
-                        <p style="font-weight: bold"> Configuración
+                        <i class="material-icons">admin_panel_settings</i>
+                        <p style="font-weight: bold"> Administración
                             <b class="caret"></b>
                         </p>
                     </a>
@@ -55,13 +55,13 @@
                         <ul class="nav">
                             <li id="adminRole" class="nav-item ">
                                 <a class="nav-link" href="{{ route('roles.index') }}">
-                                    <i class="material-icons">admin_panel_settings</i>
+                                    <i class="material-icons">gpp_good</i>
                                     <span class="sidebar-normal"> Roles </span>
                                 </a>
                             </li>
                             <li id="adminUser" class="nav-item ">
                                 <a class="nav-link" href="{{ route('employees.index') }}">
-                                    <i class="material-icons">supervisor_account</i>
+                                    <i class="material-icons">engineering</i>
                                     <span class="sidebar-normal"> Empleados </span>
                                 </a>
                             </li>
@@ -75,13 +75,13 @@
                             </li>
                             <li id="adminService" class="nav-item ">
                                 <a class="nav-link" href="{{ route('services.index') }}">
-                                    <i class="material-icons">hotel</i>
+                                    <i class="material-icons">medical_services</i>
                                     <span class="sidebar-normal"> Servicios </span>
                                 </a>
                             </li>
                             <li id="adminServiceIncentive" class="nav-item ">
                                 <a class="nav-link" href="{{ route('services.incentives') }}">
-                                    <i class="material-icons">money</i>
+                                    <i class="material-icons">local_atm</i>
                                     <span class="sidebar-normal"> Precios & Incentivos </span>
                                 </a>
                             </li>
@@ -92,8 +92,8 @@
 
             <li class="nav-item ">
                 <a class="nav-link collapsed" data-toggle="collapse" href="#pagesTracking" aria-expanded="false">
-                    <i class="material-icons">remove_red_eye</i>
-                    <p style="font-weight: bold"> Seguimiento
+                    <i class="material-icons">manage_accounts</i>
+                    <p style="font-weight: bold"> Supervisión
                         <b class="caret"></b>
                     </p>
                 </a>
@@ -101,19 +101,19 @@
                     <ul class="nav">
                         <li id="trackingStarted" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.index') }}">
-                                <i class="material-icons">playlist_add_check</i>
+                                <i class="material-icons">shopping_cart</i>
                                 <span class="sidebar-normal"> Registro de Ventas </span>
                             </a>
                         </li>
                         <li id="requestChange" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.requestChange') }}">
-                                <i class="material-icons">transform</i>
+                                <i class="material-icons">directions_run</i>
                                 <span class="sidebar-normal"> Cambio de Centro </span>
                             </a>
                         </li>
                         <li id="trackingValidateFinal" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.index_validation_final') }}">
-                                <i class="material-icons">check</i>
+                                <i class="material-icons">groups</i>
                                 <span class="sidebar-normal"> Validar RRHH </span>
                             </a>
                         </li>
@@ -131,7 +131,7 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-toggle="collapse" href="#pagesReport" aria-expanded="false">
-                    <i class="material-icons">insert_drive_file</i>
+                    <i class="material-icons">description</i>
                     <p style="font-weight: bold"> Informes
                         <b class="caret"></b>
                     </p>

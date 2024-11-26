@@ -22,6 +22,9 @@
                                 @csrf
                                 @method('POST')
                                 <div class="row">
+                                    {{-- <input type="checkbox" name="month_date" id="monthly" value="mensual" checked> Mensual
+                                    <br />
+                                    <input type="checkbox" name="year_date" id="yearly" value="anual"> Anual <br /> --}}
                                     <div class="form-group col-md-3">
                                         <div class="dropdown bootstrap-select">
                                             <select class="selectpicker" name="datepickerType" id="datepickerType"
@@ -273,7 +276,7 @@
                     currentText: 'Año actual',
                     onClose: function(dateText, inst) {
                         $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0,
-                        1)));
+                            1)));
                     },
                 });
             }
@@ -472,12 +475,12 @@
                             var column = this;
                             var input = document.createElement("input");
                             $(input).appendTo($(column.footer()).empty()).on('change',
-                            function() {
-                                var val = $.fn.dataTable.util.escapeRegex($(this)
-                            .val());
-                                column.search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
-                            });
+                                function() {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this)
+                                        .val());
+                                    column.search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                });
                         });
                     }
                 });

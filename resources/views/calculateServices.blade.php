@@ -58,32 +58,40 @@
                             <h3>Centro</h3>
 
                             <form action="{{ route('calculateServices') }}" method="GET">
-                                <input type="hidden" name="service_id" value="{{ $service_id }}">
-                                <select class="selectpicker" data-style="btn btn-red-icot btn-round" id="centre_id"
-                                    name="centre_id" onchange="this.form.submit()">
-                                    <option value="">TODOS</option>
-                                    @foreach ($centres as $centre)
-                                        <option value="{{ $centre->id }}"
-                                            {{ $centre_id == $centre->id ? 'selected' : '' }}>{{ $centre->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="select-wrapper">
+                                    <span id="icon-select" class="icon-select material-symbols-outlined">
+                                        business
+                                    </span>
+                                    <input type="hidden" name="service_id" value="{{ $service_id }}">
+                                    <select class="selectpicker" data-style="btn btn-red-icot btn-round" id="centre_id"
+                                        name="centre_id" onchange="this.form.submit()">
+                                        <option value="">TODOS</option>
+                                        @foreach ($centres as $centre)
+                                            <option value="{{ $centre->id }}"
+                                                {{ $centre_id == $centre->id ? 'selected' : '' }}>{{ $centre->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </form>
 
 
                             <h3>Servicios</h3>
 
                             <form id="centreForm" action="{{ route('calculateServices') }}" method="GET">
-                                <input type="hidden" name="centre_id" value="{{ $centre_id }}">
-                                <select class="selectpicker" data-style="btn btn-red-icot btn-round" id="service_id"
-                                    name="service_id" onchange="this.form.submit()">
-                                    <option value="">TODOS</option>
-                                    @foreach ($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ $service_id == $service->id ? 'selected' : '' }}>{{ $service->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="select-wrapper">
+                                    <span class="icon-select material-icons">medical_services</span>
+                                    <input type="hidden" name="centre_id" value="{{ $centre_id }}">
+                                    <select class="selectpicker" data-style="btn btn-red-icot btn-round" id="service_id"
+                                        name="service_id" onchange="this.form.submit()">
+                                        <option value="">TODOS</option>
+                                        @foreach ($services as $service)
+                                            <option value="{{ $service->id }}"
+                                                {{ $service_id == $service->id ? 'selected' : '' }}>{{ $service->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </form>
 
                         </div>

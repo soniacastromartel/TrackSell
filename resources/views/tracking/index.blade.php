@@ -41,30 +41,24 @@
                                 </div>
 
 
-                                <div class="picker-btn-container">
-
-                                    <div class="picker-container">
-                                        <div class="select-with-icon">
-                                            <!-- Icon -->
-                                            <span id="icon-select" class="material-icons">
-                                                home_work
-                                            </span>
+                                <div id="picker-btn-container" class="picker-btn-container">
+                                    <div id="picker-container" class="picker-container">
+                                        <!-- Centro Selector -->
+                                        <div class="select-wrapper">
+                                            <span id="icon-select" class="icon-select material-symbols-outlined">business</span>
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                                data-style="btn btn-red-icot btn-round" title=" Centro" tabindex="-98">
+                                                data-style="btn btn-red-icot btn-round" title="Centro">
                                                 @if ($user->rol_id != 1)
                                                     @foreach ($centres as $centre)
                                                         @if ($centre->id == $user->centre_id)
-                                                            <option class="text-uppercase" value="{{ $centre->id }}"
-                                                                selected
-                                                                @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                            <option class="text-uppercase" value="{{ $centre->id }}" selected>
                                                                 {{ $centre->name }}
                                                             </option>
                                                         @endif
                                                     @endforeach
                                                 @else
                                                     @foreach ($centres as $centre)
-                                                        <option class="text-uppercase" value="{{ $centre->id }}"
-                                                            @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
+                                                        <option class="text-uppercase" value="{{ $centre->id }}">
                                                             {{ $centre->name }}
                                                         </option>
                                                     @endforeach
@@ -72,19 +66,17 @@
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
-                                        <div class="select-with-icon">
-                                            <!-- Icon -->
-                                            <span id="icon-select" class="material-icons">
-                                                engineering
-                                            </span>
+                                
+                                        <!-- Empleado Selector -->
+                                        <div class="select-wrapper">
+                                            <span id="icon-select" class="icon-select material-symbols-outlined">engineering</span>
                                             <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
-                                                data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
-                                                <option>SIN SELECCION </option>
+                                                data-style="btn btn-red-icot btn-round" title="Empleado">
+                                                <option>SIN SELECCION</option>
                                                 @if ($user->rol_id != 1)
                                                     @foreach ($employees as $employee)
                                                         @if ($employee->centre_id == $user->centre_id)
-                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                            </option>
+                                                            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                                         @endif
                                                     @endforeach
                                                 @else
@@ -95,91 +87,62 @@
                                             </select>
                                             <input type="hidden" name="employee" id="employee" />
                                         </div>
-                                        <div class="select-with-icon">
-                                            <!-- Icon -->
-                                            <span id="icon-select" class="material-icons">
-                                                medical_services
-                                            </span>
+                                
+                                        <!-- Servicio Selector -->
+                                        <div class="select-wrapper">
+                                            <span id="icon-select" class="icon-select material-symbols-outlined">medical_services</span>
                                             <select class="selectpicker" name="service_id" id="service_id" data-size="7"
-                                                data-style="btn btn-red-icot btn-round" title=" Servicio" tabindex="-98">
-                                                <option>SIN SELECCION </option>
+                                                data-style="btn btn-red-icot btn-round" title="Servicio">
+                                                <option>SIN SELECCION</option>
                                                 @foreach ($services as $service)
-                                                    <option value="{{ $service->id }}"
-                                                        @if (isset($tracking) && $service->id == $tracking->service_id) selected="selected" @endif>
-                                                        {{ $service->name }}
-                                                    </option>
+                                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
                                                 @endforeach
-
                                             </select>
                                             <input type="hidden" name="service" id="service" />
                                         </div>
-                                        <div class="select-with-icon">
-                                            <span class="material-symbols-outlined">
-                                                personal_injury
-                                                </span>
-                                            <select class="selectpicker" name="patient_name" id="patient_name"
-                                                data-size="7" data-style="btn btn-red-icot btn-round" title=" Paciente"
-                                                tabindex="-98">
-                                                <option>SIN SELECCION </option>
+                                
+                                        <!-- Paciente Selector -->
+                                        <div class="select-wrapper">
+                                            <span id="icon-select" class="icon-select material-symbols-outlined">personal_injury</span>
+                                            <select class="selectpicker" name="patient_name" id="patient_name" data-size="7"
+                                                data-style="btn btn-red-icot btn-round" title="Paciente">
+                                                <option>SIN SELECCION</option>
                                                 @foreach ($patients as $patient)
-                                                    <option value="{{ $patient->patient_name }}">
-                                                        {{ $patient->patient_name }}
-                                                    </option>
+                                                    <option value="{{ $patient->patient_name }}">{{ $patient->patient_name }}</option>
                                                 @endforeach
                                             </select>
                                             <input type="hidden" name="patient" id="patient" />
                                         </div>
-                                        <div class="select-with-icon">
-                                            <span class="material-symbols-outlined">
-                                                list_alt_check
-                                                </span>
+                                
+                                        <!-- Estado Selector -->
+                                        <div class="select-wrapper">
+                                            <span id="icon-select" class="icon-select material-symbols-outlined">list_alt_check</span>
                                             <select class="selectpicker" name="state_id" id="state_id" data-size="7"
-                                                data-style="btn btn-red-icot btn-round" title=" Estado" tabindex="-98">
-                                                <option>SIN SELECCION </option>
+                                                data-style="btn btn-red-icot btn-round" title="Estado">
+                                                <option>SIN SELECCION</option>
                                                 @foreach ($states as $state)
-                                                    <option class="text-uppercase" value="{{ $state->texto }}">
-                                                        {{ $state->nombre }}</option>
+                                                    <option class="text-uppercase" value="{{ $state->texto }}">{{ $state->nombre }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="btn-container-box">
-
-                                        <button id="btnClear" href="#" class="btn-refresh">
+                                
+                                    <!-- Botones -->
+                                    <div id="btn-container-box" class="btn-container-box">
+                                        <button id="btnClear" class="btn-refresh">
                                             Limpiar Formulario
-                                            <span id=icon-refresh class="material-icons">
-                                                refresh
-                                            </span>
+                                            <span id="icon-refresh" class="material-icons">refresh</span>
                                         </button>
-
-                                        {{-- <button id="btnSubmitFind" type="submit" class="btn-search">
-                                                Buscar
-                                                <span id=icon-search class="material-icons">
-                                                    search
-                                                </span>
-                                            </button> --}}
-
-                                        {{-- <button id="btnSubmitFindLoad" type="submit" class="btn-search"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                            </button> --}}
-
                                         <button id="btnSubmit" type="submit" class="btn-export">
                                             Exportar
-                                            <span id=icon-export class="material-icons">file_download</span>
+                                            <span id="icon-export" class="material-icons">file_download</span>
                                         </button>
-
-                                        <button id="btnSubmitLoad" type="submit" class="btn-export"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
+                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         </button>
-
                                     </div>
-
                                 </div>
+                                
 
                             </div>
                         </form>

@@ -15,14 +15,19 @@
     <br>
     <div class="form-group col-md-4 dropdown bootstrap-select">
         <label for="name" class="label">Rol <span id="obligatory">*</span></label>
-        <select class="selectpicker" name="level_id" id="level_id" data-size="7"
-            data-style="btn btn-red-icot btn-round" title="* Seleccione Nivel de Acceso" tabindex="-98">
-            @foreach ($roles as $roleOption)
-                <option value="{{ $roleOption->id }}"
-                    {{ isset($role) && $role->level_id == $roleOption->id ? 'selected' : '' }}>
-                    {{ $roleOption->name }}</option>
-            @endforeach
-        </select>
+        <div class="select-wrapper">
+            <span id="icon-select" class="icon-select material-symbols-outlined">
+                business
+            </span>
+            <select class="selectpicker" name="level_id" id="level_id" data-size="7"
+                data-style="btn btn-red-icot btn-round" title="* Seleccione Nivel de Acceso" tabindex="-98">
+                @foreach ($roles as $roleOption)
+                    <option value="{{ $roleOption->id }}"
+                        {{ isset($role) && $role->level_id == $roleOption->id ? 'selected' : '' }}>
+                        {{ $roleOption->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 </div>
 
