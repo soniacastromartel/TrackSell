@@ -30,16 +30,17 @@
 .form-date {
   position: relative !important;
   background-color: var(--info) !important;
+  color: #fff;
+  font-size: larger;
+  font-weight: bolder;
   width: 230px;
   height: 45px;
-  margin: 10px;
+  margin: 20px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center !important;
   border: none;
   border-radius: 50px;
-  padding-left: 20px;
+  justify-content: center;
+  /* padding-left: 20px; */
 }
 
 .icon-container {
@@ -259,13 +260,12 @@ button:focus {
 .bootstrap-select .btn {
   width: 230px;
   height: 45px;
-  margin: 20px auto; /* Centrado horizontal */
+  margin: 0; /* Elimina centrado individual */
   border: none !important;
   background-color: var(--red-icot);
   border-radius: 50px;
   color: white;
-  display: block !important;
-  text-align: right; /* Asegura alineación izquierda del texto */
+  text-align: right; /* Asegura alineación derecha del texto */
   padding-left: 60px; /* Deja espacio suficiente para el ícono */
   position: relative; /* Base para posicionar el ícono dentro */
   box-sizing: border-box; /* Padding incluido en el ancho total */
@@ -274,7 +274,10 @@ button:focus {
 /* Select Wrapper */
 .select-wrapper {
   position: relative; /* Ícono se posiciona relativo a este contenedor */
-  width: 100%; /* Asegura que ocupe todo el ancho */
+  width: auto; /* Cambia a auto para que ocupe solo lo necesario */
+  margin: 10px; /* Añade espaciado entre elementos */
+  display: flex; /* Flex para garantizar alineación del ícono */
+  align-items: center; /* Centra verticalmente */
 }
 
 /* Ícono del Select */
@@ -296,6 +299,7 @@ button:focus {
   z-index: 2; /* Se coloca sobre el botón */
   border: 1px solid var(--red-icot);
 }
+
 
 /* Responsividad */
 @media (max-width: 768px) {
@@ -370,16 +374,17 @@ button:focus {
 
 #icon-date {
   position: absolute;
-  right: 20px;
-  top: calc(50% - 20px);
+  left: 25px;
+  top: 50%;
   background-color: white !important;
   color: var(--info) !important;
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
   border: 1px solid var(--info);
   cursor: pointer;
 }
@@ -635,8 +640,7 @@ button:focus {
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 80px;
-  margin-top: 120px;
+  margin-top: 20px;
 }
 
 .service-btn-add {

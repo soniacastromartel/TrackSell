@@ -22,25 +22,32 @@
                             @if ($user->rol_id == 1)
                                 <h5 class="card-title font-size-18">- <strong>Importar Objetivos</strong>, puede
                                     descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong></a>
+                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong> <span
+                                        class="material-icons" style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
                                 </h5>
                                 <hr>
                                 <h5 class="card-title font-size-18">- <strong>Editar Objetivos</strong>, puede
                                     descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                        href="{{ asset('assets/excel/plantilla_editar_objetivos.xls') }}"><strong>aquí</strong></a>
+                                        href="{{ asset('assets/excel/plantilla_editar_objetivos.xls') }}"><strong>aquí</strong>
+                                        <span class="material-icons"
+                                            style="vertical-align: middle;margin: 5px;">download_for_offline</span>
+                                    </a>
+
                                 </h5>
                                 <hr>
                             @endif
-                            <h5 class="card-title font-size-18">- <strong>Importar Venta Privada</strong>, puede
+                            {{-- <h5 class="card-title font-size-18">- <strong>Importar Venta Privada</strong>, puede
                                 descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                    href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong></a>
+                                    href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong> <span
+                                    class="material-icons" style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
                             </h5>
-                            <hr>
+                            <hr> --}}
                             <h5 class="card-title font-size-18">- <strong>Incentivos: </strong>Indicar en formulario centro
                                 / empleado / fecha
                                 según se requiera y hacer click en botón <span
-                                    style="color:var(--red-icot);font-weight: bolder;"> <span
-                                        class="material-icons">file_download</span>Exportar</span>
+                                    style="color:var(--red-icot);font-weight: bolder;"> <span class="material-icons"
+                                        style="vertical-align: middle;margin: 5px;">download_for_offline</span>
+                                    Exportar</span>
                                 <h5>
                                     <h5 class="text-right" style="color:grey;font-size:14px;">* Tenga en cuenta que el
                                         fichero a importar debe
@@ -145,54 +152,49 @@
                                                 <input id="monthYearPicker" class="form-control" type="text"
                                                     placeholder="yyyy/mm" />
                                             </div>
-                                            <div class="select-wrapper">
-                                                <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                    business
-                                                </span>
-                                                <!-- Select dropdown -->
-                                                <select class="selectpicker" name="centre_id" id="centre_id"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round"
-                                                    title="Seleccione Centro">
-                                                    @if ($user->rol_id != 1)
-                                                        @foreach ($centres as $centre)
-                                                            @if ($centre->id == $user->centre_id)
-                                                                <option value="{{ $centre->id }}" selected>
-                                                                    {{ $centre->name }}</option>
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        @foreach ($centres as $centre)
-                                                            <option value="{{ $centre->id }}">{{ $centre->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
+                                            <div class="row d-flex justify-content-center align-items-center" style="gap: 20px;">
+                                                <div class="select-wrapper">
+                                                    <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                        business
+                                                    </span>
+                                                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                                        data-style="btn btn-red-icot btn-round" title="Seleccione Centro">
+                                                        @if ($user->rol_id != 1)
+                                                            @foreach ($centres as $centre)
+                                                                @if ($centre->id == $user->centre_id)
+                                                                    <option value="{{ $centre->id }}" selected>{{ $centre->name }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            @foreach ($centres as $centre)
+                                                                <option value="{{ $centre->id }}">{{ $centre->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            
+                                                <div class="select-wrapper">
+                                                    <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                        engineering
+                                                    </span>
+                                                    <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
+                                                        data-style="btn btn-red-icot btn-round" title="Seleccione Empleado">
+                                                        <option>SIN SELECCION</option>
+                                                        @if ($user->rol_id != 1)
+                                                            @foreach ($employees as $employee)
+                                                                @if ($employee->centre_id == $user->centre_id)
+                                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            @foreach ($employees as $employee)
+                                                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
                                             </div>
-
-                                            <div class="select-wrapper">
-                                                <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                    engineering
-                                                </span>
-                                                <select class="selectpicker" name="employee_id" id="employee_id"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round"
-                                                    title="Seleccione Empleado">
-                                                    <option>SIN SELECCION</option>
-                                                    @if ($user->rol_id != 1)
-                                                        @foreach ($employees as $employee)
-                                                            @if ($employee->centre_id == $user->centre_id)
-                                                                <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        @foreach ($employees as $employee)
-                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <input type="hidden" name="employee" id="employee" />
-                                            </div>
+                                            
 
                                         </div>
                                         <hr class="mt-4">

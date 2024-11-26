@@ -33,19 +33,20 @@
 
                                 <label class="label align-self-center" for="dateFrom" style="padding: 10px">Fecha desde
                                 </label>
-                                <div class="icon-container">
+
+                                <div id="monthYearPickerContainer" style="margin-bottom:15px;">
                                     <input type="date" class="form-date" id="start_date" name="start_date"
                                         value="{{ request('start_date') }}" onchange="this.form.submit()">
-                                    <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                 </div>
                                 </input>
 
                                 <label class="label align-self-center" for="dateTo" style="padding: 10px">Fecha hasta
                                 </label>
-                                <div class="icon-container">
+                                <div id="monthYearPickerContainer" style="margin-bottom:15px;">
                                     <input type="date" class="form-date" id="end_date" name="end_date"
                                         value="{{ request('end_date') }}" onchange="this.form.submit()">
-                                    <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                 </div>
                                 </input>
 
@@ -53,7 +54,7 @@
 
                         </div>
 
-                        <div class="container ml-5" style="width: 300px">
+                        <div class="container ml-6" style="width: 300px">
 
                             <h3>Centro</h3>
 
@@ -783,6 +784,24 @@
 </script>
 
 <style>
+    #start_date,
+    #end_date {
+            {
+            padding-left: 80px;
+            background-color: var(--info) !important;
+            color: #fff;
+            font-size: larger;
+            font-weight: bolder;
+            width: 230px;
+            height: 45px;
+            margin: 20px;
+            display: flex;
+            border: none;
+            border-radius: 50px;
+            /* padding: 0 15px; Espaciado interno */
+        }
+    }
+
     body {
         background-image: url(/assets/img/background_continue.png) !important;
         background-position: center center !important;

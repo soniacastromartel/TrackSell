@@ -39,7 +39,7 @@
                                                 año para primera carga de datos</h5>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="row">
                                         <div class="col-md-3">
                                             <h5 class="card-title" style="font-size:18px !important;">Pagar todos</h5>
@@ -70,19 +70,22 @@
                     <div class="container-fluid">
                         <div class="row justify-content-lg-between m-4">
                             <div class="row flex-column">
-                                <div id="monthYearPickerContainer">
+                                <div id="monthYearPickerContainer" style="margin-bottom:15px;">
                                     <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
                                     <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                     <input type="hidden" name="monthYear" id="monthYear" />
                                 </div>
-                                <select class="selectpicker" name="business_id" id="business_id" data-size="7"
-                                    data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
-                                    <option value="">SIN CODIGO </option>
-                                    @foreach ($a3business as $a3business)
-                                        <option value="{{ $a3business->code_business }}">
-                                            {{ $a3business->code_business . '-' . $a3business->name_business }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="select-wrapper">
+                                    <span id="icon-select" class="material-symbols-outlined"> business</span>
+                                    <select class="selectpicker" name="business_id" id="business_id" data-size="7"
+                                        data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
+                                        <option value="">SIN CODIGO </option>
+                                        @foreach ($a3business as $a3business)
+                                            <option value="{{ $a3business->code_business }}">
+                                                {{ $a3business->code_business . '-' . $a3business->name_business }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="row flex-column">
@@ -92,7 +95,7 @@
                                 <button id="btnCalculateLoad" type="button" class="btn-calculate" style="display: none">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </button>
-                               
+
                             </div>
 
 
@@ -101,7 +104,8 @@
                                 <button id="btnValidate" type="button" class="btn-pay-all">
                                     <span id="icon-pay" class="material-icons">paid</span>{{ __('Pagar todos') }}</button>
                                 <button id="btnValidateLoad" type="submit" class="btn btn-success" style="display: none">
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
                                 </button>
                                 <button id="btnUnvalidate" type="button" class="btn-deshacer-pagar">
                                     <span id="icon-deshacer"

@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="card incentive-logo" style="margin-top:120px ">
                 <div class="card-header card-header-danger">
-                    <h4 class="card-title">Configuración</h4>
+                    <h4 class="card-title">Precios & Incentivos</h4>
                 </div>
                 <div class="card-body">
                     <div class="row col-md-12 mb-4 ">

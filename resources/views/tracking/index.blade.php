@@ -23,11 +23,11 @@
 
                                 <div class="date-informes-container">
 
-                                    <label class="label" for="dateFrom" style="padding: 10px">Fecha desde </label>
+                                    <label class="label" for="dateFrom" style="padding: 10px;margin-top:10px;">Fecha desde </label>
                                     <div class="icon-container">
                                         <input type="date" id="date_from" name="date_from" max="3000-12-31"
                                             min="1000-01-01"class="form-date">
-                                        <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+                                        <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                     </div>
                                     </input>
 
@@ -35,7 +35,7 @@
                                     <div class="icon-container">
                                         <input type="date" id="date_to" name="date_to" max="3000-12-31"
                                             min="1000-01-01" class="form-date">
-                                        <span id="icon-date-left" class="material-symbols-outlined"> calendar_month</span>
+                                        <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                     </div>
                                     </input>
                                 </div>
