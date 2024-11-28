@@ -1,51 +1,52 @@
 @extends('layouts.logged')
 @section('content')
-@include('inc.navbar')
-@include('common.alert')
-<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    @include('inc.navbar')
+    @include('common.alert')
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 
-    <div class="content" style="display:flex; justify-content:center" >
-       
-                <div class="card" style="width:40%; margin-top:100px;">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title">Perfil Usuarios</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="col-lg-10 mx-auto">
-                        <form id=editEmployee action="{{ route('editProfile', $employee->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="row">
-                                <div class="col-lg-10 mx-auto">
-                                    <label for="name" class="label">Nombre </label>
-                                    <input type="text" class="form-control" name="name" id="name" placeholder=""
-                                        value="{{ isset($employee) ? $employee->name : '' }}" readonly>
-                                </div>
+    <div class="content" style="display:flex; justify-content:center">
+
+        <div class="card" style="width:40%; margin-top:100px;">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Perfil Usuarios</h4>
+            </div>
+            <div class="card-body">
+                <div class="col-lg-10 mx-auto">
+                    <form id=editEmployee action="{{ route('editProfile', $employee->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-lg-10 mx-auto">
+                                <label for="name" class="label">Nombre </label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder=""
+                                    value="{{ isset($employee) ? $employee->name : '' }}" readonly>
                             </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-lg-10 mx-auto">
-                                    <label for="login" class="label">Login </label>
-                                    <input type="text" class="form-control" name="username" id="username"
-                                        placeholder="" value="{{ isset($employee) ? $employee->username : '' }}"
-                                        readonly>
-                                </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-10 mx-auto">
+                                <label for="login" class="label">Login </label>
+                                <input type="text" class="form-control" name="username" id="username" placeholder=""
+                                    value="{{ isset($employee) ? $employee->username : '' }}" readonly>
                             </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-lg-10 mx-auto">
-                                    <label for="login" class="label">Password </label>
-                                    <input type="password" class="form-control" name="password" id="password"
-                                        placeholder="" value="{{ isset($employee) ? $employee->password : '' }}"
-                                        readonly>
-                                </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-10 mx-auto">
+                                <label for="login" class="label">Password </label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder=""
+                                    value="{{ isset($employee) ? $employee->password : '' }}" readonly>
                             </div>
-                            <div class="col-lg-10 mx-auto" style="margin-top:50px;">
-                                <!--- Accion solo permitida para admin -->
-                                <div class="row">
+                        </div>
+                        <div class="col-lg-10 mx-auto" style="margin-top:50px;">
+                            @if ($employee->rol_id == 1)
+                                <div class="row interspace select-wrapper">
+                                    <span id="icon-select" class="icon-select material-symbols-outlined">
+                                        gpp_good
+                                    </span>
                                     <select class="selectpicker" name="rol_id" id="rol_id" data-size="7"
-                                        data-style="btn btn-red-icot btn-round" title="* Seleccione Rol" tabindex="-98"
+                                        data-style="btn btn-red-icot btn-round" title="Seleccione Rol" tabindex="-98"
                                         @if (isset($employee) && $employee->rol_id != 1) disabled="disabled" @endif>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}"
@@ -55,10 +56,12 @@
                                     </select>
                                 </div>
 
-                                <div class="row">
+                                <div class="row interspace select-wrapper">
+                                    <span id="icon-select" class="icon-select material-symbols-outlined">
+                                        business
+                                    </span>
                                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                        data-style="btn btn-red-icot btn-round" title="* Seleccione Centro"
-                                        tabindex="-98">
+                                        data-style="btn btn-red-icot btn-round" title="Seleccione Centro" tabindex="-98">
                                         @foreach ($centres as $centre)
                                             <option value="{{ $centre->id }}"
                                                 @if (isset($employee) && $centre->id == $employee->centre_id) selected="selected" @endif>
@@ -66,29 +69,28 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                
-                            </div>
-                            <div class="row md-3 text-right">
-                                    <div class="col-md-12">
-                                        <button id="btnSubmitSave" type="submit" class="btn-save">
-                                        <span class="material-icons">save</span>
-                                        </button>
-                                        <button id="btnSubmitLoadSave" type="submit" class="btn-save"
-                                            style="display: none"Save>
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
-                                        <button id="btnBack" href="/config" class="btn-return">
-                                        <span class="material-icons">arrow_back</span> 
-                                        </button>
-                                    </div>
-                                </div>
-                        </form>
+
                         </div>
-                    </div>
+                        <div class="row md-3 text-right">
+                            <div class="col-md-12">
+                                <button id="btnSubmitSave" type="submit" class="btn-save">
+                                    <span class="material-icons">save</span>
+                                </button>
+                                <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none"Save>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                </button>
+                                <button id="btnBack" href="/config" class="btn-return">
+                                    <span class="material-icons">arrow_back</span>
+                                </button>
+                            </div>
+                        </div>
+                        @endif
+                    </form>
                 </div>
-           
-      
+            </div>
+        </div>
+
+
     </div>
 
     <script type="text/javascript">
@@ -122,12 +124,9 @@
 
 <style>
     .main-panel {
-    background-image: url(/assets/img/background_continue.png) !important;
-    background-position: center center !important;
-    background-size: 1000px;
- 
-}
+        background-image: url(/assets/img/background_continue.png) !important;
+        background-position: center center !important;
+        background-size: 1000px;
 
-
-
-    </style>
+    }
+</style>

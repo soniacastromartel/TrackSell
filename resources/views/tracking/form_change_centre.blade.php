@@ -9,14 +9,14 @@
 
     <div class="date-solicitud-container">
 
-        <label for="name" class="label" style="padding: 10px;margin-top:15px;">Fecha inicio</label>
+        <label for="name" class="label" style="margin-top:15px;">Fecha inicio</label>
         <div class="icon-container">
             <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01"class="form-date">
             <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
         </div>
         </input>
 
-        <label for="name" class="label" style="padding: 10px">Fecha fin</label>
+        <label for="name" class="label" style="">Fecha fin</label>
         <div class="icon-container">
             <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-date">
             <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>

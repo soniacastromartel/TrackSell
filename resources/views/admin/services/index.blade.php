@@ -6,16 +6,27 @@
     <link rel="stylesheet" href="{{ asset('/css/services.css') }}">
     <div class="content">
         <div class="container-fluid">
-            @if ($user->rol_id == 1)
-                <div class="row col-md-12 mb-3 ">
-                    <div class="col-md-8">
-                    </div>
-                    <div class="col-md-4 text-right">
-                        <a href="{{ route('services.create') }}" id="btnNewCenter" class="header-btn-add"><span
-                                class="material-icons">add</span></a>
+            <div class="card" style="margin-top:120px ">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Servicios</h4>
+                </div>
+                <div class="row col-lg-12">
+                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
+                    <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
+                        @if ($user->rol_id == 1)
+                            <div class="row col-md-12 mb-3 ">
+                                <div class="col-md-8">
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <a href="{{ route('services.create') }}" id="btnNewCenter" class="header-btn-add">
+                                        <span id="icon-select" class="material-symbols-outlined">
+                                            assignment_add                                    </span></a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
-            @endif
+            </div>
             <table class="table  table-striped table-bordered services-datatable">
                 <div class="col-md-2">
                 </div>
@@ -157,4 +168,5 @@
             });
         }
     </script>
+    
 @endsection

@@ -6,18 +6,23 @@
 
     <div class="content">
         <div class="container-fluid">
-            <div class="row col-md-12 mb-3">
-                <div class="col-md-8">
+            <div class="card" style="margin-top:120px ">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Empleados</h4>
                 </div>
-                <div class="col-md-4 text-right" id="blockNewTracking">
-                    <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
-                            sync
-                        </span> </a>
-                    <button id="btnSubmitLoadA3" type="submit" class="btn-sincro-all" style="display: none">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </button>
+                <div class="row col-lg-12">
+                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
+                    <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
+                        <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
+                                sync
+                            </span> </a> 
+                        <button id="btnSubmitLoadA3" type="submit" class="btn-sincro-all" style="display: none">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
+
             <table class="table-striped table-bordered employees-datatable col-md-12 table">
                 <thead class="table-header">
                     <tr>
@@ -187,7 +192,7 @@
                 success: function(response, textStatus, jqXHR) {
                     console.log(response);
                     if (textStatus === 'success') {
-                        showToast(response.success?'success' :'error', response.mensaje);
+                        showToast(response.success ? 'success' : 'error', response.mensaje);
                         table.ajax.reload();
                         $('#btnResetAccess' + employeeId + ' .material-icons').show();
                         $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
@@ -221,7 +226,7 @@
                 data: params,
                 success: function(response, textStatus, jqXHR) {
                     if (textStatus === 'success') {
-                        showToast(response.success?'success' :'error', response.mensaje);
+                        showToast(response.success ? 'success' : 'error', response.mensaje);
                         table.ajax.reload();
                         $('#btnResetPass' + employeeId + ' .material-icons').show();
                         $('#btnResetPass' + employeeId + ' .spinner-border').hide();
@@ -321,13 +326,19 @@
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
             });
         }
-
-
-       
     </script>
 @endsection
 
 <style>
+    .header-logo {
+        background-image: url(/assets/img/staff.jpg);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position-x: right;
+        min-width: 200px;
+        min-height: 70px;
+    }
+
     .content {
         background-image: url(/assets/img/background_continue.png) !important;
         background-position: center center !important;
@@ -367,15 +378,15 @@
         opacity: 1;
     }
 
-  /* ROW RED FOR BLOQUED USER */
-  
-  .user-bloqued {
-    color: red ;
-}
+    /* ROW RED FOR BLOQUED USER */
 
-/* ROW GREEN FOR UPDATED USER */
-.user-updated-acc,.user-updated-pass{
-color: green ;
-}
+    .user-bloqued {
+        color: red;
+    }
 
-    </style>
+    /* ROW GREEN FOR UPDATED USER */
+    .user-updated-acc,
+    .user-updated-pass {
+        color: green;
+    }
+</style>

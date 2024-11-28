@@ -21,15 +21,13 @@
                             @csrf
                             @method('POST')
 
-                            <div class="row bg-white">
-
-                                <div class="form-group col-sm-10">
-                                    <div id="monthYearPickerContainer">
+                            <div class="row bg-white form-group">
+                                <div class="row">
+                                    <div id="monthYearPickerContainer" class="interspace">
                                         <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
                                         <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
                                         <input type="hidden" name="monthYear" id="monthYear" />
                                     </div>
-
 
 
                                     <div id="yearPickerContainer">
@@ -37,43 +35,39 @@
                                         <span id="icon-select"
                                             class="icon-select material-symbols-outlined">calendar_month</span>
                                     </div>
-
                                 </div>
 
-                                <div class="form-group col-sm-10">
-                                    <div class="row" style="padding-right: 22px;">
-                                        <div class="select-wrapper">
-                                            <span id="icon-select" class="icon-select material-symbols-outlined">
-                                               business 
-                                            </span>
-                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                                data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
-                                                @if (!in_array($employee->rol_id, [1, 4]))
-                                                    {{-- @if (isset($employee) && $employee->rol_id != 1) --}}
-                                                    <option value="{{ $employee->centre_id }}" selected>
-                                                        {{ $employee->centre }}</option>
-                                                @endif
 
-                                                @if (in_array($employee->rol_id, [1, 4]))
-                                                    {{-- @if (isset($employee) && $employee->rol_id == 1) --}}
-                                                    @foreach ($centres as $centre)
-                                                        <option value="{{ $centre->id }}">{{ $centre->name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <input type="hidden" name="centre" id="centre" />
-                                        </div>
+                                <div class="row interspace">
+                                    <div class="select-wrapper">
+                                        <span id="icon-select" class="icon-select material-symbols-outlined">
+                                            business
+                                        </span>
+                                        <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                            data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
+                                            @if (!in_array($employee->rol_id, [1, 4]))
+                                                {{-- @if (isset($employee) && $employee->rol_id != 1) --}}
+                                                <option value="{{ $employee->centre_id }}" selected>
+                                                    {{ $employee->centre }}</option>
+                                            @endif
+
+                                            @if (in_array($employee->rol_id, [1, 4]))
+                                                {{-- @if (isset($employee) && $employee->rol_id == 1) --}}
+                                                @foreach ($centres as $centre)
+                                                    <option value="{{ $centre->id }}">{{ $centre->name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <input type="hidden" name="centre" id="centre" />
                                     </div>
                                 </div>
 
-                                <div class="form-group col-sm-10">
-                                    <div class="row">
-                                        <button id="btnClear" class="btn-refresh">Limpiar Formulario
-                                            <span id=icon-refresh class="material-icons">refresh</span>
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true" style="display: none;"></span>
-                                        </button>
-                                    </div>
+                                <div class="row interspace">
+                                    <button id="btnClear" class="btn-refresh">Limpiar Formulario
+                                        <span id=icon-refresh class="material-icons">refresh</span>
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                                            style="display: none;"></span>
+                                    </button>
                                 </div>
 
                             </div>
@@ -233,6 +227,11 @@
         display: flex;
         justify-content: space-evenly;
         width: 100%;
+    }
+
+    .bg-white {
+        justify-content: space-evenly;
+        margin: 0 auto;
     }
 
     .row {

@@ -57,28 +57,23 @@ button:focus {
   box-shadow: 0 0 0 2px #ffffff;
 }
 
-#monthYearPickerContainer, #yearPickerContainer {
-  display: flex;
-  align-items: center; /* Alinea verticalmente los elementos dentro */
-  justify-content: center; /* Centra horizontalmente */
-  gap: 10px; /* Espacio entre el ícono y el input */
-  position: relative; /* Para posicionar mejor el ícono si es necesario */
-  height: 45px; /* Igual al botón del picker */
-}
-
-#icon-date {
-  font-size: 25px; /* Tamaño del ícono */
-  color: var(--red-icot); /* Color del ícono */
+#monthYearPickerContainer,
+#yearPickerContainer {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  /* Espacio entre el ícono y el input */
+  position: relative;
+  height: 45px;
 }
 
-.interspace{
-  margin-top:18px;
+.interspace {
+  margin-top: 18px;
 }
 
-#monthYearPicker, #yearPicker {
+#monthYearPicker,
+#yearPicker {
   padding-left: 80px;
   background-color: var(--info) !important;
   color: #fff;
@@ -237,9 +232,9 @@ button:focus {
   border: 1px solid var(--gray-dark);
 }
 
-.material-symbols-outlined {
+/* .material-symbols-outlined {
   position: absolute;
-  left: 10px; /* Distance from the left side of the wrapper */
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 25px;
@@ -254,70 +249,68 @@ button:focus {
   justify-content: center;
   z-index: 2;
   border: 1px solid var(--red-icot);
-}
+} */
 
 /* General Button SelectPicker */
 .bootstrap-select .btn {
   width: 230px;
   height: 45px;
-  margin: 0; /* Elimina centrado individual */
+  margin: 0;
+  /* Elimina centrado individual */
   border: none !important;
   background-color: var(--red-icot);
   border-radius: 50px;
   color: white;
-  text-align: right; /* Asegura alineación derecha del texto */
-  padding-left: 60px; /* Deja espacio suficiente para el ícono */
-  position: relative; /* Base para posicionar el ícono dentro */
-  box-sizing: border-box; /* Padding incluido en el ancho total */
+  text-align: right;
+  /* Asegura alineación derecha del texto */
+  padding-left: 60px;
+  /* Deja espacio suficiente para el ícono */
+  position: relative;
+  /* Base para posicionar el ícono dentro */
+  box-sizing: border-box;
+  /* Padding incluido en el ancho total */
 }
 
 /* Select Wrapper */
 .select-wrapper {
-  position: relative; /* Ícono se posiciona relativo a este contenedor */
-  width: auto; /* Cambia a auto para que ocupe solo lo necesario */
-  margin: 10px; /* Añade espaciado entre elementos */
-  display: flex; /* Flex para garantizar alineación del ícono */
-  align-items: center; /* Centra verticalmente */
+  position: relative;
+  /* Ícono se posiciona relativo a este contenedor */
+  width: auto;
+  /* Cambia a auto para que ocupe solo lo necesario */
+  margin: 10px;
+  /* Añade espaciado entre elementos */
+  display: flex;
+  /* Flex para garantizar alineación del ícono */
+  align-items: center;
+  /* Centra verticalmente */
 }
 
 /* Ícono del Select */
 .icon-select {
   position: absolute;
-  left: 15px; /* Posición fija desde el borde izquierdo */
-  top: 50%; /* Centrado vertical */
+  left: 15px;
+  /* Posición fija desde el borde izquierdo */
+  top: 50%;
+  /* Centrado vertical */
   transform: translateY(-50%);
-  font-size: 25px; /* Tamaño del ícono */
-  background-color: white; /* Fondo del ícono */
+  font-size: 25px;
+  /* Tamaño del ícono */
+  background-color: white;
+  /* Fondo del ícono */
   color: var(--red-icot);
-  border-radius: 50%; /* Ícono circular */
-  pointer-events: none; /* No interfiere con clics */
+  border-radius: 50%;
+  /* Ícono circular */
+  pointer-events: none;
+  /* No interfiere con clics */
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2; /* Se coloca sobre el botón */
+  z-index: 2;
+  /* Se coloca sobre el botón */
   border: 1px solid var(--red-icot);
 }
-
-
-/* Responsividad */
-@media (max-width: 768px) {
-  .icon-select {
-    font-size: 20px;
-    width: 35px;
-    height: 35px;
-  }
-}
-
-@media (max-width: 480px) {
-  .icon-select {
-    font-size: 18px;
-    width: 30px;
-    height: 30px;
-  }
-}
-
 
 /* Common styles for all icons */
 #icon-refresh,
@@ -372,10 +365,22 @@ button:focus {
   cursor: pointer;
 }
 
+/* #icon-date {
+  font-size: 25px; 
+  color: var(--red-icot);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+} */
+
+
 #icon-date {
   position: absolute;
   left: 25px;
   top: 50%;
+  transform: translateY(-50%);
+  font-size: 25px;
   background-color: white !important;
   color: var(--info) !important;
   border-radius: 50%;
@@ -425,6 +430,7 @@ button:focus {
 
 #btnClear,
 #btnSubmit,
+#btnSell,
 #btnSubmitFind,
 #btnSubmitLoad,
 #btnSubmitFindLoad,
@@ -640,6 +646,23 @@ button:focus {
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.circle-btn-add {
+  position: relative;
+  background-color: var(--red-icot);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); */
   margin-top: 20px;
 }
 
@@ -1178,4 +1201,68 @@ button:focus {
 .btn-return:hover::after {
   visibility: visible;
   opacity: 1;
+}
+
+
+/* Responsividad */
+/*MEDIA QUERIES*/
+@media (max-width: 768px) {
+  #btnContainer,
+  .bg-white,
+  .filter-option {
+    width: 90%;
+    height: auto;
+    transform: scale(0.9);
+  }
+
+  .material-symbols-outlined,
+  .material-icons {
+    left: 1.5vw;
+  }
+}
+
+@media (max-width: 480px) {
+  #btnContainer,
+  .bg-white,
+  .filter-option {
+    width: 90%;
+    height: auto;
+    transform: scale(0.9);
+  }
+
+  .material-symbols-outlined,
+  .material-icons {
+    left: 1.5vw;
+  }
+}
+@media (max-width: 360px) {
+  #btnContainer,
+  .bg-white,
+  .filter-option {
+    width: 90%;
+    height: auto;
+    transform: scale(0.9);
+  }
+
+  .material-symbols-outlined,
+  .material-icons {
+    left: 1.5vw;
+  }
+}
+
+@media (max-width: 1200PX) {
+
+  #btnContainer,
+  .bg-white,
+  .filter-option {
+    width: 90%;
+    height: auto;
+    transform: scale(0.9);
+  }
+
+  .material-symbols-outlined,
+  .material-icons {
+    left: 1.5vw;
+  }
+
 }

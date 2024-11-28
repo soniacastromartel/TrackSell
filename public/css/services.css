@@ -6,3 +6,11 @@
     height: 140vh !important;
   }
   
+  .header-logo {
+    background-image: url(/assets/img/services.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: right;
+    min-width: 320px;
+    min-height: 160px;
+}

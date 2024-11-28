@@ -23,7 +23,7 @@
 
                                 <div class="date-informes-container">
 
-                                    <label class="label" for="dateFrom" style="padding: 10px;margin-top:10px;">Fecha desde </label>
+                                    <label class="label" for="dateFrom" style="margin-top:20px;">Fecha desde </label>
                                     <div class="icon-container">
                                         <input type="date" id="date_from" name="date_from" max="3000-12-31"
                                             min="1000-01-01"class="form-date">
@@ -31,7 +31,7 @@
                                     </div>
                                     </input>
 
-                                    <label class="label" for="dateTo" style="padding: 10px">Fecha hasta </label>
+                                    <label class="label" for="dateTo" style="">Fecha hasta </label>
                                     <div class="icon-container">
                                         <input type="date" id="date_to" name="date_to" max="3000-12-31"
                                             min="1000-01-01" class="form-date">
@@ -45,13 +45,15 @@
                                     <div id="picker-container" class="picker-container">
                                         <!-- Centro Selector -->
                                         <div class="select-wrapper">
-                                            <span id="icon-select" class="icon-select material-symbols-outlined">business</span>
+                                            <span id="icon-select"
+                                                class="icon-select material-symbols-outlined">business</span>
                                             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
                                                 data-style="btn btn-red-icot btn-round" title="Centro">
                                                 @if ($user->rol_id != 1)
                                                     @foreach ($centres as $centre)
                                                         @if ($centre->id == $user->centre_id)
-                                                            <option class="text-uppercase" value="{{ $centre->id }}" selected>
+                                                            <option class="text-uppercase" value="{{ $centre->id }}"
+                                                                selected>
                                                                 {{ $centre->name }}
                                                             </option>
                                                         @endif
@@ -66,17 +68,19 @@
                                             </select>
                                             <input type="hidden" name="centre" id="centre" />
                                         </div>
-                                
+
                                         <!-- Empleado Selector -->
                                         <div class="select-wrapper">
-                                            <span id="icon-select" class="icon-select material-symbols-outlined">engineering</span>
+                                            <span id="icon-select"
+                                                class="icon-select material-symbols-outlined">engineering</span>
                                             <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
                                                 data-style="btn btn-red-icot btn-round" title="Empleado">
                                                 <option>SIN SELECCION</option>
                                                 @if ($user->rol_id != 1)
                                                     @foreach ($employees as $employee)
                                                         @if ($employee->centre_id == $user->centre_id)
-                                                            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                            </option>
                                                         @endif
                                                     @endforeach
                                                 @else
@@ -87,10 +91,11 @@
                                             </select>
                                             <input type="hidden" name="employee" id="employee" />
                                         </div>
-                                
+
                                         <!-- Servicio Selector -->
                                         <div class="select-wrapper">
-                                            <span id="icon-select" class="icon-select material-symbols-outlined">medical_services</span>
+                                            <span id="icon-select"
+                                                class="icon-select material-symbols-outlined">medical_services</span>
                                             <select class="selectpicker" name="service_id" id="service_id" data-size="7"
                                                 data-style="btn btn-red-icot btn-round" title="Servicio">
                                                 <option>SIN SELECCION</option>
@@ -100,33 +105,37 @@
                                             </select>
                                             <input type="hidden" name="service" id="service" />
                                         </div>
-                                
+
                                         <!-- Paciente Selector -->
                                         <div class="select-wrapper">
-                                            <span id="icon-select" class="icon-select material-symbols-outlined">personal_injury</span>
-                                            <select class="selectpicker" name="patient_name" id="patient_name" data-size="7"
-                                                data-style="btn btn-red-icot btn-round" title="Paciente">
+                                            <span id="icon-select"
+                                                class="icon-select material-symbols-outlined">personal_injury</span>
+                                            <select class="selectpicker" name="patient_name" id="patient_name"
+                                                data-size="7" data-style="btn btn-red-icot btn-round" title="Paciente">
                                                 <option>SIN SELECCION</option>
                                                 @foreach ($patients as $patient)
-                                                    <option value="{{ $patient->patient_name }}">{{ $patient->patient_name }}</option>
+                                                    <option value="{{ $patient->patient_name }}">
+                                                        {{ $patient->patient_name }}</option>
                                                 @endforeach
                                             </select>
                                             <input type="hidden" name="patient" id="patient" />
                                         </div>
-                                
+
                                         <!-- Estado Selector -->
                                         <div class="select-wrapper">
-                                            <span id="icon-select" class="icon-select material-symbols-outlined">list_alt_check</span>
+                                            <span id="icon-select"
+                                                class="icon-select material-symbols-outlined">list_alt_check</span>
                                             <select class="selectpicker" name="state_id" id="state_id" data-size="7"
                                                 data-style="btn btn-red-icot btn-round" title="Estado">
                                                 <option>SIN SELECCION</option>
                                                 @foreach ($states as $state)
-                                                    <option class="text-uppercase" value="{{ $state->texto }}">{{ $state->nombre }}</option>
+                                                    <option class="text-uppercase" value="{{ $state->texto }}">
+                                                        {{ $state->nombre }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                
+
                                     <!-- Botones -->
                                     <div id="btn-container-box" class="btn-container-box">
                                         <button id="btnClear" class="btn-refresh">
@@ -137,23 +146,27 @@
                                             Exportar
                                             <span id="icon-export" class="material-icons">file_download</span>
                                         </button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        <button id="btnSubmitLoad" type="submit" class="btn-export"
+                                            style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
                                         </button>
+                                        <button id="btnSell" type="button" class="btn-send"
+                                            onclick="navigateToCreateTracking()">
+                                            Nueva Venta
+                                            <span id="icon-send" class="material-symbols-outlined">
+                                                add_shopping_cart
+                                            </span>
+                                        </button>
+
                                     </div>
                                 </div>
-                                
+
 
                             </div>
                         </form>
                     </div>
                 </div>
-
-                <div class="col-12 text-right">
-                    <a href="{{ route('tracking.create') }}" id="btnNewTracking" class="service-btn-add"><span
-                            class="material-icons">add</span></a>
-                </div>
-
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered tracking-datatable ">
                         <thead class="table-header">
@@ -177,6 +190,10 @@
     </div>
 
     <script type="text/javascript">
+        function navigateToCreateTracking() {
+            window.location.href = "{{ route('tracking.create') }}";
+        }
+
         var table;
 
         var columnsFilled = [];

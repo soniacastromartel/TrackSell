@@ -11,22 +11,12 @@
                     <h4 class="card-title">Roles</h4>
                 </div>
                 <div class="row col-lg-12">
-                    <div class="col-md-11 incentive-logo" style="margin-top:70px;"></div>
+                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
                     <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
                         <a href="{{ route('roles.create') }}" id="btnNewCenter" class="header-btn-add"><span
                                 class="material-icons">add_moderator</span></a>
                     </div>
                 </div>
-
-                {{-- <div class="card-footer">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"></div>
-                    <div class="form-group col-md-2" style="display:flex;justify-content:end;align-items:center;">
-                        <a href="{{ route('roles.create') }}" id="btnNewCenter" class="header-btn-add"><span
-                                class="material-icons">add_moderator</span></a>
-                    </div>
-                </div> --}}
-
             </div>
             <table class="table table-striped table-bordered roles-datatable">
                 <thead class="table-header">

@@ -6,17 +6,29 @@
 
     <div class="content">
         <div class="container-fluid">
-            @if ($user->rol_id == 1)
-                <div class="row col-md-12 mb-3 ">
-                    <div class="col-md-8">
-                    </div>
-                    <div class="col-md-4 text-right">
-                        <a href="{{ route('centres.create') }}" id="btnNewCenter" class="header-btn-add"><span
-                                class="material-icons">
-                                add</span></a>
+            <div class="card" style="margin-top:120px ">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Centros</h4>
+                </div>
+                <div class="row col-lg-12">
+                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
+                    <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
+                        @if ($user->rol_id == 1)
+                            <div class="row col-md-12 mb-3 ">
+                                <div class="col-md-8">
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <a href="{{ route('centres.create') }}" id="btnNewCenter" class="header-btn-add">
+                                        <span id="icon-select" class="material-symbols-outlined">
+                                            domain_add
+                                        </span></a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
-            @endif
+            </div>
+
             <table id="centres-datatable"
                 class="table  table-striped table-bordered dataTable_width_auto centres-datatable">
                 <thead class="table-header">
@@ -37,6 +49,15 @@
 
 
     <style>
+        .header-logo {
+            background-image: url(/assets/img/centres.jpg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position-x: right;
+            min-width: 280px;
+            min-height: 130px;
+        }
+
         .content {
             background-image: url(/assets/img/background_continue.png) !important;
             background-position: center center !important;
@@ -47,7 +68,7 @@
     </style>
 
     <script type="text/javascript">
-        function confirmRequest(state,id) {
+        function confirmRequest(state, id) {
             confirmedRequest().then((result) => {
                 if (result.isConfirmed) {
                     destroy(id);
@@ -175,8 +196,8 @@
                 type: 'get',
                 data: params,
                 beforeSend: function() {
-                Swal.showLoading();
-            },
+                    Swal.showLoading();
+                },
                 success: function(response) {
                     if (response.success) {
                         Swal.hideLoading();
