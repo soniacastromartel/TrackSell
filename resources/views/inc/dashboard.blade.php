@@ -22,17 +22,17 @@
                             @method('POST')
 
                             <div class="row bg-white form-group">
-                                <div class="row">
+                                <div class="select-wrapper">
                                     <div id="monthYearPickerContainer" class="interspace">
                                         <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
-                                        <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                                        <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
                                         <input type="hidden" name="monthYear" id="monthYear" />
                                     </div>
 
 
                                     <div id="yearPickerContainer">
                                         <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
-                                        <span id="icon-select"
+                                        <span id="icon-date"
                                             class="icon-select material-symbols-outlined">calendar_month</span>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="row interspace">
-                                    <button id="btnClear" class="btn-refresh">Limpiar Formulario
+                                    <button id="btnClear" class="btn-refresh"><strong>Limpiar Formulario</strong>
                                         <span id=icon-refresh class="material-icons">refresh</span>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                                             style="display: none;"></span>
@@ -396,12 +396,6 @@
             }
         }
 
-        // @if (isset($employee) && $employee->rol_id == 2)
-        //     $("#btnClear").hide();
-        // @else
-        //     $("#btnClear").show();
-        // @endif
-
         $(".form-check-input").change(function() {
             $(".form-check-label").removeAttr('id');
             $(this).parent().attr('id', 'selected-label');
@@ -410,7 +404,6 @@
         /**
          * Botón exportar 
          */
-
         $("#btnSubmit").on('click', function(e) {
             $('#alertErrorCalculate').hide();
             e.preventDefault();
@@ -422,9 +415,7 @@
             params = {};
             params["_token"] = "{{ csrf_token() }}";
             params["centre"] = $('#centre').val();
-
             filterSearch();
-
             $.ajax({
                 url: $("#rankingForm").attr('action'),
                 type: 'post',
@@ -502,13 +493,9 @@
             $('#monthYearPicker').MonthPicker('Open');
         });
 
-
-
         $("#yearPicker").datepicker("destroy");
         $("#yearPickerContainer").hide();
         showMonthYearPicker();
-
-        // var textMonthYear = month >= 10 ? month : '0' + month;
 
         function showYearPicker() {
             $('#monthYearPicker').MonthPicker({
@@ -529,7 +516,6 @@
                     $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0,
                         1)));
                 },
-
             });
         }
 
@@ -557,9 +543,8 @@
         });
 
         /** 
-         * //!Radio Button Anual
+         * Radio Button Anual
          */
-
         $('#annual').on('click', function(e) {
             showYearPicker();
             getTargets($('#centre_id option:selected').val());
@@ -609,7 +594,7 @@
                 }
             },
             hAxis: {
-                title: 'Enero', //FIXME.... change dynamic
+                title: 'Enero',
                 minValue: 0,
             },
             vAxis: {
@@ -705,7 +690,8 @@
                     getValueCentre();
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert('Error' + jqXHR.responseText);
+                // alert('Error' + jqXHR.responseText);
+                showAlert('error ', jqXHR.responseText || 'Error al cargar los datos');
             });
         }
 
@@ -751,7 +737,7 @@
                 serverSide: true,
                 searching: false,
                 autoWidth: false,
-                bDestory: true,
+                bDestroy: true,
                 bRetrieve: true,
                 language: {
                     "url": "{{ asset('dataTables/Spanish.json') }}"
@@ -761,19 +747,23 @@
                     data: function(d) {
                         d.search = $('input[type="search"]').val(),
                             d.monthYear = $('#monthYearPicker').val(),
-                            /** Opciones Ranking **/
+                            /** Opciones Ranking **F/
 
                             /** Si es seleccionado HCT siempre pasar HCT
                                 Si no es HCT si es anual (null centros) , mensual el centro */
                             d.centre = $('#centre_id option:selected').val(),
                             d.type = idDataTable == '.sales-month-datatable' ? 'monthly' : 'anual'
+                    },
+                   
+                    error: function(xhr, status, error) {
+                        console.log('error', error);
                     }
                 },
                 columnDefs: [{
                         targets: idDataTable == '.sales-month-datatable' ? [2, 3] : [3, 4],
                         render: $.fn.dataTable.render.number('.', ',',
                             2
-                        ) //columnDefs number renderer (thousands, decimal, precision, simbolo/moneda)
+                        )
                     },
 
                 ],
@@ -808,10 +798,6 @@
             $('#monthYearPicker').val(fecha);
             $('select#centre_id').val('');
             $('select#centre_id').selectpicker("refresh");
-            // $("#employee-centre").html("GRUPO ICOT");
-            // $("#title-target").html("Objetivos  del  GRUPO ICOT");
-            // $("#title-sales").html("Ranking Mensual del  GRUPO ICOT");
-            // $("#title-ranking").html("Ranking Anual del GRUPO ICOT");
         }
 
         $("#btnClear").on('click', function(e) {
@@ -845,6 +831,7 @@
                 getSales('.sales-year-datatable');
             }
         });
+
         $('#monthPicker').datepicker({
             changeMonth: true,
             changeYear: true,

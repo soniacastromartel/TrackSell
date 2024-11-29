@@ -22,8 +22,9 @@
                             @if ($user->rol_id == 1)
                                 <h5 class="card-title font-size-18">- <strong>Importar Objetivos</strong>, puede
                                     descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong> <span
-                                        class="material-icons" style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
+                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong>
+                                        <span class="material-icons"
+                                            style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
                                 </h5>
                                 <hr>
                                 <h5 class="card-title font-size-18">- <strong>Editar Objetivos</strong>, puede
@@ -71,16 +72,16 @@
 
                                     <div class="card-body">
                                         <div class="row d-flex justify-content-center" style="padding-top:30px;">
-
-                                            {{-- <label class="label">Año <span class="obligatory">*</span> </label> --}}
-                                            <div id="yearPickerContainer">
-                                                <div id="yearPicker">
-                                                    <span id="icon-date" class="material-symbols-outlined">
+                                            <div class="select-wrapper">
+                                                <div id="yearPickerContainer">
+                                                    {{-- <div id="yearPicker"> --}}
+                                                    <span id="icon-date" class="icon-select material-symbols-outlined">
                                                         calendar_month</span>
                                                     <input id="yearTargetPicker" class='form-control' type="text"
                                                         placeholder="yyyy" />
 
                                                     <input type="hidden" name="yearTarget" id="yearTarget" />
+                                                    {{-- </div> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -151,50 +152,60 @@
                                                     class="material-symbols-outlined">calendar_month</span>
                                                 <input id="monthYearPicker" class="form-control" type="text"
                                                     placeholder="yyyy/mm" />
+                                                <input type="hidden" name="monthYear" id="monthYear" />
+
                                             </div>
-                                            <div class="row d-flex justify-content-center align-items-center" style="gap: 20px;">
+                                            <div class="row d-flex justify-content-center align-items-center"
+                                                style="gap: 20px;">
                                                 <div class="select-wrapper">
                                                     <span id="icon-select" class="icon-select material-symbols-outlined">
                                                         business
                                                     </span>
-                                                    <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                                                        data-style="btn btn-red-icot btn-round" title="Seleccione Centro">
+                                                    <select class="selectpicker" name="centre_id" id="centre_id"
+                                                        data-size="7" data-style="btn btn-red-icot btn-round"
+                                                        title="Seleccione Centro">
                                                         @if ($user->rol_id != 1)
                                                             @foreach ($centres as $centre)
                                                                 @if ($centre->id == $user->centre_id)
-                                                                    <option value="{{ $centre->id }}" selected>{{ $centre->name }}</option>
+                                                                    <option value="{{ $centre->id }}" selected>
+                                                                        {{ $centre->name }}</option>
                                                                 @endif
                                                             @endforeach
                                                         @else
                                                             @foreach ($centres as $centre)
-                                                                <option value="{{ $centre->id }}">{{ $centre->name }}</option>
+                                                                <option value="{{ $centre->id }}">{{ $centre->name }}
+                                                                </option>
                                                             @endforeach
                                                         @endif
                                                     </select>
-                                                </div>
-                                            
+                                                    <input type="hidden" name="centre" id="centre" />                                                </div>
+
                                                 <div class="select-wrapper">
                                                     <span id="icon-select" class="icon-select material-symbols-outlined">
                                                         engineering
                                                     </span>
-                                                    <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
-                                                        data-style="btn btn-red-icot btn-round" title="Seleccione Empleado">
+                                                    <select class="selectpicker" name="employee_id" id="employee_id"
+                                                        data-size="7" data-style="btn btn-red-icot btn-round"
+                                                        title="Seleccione Empleado">
                                                         <option>SIN SELECCION</option>
                                                         @if ($user->rol_id != 1)
                                                             @foreach ($employees as $employee)
                                                                 @if ($employee->centre_id == $user->centre_id)
-                                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                                    <option value="{{ $employee->id }}">
+                                                                        {{ $employee->name }}</option>
                                                                 @endif
                                                             @endforeach
                                                         @else
                                                             @foreach ($employees as $employee)
-                                                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                                <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                                </option>
                                                             @endforeach
                                                         @endif
                                                     </select>
+                                                    <input type="hidden" name="employee" id="employee" />
                                                 </div>
                                             </div>
-                                            
+
 
                                         </div>
                                         <hr class="mt-4">
@@ -399,22 +410,6 @@
     <script type="text/javascript">
         var table;
 
-        $(document).ajaxStart(function() {
-            // Show loader when any AJAX request starts
-            Swal.fire({
-                title: 'Cargando...',
-                html: 'Por favor, espere...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                },
-            });
-        });
-
-        $(document).ajaxStop(function() {
-            Swal.close();
-        });
-
         $(function() {
             //console.log($user);
             var user = @json($user);
@@ -508,16 +503,16 @@
                 }
             }
 
-            // $("#centre_id").on('change', function() {
-            //     $('#btnTargetsPreview').removeAttr('disabled');
+            $("#centre_id").on('change', function() {
+                $('#btnTargetsPreview').removeAttr('disabled');
 
-            // });
+            });
 
             /**
              * Visualizar Objetivos
              */
             $("#btnTargetsPreview").on('click', function(e) {
-                console.log($("#centre_id").val() == "");
+                console.log($("#centre_id").val());
                 console.log($("#centre_id").text());
                 e.preventDefault();
                 if ($("#centre_id").val() == "") {
@@ -544,6 +539,7 @@
 
             $("#btnIncentivesPreview").on('click', function(e) {
                 e.preventDefault();
+
                 $('#btnIncentivesPreview').hide();
                 $('#btnIncentivesLoad').show();
                 $('#btnIncentivesLoad').prop('disabled', true);
@@ -763,8 +759,8 @@
             });
 
             function drawTable(idDataTable) {
-                $('#centre').val($("#centre_id option:selected").text());
-                $('#employee').val($("#employee_id option:selected").text());
+                $('#centre').val($("#centre_id option:selected").text().trim());
+                $('#employee').val($("#employee_id option:selected").text().trim());
                 $('#monthYear').val($("#monthYearPicker").val());
 
                 params = {};
@@ -772,6 +768,7 @@
                 params["centre"] = $('#centre').val();
                 params["employee"] = $('#employee').val();
                 params["monthYear"] = $('#monthYear').val();
+                console.log(params);
 
                 lenMenu = [];
                 url = "";

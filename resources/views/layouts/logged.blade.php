@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Scripts -->
-    <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     {{-- <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> --}}
-    <script src="{{asset('js/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('js/jquery-migrate-3.0.0.min.js')}}"></script>
-    <script src="{{asset('js/bootstrap-material-design.min.js')}}"></script>
-    <script src="{{asset('js/material-dashboard.min.js')}}"></script>
-    <script src="{{asset('js/MonthPicker.min.js')}}"></script>
-    
+    <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-material-design.min.js') }}"></script>
+    <script src="{{ asset('js/material-dashboard.min.js') }}"></script>
+    <script src="{{ asset('js/MonthPicker.min.js') }}"></script>
+
     {{-- <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script> --}}
-    
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -19,7 +20,8 @@
 
     <link rel="shortcut icon" href="{{ asset('assets/img/LogoICOT.png') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material-lite.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/font-google-material-icons.css') }}" />
@@ -37,15 +39,16 @@
     <script src="{{ asset('js/yearpicker.js') }}" async></script>
     <!-- <script src="{{ asset('js/jquery.min.js') }}" async></script> -->
 
-   
 
 
 
-    <title>{{config('app.name')}}</title>
+
+    <title>{{ config('app.name') }}</title>
 </head>
+
 <body>
     <div class="wrapper ">
-    
+
         {{-- @auth --}}
         @include('inc.sidebar')
         @include('common.alert')
@@ -55,16 +58,16 @@
         <div class="main-panel">
             @yield('content')
 
-            <script type="text/javascript" src="{{ asset('js/charts-loader.js')}}"></script>
+            <script type="text/javascript" src="{{ asset('js/charts-loader.js') }}"></script>
             {{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> --}}
-             
+
             <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
             <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
-            <script src="{{asset('js/bootstrap-selectpicker.js')}}"></script>
-            <script src="{{asset('js/bootstrap-autocomplete.min.js')}}"></script>
-            <script src="{{asset('js/moment.min.js')}}"></script>
-            
-            
+            <script src="{{ asset('js/bootstrap-selectpicker.js') }}"></script>
+            <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
+            <script src="{{ asset('js/moment.min.js') }}"></script>
+
+
             <script type="text/javascript">
                 $('div.alert').delay(2000).slideUp(300);
 
@@ -90,11 +93,13 @@
                     prevText: '<Ant',
                     nextText: 'Sig>',
                     currentText: 'Hoy',
-                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre',
+                        'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+                    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                     dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-                    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+                    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+                    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
                     weekHeader: 'Sm',
                     dateFormat: 'yy-mm-dd',
                     firstDay: 1,
@@ -102,13 +107,35 @@
                     showMonthAfterYear: false,
                     yearSuffix: ''
                 };
-                </script>
-      
+            </script>
+
+            <!-- SweetAlert Loader -->
+            <script>
+                $(document).ajaxStart(function() {
+                    Swal.fire({
+                        title: 'Cargando...',
+                        html: 'Por favor, espere...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+                    setTimeout(function() {
+                        Swal.close();
+                    }, 5000);
+                });
+
+
+                $(document).ajaxStop(function() {
+                    Swal.close();
+                });
+            </script>
+
             {{-- <script src="{{asset('js/bootstrap-material-design.min.js')}}"></script> --}}
             {{-- <script src="{{asset('js/material-dashboard.min.js')}}"></script> --}}
         </div>
-    </div>    
-    
+    </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

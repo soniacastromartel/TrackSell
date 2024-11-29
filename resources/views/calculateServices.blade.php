@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.logged')
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<link rel="stylesheet" href="{{ asset('css/material.css') }}">
+<link rel="stylesheet" href="{{ asset('css/logged.css') }}">
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/logged.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{-- @extends('layouts.logged') --}}
 
-<body>
-    @extends('layouts.logged')
+@section('content')
 
-    @section('content')
-        <div class="container-fluid" style="margin-top: 120px;">
+<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
+
+    <div class="content" style="padding-top: 80px;">
+        <div class="container-fluid" style="">
             <div class="card">
                 <div class="card-header card-header-danger">
                     <h4 class="card-title">Dinámica de Servicios</h4>
@@ -106,7 +103,8 @@
                             @csrf
                             <input type="hidden" name="service_id" value="{{ $service_id ?? '' }}">
                             <input type="hidden" name="centre_id" value="{{ $centre_id ?? '' }}">
-                            <input type="hidden" name="start_date" id="start_date" value="{{ request('start_date') }}">
+                            <input type="hidden" name="start_date" id="start_date"
+                                value="{{ request('start_date') }}">
                             <input type="hidden" name="end_date" id="end_date" value="{{ request('end_date') }}">
                             <button id="btnSubmit" type="submit" class="btn-export">Exportar <span id="icon-export"
                                     class="material-icons">file_download</span></button>
@@ -659,10 +657,9 @@
 
         </div>
         <div class="row h-50 bg-transparent"></div>
-    @endsection
-</body>
+    </div>
+@endsection
 
-</html>
 
 
 <script>

@@ -76,7 +76,7 @@
                                     <input type="hidden" name="monthYear" id="monthYear" />
                                 </div>
                                 <div class="select-wrapper">
-                                    <span id="icon-select" class="material-symbols-outlined"> business</span>
+                                    <span id="icon-select" class="icon-select material-symbols-outlined"> business</span>
                                     <select class="selectpicker" name="business_id" id="business_id" data-size="7"
                                         data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
                                         <option value="">SIN CODIGO </option>

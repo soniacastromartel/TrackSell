@@ -22,8 +22,12 @@ class TargetService
         }
         if (isset($params['centre']) && !empty($params['centre'])) {
             $idCentres = array_column($params['centre']->toArray(), 'id');
-            $whereFields .= ' and centre_employee_id in (  ' . implode(",", $idCentres) . ')';
+        
+            if (!empty($idCentres)) {
+                $whereFields .= ' and centre_employee_id in (' . implode(",", $idCentres) . ')';
+            }
         }
+        
         if (isset($params['employee']) && !empty($params['employee'])) {
             $whereFields .= ' and employee = \'' . $params['employee'] . '\'';
 

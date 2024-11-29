@@ -73,7 +73,8 @@ button:focus {
 }
 
 #monthYearPicker,
-#yearPicker {
+#yearPicker,
+#yearTargetPicker {
   padding-left: 80px;
   background-color: var(--info) !important;
   color: #fff;
