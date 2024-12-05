@@ -36,7 +36,7 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
         $data = [
             'obj1' => floatval(str_replace(',', '', $row['objetivo_venta_cruzada'] ?? 0)),
             'obj2' => floatval(str_replace(',', '', $row['objetivo_venta_privada'] ?? 0)),
-            'vd' => floatval(str_replace(',', '', $row['venta_privada'] ?? 0)),
+            // 'vd' => floatval(str_replace(',', '', $row['venta_privada'] ?? 0)),
         ];
 
         if (!isset($row['mes']) || !is_numeric($row['mes'])) {
@@ -72,7 +72,7 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
                 [
                     'obj1' => $data['obj1'],
                     'obj2' => $data['obj2'],
-                    'vd' => $data['vd'],
+                    // 'vd' => $data['vd'],
                 ]
             );
             Log::info('Target processed successfully.', [
