@@ -6,13 +6,12 @@
     color: white !important;
 }
 
-/* Style to make the title text solid white without shadows or translucency */
 .swal2-title {
     color: #ffffff !important;
-    text-shadow: none !important; /* Removes shadow */
-    opacity: 1 !important; /* Ensures full opacity */
-    text-stroke: 0 !important; /* Removes any text outline */
-    font-weight: bold; /* Optional: ensure the title is bold */
+    text-shadow: none !important; 
+    opacity: 1 !important; 
+    text-stroke: 0 !important; 
+    font-weight: bold; 
 }
 
 
@@ -30,12 +29,11 @@
 /* Set background of validation message to transparent */
 .swal2-validation-message {
     background: transparent !important;
-    color: #ffffff !important; /* Set text color to white for better contrast on black background */
-    box-shadow: none !important; /* Remove any shadow */
+    color: #ffffff !important; 
+    box-shadow: none !important;
     border: none !important;
 }
 
-/* Optional: Customize font size and padding if necessary */
 .swal2-validation-message {
     font-size: 20px;
     font-weight: bold;

@@ -4,48 +4,51 @@ namespace App\Imports;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Centre;
 
-class TargetsImport implements WithMultipleSheets 
+class TargetsImport implements WithMultipleSheets
 {
-    
-   
+
+
     private $year;
     private $isEdit;
-    private $centres; 
+    private $centres;
+    private $filePath;
 
-    public function __construct($centres, $year, $isEdit)
+    public function __construct($centres, $year, $isEdit, $filePath)
     {
-        $this->centres    = $centres; 
-        $this->year       = $year; 
-        $this->isEdit     = $isEdit;
+
+        $this->centres = $centres;
+        $this->year = $year;
+        $this->isEdit = $isEdit;
+        $this->filePath = $filePath;
     }
 
     public function sheets(): array
-    {   
-        $sheets = []; 
+    {
+        $sheets = [];
 
         if ($this->isEdit) {
-            $centreName = $this->getCentreNameFromExcel(); 
-            $centre = Centre::getCentreByNameLike($centreName);
-            
-            if ($centre) {
-                $sheets[] = new TargetSheetImport($this->year, $this->isEdit, $centre);
-            } else {
-                throw new \Exception("El centro con nombre '{$centreName}' no fue encontrado.");
+            try {
+                $sheets[] = new TargetSheetImport($this->year);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'mensaje' => $e->getMessage()
+                ], 400);
             }
         } else {
-            foreach ($this->centres as $centre) {
-                $sheets[] = new TargetSheetImport($this->year, $this->isEdit, $centre); 
+            try {
+                foreach ($this->centres as $centre) {
+                    $sheets[] = new TargetSheetImport($this->year);
+                }
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'mensaje' => $e->getMessage()
+                ], 400);
             }
+
         }
-        return $sheets; 
-    }
-
-//TODO
-    private function getCentreNameFromExcel()
-    {
-        $centreName ='Arnao';
-        return $centreName;
-
+        return $sheets;
     }
 
 }

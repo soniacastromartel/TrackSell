@@ -17,6 +17,7 @@ use App\Exports\TracingTargetsExport;
 use Illuminate\Support\Facades\Validator;
 use App\Services\TargetService;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Illuminate\Support\Facades\Log;
 use DataTables;
 use Exception;
 
@@ -62,7 +63,8 @@ class TargetController extends Controller
     {
         try {
             $fileName = $isEdit ? 'editTargetsFile' : 'targetInputFile';
-            $storageFileName = $isEdit ? 'example_target_edit.xls' : 'example_target_input.xls'; // Adjust the filename based on isEdit
+            $storageFileName = $isEdit ? 'example_target_edit.xls' : 'example_target_input.xls';
+            $filePath = storage_path() . '/' . $storageFileName;
 
             // Validate the file
             $validator = Validator::make($request->all(), [
@@ -70,6 +72,7 @@ class TargetController extends Controller
             ]);
 
             if ($validator->fails()) {
+                Log::error("Validator has failed");
                 throw new Exception('Error, superado tamaño de fichero o formato no excel');
             }
 
@@ -82,17 +85,26 @@ class TargetController extends Controller
                 $request->file($fileName)->move(storage_path(), $storageFileName);
 
                 // Import the file
-                Excel::import(new TargetsImport($centres, $year, $isEdit), storage_path() . '/' . $storageFileName);
+                Excel::import(new TargetsImport($centres, $year, $isEdit, $filePath), storage_path() . '/' . $storageFileName);
 
                 // Delete the file after import
-                Storage::delete([$storageFileName]);
+                // Storage::delete([$storageFileName]);
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            return redirect('calculateIncentive')->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'mensaje' => $e->getMessage()
+            ], 400);
         } catch (Exception $e) {
-            return redirect('calculateIncentive')->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'mensaje' => $e->getMessage()
+            ], 400);
         } catch (SheetNotFoundException $e) {
-            return redirect('calculateIncentive')->with('error', 'El número de centros es mayor que el número de hojas definidos en el documento');
+            return response()->json([
+                'success' => false,
+                'mensaje' => $e->getMessage()
+            ], 400);
         }
     }
 
@@ -148,10 +160,10 @@ class TargetController extends Controller
 
             return $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
 
-    } catch (Exception $e) {
-        return redirect()->back()->with('error', 'Error durante la importación: ' . $e->getMessage());
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Error durante la importación: ' . $e->getMessage());
+        }
     }
-}
 
     /** Funcion que se encarga de importar valores de venta privada - Incluido por supervisores */
     public function importSales(Request $request)

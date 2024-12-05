@@ -22,33 +22,20 @@
                             @if ($user->rol_id == 1)
                                 <h5 class="card-title font-size-18">- <strong>Importar Objetivos</strong>, puede
                                     descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong>
-                                        <span class="material-icons"
-                                            style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
-                                </h5>
-                                <hr>
-                                <h5 class="card-title font-size-18">- <strong>Editar Objetivos</strong>, puede
-                                    descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                        href="{{ asset('assets/excel/plantilla_editar_objetivos.xls') }}"><strong>aquí</strong>
-                                        <span class="material-icons"
-                                            style="vertical-align: middle;margin: 5px;">download_for_offline</span>
-                                    </a>
-
+                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong></a>
                                 </h5>
                                 <hr>
                             @endif
-                            {{-- <h5 class="card-title font-size-18">- <strong>Importar Venta Privada</strong>, puede
+                            <h5 class="card-title font-size-18">- <strong>Importar Venta Privada</strong>, puede
                                 descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                    href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong> <span
-                                    class="material-icons" style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
+                                    href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong></a>
                             </h5>
-                            <hr> --}}
+                            <hr>
                             <h5 class="card-title font-size-18">- <strong>Incentivos: </strong>Indicar en formulario centro
                                 / empleado / fecha
                                 según se requiera y hacer click en botón <span
-                                    style="color:var(--red-icot);font-weight: bolder;"> <span class="material-icons"
-                                        style="vertical-align: middle;margin: 5px;">download_for_offline</span>
-                                    Exportar</span>
+                                    style="color:var(--red-icot);font-weight: bolder;"> <span
+                                        class="material-icons">file_download</span>Exportar</span>
                                 <h5>
                                     <h5 class="text-right" style="color:grey;font-size:14px;">* Tenga en cuenta que el
                                         fichero a importar debe
@@ -71,17 +58,16 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <div class="row d-flex justify-content-center" style="padding-top:30px;">
-                                            <div class="select-wrapper">
-                                                <div id="yearPickerContainer">
-                                                    {{-- <div id="yearPicker"> --}}
-                                                    <span id="icon-date" class="icon-select material-symbols-outlined">
-                                                        calendar_month</span>
+                                        <div class="row justify-content-center">
+
+                                            {{-- <label class="label">Año <span class="obligatory">*</span> </label> --}}
+                                            <div id="yearPickerContainer">
+                                                <div id="yearPicker">
                                                     <input id="yearTargetPicker" class='form-control' type="text"
                                                         placeholder="yyyy" />
-
+                                                    <span id="icon-date" class="material-symbols-outlined">
+                                                        calendar_month</span>
                                                     <input type="hidden" name="yearTarget" id="yearTarget" />
-                                                    {{-- </div> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -90,51 +76,30 @@
                                             <span class="m-5"></span>
                                         @endif --}}
                                             @if ($user->rol_id == 1)
-                                                <div class="interspace">
-                                                    <button id="btnImportTargets" class="file-upload btn-import">
-                                                        <span id="icon-import" class="material-icons">upload</span>Importar
-                                                        Objetivos
-                                                        <input type="file" name="targetInputFile" id="targetInputFile"
-                                                            class="upload" />
-                                                    </button>
-                                                </div>
-                                                <div class="interspace">
-                                                    <button id="btnEditTargets" class="file-upload btn-import">
-                                                        <span id="icon-import" class="material-icons">edit</span>Editar
-                                                        Objetivos
-                                                        <input type="file" name="editTargetsFile" id="editTargetsFile"
-                                                            class="upload" />
-                                                    </button>
-                                                    <button id="btnEditTargetsLoad" class="file-upload btn-import"
-                                                        style="display: none">
-                                                        <span id="spinner" class="spinner-border spinner-border-sm"
-                                                            role="status" aria-hidden="true"></span> Editar Objetivos
-                                                    </button>
-                                                </div>
-                                            @endif
-                                            <div class="interspace">
-                                                <button id="btnImportSales" class="file-upload btn-import">
-                                                    <span id="icon-import"
-                                                        class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
-                                                    <input type="file" name="targetInputSalesFile"
-                                                        id="targetInputSalesFile" class="upload" />
+                                                <button id="btnImportTargets" class="file-upload btn-import">
+                                                    <span id="icon-import" class="material-icons">upload</span>Importar
+                                                    Objetivos
+                                                    <input type="file" name="targetInputFile" id="targetInputFile"
+                                                        class="upload" />
                                                 </button>
-                                            </div>
+                                            @endif
 
-                                            @if ($user->rol_id != 1)
-                                                <span class="m-3"></span>
-                                            @endif
-                                            <div class="interspace">
-                                                <button id="btnTracingTargets" class="file-upload btn-import">
-                                                    <span id="icon-export"
-                                                        class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
-                                                </button>
-                                                <button id="btnTracingTargetsLoad" class="file-upload btn-import"
-                                                    style="display: none">
-                                                    <span class="spinner-border spinner-border-sm" role="status"
-                                                        aria-hidden="true"></span> Obteniendo Datos...
-                                                </button>
-                                            </div>
+                                            <button id="btnImportSales" class="file-upload btn-import">
+                                                <span id="icon-import"
+                                                    class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
+                                                <input type="file" name="targetInputSalesFile" id="targetInputSalesFile"
+                                                    class="upload" />
+                                            </button>
+                                            {{-- 
+                                        @if ($user->rol_id != 1)
+                                            <span class="m-3"></span>
+                                        @endif --}}
+
+                                            <button id="btnTracingTargets" class="file-upload btn-import">
+                                                <span id="icon-export"
+                                                    class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
+                                            </button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -146,70 +111,73 @@
                                         <h5 class="card-title">Incentivos</h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row d-flex justify-content-center" style="padding-top:30px;">
+                                        <div class="row d-flex justify-content-center">
+                                            {{--        <label class="label">Fecha <span class="obligatory">*</span> </label> --}}
                                             <div id="monthYearPickerContainer">
-                                                <span id="icon-date"
-                                                    class="material-symbols-outlined">calendar_month</span>
-                                                <input id="monthYearPicker" class="form-control" type="text"
-                                                    placeholder="yyyy/mm" />
                                                 <input type="hidden" name="monthYear" id="monthYear" />
-
+                                                <span id="icon-date" class="material-symbols-outlined">
+                                                    calendar_month</span>
+                                                <input id="monthYearPicker" class='form-control' type="text"
+                                                    placeholder="yyyy/mm" />
                                             </div>
-                                            <div class="row d-flex justify-content-center align-items-center"
-                                                style="gap: 20px;">
-                                                <div class="select-wrapper">
-                                                    <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                        business
-                                                    </span>
-                                                    <select class="selectpicker" name="centre_id" id="centre_id"
-                                                        data-size="7" data-style="btn btn-red-icot btn-round"
-                                                        title="Seleccione Centro">
-                                                        @if ($user->rol_id != 1)
-                                                            @foreach ($centres as $centre)
-                                                                @if ($centre->id == $user->centre_id)
-                                                                    <option value="{{ $centre->id }}" selected>
-                                                                        {{ $centre->name }}</option>
-                                                                @endif
-                                                            @endforeach
-                                                        @else
-                                                            @foreach ($centres as $centre)
-                                                                <option value="{{ $centre->id }}">{{ $centre->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                    <input type="hidden" name="centre" id="centre" />
-                                                </div>
 
-                                                <div class="select-wrapper">
-                                                    <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                        engineering
-                                                    </span>
-                                                    <select class="selectpicker" name="employee_id" id="employee_id"
-                                                        data-size="7" data-style="btn btn-red-icot btn-round"
-                                                        title="Seleccione Empleado">
-                                                        <option>SIN SELECCION</option>
-                                                        @if ($user->rol_id != 1)
-                                                            @foreach ($employees as $employee)
-                                                                @if ($employee->centre_id == $user->centre_id)
-                                                                    <option value="{{ $employee->id }}">
-                                                                        {{ $employee->name }}</option>
-                                                                @endif
-                                                            @endforeach
-                                                        @else
-                                                            @foreach ($employees as $employee)
-                                                                <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                                </option>
-                                                            @endforeach
+                                        </div>
+
+                                        <div class=" ">
+                                            <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
+                                                data-style="btn btn-red-icot btn-round" title=" Seleccione Centro"
+                                                tabindex="-98">
+                                                @if ($user->rol_id != 1)
+                                                    @foreach ($centres as $centre)
+                                                        @if ($centre->id == $user->centre_id)
+                                                            <option value="{{ $centre->id }}" selected>
+                                                                {{ $centre->name }}</option>
                                                         @endif
-                                                    </select>
-                                                    <input type="hidden" name="employee" id="employee" />
-                                                </div>
-                                            </div>
+                                                    @endforeach
+                                                @else
+                                                    @foreach ($centres as $centre)
+                                                        <option value="{{ $centre->id }}">{{ $centre->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            <input type="hidden" name="centre" id="centre" />
+
+
+                                            <select class="selectpicker" name="employee_id" id="employee_id"
+                                                data-size="7" data-style="btn btn-red-icot btn-round"
+                                                title=" Seleccione Empleado" tabindex="-98">
+                                                <option>SIN SELECCION </option>
+                                                @if ($user->rol_id != 1)
+                                                    @foreach ($employees as $employee)
+                                                        @if ($employee->centre_id == $user->centre_id)
+                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    @foreach ($employees as $employee)
+                                                        <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            <input type="hidden" name="employee" id="employee" />
+
 
 
                                         </div>
+
+
+
+
+
+
+
+
                                         <hr class="mt-4">
+
+
 
                                         <div class="" style="display: flex; justify-content:center;">
 
@@ -254,6 +222,8 @@
                                         <hr class="mt-4">
 
                                         <div class="row" style="padding:10px; display:flex; justify-content:center; ">
+
+
                                             <button id="btnClear" href="#" class="btn-refresh">
                                                 <span id="icon-refresh"
                                                     class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
@@ -267,11 +237,15 @@
                                             <button id="btnSubmitLoad" type="submit" class="btn-export"
                                                 style="display: none">
                                                 <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span> Obteniendo Datos...
+                                                    aria-hidden="true"></span>
                                             </button>
+
                                         </div>
+
+
                                     </div>
                                 </div>
+
                             </div>
 
                         </div>
@@ -414,6 +388,8 @@
         $(function() {
             //console.log($user);
             var user = @json($user);
+
+            // Hacer un console.log del usuario
             console.log(user);
 
             $('#centreName').hide();
@@ -473,6 +449,7 @@
 
             // Define the importPrivateSales function to handle the AJAX request
             async function importPrivateSales(amount) {
+                console.log(amount);
                 try {
                     // Get current date in YYYY-MM-DD format
                     const currentDate = new Date().toISOString().split('T')[0]; // e.g., "2024-11-14"
@@ -481,10 +458,14 @@
                         "privateSales": amount,
                         "date": currentDate
                     };
+
+                    console.log(params);
+
                     const response = await $.ajax({
                         url: "{{ route('target.importPrivateSales') }}",
                         type: 'post',
                         data: params,
+                        // dataType: "json", // Expect JSON response from the server
                         success: function(response) {
                             if (response.success) {
                                 showAlert('success', "Venta Importada Correctamente");
@@ -497,23 +478,26 @@
                             showAlert('error', `Error en la solicitud: ${textStatus}`);
                         }
                     });
+
                     return response;
+
                 } catch (error) {
                     console.error("Error al Importar:", error);
                     throw new Error(error.statusText || "Error en la solicitud");
                 }
             }
 
-            $("#centre_id").on('change', function() {
-                $('#btnTargetsPreview').removeAttr('disabled');
 
-            });
+            // $("#centre_id").on('change', function() {
+            //     $('#btnTargetsPreview').removeAttr('disabled');
+
+            // });
 
             /**
              * Visualizar Objetivos
              */
             $("#btnTargetsPreview").on('click', function(e) {
-                console.log($("#centre_id").val());
+                console.log($("#centre_id").val() == "");
                 console.log($("#centre_id").text());
                 e.preventDefault();
                 if ($("#centre_id").val() == "") {
@@ -540,7 +524,6 @@
 
             $("#btnIncentivesPreview").on('click', function(e) {
                 e.preventDefault();
-
                 $('#btnIncentivesPreview').hide();
                 $('#btnIncentivesLoad').show();
                 $('#btnIncentivesLoad').prop('disabled', true);
@@ -584,7 +567,6 @@
                 $('select').selectpicker("refresh");
                 $("input[name=trackingState][value='service']").prop("checked", true);
             }
-
             $("#btnClear").on('click', function(e) {
                 e.preventDefault();
                 clearForms();
@@ -651,8 +633,8 @@
                         $('#btnSubmit').show();
                     },
                     complete: function() {
-                        $('#btnSubmitLoad').hide();
-                        $('#btnSubmit').show();
+                        $("#btnSubmit").html(
+                            "<span class='material-icons mr-1'>download</span> Exportar");
                         showToast('info', 'Archivo Descargado');
                     }
 
@@ -679,125 +661,89 @@
                 },
             });
 
-            async function handleFileChange(inputSelector, formAction, buttonToHide, yearPickerSelector = null) {
-                $(inputSelector).off('change').on('change', async function(event) {
-                    console.log(event);
-                    event.preventDefault();
-                    $("#importTargetForm").attr('action', formAction);
-                    $("#importTargetForm").attr('enctype', "multipart/form-data");
-                    $(buttonToHide).hide();
-                    if (yearPickerSelector) {
-                        $('#yearTarget').val($(yearPickerSelector).val());
-                    }
-                    // Submit the form using AJAX to handle the loader better
-                    const formData = new FormData($("#importTargetForm")[0]);
-                    try {
-                        const response = await $.ajax({
-                            url: formAction,
-                            method: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                console.log('success');
-                                setTimeout(() => showAlert('success', response
-                                    .message || 'Cargado Correctamente'), 8000);
-                                $(buttonToHide).show();
-                            },
-                            error: function(error) {
-                                setTimeout(() => showAlert('error', error.responseJSON
-                                        ?.message ||
-                                        'Ha habido un error en la importación'),
-                                    8000);
+            $("#targetInputFile").on('change', function() {
+                $("#importTargetForm").attr('action', '{{ route('target.import') }}');
+                $("#importTargetForm").attr('enctype', "multipart/form-data");
+                $('#btnImportTargets').hide();
+                $('#targetInputFileLoad').show();
+                $('#yearTarget').val($("#yearTargetPicker").val());
+                $("#importTargetForm").submit();
+            });
 
-                                $(buttonToHide).show();
-                            }
-                        });
-                        return response;
-                    } catch (error) {
-                        console.error("Error al Importar:", error);
-                        throw new Error(error.statusText || "Error en la solicitud");
-                    } finally {
-                        $(buttonToHide).show();
-                        // Limpiar el formulario para evitar datos residuales
-                        $('#importTargetForm')[0].reset();
-                        
-                        $('#monthYearPicker').val(textMonthYear);
-                       
-                        $('#yearTargetPicker').val(date.getFullYear());
-
-                    }
-
-                });
-            }
-
-            handleFileChange("#targetInputFile", "{{ route('target.import') }}", '#btnImportTargets',
-                "#yearTargetPicker");
-            handleFileChange("#editTargetsFile", "{{ route('target.import') }}", '#btnEditTargets',
-                "#yearTargetPicker");
-            handleFileChange("#targetInputSalesFile", "{{ route('target.importSales') }}", '#btnImportSales');
+            $("#targetInputSalesFile").on('change', function() {
+                $("#importTargetForm").attr('action', '{{ route('target.importSales') }}');
+                $("#importTargetForm").attr('enctype', "multipart/form-data");
+                $('#btnImportSales').hide();
+                $('#targetInputFileLoad').show();
+                $("#importTargetForm").submit();
+            });
 
             /**
              * Exportar Seguimiento de Objetivos
              */
 
-            $("#btnTracingTargets").on("click", function(e) {
+            $("#btnTracingTargets").on('click', function(e) {
                 e.preventDefault();
-
-                $('#btnTracingTargets').hide();
-                $('#btnTracingTargetsLoad').show();
-
-                const params = {
-                    _token: "{{ csrf_token() }}",
-                    yearTarget: $("#yearTargetPicker").val(),
-                };
+                $("#btnTracingTargets").html(
+                    "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Obteniendo datos..."
+                );
+                params = {};
+                params["_token"] = "{{ csrf_token() }}";
+                params["yearTarget"] = $("#yearTargetPicker").val();
                 $.ajax({
                     url: "{{ route('target.targetsReportDownload') }}",
-                    type: "post",
+                    type: 'post',
                     data: params,
-                    dataType: "binary",
+                    dataType: 'binary',
                     xhrFields: {
-                        responseType: "blob",
+                        'responseType': 'blob'
                     },
                     xhr: function() {
-                        const xhr = new XMLHttpRequest();
+                        var xhr = new XMLHttpRequest();
                         xhr.onreadystatechange = function() {
                             if (xhr.readyState == 2) {
-                                xhr.responseType = xhr.status === 200 ? "blob" : "text";
+                                if (xhr.status == 200) {
+                                    xhr.responseType = "blob";
+                                } else {
+                                    xhr.responseType = "text";
+                                }
                             }
                         };
                         return xhr;
                     },
-                    success: function(data, textStatus) {
-                        if (textStatus === "success") {
-                            const link = document.createElement("a");
+                    success: function(data, textStatus, jqXHR) {
+                        if (textStatus === 'success') {
+                            $('#btnSubmitLoad').hide();
+                            $('#btnSubmit').show();
+                            var link = document.createElement('a'),
+                                filename = 'target.xls';
                             link.href = URL.createObjectURL(data);
-                            link.download = "target.xls";
+                            link.download = filename;
                             link.click();
                         }
                     },
-                    error: function(xhr) {
-                        try {
-                            const response = JSON.parse(xhr.responseText);
-                            showAlert("error", response);
-                            alert(response.errors);
-                        } catch {
-                            alert("An unexpected error occurred.");
-                        }
+                    error: function(xhr, status, error) {
+                        var response = JSON.parse(xhr.responseText);
+                        showAlert('error', response);
+                        alert(response.errors);
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmit').show();
                     },
                     complete: function() {
-                        showToast("info", "Archivo Descargado");
-                        $('#btnTracingTargets').show();
-                        $('#btnTracingTargetsLoad').hide();
-                    },
-                }).fail(function(jqXHR) {
-                    showAlert("error", jqXHR.responseText);
+                        showToast('info', 'Archivo Descargado');
+                        $("#btnTracingTargets").html(
+                            "<span class='material-icons mr-1'>download</span> Seguimiento de objetivos"
+                        );
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    showAlert('error', jqXHR.responseText);
+
                 });
             });
 
             function drawTable(idDataTable) {
-                $('#centre').val($("#centre_id option:selected").text().trim());
-                $('#employee').val($("#employee_id option:selected").text().trim());
+                $('#centre').val($("#centre_id option:selected").text());
+                $('#employee').val($("#employee_id option:selected").text());
                 $('#monthYear').val($("#monthYearPicker").val());
 
                 params = {};
@@ -805,7 +751,6 @@
                 params["centre"] = $('#centre').val();
                 params["employee"] = $('#employee').val();
                 params["monthYear"] = $('#monthYear').val();
-                console.log(params);
 
                 lenMenu = [];
                 url = "";
