@@ -3,6 +3,7 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Centre;
+use Illuminate\Support\Facades\Log;
 
 class TargetsImport implements WithMultipleSheets
 {
@@ -25,15 +26,14 @@ class TargetsImport implements WithMultipleSheets
     public function sheets(): array
     {
         $sheets = [];
-
         if ($this->isEdit) {
             try {
                 $sheets[] = new TargetSheetImport($this->year);
             } catch (\Exception $e) {
-                return response()->json([
-                    'success' => false,
-                    'mensaje' => $e->getMessage()
-                ], 400);
+                Log::error('Error initializing TargetSheetImport for edit mode', [
+                    'message' => $e->getMessage(),
+                ]);
+                throw $e; 
             }
         } else {
             try {
@@ -41,14 +41,15 @@ class TargetsImport implements WithMultipleSheets
                     $sheets[] = new TargetSheetImport($this->year);
                 }
             } catch (\Exception $e) {
-                return response()->json([
-                    'success' => false,
-                    'mensaje' => $e->getMessage()
-                ], 400);
+                Log::error('Error initializing sheets for centres', [
+                    'message' => $e->getMessage(),
+                    'centre' => $centre ?? 'N/A',
+                ]);
+                throw $e; 
             }
-
-        }
+        }    
         return $sheets;
     }
+    
 
 }

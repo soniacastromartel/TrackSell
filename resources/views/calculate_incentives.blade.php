@@ -85,7 +85,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row  d-flex flex-column align-content-center  ">
+                                        <hr class="mt-4">
+
+                                        <div class="row  d-flex flex-column align-content-center  "  id="buttonContainer">
                                             {{-- @if ($user->rol_id != 1)
                                             <span class="m-5"></span>
                                         @endif --}}
@@ -140,7 +142,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-8">
+                            <div class="col-lg-8 d-flex flex-column">
                                 <div class="card">
                                     <div class="card-header card-header-danger">
                                         <h5 class="card-title">Incentivos</h5>
@@ -288,7 +290,6 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header card-header-danger">
-
                         <h4 class="card-title" id="title-targets">OBJETIVOS</h4>
                     </div>
                     <div class="card-header-table">
@@ -365,9 +366,32 @@
             </div>
         </div>
 
+        {{-- <div class="row" id="summaryData">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title" id="title-summary">RESUMEN</h4>
+                    </div>
+                    <div class="card-header-table">
+                        <table class="table-striped table-bordered summary-datatable col-lg-12 table">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Centro</th>
+                                    <th>Suma Incentivo</th>
+                                    <th>Suma Bonus</th>
+                                    <th>Suma Ingreso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+
     </div>
-    </div>
-    </div>
+    
     <style>
         .content {
             background-image: url(/assets/img/background_continue.png) !important;
@@ -412,7 +436,6 @@
         var table;
 
         $(function() {
-            //console.log($user);
             var user = @json($user);
             console.log(user);
 
@@ -432,8 +455,6 @@
              */
             $("#btnImportSales").on("click", function(e) {
                 e.preventDefault();
-                console.log("Importa Tu Venta Privada");
-
                 Swal.fire({
                     title: "Importa Tu Venta Privada",
                     input: "number",
@@ -448,7 +469,6 @@
                     inputValidator: (value) => {
                         const today = new Date();
                         const day = today.getDate();
-
                         // Validate day range (20th to 24th)
                         if (day < 20 || day > 24) {
                             return "Aún no puedes importar tu venta privada";
@@ -514,7 +534,6 @@
              */
             $("#btnTargetsPreview").on('click', function(e) {
                 console.log($("#centre_id").val());
-                console.log($("#centre_id").text());
                 e.preventDefault();
                 if ($("#centre_id").val() == "") {
                     showToast('error', 'Seleccione Centro a Mostrar');
@@ -545,8 +564,6 @@
                 $('#btnIncentivesLoad').show();
                 $('#btnIncentivesLoad').prop('disabled', true);
                 drawTable('.incentives-datatable');
-
-
                 $('#targetsData').hide();
                 $('#summaryData').hide();
                 $('#incentivesData').show();
@@ -669,15 +686,19 @@
 
             $('#yearTargetPicker').val(date.getFullYear());
             $('#yearTargetPicker').datepicker({
-                changeMonth: false,
-                changeYear: true,
-                showButtonPanel: true,
-                closeText: 'Select',
-                currentText: 'This year',
-                onClose: function(dateText, inst) {
-                    $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0, 1)));
-                },
-            });
+                    changeMonth: false,
+                    changeYear: true,
+                    showButtonPanel: true,
+                    closeText: 'Select',
+                    currentText: 'This year',
+                    onClose: function(dateText, inst) {
+                        $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0, 1)));
+                        $('#buttonContainer').removeClass('active');
+                    },
+                })
+                .on('focus', function() {
+                    $('#buttonContainer').addClass('active');
+                });
 
             async function handleFileChange(inputSelector, formAction, buttonToHide, yearPickerSelector = null) {
                 $(inputSelector).off('change').on('change', async function(event) {
@@ -699,7 +720,6 @@
                             processData: false,
                             contentType: false,
                             success: function(response) {
-                                console.log('success');
                                 setTimeout(() => showAlert('success', response
                                     .message || 'Cargado Correctamente'), 8000);
                                 $(buttonToHide).show();
@@ -721,9 +741,9 @@
                         $(buttonToHide).show();
                         // Limpiar el formulario para evitar datos residuales
                         $('#importTargetForm')[0].reset();
-                        
+
                         $('#monthYearPicker').val(textMonthYear);
-                       
+
                         $('#yearTargetPicker').val(date.getFullYear());
 
                     }
@@ -735,7 +755,7 @@
                 "#yearTargetPicker");
             handleFileChange("#editTargetsFile", "{{ route('target.import') }}", '#btnEditTargets',
                 "#yearTargetPicker");
-            handleFileChange("#targetInputSalesFile", "{{ route('target.importSales') }}", '#btnImportSales');
+            // handleFileChange("#targetInputSalesFile", "{{ route('target.importSales') }}", '#btnImportSales');
 
             /**
              * Exportar Seguimiento de Objetivos

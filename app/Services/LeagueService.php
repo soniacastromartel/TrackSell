@@ -14,193 +14,196 @@ use Illuminate\Support\Facades\Log;
  * Servicio de datos para la liga de centros
  */
 
-class LeagueService {
+class LeagueService
+{
 
-    /**
-     * Genera la liga de centros
-     * @param request Solicitud recibida
-     */
     public function generateLeague(Request $request)
     {
-        try{
-            $currentYear= date('Y');
-            $currentMonth= date('m');
-            $isCurrent= false;
+        try {
+            $currentYear = date('Y');
+            $currentMonth = (int) date('m'); // Ensure currentMonth is an integer
+            $isCurrentYear = false;
 
-            $centresAnualData = $this->getLeagueData($request);
-            $params = $request->all();
+            // Retrieve league data
+            $annualCentreData = $this->getLeagueData($request);
+            $requestParams = $request->all();
 
-            if (strpos($currentMonth, '0') === 0) {
-                $currentMonth = substr($currentMonth, 1);
-            }
-            if ($params ['year']== $currentYear){
-                $limit= (int) $currentMonth;
-                $isCurrent= true;
+            if ($requestParams['year'] == $currentYear) {
+                $isCurrentYear = true;
             }
 
-            if (!empty($centresAnualData[0])) {
-                $clasification = ['data' => []];
-                $totalPoints = 0;
-                $cvSum = 0;
+            if (!empty($annualCentreData[0])) {
+                $classificationData = [];
 
-                foreach ($centresAnualData as $i=>$centreYear) {
+                foreach ($annualCentreData as $centreIndex => $yearlyData) {
                     $totalPoints = 0;
-                    $cvSum = 0;
-                    
-                    foreach ($centreYear as $j=>$centreMonth) {
-                        if ($params['month'] == null) {
-                            $totalPoints += $centreMonth->points;
-                            if ($centreMonth->cv === -2) {
-                                $centreMonth->cv = 0;
+                    $totalCvSum = 0;
+
+                    foreach ($yearlyData as $monthIndex => $monthlyData) {
+                        // Accumulate points and CV based on conditions
+                        if (is_null($requestParams['month'])) {
+                            $totalPoints += $monthlyData->points;
+                            $monthlyData->cv = ($monthlyData->cv === -2) ? 0 : $monthlyData->cv;
+                            $totalCvSum += $monthlyData->cv;
+
+                            if ($isCurrentYear && $monthIndex == $currentMonth - 1) {
+                                break; // Stop at the current month's data
                             }
-                             $cvSum += $centreMonth->cv;
-                            if($isCurrent){
-                                if($j == $limit -1){
-                                    break;
-                                }
-                            }
-                           
-                        } else {
-                            if ($centreMonth->month == $params['month']) {
-                                $totalPoints = $centreMonth->points;
-                                $cvSum = $centreMonth->cv;
-                            }
+                        } elseif ($monthlyData->month == $requestParams['month']) {
+                            $totalPoints = $monthlyData->points;
+                            $totalCvSum = $monthlyData->cv;
                         }
                     }
 
-
-                    if ($params['month']== null && $isCurrent){
-                        // $cvSum += (($vpAnual -$obj_vpAnual)+($vcAnual - $obj_vcAnual))/($obj_vcAnual+$obj_vpAnual);
-                        $cvSum= $cvSum/$limit;
-                    }else if ($params['month']== null && !$isCurrent){
-                        $cvSum= $cvSum/12;
+                    // Calculate average CV
+                    $monthsCount = $isCurrentYear ? $currentMonth : 12;
+                    if (is_null($requestParams['month'])) {
+                        $totalCvSum /= $monthsCount;
                     }
 
-                    
-                    if($cvSum < -1){
-                        $cvSum= -1;
-                    }
-                    
-                    $actualCentre = Centre::getCentreByField($centreYear[0]->centre_id);
-                    $clasification['data'][$i] = [
-                        'centre'=>$actualCentre[0]->name,
-                        'points'=>$totalPoints,
-                        'average'=> round($cvSum, 2)
+                    $totalCvSum = max($totalCvSum, -1);
+                    $centreDetails = Centre::getCentreByField($yearlyData[0]->centre_id);
+                    $classificationData[$centreIndex] = [
+                        'centre' => $centreDetails[0]->name,
+                        'points' => $totalPoints,
+                        'average' => floor($totalCvSum) == $totalCvSum ? $totalCvSum : number_format($totalCvSum, 3)
                     ];
                 }
 
-                $finalClasification = [];
-                $orderedPoints = array_column($clasification['data'], 'points');
-                $orderedCv = array_column($clasification['data'], 'average');
-                array_multisort($orderedPoints, SORT_DESC, $orderedCv, SORT_DESC, $clasification['data']);
-                foreach ($clasification['data'] as $index=>$clasif) {
-                    $clasif['position'] = $index+1;
-                    $finalClasification[] = $clasif;
-                }
-                return collect($finalClasification);
-            } else {
-                return [];
+                // Sort and add positions to classification data
+                $sortedClassification = $this->sortAndRankClassification($classificationData);
+                return collect($sortedClassification);
             }
-        } catch (Exception $e) {            
-            return response()->json(
-                [
-                'success' => 'false',
-                'errors'  => $e->getMessage(),
-            ], 400 ); 
+
+            return [];
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->getMessage(),
+            ], 400);
         }
     }
 
     /**
-     * Realiza los cálculos generales para generar la clasificacion
+     * Sorts the classification data by points and CV, then ranks each entry.
+     *
+     * @param array $classificationData
+     * @return array
      */
+    private function sortAndRankClassification(array $classificationData): array
+    {
+        $pointsColumn = array_column($classificationData, 'points');
+        $cvColumn = array_column($classificationData, 'average');
+
+        array_multisort($pointsColumn, SORT_DESC, $cvColumn, SORT_DESC, $classificationData);
+
+        foreach ($classificationData as $index => &$entry) {
+            $entry['position'] = $index + 1;
+        }
+
+        return $classificationData;
+    }
+
+
     private function getLeagueData(Request $request)
     {
-        try{
-            // Tratamiento y construccion de consulta
-            $params = $request->all();
+        try {
+            $params = $this->prepareParams($request);
             $targetService = new TargetService();
-
-            $year  = $params['year'];
-            $params['acumulative'] = true; 
-            $params['monthYear'] = '1/'. $params['year']; 
-
-            $centres = Centre::getCentersWithoutHCT();
-            $params['centre'] = $centres;           
-
-            $whereFields = "";          
-            $idCentres = array_column($params['centre']->toArray(), 'id');
-
-            $whereFields .=  " centre_id in (" . implode(",", $idCentres) . ")" ;
-            $whereFields .=  " and ((month between 1 and 12)  and  year between " .  $year . ' and ' . $year .')';
-
-            // Obtencion de datos segun parametros
-            $targetsDefined = DB::table('targets')
-                ->whereRaw($whereFields)
-                ->orderBy('month', 'asc')
-                ->orderBy('year', 'asc')
-                ->get()
-                ->toArray();
-
+            // Obtención de objetivos definidos
+            $targetsDefined = $this->fetchTargets($params);
+            // Normalización de datos de seguimiento
             $exportData = $targetService->getExportTarget($params);
-            $tracking = $targetService->normalizeData($exportData);
-
-            // Si es una consulta individual y en caso de no existir 
-            // trackings en centro se sale
-            if (!empty($request['centre']) && empty($tracking[$request['centre']])) {
-                return []; 
+            $trackingData = $targetService->normalizeData($exportData);
+            // Validación de consulta individual
+            if (!empty($params['specificCentre']) && empty($trackingData[$params['specificCentre']])) {
+                return [];
             }
-
-            $regData = []; 
-            $groupYearCentreMonth = [];               
-            $size = count($targetsDefined);
-            foreach ( $centres as $c ) {
-                for ($i=0; $i < $size; $i++) {  
-                    if ($c->id == $targetsDefined[$i]->centre_id ) {
-                        $regData[] = $targetsDefined[$i];
-                    }                  
-                }  
-            }
-
-            foreach ( $params['centre'] as $centre ) {
-                foreach ( $regData as $reg ) {
-                    if ($reg->centre_id == $centre->id) {
-                        if (isset($tracking[$centre->name])) {
-                            $trackingsC = $targetService->filterTarget($tracking[$centre->name], $reg->month, $year);
-                            $vcMonth = $targetService->getVC($params['centre'], [$centre->name => $trackingsC]);
-                            $reg->vc = $vcMonth;                            
-                            $groupYearCentreMonth[] = $reg;
-                        } else {
-                            $reg->vc = 0;
-                            $groupYearCentreMonth[] = $reg;
-                        }                                       
-                    }
-                }
-
-                $yearGroupCentre[$centre->name] = $groupYearCentreMonth;
-                $groupYearCentreMonth = [];                      
-            }
-
-            // Redefine el obj real para los meses donde no se ha cumplido objetivo
-            foreach ( $yearGroupCentre as $center4Months) { 
-                $c4m = $center4Months;
-                foreach ( $center4Months as $centreMonth ) { 
-                    $centreSearch = Centre::getCentreByField($centreMonth->centre_id);
-                    $objCumplir = $targetService->getTarget($centreSearch, $centreMonth->month, $year);
-
-                    if ($centreMonth->month != $objCumplir[$centreSearch[0]->id]->month) {
-                        $c4m[$centreMonth->month-1]->obj1 = $objCumplir[$centreSearch[0]->id]->obj1;
-                        $c4m[$centreMonth->month-1]->obj2 = $objCumplir[$centreSearch[0]->id]->obj2;
-                    }
-                }
-                $calcCoeficienteVenta[] = $this->calculations($c4m, $params['year']);
-            }
-            // Se suman los puntos extras y se retornan los datos agrupados y calculados
-            return $this->setExtraPoint($calcCoeficienteVenta);
-        } catch(Exception $ex){
+            // Procesamiento de datos por centro y mes
+            $processedData = $this->processTargetsByCentre($params['centres'], $targetsDefined, $trackingData, $targetService, $params['year']);
+            // Cálculo del coeficiente de venta y retorno de datos
+            return $this->calculateAndSetExtraPoints($processedData, $params['year']);
+        } catch (Exception $ex) {
             Log::debug($ex);
             return null;
         }
     }
+    
+    /**
+     * Prepara los parámetros para la consulta.
+     */
+    private function prepareParams(Request $request): array
+    {
+        $params = $request->all();
+        $params['acumulative'] = true;
+        $params['monthYear'] = '1/' . $params['year'];
+        $params['centres'] = Centre::getCentersWithoutHCT();
+        $params['specificCentre'] = $request['centre'] ?? null;
+        return $params;
+    }
+    
+    /**
+     * Construye la consulta y obtiene los objetivos definidos.
+     */
+    private function fetchTargets(array $params)
+    {
+        $idCentres = array_column($params['centres']->toArray(), 'id');
+        $whereFields = "centre_id IN (" . implode(",", $idCentres) . ") ";
+        $whereFields .= "AND ((month BETWEEN 1 AND 12) AND year BETWEEN {$params['year']} AND {$params['year']})";
+        return DB::table('targets')
+            ->whereRaw($whereFields)
+            ->orderBy('month', 'asc')
+            ->orderBy('year', 'asc')
+            ->get()
+            ->toArray();
+    }
+    
+    /**
+ * Procesa los objetivos por centro y mes, calculando los VC por mes.
+ */
+private function processTargetsByCentre($centres, $targets, $trackingData, $targetService, $year)
+{
+    $processedData = [];
+    foreach ($centres as $centre) {
+        $centreTargets = array_filter($targets, function ($target) use ($centre) {
+            return $target->centre_id == $centre->id;
+        });
+        foreach ($centreTargets as $target) {
+            if (isset($trackingData[$centre->name])) {
+                $filteredTracking = $targetService->filterTarget($trackingData[$centre->name], $target->month, $year);
+                $vcMonth = $targetService->getVC($centres, [$centre->name => $filteredTracking]);
+                $target->vc = $vcMonth;
+            } else {
+                $target->vc = 0;
+            }
+            $processedData[$centre->name][] = $target;
+        }
+    }
+    return $processedData;
+}
+
+    
+    /**
+     * Calcula coeficientes de venta y asigna puntos extra.
+     */
+    private function calculateAndSetExtraPoints(array $processedData, int $year)
+    {
+        $finalData = [];
+        foreach ($processedData as $centreName => $centreData) {
+            foreach ($centreData as $target) {
+                $centre = Centre::getCentreByField($target->centre_id);
+                $monthlyTarget = (new TargetService())->getTarget($centre, $target->month, $year);
+    
+                if ($target->month != $monthlyTarget[$centre[0]->id]->month) {
+                    $target->obj1 = $monthlyTarget[$centre[0]->id]->obj1;
+                    $target->obj2 = $monthlyTarget[$centre[0]->id]->obj2;
+                }
+            }
+            $finalData[] = $this->calculations($centreData, $year);
+        }
+        return $this->setExtraPoint($finalData);
+    }
+    
 
     /**
      * @params $request Solicitud de datos
@@ -208,27 +211,27 @@ class LeagueService {
      * 
      * @return Datatable of data
      */
-    public function detailsCentreLeague(Request $request )
+    public function detailsCentreLeague(Request $request)
     {
         $tPoints = 0;
-        try{
+        try {
             $centre = Centre::getCentreByField($request['centre']);
             $dataRes = $this->getLeagueData($request);
 
             $months = env('MONTHS_VALUES');
             $monthsTrim = explode(',', $months);
 
-            if (!empty($dataRes[0]) ) {
+            if (!empty($dataRes[0])) {
                 $finalDataRes = [];
                 foreach ($dataRes as $data) {
                     if ($data[0]->centre_id == $centre[0]->id) {
                         $finalDataRes = $data;
-                        foreach ($data as $i=>$month) {
+                        foreach ($data as $i => $month) {
                             if ($data[$i]->cv === -2) {
                                 $data[$i]->cv = 0;
                             }
                             $tPoints += $data[$i]->points;
-                            $finalDataRes[$i]->month = ['id'=>$i, 'month'=>$monthsTrim[$i]];
+                            $finalDataRes[$i]->month = ['id' => $i, 'month' => $monthsTrim[$i]];
                         }
                         break;
                     }
@@ -237,12 +240,14 @@ class LeagueService {
             } else {
                 return [];
             }
-        } catch(Exception $ex){
+        } catch (Exception $ex) {
             return response()->json(
                 [
-                'success' => 'false',
-                'errors'  => $ex->getMessage(),
-            ], 400 );
+                    'success' => 'false',
+                    'errors' => $ex->getMessage(),
+                ],
+                400
+            );
         }
     }
 
@@ -256,16 +261,16 @@ class LeagueService {
      * 
      * @param $dataGroup: Grupo de valores.
      **/
-    public function calculations(Array $dataGroup, int $year)
-    {        
+    public function calculations(array $dataGroup, int $year)
+    {
         $dataCalculate = [];
-        
-        foreach ($dataGroup as $i=>$dg) {
+
+        foreach ($dataGroup as $i => $dg) {
             if (($dg->year == date('Y') && $dg->month <= date('n')) || ($dg->year < date('Y'))) {
-                if ($dg->vc >= 0 || $dg->vd >=0){
+                if ($dg->vc >= 0 || $dg->vd >= 0) {
                     $coeficienteVenta = (($dg->vd - $dg->obj2) + ($dg->vc - $dg->obj1)) / ($dg->obj1 + $dg->obj2);
                     $dataCalculate[] = $dataGroup[$i];
-                    $dataCalculate[$i]->cv = round($coeficienteVenta, 2, PHP_ROUND_HALF_UP);
+                    $dataCalculate[$i]->cv = round($coeficienteVenta, 4, PHP_ROUND_HALF_UP);
                     $dataCalculate[$i]->points = $this->setPointsForTargets($dg);
                 } else {
                     $dataCalculate[] = $dataGroup[$i];
@@ -309,35 +314,44 @@ class LeagueService {
      * 
      * @return finalCollection Coleccion calculada
      */
-    public function setExtraPoint(Array $collection )
+    public function setExtraPoint(array $centreData): array
     {
-        $winnerDataForCentre = [];
+        $monthlyWinners = [];
+        // Find the centre with the highest CV for each month
+        for ($month = 0; $month < 12; $month++) {
+            $highestCV = 0;
+            $winningCentreId = -1;
 
-        for ($month=0; $month<12; $month++) {
-            $calcCVBig = 0;
-            $centreWinner = -1;
-            for ( $i=0; $i<count($collection); $i++ ) {
-                if (count($collection[$i]) > 0 ) {
-                    if (round($collection[$i][$month]->cv, 2) > round($calcCVBig, 2)) {
-                        $calcCVBig = $collection[$i][$month]->cv;
-                        $centreWinner = $collection[$i][$month]->centre_id;
+            foreach ($centreData as $centre) {
+                if (!empty($centre) && isset($centre[$month])) {
+                    $currentCV = round($centre[$month]->cv, 3);
+                    if ($currentCV > round($highestCV, 3)) {
+                        $highestCV = $currentCV;
+                        $winningCentreId = $centre[$month]->centre_id;
                     }
                 }
             }
-            $winnerDataForCentre[] = ['month'=>$month+1, 'centre' => $centreWinner, 'cv'=>$calcCVBig];
-        }   
-
-        $finalCollection = $collection;
-        foreach ($collection as $i=>$reg) {
-            foreach ($winnerDataForCentre as $wdc) {
-                foreach ($reg as $pos=>$centreYear) {
-                    if ($wdc['month'] == $centreYear->month && $wdc['centre'] == $centreYear->centre_id) {
-                        $finalCollection[$i][$pos]->points++;
-                        $finalCollection[$i][$pos]->extra = ['month' => $wdc['month'], 'cv' => $wdc['cv'] ];
+            $monthlyWinners[] = [
+                'month' => $month + 1,
+                'centre_id' => $winningCentreId,
+                'cv' => $highestCV,
+            ];
+        }
+        // Assign extra points to the winning centres
+        foreach ($centreData as $centreIndex => $centreYearData) {
+            foreach ($centreYearData as $monthIndex => $data) {
+                foreach ($monthlyWinners as $winner) {
+                    if ($data->month == $winner['month'] && $data->centre_id == $winner['centre_id']) {
+                        $centreData[$centreIndex][$monthIndex]->points++;
+                        $centreData[$centreIndex][$monthIndex]->extra = [
+                            'month' => $winner['month'],
+                            'cv' => $winner['cv'],
+                        ];
                     }
                 }
             }
         }
-        return $finalCollection;
+        return $centreData;
     }
+
 }

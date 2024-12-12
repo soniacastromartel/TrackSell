@@ -146,12 +146,6 @@
             text-align: center;
         }
 
-
-        #icInfo {
-            float: right;
-            margin-top: 6px;
-        }
-
         .card .card-header {
             width: unset;
 
@@ -187,11 +181,14 @@
                 clearForms();
             });
 
-            $("#datepickerType, #centre_id_picker, #monthYearPicker, #yearPicker").on('change', function() {
-                loadData();
+            $("#datepickerType, #centre_id_picker, #monthYearPicker, #yearPicker").on('change', function(event) {
+                event.preventDefault();
+                console.log(event);
+                console.log($("#datepickerType option:selected").val());
+                loadData($("#datepickerType option:selected").val());
             });
 
-            function loadData() {
+            function loadData(datePickerValue) {
                 $('#centre').val($("#centre_id_picker option:selected").text());
                 $('.card-header-table').show();
 

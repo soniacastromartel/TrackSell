@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class Centre extends Model
 {
@@ -96,8 +98,11 @@ class Centre extends Model
      */
     public function scopeGetCentreIdByNameLike($query, $name)
     {
-        return $query->where('name', 'like', '%' . $name . '%')->value('id');
-    }
+        $centreId = $query->where('name', 'like', '%'. $name.'%')->value('id');
+        Log::info('centreId: ', [
+            
+        ]);
+        return $centreId;    }
 
     
 

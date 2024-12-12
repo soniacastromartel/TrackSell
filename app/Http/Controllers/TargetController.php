@@ -56,7 +56,7 @@ class TargetController extends Controller
         );
     }
 
-    /**
+   /**
      * Importar Objetivos
      */
     private function importData($request, $isEdit = null)
@@ -64,7 +64,7 @@ class TargetController extends Controller
         try {
             $fileName = $isEdit ? 'editTargetsFile' : 'targetInputFile';
             $storageFileName = $isEdit ? 'example_target_edit.xls' : 'example_target_input.xls';
-            $filePath = storage_path() . '/' . $storageFileName;
+            $filePath = base_path('storage') . '/' . $storageFileName;
 
             // Validate the file
             $validator = Validator::make($request->all(), [
@@ -83,12 +83,16 @@ class TargetController extends Controller
             if ($request->hasFile($fileName)) {
                 // Move the file to the storage path with the correct name
                 $request->file($fileName)->move(storage_path(), $storageFileName);
-
-                // Import the file
-                Excel::import(new TargetsImport($centres, $year, $isEdit, $filePath), storage_path() . '/' . $storageFileName);
-
+                try {
+                    Excel::import(new TargetsImport($centres, $year, $isEdit, $filePath), $filePath);
+                } finally {
+                    if (file_exists($filePath)) {
+                        unlink($filePath); // Elimina el archivo para asegurarte de que no quede bloqueado
+                    }
+                }
+        
                 // Delete the file after import
-                // Storage::delete([$storageFileName]);
+                Storage::delete($storageFileName);
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             return response()->json([
@@ -107,7 +111,6 @@ class TargetController extends Controller
             ], 400);
         }
     }
-
 
 
     /**

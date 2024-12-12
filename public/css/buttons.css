@@ -57,6 +57,11 @@ button:focus {
   box-shadow: 0 0 0 2px #ffffff;
 }
 
+#buttonContainer.active {
+  margin-top: 50px; /* Ajusta según sea necesario */
+  transition: margin 0.3s ease;
+}
+
 #monthYearPickerContainer,
 #yearPickerContainer {
   display: flex;

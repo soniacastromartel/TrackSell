@@ -21,6 +21,7 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
 
     public function __construct($year)
     {
+
         $this->year = $year;
     }
 
@@ -36,15 +37,17 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
         $data = [
             'obj1' => floatval(str_replace(',', '', $row['objetivo_venta_cruzada'] ?? 0)),
             'obj2' => floatval(str_replace(',', '', $row['objetivo_venta_privada'] ?? 0)),
-            // 'vd' => floatval(str_replace(',', '', $row['venta_privada'] ?? 0)),
         ];
+
+        if (isset($row['venta_privada'])) {
+            $data['vd'] = floatval(str_replace(',', '', $row['venta_privada']));
+        }
 
         if (!isset($row['mes']) || !is_numeric($row['mes'])) {
             throw new \Exception("Formato de campo 'mes' inválido.");
         }
 
         $data['mes'] = (int) $row['mes'];
-
         return $data;
     }
 
@@ -56,25 +59,29 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
     public function model(array $row)
     {
         try {
+
             $centreId = Centre::getCentreIdByNameLike($row['centro'] ?? '');
             if (!$centreId) {
                 throw new \Exception("Centro no encontrado: " . ($row['centro'] ?? 'Desconocido'));
             }
             $data = $this->prepareData($row);
+            $updateData = [
+                'obj1' => $data['obj1'],
+                'obj2' => $data['obj2'],
+            ];
 
-            // Use updateOrCreate for efficient database operations
+            if (isset($data['vd'])) {
+                $updateData['vd'] = $data['vd'];
+            }
             Target::updateOrCreate(
                 [
                     'year' => $this->year,
                     'month' => $data['mes'],
                     'centre_id' => $centreId,
                 ],
-                [
-                    'obj1' => $data['obj1'],
-                    'obj2' => $data['obj2'],
-                    // 'vd' => $data['vd'],
-                ]
+                $updateData
             );
+
             Log::info('Target processed successfully.', [
                 'centre_id' => $centreId,
                 'year' => $this->year,
@@ -85,9 +92,9 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
                 'row' => $row,
                 'error' => $e->getMessage(),
             ]);
-            throw $e; // Rethrow the exception to handle it upstream
+            throw $e; 
         }
-        // Return null as no model is being returned directly
+
         return null;
     }
 
@@ -101,8 +108,8 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
         return [
             'mes' => 'required',
             'centro' => 'required',
-            'objetivo_venta_cruzada' => 'required|numeric',
-            'objetivo_venta_privada' => 'required|numeric',
+            'objetivo_venta_cruzada' => 'required',
+            'objetivo_venta_privada' => 'required',
         ];
     }
 
@@ -113,6 +120,6 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
      */
     public function startRow(): int
     {
-        return 2; // Skip the header row
+        return 2;
     }
 }
