@@ -677,7 +677,6 @@
                 type: 'post',
                 data: params,
                 success: function(data, textStatus, jqXHR) {
-                    // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
                         var target = JSON.parse(data);
                         google.charts.setOnLoadCallback(function() {
@@ -690,7 +689,6 @@
                     getValueCentre();
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                // alert('Error' + jqXHR.responseText);
                 showAlert('error ', jqXHR.responseText || 'Error al cargar los datos');
             });
         }
@@ -698,7 +696,8 @@
         $('.sales-month-datatable').on('error.dt', function(e, settings, techNote, message) {
             if (message.indexOf("Error") > -1) {
                 message = message.substr(message.indexOf("Error"));
-                alert(message);
+                // alert(message);
+                showAlert('error', message);
             }
         })
         $.fn.dataTable.ext.errMode = 'none';

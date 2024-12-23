@@ -106,10 +106,7 @@ class LeagueExport implements
             $sheet->getStyle($col)->getAlignment()->setWrapText(true);
         }
 
-
-        $sheet->getStyle('D')->getNumberFormat()->setFormatCode('### ### ### ##0.00');
-
-
+        $sheet->getStyle('D')->getNumberFormat()->setFormatCode('### ### ### ##0.000');
 
         if (!empty($league)) {
             $row = 9;

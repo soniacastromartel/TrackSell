@@ -722,7 +722,7 @@ class TargetController extends Controller
             unset($targetData['HOSPITAL TELDE']);
 
             return collect($targetData);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             return response()->json([
                 'success' => 'false',
@@ -758,8 +758,7 @@ class TargetController extends Controller
             ob_end_clean();
             ob_start();
             return Excel::download((new TracingTargetsExport($targetData, $data)), 'target.xls');
-        } catch (\Exception $e) {
-
+        } catch (Exception $e) {
             return response()->json([
                 'success' => 'false',
                 'errors' => $e->getMessage(),

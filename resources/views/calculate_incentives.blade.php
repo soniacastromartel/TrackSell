@@ -87,7 +87,7 @@
                                         </div>
                                         <hr class="mt-4">
 
-                                        <div class="row  d-flex flex-column align-content-center  "  id="buttonContainer">
+                                        <div class="row  d-flex flex-column align-content-center  " id="buttonContainer">
                                             {{-- @if ($user->rol_id != 1)
                                             <span class="m-5"></span>
                                         @endif --}}
@@ -391,7 +391,7 @@
         </div> --}}
 
     </div>
-    
+
     <style>
         .content {
             background-image: url(/assets/img/background_continue.png) !important;
@@ -445,10 +445,39 @@
                 $(this).removeClass("active");
             });
             $('#pagesReport').addClass('show');
+            $('#calculateIncentive').addClass('active');
             $('#targetsData').hide();
             $('#incentivesData').hide();
-            $(
-                '#summaryData').hide();
+            $('#summaryData').hide();
+
+            $("#centre_id").on('change', function() {
+                $('#btnTargetsPreview').removeAttr('disabled');
+
+            });
+
+            // date pickers
+            var date = new Date();
+            var textMonthYear = setDate(date);
+            $('#monthYearPicker').val(textMonthYear);
+            $('#monthYearPicker')
+                .MonthPicker({
+                    ShowIcon: false
+                });
+            $('#yearTargetPicker').val(date.getFullYear());
+            $('#yearTargetPicker').datepicker({
+                    changeMonth: false,
+                    changeYear: true,
+                    showButtonPanel: true,
+                    closeText: 'Seleccionar',
+                    currentText: 'Año Actual',
+                    onClose: function(dateText, inst) {
+                        $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0, 1)));
+                        $('#buttonContainer').removeClass('active');
+                    },
+                })
+                .on('focus', function() {
+                    $('#buttonContainer').addClass('active');
+                });
 
             /**
              * Importar Venta Privada
@@ -524,11 +553,6 @@
                 }
             }
 
-            $("#centre_id").on('change', function() {
-                $('#btnTargetsPreview').removeAttr('disabled');
-
-            });
-
             /**
              * Visualizar Objetivos
              */
@@ -550,7 +574,6 @@
                     $('#summaryData').hide();
                     $('#incentivesData').hide();
                 }
-
             });
 
             /**
@@ -559,7 +582,6 @@
 
             $("#btnIncentivesPreview").on('click', function(e) {
                 e.preventDefault();
-
                 $('#btnIncentivesPreview').hide();
                 $('#btnIncentivesLoad').show();
                 $('#btnIncentivesLoad').prop('disabled', true);
@@ -567,27 +589,24 @@
                 $('#targetsData').hide();
                 $('#summaryData').hide();
                 $('#incentivesData').show();
-
             });
 
             /**
              * Visualizar Resumen Incentivos
              */
-
             $("#btnSummaryPreview").on('click', function(e) {
                 e.preventDefault();
                 $('#btnSummaryPreview').hide();
                 $('#btnSummaryLoad').show();
                 $('#btnSummaryLoad').prop('disabled', true);
                 drawTable('.summary-datatable');
-
-
                 $('#targetsData').hide();
                 $('#incentivesData').hide();
                 $('#summaryData').show();
 
             });
 
+            // clear form selectors
             function clearForms() {
                 $('#centreName').hide();
                 $('#targetsData').hide();
@@ -601,7 +620,6 @@
                 $('select').selectpicker("refresh");
                 $("input[name=trackingState][value='service']").prop("checked", true);
             }
-
             $("#btnClear").on('click', function(e) {
                 e.preventDefault();
                 clearForms();
@@ -621,14 +639,12 @@
                 $('#centre').val($("#centre_id option:selected").text());
                 $('#employee').val($("#employee_id option:selected").text());
                 $('#monthYear').val($("#monthYearPicker").val());
-
                 params = {};
                 params["_token"] = "{{ csrf_token() }}";
                 params["centre"] = $('#centre').val();
                 params["employee"] = $('#employee').val();
                 params["monthYear"] = $('#monthYear').val();
                 console.log(params);
-
                 $.ajax({
                     url: $("#importTargetForm").attr('action'),
                     type: 'post',
@@ -676,30 +692,7 @@
                 });
             });
 
-            var date = new Date();
-            var textMonthYear = setDate(date);
-            $('#monthYearPicker').val(textMonthYear);
-            $('#monthYearPicker')
-                .MonthPicker({
-                    ShowIcon: false
-                });
-
-            $('#yearTargetPicker').val(date.getFullYear());
-            $('#yearTargetPicker').datepicker({
-                    changeMonth: false,
-                    changeYear: true,
-                    showButtonPanel: true,
-                    closeText: 'Select',
-                    currentText: 'This year',
-                    onClose: function(dateText, inst) {
-                        $(this).val($.datepicker.formatDate("yy", new Date(inst['selectedYear'], 0, 1)));
-                        $('#buttonContainer').removeClass('active');
-                    },
-                })
-                .on('focus', function() {
-                    $('#buttonContainer').addClass('active');
-                });
-
+            // Handle file selection to upload or edit targets
             async function handleFileChange(inputSelector, formAction, buttonToHide, yearPickerSelector = null) {
                 $(inputSelector).off('change').on('change', async function(event) {
                     console.log(event);
@@ -745,9 +738,7 @@
                         $('#monthYearPicker').val(textMonthYear);
 
                         $('#yearTargetPicker').val(date.getFullYear());
-
                     }
-
                 });
             }
 
@@ -755,7 +746,6 @@
                 "#yearTargetPicker");
             handleFileChange("#editTargetsFile", "{{ route('target.import') }}", '#btnEditTargets',
                 "#yearTargetPicker");
-            // handleFileChange("#targetInputSalesFile", "{{ route('target.importSales') }}", '#btnImportSales');
 
             /**
              * Exportar Seguimiento de Objetivos
@@ -763,10 +753,8 @@
 
             $("#btnTracingTargets").on("click", function(e) {
                 e.preventDefault();
-
                 $('#btnTracingTargets').hide();
                 $('#btnTracingTargetsLoad').show();
-
                 const params = {
                     _token: "{{ csrf_token() }}",
                     yearTarget: $("#yearTargetPicker").val(),
@@ -797,13 +785,9 @@
                         }
                     },
                     error: function(xhr) {
-                        try {
+                            console.log(xhr);
                             const response = JSON.parse(xhr.responseText);
-                            showAlert("error", response);
-                            alert(response.errors);
-                        } catch {
-                            alert("An unexpected error occurred.");
-                        }
+                            showAlert("error", response || 'An unexpected error occurred.');
                     },
                     complete: function() {
                         showToast("info", "Archivo Descargado");

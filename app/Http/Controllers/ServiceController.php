@@ -439,8 +439,6 @@ class ServiceController extends Controller
      */
 
 
-    //!PRUEBA VIEW SOLO HTML 
-
     public function showAllServicesAndByCentre(Request $request)
     {
         $centreId = $request->input('centre_id');

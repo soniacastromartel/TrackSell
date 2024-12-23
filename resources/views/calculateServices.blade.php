@@ -628,7 +628,6 @@
                             <strong>{{ $selectedCentre->name ?? 'TODOS LOS CENTROS' }}</strong> por
                             <strong>EMPLEADO</strong>
                         </h4>
-                        </h4>
                         <div>
                             <canvas id="chartTotalEmployee"></canvas>
                         </div>
@@ -770,7 +769,6 @@
         var btnSubmit = document.getElementById('btnSubmit');
         if (btnSubmit) {
             btnSubmit.addEventListener('click', function() {
-                console.log('El botón de exportar fue clickeado.');
                 console.log('Fecha de inicio:', document.getElementById('start_date').value);
                 console.log('Fecha de fin:', document.getElementById('end_date').value);
             });

@@ -52,9 +52,13 @@ class Centre extends Model
     public function scopeGetCentreByField($query, $field)
     {
         if (!is_numeric($field)) {
-            return $query->where('name', $field)->get();
+            return $query
+            ->whereNull('cancellation_date')
+            ->where('name', $field)->get();
         } else {
-            return $query->where('id', $field)->get();
+            return $query
+            ->whereNull('cancellation_date')
+            ->where('id', $field)->get();
         }
     }
 
@@ -64,9 +68,13 @@ class Centre extends Model
     public function scopeGetCentreName($query, $centre)
     {
         if (!is_numeric($centre)) {
-            $centre = $query->where('name', $centre)->first();
+            $centre = $query
+            ->whereNull('cancellation_date')
+            ->where('name', $centre)->first();
         } else {
-            $centre = $query->where('id', $centre)->first();
+            $centre = $query
+            ->whereNull('cancellation_date')
+            ->where('id', $centre)->first();
         }
 
         return !empty($centre) ? $centre->name : null;
@@ -90,7 +98,9 @@ class Centre extends Model
      */
     public function scopeGetCentreByNameLike($query, $name)
     {
-        return $query->where('name', 'like', '%' . $name . '%')->get();
+        return $query
+        ->whereNull('cancellation_date')
+        ->where('name', 'like', '%' . $name . '%')->get();
     }
 
     /**
@@ -98,7 +108,9 @@ class Centre extends Model
      */
     public function scopeGetCentreIdByNameLike($query, $name)
     {
-        $centreId = $query->where('name', 'like', '%'. $name.'%')->value('id');
+        $centreId = $query
+        ->whereNull('cancellation_date')
+        ->where('name', 'like', '%'. $name.'%')->value('id');
         Log::info('centreId: ', [
             
         ]);
@@ -111,7 +123,9 @@ class Centre extends Model
      */
     public function scopeGetEmailByCenterId($query, $centerId)
     {
-        $centre = $query->where('id', $centerId)->first();
+        $centre = $query
+        ->whereNull('cancellation_date')
+        ->where('id', $centerId)->first();
 
         return $centre ? $centre->email : null;
     }

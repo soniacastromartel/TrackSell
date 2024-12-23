@@ -74,9 +74,23 @@ class Target extends Model
         return self::where('year', $year)
             ->where('month', $month)
             ->whereNull('vd')
-            ->orWhere('vd', '=', 0) 
+            ->orWhere('vd', '=', 0)
             ->get();
     }
 
+    /**
+     * Obtiene los targets filtrados según los campos proporcionados en $whereFields.
+     *
+     * @param string $whereFields
+     * @return array
+     */
+    public static function getTargetsByFields($whereFields)
+    {
+        return self::whereRaw($whereFields)
+            ->orderBy('month', 'asc')
+            ->orderBy('year', 'asc')
+            ->get()
+            ->toArray();
+    }
 
 }

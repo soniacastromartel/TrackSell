@@ -4,7 +4,6 @@
 
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
-
     <div class="content">
         <div class="container-fluid">
             <div class="col-12">
@@ -236,9 +235,7 @@
 
         });
 
-
         $(function() {
-
             setDate();
             $(".nav-item").each(function() {
                 $(this).removeClass("active");

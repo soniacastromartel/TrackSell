@@ -63,7 +63,7 @@
         $(".nav-item").each(function() {
             $(this).removeClass("active");
         });
-        $('#pagesNotification').addClass('show');
+        $('#pagesTracking').addClass('show');
         $('#supervisorNotificationsIndex').addClass('active');
 
         table = $('.notifications-datatable').DataTable({

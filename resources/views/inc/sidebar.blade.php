@@ -41,7 +41,7 @@
                     <p style="font-weight: bold"> Home </p>
                 </a>
             </li>
-
+            {{-- Panel Admin --}}
             @if (session()->get('user')->rol_id == 1)
                 <li id="menuConfig" class="nav-item ">
 
@@ -89,7 +89,7 @@
                 </li>
             @endif
 
-
+            {{-- Panel Supervisor --}}
             <li class="nav-item ">
                 <a class="nav-link collapsed" data-toggle="collapse" href="#pagesTracking" aria-expanded="false">
                     <i class="material-icons">manage_accounts</i>
@@ -105,6 +105,14 @@
                                 <span class="sidebar-normal"> Registro de Ventas </span>
                             </a>
                         </li>
+
+                        <li id="centerLeague" class="nav-item">
+                            <a class="nav-link" href="{{ route('centerLeague') }}">
+                                <i class="material-icons">emoji_events</i>
+                                <span class="sidebar-normal"> Liga de Centros </span>
+                            </a>
+                        </li>
+
                         <li id="requestChange" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.requestChange') }}">
                                 <i class="material-symbols-outlined">
@@ -112,24 +120,25 @@
                                 </i> <span class="sidebar-normal"> Cambio de Centro </span>
                             </a>
                         </li>
-                        <li id="trackingValidateFinal" class="nav-item ">
-                            <a class="nav-link" href="{{ route('tracking.index_validation_final') }}">
-                                <i class="material-icons">groups</i>
-                                <span class="sidebar-normal"> Validar RRHH </span>
-                            </a>
-                        </li>
+
                         <li id="trackingRemove" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.deleteForm') }}">
                                 <i class="material-icons">delete</i>
                                 <span class="sidebar-normal"> Borrar seguimiento </span>
                             </a>
                         </li>
+
+                        <li id="supervisorNotificationsIndex" class="nav-item">
+                            <a class="nav-link" href="{{ route('notifications.index') }}">
+                                <i class="material-icons">mail</i>
+                                <span class="sidebar-normal"> Notificaciones </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
 
-
-
+            {{-- Panel Informes --}}
             <li class="nav-item">
                 <a class="nav-link collapsed" data-toggle="collapse" href="#pagesReport" aria-expanded="false">
                     <i class="material-icons">description</i>
@@ -140,7 +149,7 @@
 
                 <div class="collapse" id="pagesReport">
                     <ul class="nav">
-                        <li class="nav-item {{ request()->routeIs('calculateIncentive') ? 'active' : '' }}">
+                        <li id="calculateIncentives" class="nav-item">
                             <a class="nav-link" href="{{ route('calculateIncentive') }}">
                                 <i class="material-icons">calculate</i>
                                 <span class="sidebar-normal"> Calculadora de Incentivos </span>
@@ -154,35 +163,14 @@
                                     <span class="sidebar-normal"> Dinámica de Servicios </span>
                                 </a>
                             </li>
+                        <li id="trackingValidateFinal" class="nav-item ">
+                            <a class="nav-link" href="{{ route('tracking.index_validation_final') }}">
+                                <i class="material-icons">groups</i>
+                                <span class="sidebar-normal"> Validar RRHH </span>
+                            </a>
+                        </li>
                         @endif
 
-                        <li id="centerLeague" class="nav-item">
-                            <a class="nav-link" href="{{ route('centerLeague') }}">
-                                <i class="material-icons">emoji_events</i>
-                                <span class="sidebar-normal"> Liga de Centros </span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-toggle="collapse" href="#pagesNotification"
-                    aria-expanded="false">
-                    <i class="material-icons">notifications</i>
-                    <p style="font-weight: bold"> Notificaciones
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse" id="pagesNotification">
-                    <ul class="nav">
-                        <li id="supervisorNotificationsIndex" class="nav-item">
-                            <a class="nav-link" href="{{ route('notifications.index') }}">
-                                <i class="material-icons">mail</i>
-                                <span class="sidebar-normal"> Avisos de supervisor</span>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </li>
@@ -214,7 +202,6 @@
         background-color: var(--white-icot);
         padding: 13px;
     }
-
     #userData {
         font-weight: 900;
     }

@@ -120,7 +120,7 @@ class LeagueService
                 return [];
             }
             // Procesamiento de datos por centro y mes
-            $processedData = $this->processTargetsByCentre($params['centres'], $targetsDefined, $trackingData, $targetService, $params['year']);
+            $processedData = $this->processTargetsByCentre($params['centre'], $targetsDefined, $trackingData, $targetService, $params['year']);
             // Cálculo del coeficiente de venta y retorno de datos
             return $this->calculateAndSetExtraPoints($processedData, $params['year']);
         } catch (Exception $ex) {
@@ -137,7 +137,8 @@ class LeagueService
         $params = $request->all();
         $params['acumulative'] = true;
         $params['monthYear'] = '1/' . $params['year'];
-        $params['centres'] = Centre::getCentersWithoutHCT();
+        $centres = Centre::getCentersWithoutHCT();
+        $params['centre'] = $centres;         
         $params['specificCentre'] = $request['centre'] ?? null;
         return $params;
     }
@@ -147,7 +148,7 @@ class LeagueService
      */
     private function fetchTargets(array $params)
     {
-        $idCentres = array_column($params['centres']->toArray(), 'id');
+        $idCentres = array_column($params['centre']->toArray(), 'id');
         $whereFields = "centre_id IN (" . implode(",", $idCentres) . ") ";
         $whereFields .= "AND ((month BETWEEN 1 AND 12) AND year BETWEEN {$params['year']} AND {$params['year']})";
         return DB::table('targets')

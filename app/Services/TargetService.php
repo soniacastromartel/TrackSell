@@ -51,9 +51,7 @@ class TargetService
                 }
                 $whereLikeBegin = $beginYear . '-' . str_pad($previousMonth, 2, "0", STR_PAD_LEFT) . '-' . env('START_DAY_PERIOD');
                 $whereLikeLast = $year . '-' . str_pad($currentMonth, 2, "0", STR_PAD_LEFT) . '-' . env('END_DAY_PERIOD');
-
             }
-
             $mActual = ltrim(date('m'), "0");
             $dActual = ltrim(date('d'), "0");
             $currentMonth = substr($params['monthYear'], 0, strpos($params['monthYear'], '/'));
