@@ -56,6 +56,7 @@
 
         {{-- @endauth --}}
         <div class="main-panel">
+            
             @yield('content')
 
             <script type="text/javascript" src="{{ asset('js/charts-loader.js') }}"></script>

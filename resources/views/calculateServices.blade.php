@@ -659,8 +659,6 @@
     </div>
 @endsection
 
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const chartConfigs = [{

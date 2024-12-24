@@ -1,4 +1,7 @@
 @extends('layouts.logged')
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 @section('content')
     @include('inc.navbar')
 
@@ -107,7 +110,7 @@
                         </div>
                     </div>
 
-                    <div class="" id="leagueDatatable">
+                    <div class="" id="leagueDatatable" style="margin-top: 150px;">
                         <div class="card-header-table" style="display: none;">
 
                             <table id="league-month-datatable"
@@ -145,507 +148,555 @@
                 </div>
             </div>
         </div>
-        <style>
-            button.ui-datepicker-trigger {
-                border: none !important;
+    </div>
+    <style>
+        button.ui-datepicker-trigger {
+            border: none !important;
+        }
+
+        #centreName {
+            padding: 10px;
+            display: block;
+            text-align: center;
+            font-weight: bold;
+            font-size: xx-large;
+            font-family: monospace;
+            color: white !important;
+            border-radius: 50px !important;
+            background-color: var(--red-icot);
+        }
+
+        td {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .card .card-header {
+            width: unset;
+
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function() {
+            // handles sidebar selection
+            $(".nav-item").each(function() {
+                $(this).removeClass("active");
+            });
+            $('#pagesReport').addClass('show');
+            $('#centerLeague').addClass('active');
+
+            var date = new Date();
+            var textMonthYear = (date.getMonth() + 1) + '/' + date.getFullYear();
+            var textYear = date.getFullYear();
+            let currentChart = null;
+
+            $('#centreName').hide();
+            $('.centre_picker').hide();
+            $("#yearPicker").datepicker("destroy");
+            $("#yearPickerContainer").hide();
+
+            $("#btnClear").on('click', function(e) {
+                e.preventDefault();
+                clearForms();
+            });
+
+            const chartConfigs = {
+                chartLeague: {
+                    id: 'chartLeague',
+                    type: 'bar',
+                    title: '',
+                    labels: [], // Etiquetas generales
+                    data: [], // Datos generales
+                    label: '' // Dinámico, se setea en loadData
+                },
+                chartCentreLeague: {
+                    id: 'chartCentreLeague',
+                    type: 'bar',
+                    title: '',
+                    labels: [], // Etiquetas específicas para centro
+                    data: [], // Datos específicos para centro
+                    label: '' // Dinámico, se setea en loadData
+                }
+            };
+
+
+            configureMonthYearPicker();
+            loadData();
+
+            $.datepicker.setDefaults($.datepicker.regional['es']);
+            $('#yearPicker').val(textYear);
+            $('#yearPicker').datepicker({
+                changeMonth: false,
+                changeYear: true,
+                showButtonPanel: false,
+                dateFormat: 'yy',
+                onClose: function(dateText, inst) {
+                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    $(this).val($.datepicker.formatDate('yy', new Date(year, 1, 1)));
+                    loadData();
+                },
+                onChangeMonthYear: function() {
+                    $(this).datepicker("hide");
+                }
+            }).focus(function() {
+                $(".ui-datepicker-month").hide();
+                $(".ui-datepicker-calendar").hide();
+            });
+
+            $('#monthYearPicker').MonthPicker({
+                OnAfterChooseMonth: function() {
+                    loadData();
+                }
+            });
+
+            $("#centre_id_picker").on('change', function(event) {
+                loadData();
+            });
+
+            let debounceTimer;
+
+            function debounce(func, delay) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(func, delay);
             }
 
-            #centreName {
-                padding: 10px;
-                display: block;
-                text-align: center;
-                font-weight: bold;
-                font-size: xx-large;
-                font-family: monospace;
-                color: white !important;
-                border-radius: 50px !important;
-                background-color: var(--red-icot);
-            }
-
-            td {
-                font-weight: bold;
-                text-align: center;
-            }
-
-            .card .card-header {
-                width: unset;
-
-            }
-        </style>
-
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script type="text/javascript">
-            $(function() {
-                // handles sidebar selection
-                $(".nav-item").each(function() {
-                    $(this).removeClass("active");
-                });
-                $('#pagesReport').addClass('show');
-                $('#centerLeague').addClass('active');
-
-                var date = new Date();
-                var textMonthYear = (date.getMonth() + 1) + '/' + date.getFullYear();
-                var textYear = date.getFullYear();
-                let currentChart = null;
-
-                $('#centreName').hide();
-                $('.centre_picker').hide();
-                $("#yearPicker").datepicker("destroy");
-                $("#yearPickerContainer").hide();
-
-                $("#btnClear").on('click', function(e) {
-                    e.preventDefault();
-                    clearForms();
-                });
-
-                const chartConfigs = {
-                    chartLeague: {
-                        id: 'chartLeague',
-                        type: 'bar',
-                        labels: [], // Etiquetas generales
-                        data: [], // Datos generales
-                        label: '' // Dinámico, se setea en loadData
-                    },
-                    chartCentreLeague: {
-                        id: 'chartCentreLeague',
-                        type: 'bar',
-                        labels: [], // Etiquetas específicas para centro
-                        data: [], // Datos específicos para centro
-                        label: '' // Dinámico, se setea en loadData
+            $("#datepickerType").on('change', function() {
+                debounce(() => {
+                    $('#centre_id_picker').selectpicker('val', '');
+                    if ($(this).val() == "1") {
+                        configureMonthYearPicker();
+                    } else {
+                        configureYearPicker();
                     }
+                    loadData();
+                }, 300);
+            });
+
+
+            function configureMonthYearPicker() {
+                setPickerVisibility({
+                    yearPicker: false,
+                    monthYearPicker: true,
+                    centrePicker: false
+                });
+                $('#monthYearPicker').val(textMonthYear).MonthPicker({
+                    ShowIcon: false,
+                });
+                destroyPicker("#yearPicker");
+            }
+
+            function configureYearPicker() {
+                setPickerVisibility({
+                    yearPicker: true,
+                    monthYearPicker: false,
+                    centrePicker: true
+                });
+                $('#yearPicker').datepicker();
+                destroyPicker("#monthYearPicker");
+            }
+
+            function setPickerVisibility({
+                yearPicker,
+                monthYearPicker,
+                centrePicker
+            }) {
+                $('#yearPickerContainer').toggle(yearPicker);
+                $('#monthYearPickerContainer').toggle(monthYearPicker);
+                $('.centre_picker').toggle(centrePicker);
+            }
+
+            function destroyPicker(selector) {
+                if ($(selector).data('datepicker')) {
+                    $(selector).datepicker("destroy");
+                }
+            }
+
+            async function loadData() {
+                $('.card-header-table').show();
+                console.log("Loading data...");
+
+                const selectedCentre = $("#centre_id_picker option:selected").text();
+                const state = $("#datepickerType").val();
+                $('#centre').val(selectedCentre);
+
+                const params = {
+                    centre: selectedCentre || null,
+                    state: state === "1" ? "Mensual" : "Anual"
                 };
 
+                console.log(params);
 
-                configureMonthYearPicker();
-                loadData();
+                if ($("#datepickerType").val() == 1) {
+                    $('#centre').selectpicker('refresh');
+                }
 
-                $.datepicker.setDefaults($.datepicker.regional['es']);
-                $('#yearPicker').val(textYear);
-                $('#yearPicker').datepicker({
-                    changeMonth: false,
-                    changeYear: true,
-                    showButtonPanel: false,
-                    dateFormat: 'yy',
-                    onClose: function(dateText, inst) {
-                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                        $(this).val($.datepicker.formatDate('yy', new Date(year, 1, 1)));
-                        loadData();
+                if (!selectedCentre) {
+                    hideElements('#centreName', '#league-centre-datatable', '#chartCentreLeague',
+                        '#centerLeagueDatatable', '#centreChart');
+                    showElements('#league-month-datatable', '#chartLeague', '#leagueDatatable', '#leagueChart');
+                    if (params['state'] == 'Mensual') {
+                        chartConfigs.chartLeague.label = `Coeficiente de Venta`;
+                        chartConfigs.title = `Liga ${params['state']}`
+                    } else {
+                        chartConfigs.chartLeague.label = `Puntos`;
+                        chartConfigs.title = `Liga ${params['state']}`;
+
+                    }
+                    await drawLeagueDatatable(null, '.league-month-datatable');
+                    await drawLeagueChart(chartConfigs.chartLeague.id, null, params['state']);
+
+                } else {
+                    $('#centreName').show();
+                    document.getElementById('centreName').innerHTML = params['centre'];
+                    showElements('#centreName', '#league-centre-datatable', '#chartCentreLeague',
+                        '#centreChart',
+                        '#centerLeagueDatatable');
+                    hideElements('#league-month-datatable', '#chartLeague', '#leagueChart', '#leagueDatatable');
+                    chartConfigs.chartCentreLeague.label = `Coeficiente de Venta`;
+                    chartConfigs.chartCentreLeague.title = params['centre']; //TODO poner el mes??
+                    await drawLeagueDatatable(params['centre'], '.league-centre-datatable');
+                    await drawLeagueChart(chartConfigs.chartCentreLeague.id, params['centre'], params[
+                        'state']);
+                }
+            }
+
+            async function drawLeagueDatatable(centre, idDataTable) {
+                let params = {
+                    _token: "{{ csrf_token() }}",
+                    state: $("#datepickerType").text()
+                };
+
+                console.log('drawing table...');
+                console.log(params);
+
+                // Configuramos los parámetros según si hay "centre" o no
+                if (centre) {
+                    params["centre"] = centre;
+                    params["year"] = $("#yearPicker").val();
+                    params["month"] = null;
+                } else if ($('#monthYearPicker').is(":visible")) {
+                    let monthYear = $("#monthYearPicker").val().split('/');
+                    params["month"] = monthYear[0];
+                    params["year"] = monthYear[1];
+                } else {
+                    params["year"] = $("#yearPicker").val();
+                    params["month"] = null;
+                }
+
+                // Configuración del DataTable según el contexto
+                let url = centre ? "{{ route('league.detailsCentreLeague') }}" :
+                    "{{ route('league.generateLeague') }}";
+                let lenMenu = centre ? [12] : [25, 10, 15];
+                let columns = centre ? [{
+                        data: 'month.month',
+                        name: 'month'
                     },
-                    onChangeMonthYear: function() {
-                        $(this).datepicker("hide");
+                    {
+                        data: 'points',
+                        name: 'points'
+                    },
+                    {
+                        data: 'cv',
+                        name: 'cv'
                     }
-                }).focus(function() {
-                    $(".ui-datepicker-month").hide();
-                    $(".ui-datepicker-calendar").hide();
-                });
-
-                $('#monthYearPicker').MonthPicker({
-                    OnAfterChooseMonth: function() {
-                        loadData();
+                ] : [{
+                        data: 'position',
+                        name: 'position'
+                    },
+                    {
+                        data: 'centre',
+                        name: 'centre'
+                    },
+                    {
+                        data: 'points',
+                        name: 'points'
+                    },
+                    {
+                        data: 'average',
+                        name: 'average'
                     }
-                });
+                ];
 
-                $("#centre_id_picker").on('change', function(event) {
-                    loadData();
-                });
-
-                let debounceTimer;
-
-                function debounce(func, delay) {
-                    clearTimeout(debounceTimer);
-                    debounceTimer = setTimeout(func, delay);
-                }
-
-                $("#datepickerType").on('change', function() {
-                    debounce(() => {
-                        $('#centre_id_picker').selectpicker('val', '');
-                        if ($(this).val() == "1") {
-                            configureMonthYearPicker();
-                        } else {
-                            configureYearPicker();
-                        }
-                        loadData();
-                    }, 300);
-                });
-
-
-                function configureMonthYearPicker() {
-                    setPickerVisibility({
-                        yearPicker: false,
-                        monthYearPicker: true,
-                        centrePicker: false
-                    });
-                    $('#monthYearPicker').val(textMonthYear).MonthPicker({
-                        ShowIcon: false,
-                    });
-                    destroyPicker("#yearPicker");
-                }
-
-                function configureYearPicker() {
-                    setPickerVisibility({
-                        yearPicker: true,
-                        monthYearPicker: false,
-                        centrePicker: true
-                    });
-                    $('#yearPicker').datepicker();
-                    destroyPicker("#monthYearPicker");
-                }
-
-                function setPickerVisibility({
-                    yearPicker,
-                    monthYearPicker,
-                    centrePicker
-                }) {
-                    $('#yearPickerContainer').toggle(yearPicker);
-                    $('#monthYearPickerContainer').toggle(monthYearPicker);
-                    $('.centre_picker').toggle(centrePicker);
-                }
-
-                function destroyPicker(selector) {
-                    if ($(selector).data('datepicker')) {
-                        $(selector).datepicker("destroy");
-                    }
-                }
-
-                async function loadData() {
-                    $('.card-header-table').show();
-                    console.log("Loading data...");
-
-                    const selectedCentre = $("#centre_id_picker option:selected").text();
-                    const state = $("#datepickerType").val();
-                    $('#centre').val(selectedCentre);
-
-                    const params = {
-                        centre: selectedCentre || null,
-                        state: state === "1" ? "Mensual" : "Anual"
-                    };
-
-                    console.log(params);
-
-                    if ($("#datepickerType").val() == 1) {
-                        $('#centre').selectpicker('refresh');
-                    }
-
-                    if (!selectedCentre) {
-                        hideElements('#centreName', '#league-centre-datatable', '#chartCentreLeague',
-                            '#centerLeagueDatatable', '#centreChart');
-                        showElements('#league-month-datatable', '#chartLeague', '#leagueDatatable', '#leagueChart');
-                        if(params['state'] == 'Mensual'){
-                            chartConfigs.chartLeague.label = `Liga ${params['state']} - Coeficiente de Venta`;
-                        }else {
-                            chartConfigs.chartLeague.label = `Liga ${params['state']} - Puntos`;
-
-                        }
-                        await drawLeagueDatatable(null, '.league-month-datatable');
-                        await drawLeagueChart(chartConfigs.chartLeague.id, null, params['state']);
-
-                    } else {
-                        $('#centreName').show();
-                        document.getElementById('centreName').innerHTML = params['centre'];
-                        showElements('#centreName', '#league-centre-datatable', '#chartCentreLeague',
-                            '#centreChart',
-                            '#centerLeagueDatatable');
-                        hideElements('#league-month-datatable', '#chartLeague', '#leagueChart', '#leagueDatatable');
-                        chartConfigs.chartCentreLeague.label = `Coeficiente de Venta`;
-                        await drawLeagueDatatable(params['centre'], '.league-centre-datatable');
-                        await drawLeagueChart(chartConfigs.chartCentreLeague.id, params['centre'], params[
-                            'state']);
-                    }
-                }
-
-                async function drawLeagueDatatable(centre, idDataTable) {
-                    let params = {
-                        _token: "{{ csrf_token() }}",
-                        state: $("#datepickerType").text()
-                    };
-
-                    console.log('drawing table...');
-                    console.log(params);
-
-                    // Configuramos los parámetros según si hay "centre" o no
-                    if (centre) {
-                        params["centre"] = centre;
-                        params["year"] = $("#yearPicker").val();
-                        params["month"] = null;
-                    } else if ($('#monthYearPicker').is(":visible")) {
-                        let monthYear = $("#monthYearPicker").val().split('/');
-                        params["month"] = monthYear[0];
-                        params["year"] = monthYear[1];
-                    } else {
-                        params["year"] = $("#yearPicker").val();
-                        params["month"] = null;
-                    }
-
-                    // Configuración del DataTable según el contexto
-                    let url = centre ? "{{ route('league.detailsCentreLeague') }}" :
-                        "{{ route('league.generateLeague') }}";
-                    let lenMenu = centre ? [12] : [25, 10, 15];
-                    let columns = centre ? [{
-                            data: 'month.month',
-                            name: 'month'
-                        },
-                        {
-                            data: 'points',
-                            name: 'points'
-                        },
-                        {
-                            data: 'cv',
-                            name: 'cv'
-                        }
-                    ] : [{
-                            data: 'position',
-                            name: 'position'
-                        },
-                        {
-                            data: 'centre',
-                            name: 'centre'
-                        },
-                        {
-                            data: 'points',
-                            name: 'points'
-                        },
-                        {
-                            data: 'average',
-                            name: 'average'
-                        }
-                    ];
-
-                    try {
-                        let response = await fetchLeagueData(params, url); // Obtenemos los datos
-                        let data = response.data;
-                        console.log(data);
-                        $(idDataTable).dataTable({
-                            lengthMenu: lenMenu,
-                            processing: true,
-                            bDestroy: true,
-                            ordering: !centre,
-                            language: {
-                                emptyTable: "No hay datos disponibles en la tabla",
-                                paginate: {
-                                    previous: "Anterior",
-                                    next: "Siguiente"
-                                },
-                                infoEmpty: "Sin registros",
-                                search: "Buscar:",
-                                info: "",
-                                loadingRecords: "Cargando...",
-                                processing: "Procesando, espere...",
-                                lengthMenu: "Mostrando _MENU_ registros",
-                                infoFiltered: ""
+                try {
+                    let response = await fetchLeagueData(params, url); // Obtenemos los datos
+                    let data = response.data;
+                    console.log(data);
+                    $(idDataTable).dataTable({
+                        lengthMenu: lenMenu,
+                        processing: true,
+                        bDestroy: true,
+                        ordering: !centre,
+                        language: {
+                            emptyTable: "No hay datos disponibles en la tabla",
+                            paginate: {
+                                previous: "Anterior",
+                                next: "Siguiente"
                             },
-                            data: data,
-                            columns: columns
-                        });
-                    } catch (error) {
-                        console.error('Error fetching league data:', error);
-                    }
-                }
-
-                function clearForms() {
-                    $('#centreName').hide();
-                    $('.centre_picker').hide();
-                    $('#centre_id_picker').selectpicker('val', '');
-                    $('#datepickerType').selectpicker('val', 1);
-                    $('#league-centre-datatable').hide();
-                    $('#league-month-datatable').hide();
-                    drawLeagueDatatable(null, '.league-month-datatable');
-                    $('#league-month-datatable').show();
-                }
-
-                //handle ajax request to draw datatables and charts
-                function fetchLeagueData(params, url) {
-                    console.log(params);
-                    return new Promise((resolve, reject) => {
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: params,
-                            success: function(response) {
-                                resolve(response); // Devolvemos la respuesta al invocador
-                            },
-                            error: function(xhr) {
-                                reject(xhr.responseText); // Manejo de errores
-                            }
-                        });
+                            infoEmpty: "Sin registros",
+                            search: "Buscar:",
+                            info: "",
+                            loadingRecords: "Cargando...",
+                            processing: "Procesando, espere...",
+                            lengthMenu: "Mostrando _MENU_ registros",
+                            infoFiltered: ""
+                        },
+                        data: data,
+                        columns: columns
                     });
+                } catch (error) {
+                    console.error('Error fetching league data:', error);
+                }
+            }
+
+            function clearForms() {
+                $('#centreName').hide();
+                $('.centre_picker').hide();
+                $('#centre_id_picker').selectpicker('val', '');
+                $('#datepickerType').selectpicker('val', 1);
+                $('#league-centre-datatable').hide();
+                $('#league-month-datatable').hide();
+                drawLeagueDatatable(null, '.league-month-datatable');
+                $('#league-month-datatable').show();
+            }
+
+            //handle ajax request to draw datatables and charts
+            function fetchLeagueData(params, url) {
+                console.log(params);
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: params,
+                        success: function(response) {
+                            resolve(response); // Devolvemos la respuesta al invocador
+                        },
+                        error: function(xhr) {
+                            reject(xhr.responseText); // Manejo de errores
+                        }
+                    });
+                });
+            }
+
+            function showElements(...selectors) {
+                selectors.forEach(selector => $(selector).show());
+            }
+
+            function hideElements(...selectors) {
+                selectors.forEach(selector => $(selector).hide());
+            }
+
+            let barValues = [0, 0];
+
+            async function drawLeagueChart(chartId, centre, state) {
+                let params = {
+                    _token: "{{ csrf_token() }}",
+                    state: $("#datepickerType").val()
+                };
+                console.log('drawing chart...');
+                console.log(state);
+
+                let url = centre ? "{{ route('league.detailsCentreLeague') }}" :
+                    "{{ route('league.generateLeague') }}";
+
+                if (centre) {
+                    params["centre"] = centre;
+                    params["year"] = $("#yearPicker").val();
+                    params["month"] = null;
+                } else if ($('#monthYearPicker').is(":visible")) {
+                    let monthYear = $("#monthYearPicker").val().split('/');
+                    params["month"] = monthYear[0];
+                    params["year"] = monthYear[1];
+                } else {
+                    params["year"] = $("#yearPicker").val();
+                    params["month"] = null;
                 }
 
-                function showElements(...selectors) {
-                    selectors.forEach(selector => $(selector).show());
-                }
+                try {
+                    let response = await fetchLeagueData(params, url);
+                    let data = response.data; // Obtenemos los datos
+                    console.log('Response data:', response.data);
 
-                function hideElements(...selectors) {
-                    selectors.forEach(selector => $(selector).hide());
-                }
+                    let labels = centre ?
+                        data.map(item => item.month.month) :
+                        data.map(item => item.centre);
 
-                async function drawLeagueChart(chartId, centre, state) {
-                    let params = {
-                        _token: "{{ csrf_token() }}",
-                        state: $("#datepickerType").val()
-                    };
-                    console.log('drawing chart...');
-                    console.log(state);
+                    let chartConfig = chartConfigs[chartId];
+                    chartConfig.labels = labels;
+                    barValues = [0.6, 0.4];
 
-                    let url = centre ? "{{ route('league.detailsCentreLeague') }}" :
-                        "{{ route('league.generateLeague') }}";
-
-                    if (centre) {
-                        params["centre"] = centre;
-                        params["year"] = $("#yearPicker").val();
-                        params["month"] = null;
-                    } else if ($('#monthYearPicker').is(":visible")) {
-                        let monthYear = $("#monthYearPicker").val().split('/');
-                        params["month"] = monthYear[0];
-                        params["year"] = monthYear[1];
+                    if (state === 'Mensual') {
+                        chartConfig.data = data.map(item => item.average);
+                        chartConfig.title = 'Liga Mensual';
+                    } else if (centre) {
+                        chartConfig.title = centre;
+                        chartConfig.data = data.map(item => item.cv);
                     } else {
-                        params["year"] = $("#yearPicker").val();
-                        params["month"] = null;
+                        chartConfig.data = data.map(item => item.points);
+                        chartConfig.title = 'Liga Anual';
+                        barValues = [20, 10];
+
                     }
 
-                    try {
-                        let response = await fetchLeagueData(params, url);
-                        let data = response.data; // Obtenemos los datos
-                        console.log('Response data:', response.data);
-                        // Configuramos las etiquetas dinámicas según la columna
-                        let labels = centre ?
-                            data.map(item => item.month.month) :
-                            data.map(item => item.centre);
+                    const ctx = document.getElementById(chartConfig.id).getContext('2d');
 
-                        let chartConfig = chartConfigs[chartId];
-                        chartConfig.labels = labels;
-                        if(state == 'Mensual'){
-                            chartConfig.data =  data.map(item => item.average);
-                        }else if (centre){
-                            chartConfig.data =   data.map(item => item.cv);
-                        }else {
-                            chartConfig.data =     data.map(item => item.points);
-                        }
+                    // Destroy the previous chart if it exists
+                    if (currentChart !== null) {
+                        currentChart.destroy();
+                    }
 
-                        const ctx = document.getElementById(chartConfig.id).getContext('2d');
-                        // Destroy the previous chart if it exists
-                        if (currentChart !== null) {
-                            currentChart.destroy();
-                        }
-
-                        // Create a new chart
-                        currentChart = new Chart(ctx, {
-                            type: chartConfig.type,
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: chartConfig.label,
-                                    data: chartConfig.data,
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.2)',
-                                        'rgba(54, 162, 235, 0.2)',
-                                        'rgba(255, 206, 86, 0.2)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)'
-                                    ],
-                                    borderWidth: 1,
-                                    maxBarThickness: 50,
-                                    minBarLength: 2
-                                }]
+                    // Create a new chart
+                    currentChart = new Chart(ctx, {
+                        type: chartConfig.type,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: chartConfig.label,
+                                data: chartConfig.data,
+                                backgroundColor: chartConfig.data.map(value => getDynamicColor(
+                                    value, false, barValues)),
+                                borderColor: chartConfig.data.map(value => getDynamicColor(
+                                    value, true, barValues)),
+                                borderWidth: 2,
+                                maxBarThickness: 50,
+                                minBarLength: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
                             },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: false
+                            plugins: {
+                                legend: {
+                                    title: {
+                                        display: true,
+                                        text: chartConfig.title,
                                     }
                                 }
                             }
-                        });
-                    } catch (error) {
-                        console.error('Error fetching chart data:', error);
-                    }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching chart data:', error);
+                }
+            }
+            // Function to dynamically assign colors based on value
+            function getDynamicColor(value, isBorder = false, barValues) {
+                const greenShades = ["#80f46c", "#a7f799", "#e3ecf5"]; // Brilliant to light green
+                const redShades = ["#d75959", "#df7b7b", "#f7d7c2"]; // Dark to light red
+
+                let color;
+                if (value < 0) {
+                    // Negative values -> Red shades
+                    if (value <= -barValues[0]) color = redShades[0]; // Darkest red
+                    else if (value <= -barValues[1]) color = redShades[1]; // Medium red
+                    else color = redShades[2]; // Lightest red
+                } else {
+                    // Positive values -> Green shades
+                    if (value >= barValues[0]) color = greenShades[0]; // Brightest green
+                    else if (value >= barValues[1]) color = greenShades[1]; // Medium green
+                    else color = greenShades[2]; // Lightest green
+                }
+                const alpha = isBorder ? 1 : 0.9; // Full opacity for borders, semi-transparent for fills
+                return hexToRgba(color, alpha);
+            }
+
+            // Helper function to convert HEX to RGBA
+            function hexToRgba(hex, alpha) {
+                const bigint = parseInt(hex.replace("#", ""), 16);
+                const r = (bigint >> 16) & 255;
+                const g = (bigint >> 8) & 255;
+                const b = bigint & 255;
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            }
+
+
+
+            /**
+             * Botón exportar
+             */
+            $("#btnSubmitExport").on('click', function(e) {
+                e.preventDefault();
+                $("#leagueForm").attr('action', '{{ route('league.exportLeague') }}');
+                $('#btnSubmitExport').hide();
+                $('#btnSubmitLoad').show();
+                $('#btnSubmitLoad').prop('disabled', true);
+                $('#centre').val($("#centre_id_picker option:selected").text());
+
+                params = {};
+                params["_token"] = "{{ csrf_token() }}";
+
+                if ($("#datepickerType").val() == 1) {
+                    $('#centre').selectpicker('refresh');
+                    params['centre'] = null;
+                    params["state"] = 'mensual';
+
+                } else {
+                    params["centre"] = $('#centre').val();
+                    params["state"] = 'anual';
                 }
 
-                /**
-                 * Botón exportar
-                 */
-                $("#btnSubmitExport").on('click', function(e) {
-                    e.preventDefault();
-                    $("#leagueForm").attr('action', '{{ route('league.exportLeague') }}');
-                    $('#btnSubmitExport').hide();
-                    $('#btnSubmitLoad').show();
-                    $('#btnSubmitLoad').prop('disabled', true);
-                    $('#centre').val($("#centre_id_picker option:selected").text());
-
-                    params = {};
-                    params["_token"] = "{{ csrf_token() }}";
-
-                    if ($("#datepickerType").val() == 1) {
-                        $('#centre').selectpicker('refresh');
-                        params['centre'] = null;
-                        params["state"] = 'mensual';
+                if (params["centre"]) {
+                    params["year"] = $("#yearPicker").val()
+                    params["month"] = null;
+                } else {
+                    if ($('#monthYearPicker').is(":visible")) {
+                        monthYear = $("#monthYearPicker").val();
+                        dateSearch = monthYear.split('/');
+                        params["month"] = dateSearch[0];
+                        params["year"] = dateSearch[1];
 
                     } else {
-                        params["centre"] = $('#centre').val();
-                        params["state"] = 'anual';
-                    }
-
-                    if (params["centre"]) {
                         params["year"] = $("#yearPicker").val()
                         params["month"] = null;
-                    } else {
-                        if ($('#monthYearPicker').is(":visible")) {
-                            monthYear = $("#monthYearPicker").val();
-                            dateSearch = monthYear.split('/');
-                            params["month"] = dateSearch[0];
-                            params["year"] = dateSearch[1];
 
-                        } else {
-                            params["year"] = $("#yearPicker").val()
-                            params["month"] = null;
-
-                        }
                     }
-                    $.ajax({
-                        url: $("#leagueForm").attr('action'),
-                        type: 'GET',
-                        data: params,
-                        dataType: 'binary',
-                        xhrFields: {
-                            'responseType': 'blob'
-                        },
-                        xhr: function() {
-                            var xhr = new XMLHttpRequest();
-                            xhr.onreadystatechange = function() {
-                                if (xhr.readyState == 2) {
-                                    if (xhr.status == 200) {
-                                        xhr.responseType = "blob";
-                                    } else {
-                                        xhr.responseType = "text";
-                                    }
+                }
+                $.ajax({
+                    url: $("#leagueForm").attr('action'),
+                    type: 'GET',
+                    data: params,
+                    dataType: 'binary',
+                    xhrFields: {
+                        'responseType': 'blob'
+                    },
+                    xhr: function() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState == 2) {
+                                if (xhr.status == 200) {
+                                    xhr.responseType = "blob";
+                                } else {
+                                    xhr.responseType = "text";
                                 }
-                            };
-                            return xhr;
-                        },
-                        success: function(data, textStatus, jqXHR) {
-                            if (textStatus === 'success') {
-                                $('#btnSubmitLoad').hide();
-                                $('#btnSubmitExport').show();
-
-                                var link = document.createElement('a'),
-                                    filename = 'league.xls';
-                                link.href = URL.createObjectURL(data);
-                                link.download = filename;
-                                link.click();
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            var response = JSON.parse(xhr.responseText);
-                            showAlert('error', response);
+                        };
+                        return xhr;
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        if (textStatus === 'success') {
                             $('#btnSubmitLoad').hide();
                             $('#btnSubmitExport').show();
+
+                            var link = document.createElement('a'),
+                                filename = 'league.xls';
+                            link.href = URL.createObjectURL(data);
+                            link.download = filename;
+                            link.click();
                         }
-                    });
+                    },
+                    error: function(xhr, status, error) {
+                        var response = JSON.parse(xhr.responseText);
+                        showAlert('error', response);
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmitExport').show();
+                    }
                 });
-
-
             });
-        </script>
-    @endsection
+
+
+        });
+    </script>
+@endsection
