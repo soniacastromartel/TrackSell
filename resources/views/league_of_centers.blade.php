@@ -1,6 +1,7 @@
 @extends('layouts.logged')
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 @section('content')
     @include('inc.navbar')
@@ -366,10 +367,7 @@
                     _token: "{{ csrf_token() }}",
                     state: $("#datepickerType").text()
                 };
-
-                console.log('drawing table...');
                 console.log(params);
-
                 // Configuramos los parámetros según si hay "centre" o no
                 if (centre) {
                     params["centre"] = centre;
@@ -514,7 +512,7 @@
 
                 try {
                     let response = await fetchLeagueData(params, url);
-                    let data = response.data; // Obtenemos los datos
+                    let data = response.data;
                     console.log('Response data:', response.data);
 
                     let labels = centre ?
@@ -523,7 +521,7 @@
 
                     let chartConfig = chartConfigs[chartId];
                     chartConfig.labels = labels;
-                    barValues = [0.6, 0.4];
+                    let barValues = [0.6, 0.4];
 
                     if (state === 'Mensual') {
                         chartConfig.data = data.map(item => item.average);
@@ -535,11 +533,8 @@
                         chartConfig.data = data.map(item => item.points);
                         chartConfig.title = 'Liga Anual';
                         barValues = [20, 10];
-
                     }
-
                     const ctx = document.getElementById(chartConfig.id).getContext('2d');
-
                     // Destroy the previous chart if it exists
                     if (currentChart !== null) {
                         currentChart.destroy();
@@ -563,9 +558,12 @@
                             }]
                         },
                         options: {
+                            responsive: true,
                             scales: {
                                 y: {
-                                    beginAtZero: false
+                                    beginAtZero: false,
+                                    suggestedMin: -1.3,
+                                    suggestedMax: 1,
                                 }
                             },
                             plugins: {
@@ -573,20 +571,172 @@
                                     title: {
                                         display: true,
                                         text: chartConfig.title,
+                                        font: {
+                                            size: 20,
+                                            weight: 'bold',
+                                        },
+                                        color: '#000'
                                     }
+                                },
+                                datalabels: {
+                                    display: true, // Ensure this is true
+                                    color: '#000',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 12
+                                    },
+                                    anchor: 'end', // Position of the label relative to the bar
+                                    align: 'bottom', // Align the label at the bottom of the bar
+                                    formatter: (value) => value // Show the value on the bar
                                 }
                             }
-                        }
+                        },
+                        plugins: [{
+                            id: 'bubblePlugin',
+                            afterDatasetsDraw: (chart) => {
+                                const ctx = chart.ctx;
+                                ctx.save();
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.font = 'bold 12px Arial';
+                                const topThree = [1, 2, 3];
+
+                                chart.data.datasets.forEach((dataset, i) => {
+                                    const meta = chart.getDatasetMeta(i);
+                                    console.log(meta);
+                                    meta.data.forEach((bar, index) => {
+                                        console.log(dataset.data[index]);
+                                        const value = dataset.data[index];
+                                        if (value !== null && value !==
+                                            undefined && value !== 0 &&
+                                            index < 3) {
+                                            const textPositionY = bar.y -
+                                                30;
+                                            const bubbleColor = '#FFD700';
+
+                                            // Draw the bubble
+                                            ctx.beginPath();
+                                            ctx.arc(bar.x, textPositionY,
+                                                15, 0, 2 * Math.PI);
+                                            ctx.fillStyle = bubbleColor;
+                                            ctx.fill();
+                                            ctx.closePath();
+
+                                            // Draw the border
+                                            ctx.strokeStyle = 'black';
+                                            ctx.lineWidth = 1;
+                                            ctx.stroke();
+
+                                            // Add the rank number inside the bubble
+                                            ctx.fillStyle = 'black';
+                                            ctx.fillText(topThree[index],
+                                                bar.x, textPositionY);
+                                        }
+                                    });
+                                });
+                                ctx.restore();
+                            }
+                        }]
                     });
                 } catch (error) {
                     console.error('Error fetching chart data:', error);
                 }
             }
+
+            Chart.register(ChartDataLabels);
+
+            // plugin to show a no data message inside chart
+            Chart.register({
+                id: 'noDataPlugin',
+                beforeDraw: (chart) => {
+                    if (chart.data.datasets.length > 0) {
+                        const data = chart.data.datasets[0].data;
+                        const allValuesEmpty = data.every(value => value === 0 || value === null ||
+                            value === '');
+
+                        if (data.length === 0 || allValuesEmpty) {
+                            const ctx = chart.ctx;
+                            const {
+                                width,
+                                height
+                            } = chart;
+                            ctx.save();
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.font = '22px Arial';
+                            ctx.fillStyle = 'red';
+                            ctx.fillText('No hay datos disponibles para mostrar.', width / 2, height /
+                                2);
+                            ctx.restore();
+                        }
+                    } else {
+                        const ctx = chart.ctx;
+                        const {
+                            width,
+                            height
+                        } = chart;
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.font = '16px Arial';
+                        ctx.fillStyle = 'gray';
+                        ctx.fillText('No hay datos disponibles para mostrar.', width / 2, height / 2);
+                        ctx.restore();
+                    }
+                },
+                // afterDatasetsDraw: (chart) => {
+                //     const chartState = chart.config.options.plugins.chartState; // Obtener el estado
+                //     // if (chartState === '') {
+                //     const ctx = chart.ctx;
+                //     ctx.save();
+                //     ctx.textAlign = 'center';
+                //     ctx.textBaseline = 'middle';
+                //     ctx.font = '14px Arial';
+                //     ctx.fillStyle = 'black'; // Color del texto
+
+                //     // Iterar sobre cada barra del dataset
+                //     chart.data.datasets.forEach((dataset, i) => {
+                //         const meta = chart.getDatasetMeta(i);
+                //         meta.data.forEach((bar, index) => {
+                //             const value = dataset.data[index];
+                //             if (value !== null && value !== undefined && value !==
+                //                 0) {
+                //                 // Personalizar la burbuja
+                //                 const bubbleRadius = 19;
+                //                 const textPositionY = bar.y + (value > 0 ? -
+                //                     bubbleRadius - 5 : bubbleRadius + 5);
+                //                 const bubbleColor = value > 0 ? '#6cb2eb' :
+                //                     '#F44336';
+                //                 // Dibujar la burbuja
+                //                 ctx.beginPath();
+                //                 ctx.arc(bar.x, textPositionY, bubbleRadius, 0, 2 *
+                //                     Math.PI);
+                //                 ctx.fillStyle = bubbleColor;
+                //                 ctx.fill();
+                //                 ctx.closePath();
+
+                //                 // Dibujar el borde de la burbuja
+                //                 ctx.strokeStyle = 'black';
+                //                 ctx.lineWidth = 1;
+                //                 ctx.stroke();
+
+                //                 // Dibujar el texto dentro de la burbuja
+                //                 ctx.fillStyle =
+                //                     'white'; // Cambiar el color del texto
+                //                 ctx.font = 'bold 12px Arial';
+                //                 ctx.fillText(value, bar.x, textPositionY);
+                //             }
+                //         });
+                //     });
+                //     ctx.restore();
+                //     // }
+                // }
+            });
+
             // Function to dynamically assign colors based on value
             function getDynamicColor(value, isBorder = false, barValues) {
                 const greenShades = ["#80f46c", "#a7f799", "#e3ecf5"]; // Brilliant to light green
                 const redShades = ["#d75959", "#df7b7b", "#f7d7c2"]; // Dark to light red
-
                 let color;
                 if (value < 0) {
                     // Negative values -> Red shades
@@ -611,8 +761,6 @@
                 const b = bigint & 255;
                 return `rgba(${r}, ${g}, ${b}, ${alpha})`;
             }
-
-
 
             /**
              * Botón exportar
