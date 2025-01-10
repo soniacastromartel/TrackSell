@@ -221,7 +221,6 @@
                 }
             };
 
-
             configureMonthYearPicker();
             loadData();
 
@@ -326,8 +325,6 @@
                     state: state === "1" ? "Mensual" : "Anual"
                 };
 
-                console.log(params);
-
                 if ($("#datepickerType").val() == 1) {
                     $('#centre').selectpicker('refresh');
                 }
@@ -367,7 +364,6 @@
                     _token: "{{ csrf_token() }}",
                     state: $("#datepickerType").text()
                 };
-                console.log(params);
                 // Configuramos los parámetros según si hay "centre" o no
                 if (centre) {
                     params["centre"] = centre;
@@ -460,7 +456,6 @@
 
             //handle ajax request to draw datatables and charts
             function fetchLeagueData(params, url) {
-                console.log(params);
                 return new Promise((resolve, reject) => {
                     $.ajax({
                         url: url,
@@ -487,6 +482,8 @@
             let barValues = [0, 0];
 
             async function drawLeagueChart(chartId, centre, state) {
+                var animationOffset = 0; // Desplazamiento actual de la animación
+                var animationDirection = 1; // Dirección de la animación (1 = subir, -1 = bajar)
                 let params = {
                     _token: "{{ csrf_token() }}",
                     state: $("#datepickerType").val()
@@ -591,6 +588,8 @@
                                 }
                             }
                         },
+
+                        // Plugin con animación para la burbuja del primer lugar
                         plugins: [{
                             id: 'bubblePlugin',
                             afterDatasetsDraw: (chart) => {
@@ -599,44 +598,118 @@
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 ctx.font = 'bold 12px Arial';
+
                                 const topThree = [1, 2, 3];
+                                const defaultBubbleSize =
+                                15; // Tamaño estándar de la burbuja
+                                const extraBubbleSize =
+                                3; // Incremento para la burbuja del primer lugar
 
                                 chart.data.datasets.forEach((dataset, i) => {
                                     const meta = chart.getDatasetMeta(i);
-                                    console.log(meta);
+
                                     meta.data.forEach((bar, index) => {
-                                        console.log(dataset.data[index]);
                                         const value = dataset.data[index];
+
                                         if (value !== null && value !==
                                             undefined && value !== 0 &&
                                             index < 3) {
-                                            const textPositionY = bar.y -
-                                                30;
-                                            const bubbleColor = '#FFD700';
+                                            const isFirstPlace = index ===
+                                            0; // Verifica si es el primer lugar
+                                            const bubbleSize =
+                                                isFirstPlace ?
+                                                defaultBubbleSize +
+                                                extraBubbleSize :
+                                                defaultBubbleSize;
 
-                                            // Draw the bubble
+                                            // Calcular la posición vertical de la burbuja
+                                            const baseTextPositionY = bar
+                                                .y - 30;
+                                            const textPositionY =
+                                                isFirstPlace ?
+                                                baseTextPositionY +
+                                                animationOffset :
+                                                baseTextPositionY;
+
+                                            // Cambiar el color de la barra
+                                            bar.options.backgroundColor =
+                                                getDynamicColor(value,
+                                                    false, barValues,
+                                                    isFirstPlace, false);
+                                            bar.options.borderColor =
+                                                getDynamicColor(value, true,
+                                                    barValues, isFirstPlace,
+                                                    false);
+
+                                            // Dibujar la burbuja
                                             ctx.beginPath();
                                             ctx.arc(bar.x, textPositionY,
-                                                15, 0, 2 * Math.PI);
-                                            ctx.fillStyle = bubbleColor;
+                                                bubbleSize, 0, 2 * Math
+                                                .PI);
+                                            ctx.fillStyle = getDynamicColor(
+                                                value, false, barValues,
+                                                isFirstPlace, true,
+                                                index + 1
+                                                ); // Color dinámico para la burbuja
                                             ctx.fill();
                                             ctx.closePath();
 
-                                            // Draw the border
+                                            // Dibujar el borde de la burbuja
                                             ctx.strokeStyle = 'black';
                                             ctx.lineWidth = 1;
                                             ctx.stroke();
 
-                                            // Add the rank number inside the bubble
+                                            // Agregar el borde negro a la barra si es la primera posición
+                                            if (isFirstPlace) {
+                                                bar.options.borderWidth = 2;
+                                                bar.options.borderColor =
+                                                    'black';
+                                            }
+
+                                            // Agregar el número de posición dentro de la burbuja
                                             ctx.fillStyle = 'black';
                                             ctx.fillText(topThree[index],
                                                 bar.x, textPositionY);
                                         }
                                     });
                                 });
+
                                 ctx.restore();
                             }
-                        }]
+                        }],
+
+                        afterUpdate: function(chart) {
+                            if (!animationInterval) {
+                                animationInterval = setInterval(() => {
+                                    // Animación de la burbuja del primer lugar
+                                    if (animationDirection === 1 && animationOffset < 2) {
+                                        // Subir
+                                        animationOffset += 0.5;
+                                    } else if (animationDirection === -1 &&
+                                        animationOffset > -2) {
+                                        // Bajar
+                                        animationOffset -= 0.5;
+                                    }
+
+                                    // Cambiar dirección cuando se llegue a los límites
+                                    if (animationOffset >= 2 || animationOffset <= -2) {
+                                        animationDirection *= -1;
+                                    }
+
+                                    // Actualizar el gráfico
+                                    chart.update();
+                                }, 50); // Intervalo de 50ms para controlar la velocidad
+                            }
+                        },
+
+                        beforeDestroy: function() {
+                            // Detener la animación cuando el gráfico se destruya
+                            if (animationInterval) {
+                                clearInterval(animationInterval);
+                                animationInterval = null;
+                            }
+                        }
+
                     });
                 } catch (error) {
                     console.error('Error fetching chart data:', error);
@@ -684,74 +757,53 @@
                         ctx.restore();
                     }
                 },
-                // afterDatasetsDraw: (chart) => {
-                //     const chartState = chart.config.options.plugins.chartState; // Obtener el estado
-                //     // if (chartState === '') {
-                //     const ctx = chart.ctx;
-                //     ctx.save();
-                //     ctx.textAlign = 'center';
-                //     ctx.textBaseline = 'middle';
-                //     ctx.font = '14px Arial';
-                //     ctx.fillStyle = 'black'; // Color del texto
-
-                //     // Iterar sobre cada barra del dataset
-                //     chart.data.datasets.forEach((dataset, i) => {
-                //         const meta = chart.getDatasetMeta(i);
-                //         meta.data.forEach((bar, index) => {
-                //             const value = dataset.data[index];
-                //             if (value !== null && value !== undefined && value !==
-                //                 0) {
-                //                 // Personalizar la burbuja
-                //                 const bubbleRadius = 19;
-                //                 const textPositionY = bar.y + (value > 0 ? -
-                //                     bubbleRadius - 5 : bubbleRadius + 5);
-                //                 const bubbleColor = value > 0 ? '#6cb2eb' :
-                //                     '#F44336';
-                //                 // Dibujar la burbuja
-                //                 ctx.beginPath();
-                //                 ctx.arc(bar.x, textPositionY, bubbleRadius, 0, 2 *
-                //                     Math.PI);
-                //                 ctx.fillStyle = bubbleColor;
-                //                 ctx.fill();
-                //                 ctx.closePath();
-
-                //                 // Dibujar el borde de la burbuja
-                //                 ctx.strokeStyle = 'black';
-                //                 ctx.lineWidth = 1;
-                //                 ctx.stroke();
-
-                //                 // Dibujar el texto dentro de la burbuja
-                //                 ctx.fillStyle =
-                //                     'white'; // Cambiar el color del texto
-                //                 ctx.font = 'bold 12px Arial';
-                //                 ctx.fillText(value, bar.x, textPositionY);
-                //             }
-                //         });
-                //     });
-                //     ctx.restore();
-                //     // }
-                // }
             });
 
             // Function to dynamically assign colors based on value
-            function getDynamicColor(value, isBorder = false, barValues) {
-                const greenShades = ["#80f46c", "#a7f799", "#e3ecf5"]; // Brilliant to light green
-                const redShades = ["#d75959", "#df7b7b", "#f7d7c2"]; // Dark to light red
+            function getDynamicColor(value, isBorder = false, barValues, isFirstPlace = false, isBubble = false,
+                position = 0) {
+                const greenShades = ["#80f46c", "#a7f799", "#e3ecf5", "#24F840"]; // Brilliant to light green
+                const redShades = ["#d75959", "#df7b7b", "#f7d7c2", "#C70053"]; // Dark to light red
+
                 let color;
-                if (value < 0) {
-                    // Negative values -> Red shades
-                    if (value <= -barValues[0]) color = redShades[0]; // Darkest red
-                    else if (value <= -barValues[1]) color = redShades[1]; // Medium red
-                    else color = redShades[2]; // Lightest red
+
+                if (isFirstPlace) {
+                    if (value < 0) {
+                        // Valor negativo: barra roja, burbuja verde (cuarto color del array correspondiente)
+                        color = isBubble ? greenShades[3] : redShades[3];
+                    } else {
+                        // Valor positivo: barra verde, burbuja roja (cuarto color del array correspondiente)
+                        color = isBubble ? redShades[3] : greenShades[3];
+                    }
+                } else if (position == 2 || position == 3) {
+                    // Segunda y tercera posición
+                    if (value < 0) {
+                        color = isBubble ? greenShades[position - 2] : redShades[position - 2];
+                    } else {
+                        color = isBubble ? redShades[position - 2] : greenShades[position - 2];
+                    }
                 } else {
-                    // Positive values -> Green shades
-                    if (value >= barValues[0]) color = greenShades[0]; // Brightest green
-                    else if (value >= barValues[1]) color = greenShades[1]; // Medium green
-                    else color = greenShades[2]; // Lightest green
+                    // Lógica estándar para valores positivos o negativos
+                    if (value < 0) {
+                        if (value <= -barValues[0]) color = redShades[0]; // Darkest red
+                        else if (value <= -barValues[1]) color = redShades[1]; // Medium red
+                        else color = redShades[2]; // Lightest red
+                    } else {
+                        if (value >= barValues[0]) color = greenShades[0]; // Brightest green
+                        else if (value >= barValues[1]) color = greenShades[1]; // Medium green
+                        else color = greenShades[2]; // Lightest green
+                    }
                 }
+
+                if (isBorder && isFirstPlace) {
+                    color = 'black'; // Borde negro para la primera posición
+                }
+
                 const alpha = isBorder ? 1 : 0.9; // Full opacity for borders, semi-transparent for fills
                 return hexToRgba(color, alpha);
             }
+
+
 
             // Helper function to convert HEX to RGBA
             function hexToRgba(hex, alpha) {
