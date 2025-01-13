@@ -26,12 +26,21 @@ class Centre extends Model
     ];
 
     /**
-     * Recoge todos los centros
+     * Recoge todos los centros activos
      */
     public function scopeGetCentresActive($query)
     {
         return $query->whereNull('cancellation_date')
             ->orderBy('name')
+            ->get();
+    }
+    /**
+     * Recoge todos los centros activo ordenador por campos preconfigurados
+     */
+    public function scopeGetCentresActiveByRaw($query, $rawFields)
+    {
+        return $query->whereNull('cancellation_date')
+            ->orderByRaw($rawFields)
             ->get();
     }
 
@@ -53,12 +62,12 @@ class Centre extends Model
     {
         if (!is_numeric($field)) {
             return $query
-            ->whereNull('cancellation_date')
-            ->where('name', $field)->get();
+                ->whereNull('cancellation_date')
+                ->where('name', $field)->get();
         } else {
             return $query
-            ->whereNull('cancellation_date')
-            ->where('id', $field)->get();
+                ->whereNull('cancellation_date')
+                ->where('id', $field)->get();
         }
     }
 
@@ -69,12 +78,12 @@ class Centre extends Model
     {
         if (!is_numeric($centre)) {
             $centre = $query
-            ->whereNull('cancellation_date')
-            ->where('name', $centre)->first();
+                ->whereNull('cancellation_date')
+                ->where('name', $centre)->first();
         } else {
             $centre = $query
-            ->whereNull('cancellation_date')
-            ->where('id', $centre)->first();
+                ->whereNull('cancellation_date')
+                ->where('id', $centre)->first();
         }
 
         return !empty($centre) ? $centre->name : null;
@@ -99,8 +108,8 @@ class Centre extends Model
     public function scopeGetCentreByNameLike($query, $name)
     {
         return $query
-        ->whereNull('cancellation_date')
-        ->where('name', 'like', '%' . $name . '%')->get();
+            ->whereNull('cancellation_date')
+            ->where('name', 'like', '%' . $name . '%')->get();
     }
 
     /**
@@ -109,14 +118,15 @@ class Centre extends Model
     public function scopeGetCentreIdByNameLike($query, $name)
     {
         $centreId = $query
-        ->whereNull('cancellation_date')
-        ->where('name', 'like', '%'. $name.'%')->value('id');
+            ->whereNull('cancellation_date')
+            ->where('name', 'like', '%' . $name . '%')->value('id');
         Log::info('centreId: ', [
-            
-        ]);
-        return $centreId;    }
 
-    
+        ]);
+        return $centreId;
+    }
+
+
 
     /**
      * Devuelve el email de un centro por su ID
@@ -124,8 +134,8 @@ class Centre extends Model
     public function scopeGetEmailByCenterId($query, $centerId)
     {
         $centre = $query
-        ->whereNull('cancellation_date')
-        ->where('id', $centerId)->first();
+            ->whereNull('cancellation_date')
+            ->where('id', $centerId)->first();
 
         return $centre ? $centre->email : null;
     }

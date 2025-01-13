@@ -89,8 +89,7 @@ class Target extends Model
         return self::whereRaw($whereFields)
             ->orderBy('month', 'asc')
             ->orderBy('year', 'asc')
-            ->get()
-            ->toArray();
+            ->get();
     }
 
 }

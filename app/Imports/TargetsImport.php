@@ -28,7 +28,7 @@ class TargetsImport implements WithMultipleSheets
         $sheets = [];
         if ($this->isEdit) {
             try {
-                $sheets[] = new TargetSheetImport($this->year);
+                $sheets[] = new TargetSheetImport($this->year, true);
             } catch (\Exception $e) {
                 Log::error('Error initializing TargetSheetImport for edit mode', [
                     'message' => $e->getMessage(),
@@ -38,7 +38,7 @@ class TargetsImport implements WithMultipleSheets
         } else {
             try {
                 foreach ($this->centres as $centre) {
-                    $sheets[] = new TargetSheetImport($this->year);
+                    $sheets[] = new TargetSheetImport($this->year, false);
                 }
             } catch (\Exception $e) {
                 Log::error('Error initializing sheets for centres', [

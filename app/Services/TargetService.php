@@ -22,15 +22,13 @@ class TargetService
         }
         if (isset($params['centre']) && !empty($params['centre'])) {
             $idCentres = array_column($params['centre']->toArray(), 'id');
-        
+
             if (!empty($idCentres)) {
                 $whereFields .= ' and centre_employee_id in (' . implode(",", $idCentres) . ')';
             }
         }
-        
         if (isset($params['employee']) && !empty($params['employee'])) {
             $whereFields .= ' and employee = \'' . $params['employee'] . '\'';
-
         }
         if (isset($params['monthYear']) && !empty($params['monthYear'])) {
             if (isset($params['acumulative']) && $params['acumulative']) {
@@ -102,7 +100,6 @@ class TargetService
      */
     public function filterRequestChanges($exportData, $centres)
     {
-
         $idCentres = null;
         if (!empty($centres)) {
             $idCentres = array_column($centres->toArray(), 'id');
@@ -131,7 +128,6 @@ class TargetService
     public function getVC($centres, $target)
     {
         $vcTotal = 0;
-
         $centres = isset($centres) ? $centres : Centre::getCentresActive();
         foreach ($centres as $centre) {
             if (isset($target[$centre->name])) {
@@ -144,7 +140,6 @@ class TargetService
                 }
             }
         }
-
         return $vcTotal;
     }
 
@@ -157,89 +152,54 @@ class TargetService
      */
     public function getTarget($centres, $month, $year)
     {
-
         $whereFields = "";
         $month = ltrim($month, '0');
+        $AllTargets = [];
+        $targetByCentre = [];
+        if (empty($year)) {
+            $year = date('Y');
+        }
         if (!empty($centres)) {
-
             $idCentres = array_column($centres->toArray(), 'id');
-            $whereFields .= " centre_id in (" . implode(",", $idCentres) . ")";
-
-            if (empty($year)) {
-                $year = date('Y');
-            }
-            //FIXME.... Sacar esta query fuera de llamada ( sólo hacerla una vez por centro )
-            $whereFields .= " and ((month between 1 and 12)  and  year = " . $year . ')';
-
-            $targetsDefined = DB::table('targets')
-                ->whereRaw($whereFields)
-                ->orderBy('month', 'asc')
-                ->orderBy('year', 'asc')
-                ->get();
-
-            $targetByCentre = [];
+            $whereFields = "centre_id IN (" . implode(",", $idCentres) . ") AND (month BETWEEN 1 AND 12) AND year = $year";
+            $targetsDefined = Target::getTargetsByFields($whereFields);
             foreach ($targetsDefined as $target) {
-
                 if (!isset($targetByCentre[$target->centre_id])) {
                     $targetByCentre[$target->centre_id] = [];
-
                 }
                 $targetByCentre[$target->centre_id][$target->month] = [];
                 $targetByCentre[$target->centre_id][$target->month] = $target;
             }
-
-            $targetsByCentre = [];
             foreach ($targetsDefined as $target) {
-
                 $mDefined = $target->month;
-                /**
-                 * Get target - segun mes/año solicitado
-                 * 
-                 * calc_month - te dice target
-                 */
                 if ($month . '/' . $year == $target->month . '/' . $target->year) {
 
-                    if (!isset($targetsByCentre[$target->centre_id])) {
-                        $targetsByCentre[$target->centre_id] = [];
+                    if (!isset($AllTargets[$target->centre_id])) {
+                        $AllTargets[$target->centre_id] = [];
                     }
-                    $monthBefore = $mDefined - 1;
+                    $monthBefore = $mDefined;
                     $calcMonth = $targetByCentre[$target->centre_id][$mDefined]->calc_month;
                     $nextMonthYear = 1;
                     if (!empty($targetByCentre[$target->centre_id][$monthBefore]->calc_month)) {
                         $monthYearBef = explode("/", $targetByCentre[$target->centre_id][$monthBefore]->calc_month);
                         $nextMonthYear = intval($monthYearBef[0]);
-                        if ($targetByCentre[$target->centre_id][$monthBefore]->obj1_done) {
-                            if ($monthYearBef[0] < 12) {
-                                $nextMonthYear += 1;
-                                $calcMonth = $nextMonthYear . '/' . $monthYearBef[1];
-                            } else {
-                                $nextMonthYear = 1;
-                                $nextYear = intval($monthYearBef[1]) + 1;
-                                $calcMonth = $nextMonthYear . '/' . $nextYear;
-                            }
-                        } else {
-                            $calcMonth = $monthYearBef[0] . '/' . $monthYearBef[1];
-                        }
-
                     }
-                    $targetData = Target::find($target->id);
-                    if (empty($target->calc_month)) {
-                        $targetData->update(['calc_month' => $calcMonth]);
-                    }
-                    $targetsByCentre[$target->centre_id] = $targetByCentre[$target->centre_id][$nextMonthYear];
-
+                    // $targetData = Target::find($target->id);
+                    // if (empty($target->calc_month)) {
+                    //     $targetData->update(['calc_month' => $calcMonth || null]);
+                    // }
+                    $AllTargets[$target->centre_id] = $targetByCentre[$target->centre_id][$nextMonthYear];
                     $vd = 0;
                     if (isset($targetByCentre[$target->centre_id][$month])) {
                         $vd = $targetByCentre[$target->centre_id][$month]->vd;
                     }
-                    $targetsByCentre[$target->centre_id]->vd = $vd;
+                    $AllTargets[$target->centre_id]->vd = $vd;
 
                 }
 
             }
         }
-
-        return $targetsByCentre;
+        return $AllTargets;
     }
 
     /**
@@ -252,7 +212,6 @@ class TargetService
 
         $stateVc = $notdone;
         $stateVp = $notdone;
-
         //Loop centres (specific)
         foreach ($centres as $centre) {
             if (!isset($targetDef[$centre->id])) {
@@ -283,14 +242,12 @@ class TargetService
                         }
                     }
                 }
-
                 if ($t->month . "/" . $t->year == ltrim($monthYear, '0')) {
                     $targetData = Target::find($t->id);
                 }
                 $arrMonthCalc = explode("/", $monthYear);
                 $i++;
             }
-
             foreach ($target as $t) {
                 $targetToUpdate = $targetData;
                 if ($t->month . "/" . $t->year == $targetData->calc_month) {
@@ -298,14 +255,12 @@ class TargetService
                     break;
                 }
             }
-
             if ($vcTotal >= $targetData->obj1) {
                 $stateVc = $done;
                 $fields['obj1_done'] = true;
             } else {
                 $fields['obj1_done'] = false;
             }
-
             if ($vpTotal > $targetData->obj2) {
                 $stateVp = $done;
                 $fields['obj2_done'] = true;
@@ -313,11 +268,9 @@ class TargetService
                 $fields['obj2_done'] = false;
             }
             $targetToUpdate->update($fields);
-
             if ($vcTotal >= $targetData->obj1) {
                 $stateVc = $done;
             }
-
             if ($vpTotal > $targetData->obj2) {
                 $stateVp = $done;
             }
@@ -340,16 +293,13 @@ class TargetService
         if ((!empty($targets) && $targets['vc'] == 0) || (empty($targets))) {
             $obj1 = false;
         }
-
         if ((!empty($targets) && $targets['vp'] == 0) || (empty($targets))) {
             $obj2 = false;
         }
-
         if (!empty($supervisors) && in_array($targetRow->employee_id, $supervisors)) {
             $obj1 = false;
             $obj2 = false;
         }
-
         return ['obj1' => $obj1, 'obj2' => $obj2];
     }
 
@@ -357,7 +307,6 @@ class TargetService
     public function filterTarget($target, $month, $year)
     {
         $targetResult = [];
-
         $prevMonth = $month - 1;
         $prevYear = $year;
         $lastYear = $year;
@@ -365,7 +314,6 @@ class TargetService
             $prevMonth = 12;
             $prevYear = $year - 1;
         }
-
         $minDate = $prevYear . '-' . str_pad($prevMonth, 2, "0", STR_PAD_LEFT) . '-20';
         $maxDate = $lastYear . '-' . str_pad($month, 2, "0", STR_PAD_LEFT) . '-20';
         foreach ($target as $targetRow) {
@@ -374,7 +322,6 @@ class TargetService
             }
         }
         return $targetResult;
-
     }
     /**
      * Function obtener ranking segun parametros
@@ -405,7 +352,6 @@ class TargetService
                         throw new \Exception("Error no se ha definido objetivo para el centro: " . $centre);
                     }
                     foreach ($target[$centre] as $i => $targetRow) {
-
                         if ($i == 0) {
                             $targets = [];
                             if (!empty($targetDefined)) {
@@ -416,7 +362,6 @@ class TargetService
                                 });
                                 //$target[$centre] = $this->filterTarget($target[$centre], $beginMonth , $year); 
                                 $targetCentre = $this->filterTarget($target[$centre], $beginMonth, $year);
-
                                 $targets = $this->stateTarget($targetDefined, $beginMonth . '/' . $year, [$centre => $targetCentre], $centreData);
                             }
                         }
@@ -425,7 +370,6 @@ class TargetService
                             $ranking[$targetRow->employee_id]->total_incentive = 0;
                             $ranking[$targetRow->employee_id]->total_price = 0;
                         }
-
                         $prevMonth = $beginMonth - 1;
                         $prevYear = $year;
                         $lastYear = $year;
@@ -433,17 +377,14 @@ class TargetService
                             $prevMonth = 12;
                             $prevYear = $year - 1;
                         }
-
                         $minDate = $prevYear . '-' . str_pad($prevMonth, 2, "0", STR_PAD_LEFT) . '-20';
                         $maxDate = $lastYear . '-' . str_pad($beginMonth, 2, "0", STR_PAD_LEFT) . '-20';
                         if ($targetRow->validation_date > $minDate && $targetRow->validation_date <= $maxDate) {
                             $result = $this->rules($targetRow, $targets, null);
-
                             $valueIncentiveObj1 = isset($targetRow->service_price_incentive1) ? $targetRow->service_price_incentive1 : $targetRow->obj1_incentive;
                             $valueIncentiveObj2 = isset($targetRow->service_price_incentive2) ? $targetRow->service_price_incentive2 : $targetRow->obj2_incentive;
                             $totalIncentive = 0;
                             $totalIncentive = isset($targetRow->service_price_direct_incentive) ? $targetRow->service_price_direct_incentive : $targetRow->direct_incentive;
-
                             $isActive = $this->employeeActive($targetRow, $month . '/' . $year);
                             if ($isActive === true) {
                                 if ($result['obj1'] === true) {
@@ -462,7 +403,6 @@ class TargetService
             }
         }
         $rankingFinal = [];
-
         $employeeInfo = Employee::select('employees.id as employee_id', 'centres.name as centre')
             ->whereIn('employees.id', array_keys($ranking))
             ->join('centres', 'centres.id', '=', 'centre_id')
@@ -477,10 +417,8 @@ class TargetService
                 }
             }
         }
-
         $keys = array_column($rankingFinal, 'total_price');
         array_multisort($keys, SORT_DESC, $rankingFinal);
-
         foreach ($rankingFinal as $index => &$rankData) {
             $rankAux = [
                 'position' => $index + 1
@@ -495,7 +433,6 @@ class TargetService
             ];
             $rankData = $rankAux;
         }
-
         return $rankingFinal;
     }
 
@@ -525,7 +462,6 @@ class TargetService
             if (strpos($field, 'service_price_') !== false) {
                 $field = substr($field, strlen('service_price_'));
             }
-
             $fieldDiscount = 'discount_' . $field;
             $result = $targetRow->$fieldDiscount;
         }
@@ -545,8 +481,6 @@ class TargetService
      * @param $centres
      * @param $targetCentre registros para obtener VCTotal
      */
-
-
     public function getSummarySales($tracking, $targetDefined, $monthYear, $centres, $targetCentre)
     {
         try {
@@ -580,14 +514,11 @@ class TargetService
                     $total[$trackingRow->employee_id]['is_supervisor'] = 0;
                     $total[$trackingRow->employee_id]['tracking_ids'] = [];
                 }
-
                 $valueIncentiveObj1 = $this->getDiscount($trackingRow, 'service_price_incentive1');
                 $valueIncentiveObj2 = $this->getDiscount($trackingRow, 'service_price_incentive2');
                 $totalIncentive = 0;
-
                 $result = $this->rules($trackingRow, $targets, null);
                 $totalIncentive = isset($trackingRow->service_price_direct_incentive) ? $trackingRow->service_price_direct_incentive : $trackingRow->direct_incentive;
-
                 $isActive = $this->employeeActive($trackingRow, $monthYear);
                 if ($isActive === true) {
                     if ($result['obj1'] === true) {
@@ -611,14 +542,12 @@ class TargetService
                     $total[$trackingRow->employee_id]['tracking_ids'][] = $trackingRow->tracking_id;
                     $totalCentre[$centre['name']]['total_incentive'] += $totalIncentive * $trackingRow->quantity;
                 }
-
                 $supervisors = explode(",", $trackingRow->supervisor);
                 foreach ($supervisors as $supervisorId) {
                     $supervisorId = trim($supervisorId);
                     if (!in_array($supervisorId, $totalSupervisors)) {
                         $totalSupervisors = array_merge($totalSupervisors, [$supervisorId]);
                     }
-
                     if (!empty($supervisorId)) {
                         $supervisor = Employee::find($supervisorId);
                         $isSupervisorActive = $this->employeeActive($supervisor, $monthYear);
@@ -632,10 +561,8 @@ class TargetService
                             $total[$supervisorId]['total_super_incentive'] = 0;
                             $total[$supervisorId]['total_income'] = 0;
                         }
-
                         $valueSuperIncentive1 = $this->getDiscount($trackingRow, 'service_price_super_incentive1');
                         $valueSuperIncentive2 = $this->getDiscount($trackingRow, 'service_price_super_incentive2');
-
                         $result = $this->rules($trackingRow, $targets, array_values($supervisors));
                         $auxIncentive = 0;
                         //Solo aplica bonus de venta, para empleados activos en fecha fin de corte
@@ -663,7 +590,6 @@ class TargetService
                         if ($isSupervisorActive == false) {
                             $total[$supervisorId]['total_super_incentive'] = 0;
                         }
-
                         // Segunda comprobacion antes de asignacion por si no procede aplicar incentivo
                         if ($trackingRow->discount === null || $trackingRow->discount !== 'DESCUENTO1') {
                             $total[$supervisorId]['total_super_incentive'] += $auxIncentive * $trackingRow->quantity;
@@ -675,7 +601,6 @@ class TargetService
                             }
                             $total[$supervisorId]['total_income'] = round($total[$supervisorId]['total_income'], 2);
                         }
-
                         $total[$supervisorId]['is_supervisor'] = 1;
                     }
                 }
@@ -736,6 +661,13 @@ class TargetService
         return $isActive;
     }
 
+    /**
+     * Function to update Private Sales from form on 'Calcuradora de Incentivos - Venta Privada'
+     * @param mixed $amount
+     * @param mixed $centre
+     * @param mixed $date
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function updatePrivateSales($amount, $centre, $date)
     {
         try {
@@ -745,7 +677,6 @@ class TargetService
             $updateData = [
                 'vd' => floatval($amount),
             ];
-
             $updatedTarget = Target::updateTarget($year, $month, $centre, $updateData);
             return response()->json([
                 'success' => true,

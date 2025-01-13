@@ -82,7 +82,7 @@
                             <li id="adminServiceIncentive" class="nav-item ">
                                 <a class="nav-link" href="{{ route('services.incentives') }}">
                                     <i class="material-icons">local_atm</i>
-                                    <span class="sidebar-normal"> Precios & Incentivos </span>
+                                    <span class="sidebar-normal"> Tarifas & Incentivos </span>
                                 </a>
                             </li>
                     </div>

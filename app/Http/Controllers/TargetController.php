@@ -560,10 +560,9 @@ class TargetController extends Controller
             if ($params['type'] == 'only') {
                 $centres = Centre::getCentreByField($params['centreId']);
             } else {
-                $centres = DB::table('centres')
-                    ->whereNull('cancellation_date')
-                    ->orderByRaw(\DB::raw("FIELD(island, '" . implode('\',\'', $orderIslands) . "' )"))
-                    ->get();
+                $rawField= "FIELD(island, '" . implode('\',\'', $orderIslands) . "' )";
+                $centres = Centre::getCentresActiveByRaw($rawField);
+
             }
             $currentYear = isset($request->yearTarget) ? $request->yearTarget : date('Y');
             $targetData = [];

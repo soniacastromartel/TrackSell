@@ -19,10 +19,11 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
     private $isEdit;
     private $centre;
 
-    public function __construct($year)
+    public function __construct($year, $isEdit)
     {
 
         $this->year = $year;
+        $this-> isEdit = $isEdit;
     }
 
     /**
@@ -59,7 +60,6 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
     public function model(array $row)
     {
         try {
-
             $centreId = Centre::getCentreIdByNameLike($row['centro'] ?? '');
             if (!$centreId) {
                 throw new \Exception("Centro no encontrado: " . ($row['centro'] ?? 'Desconocido'));
@@ -69,7 +69,10 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
                 'obj1' => $data['obj1'],
                 'obj2' => $data['obj2'],
             ];
-
+            if (!$this->isEdit){
+                $calcMonth = $data['mes'] . '/' . $this->year;
+                $updateData['calc_month'] =  $calcMonth;
+            }
             if (isset($data['vd'])) {
                 $updateData['vd'] = $data['vd'];
             }
@@ -92,7 +95,7 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
                 'row' => $row,
                 'error' => $e->getMessage(),
             ]);
-            throw $e; 
+            throw $e;
         }
 
         return null;
