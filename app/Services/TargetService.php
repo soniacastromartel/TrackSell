@@ -228,6 +228,9 @@ class TargetService
                 if (empty($t->calc_month)) {
                     $t->update(['calc_month' => $calcMonth]);
                 }
+                if ($t->month . "/" . $t->year == ltrim($monthYear, '0')) {
+                    $targetData = Target::find($t->id);
+                }
             }
             foreach ($target as $t) {
                 $targetToUpdate = $targetData;

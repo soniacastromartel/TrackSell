@@ -333,13 +333,6 @@
         margin: 16px 0 !important;
     }
 
-    .label {
-        /* margin-top: 20px;
-  margin: 10px; */
-    }
-
-
-
     .btn-clear-container {
         padding: 10px;
         display: flex;
