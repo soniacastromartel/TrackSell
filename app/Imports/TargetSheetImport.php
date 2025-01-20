@@ -62,6 +62,7 @@ class TargetSheetImport implements WithStartRow, ToModel, WithHeadingRow, WithVa
         try {
             $centreId = Centre::getCentreIdByNameLike($row['centro'] ?? '');
             if (!$centreId) {
+                Log::error("Centro no encontrado: " . ($row['centro'] ?? 'Desconocido'));
                 throw new \Exception("Centro no encontrado: " . ($row['centro'] ?? 'Desconocido'));
             }
             $data = $this->prepareData($row);

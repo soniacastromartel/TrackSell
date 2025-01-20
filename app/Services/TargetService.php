@@ -212,7 +212,6 @@ class TargetService
 
         $stateVc = $notdone;
         $stateVp = $notdone;
-        //Loop centres (specific)
         foreach ($centres as $centre) {
             if (!isset($targetDef[$centre->id])) {
                 continue;
@@ -224,29 +223,11 @@ class TargetService
             $vpTotal = isset($targetDefined->vd) ? $targetDefined->vd : 0;
             $year = substr($monthYear, strpos($monthYear, '/') + 1);
             $target = Target::where(['centre_id' => $targetDefined->centre_id, 'year' => $year])->get();
-
-            $monthCalc = null;
-            $i = 0;
             foreach ($target as $t) {
-                if (!empty($t->calc_month)) {
-                    // $lastCalcMonth = $t->calc_month;
-                    if ($t->obj1_done == 1) {
-                        $arrMonthYear = explode("/", $t->calc_month);
-                        $calcMonth = "";
-                        if ($arrMonthYear[0] < 12) {
-                            $nextMonth = $arrMonthYear[0] + 1;
-                            $lastCalcMonth = $nextMonth . "/" . $arrMonthYear[1];
-                        } else {
-                            $nextYear = $arrMonthYear[1] + 1;
-                            $lastCalcMonth = "1/" . $nextYear;
-                        }
-                    }
+                $calcMonth = $t->month . "/" . $t->year;
+                if (empty($t->calc_month)) {
+                    $t->update(['calc_month' => $calcMonth]);
                 }
-                if ($t->month . "/" . $t->year == ltrim($monthYear, '0')) {
-                    $targetData = Target::find($t->id);
-                }
-                $arrMonthCalc = explode("/", $monthYear);
-                $i++;
             }
             foreach ($target as $t) {
                 $targetToUpdate = $targetData;
@@ -255,6 +236,7 @@ class TargetService
                     break;
                 }
             }
+
             if ($vcTotal >= $targetData->obj1) {
                 $stateVc = $done;
                 $fields['obj1_done'] = true;
