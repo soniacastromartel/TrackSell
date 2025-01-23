@@ -41,7 +41,7 @@ class EmployeeController extends DefaultLoginController
             if (!in_array($this->user->rol_id, [1, 3])) {
                 return redirect(RouteServiceProvider::HOME)->with('error', 'Zona restringida');
             }
-
+    
             if ($request->ajax()) {
                 $employees = Employee::select(
                     'employees.id',
@@ -61,18 +61,21 @@ class EmployeeController extends DefaultLoginController
                             ->orWhereNull('employees.cancellation_date');
                     })
                     ->join('roles', 'roles.id', '=', 'rol_id')
-                    ->leftJoin('centres', 'centres.id', '=', 'centre_id')
+                    ->leftJoin('centres', 'centres.id', '=', 'centre_id');
+    
+                // Filtrar por centro si el usuario tiene rol 3
+                if ($this->user->rol_id == 3) {
+                    $employees->where('employees.centre_id', $this->user->centre_id);
+                }
+    
+                $employees = $employees
                     ->orderBy('employees.updated_at', 'desc')
                     ->orderByRaw('CASE WHEN employees.count_access = 3 THEN 0 ELSE 1 END')
                     ->orderBy('employees.name', 'asc');
-
-
-
-
+    
                 return Datatables::of($employees)
                     ->addIndexColumn()
                     ->filter(function ($instance) use ($request) {
-
                         if (!empty($request->get('search'))) {
                             $instance->where(function ($w) use ($request) {
                                 $search = $request->get('search');
@@ -84,47 +87,45 @@ class EmployeeController extends DefaultLoginController
                             });
                         }
                     })
-
-
                     ->addColumn('action', function ($employee) {
-                        $btn = '';
-                        //!BTN EDIT
+                        // Si el usuario tiene rol 3, no mostrar botones de acción
+                        if (session()->get('user')->rol_id == 3) {
+                            return '';
+                        }
+    
+                        // Botones de acción para otros roles
                         $btn = '<a href="employees/edit/' . $employee->id . '" class="btn-edit" data-editar="Editar">
-                        <span class="material-icons">edit</span></a>';
-                        //!BTN RESET ACCESS
-                        $fnCall = 'resetAccessApp(' . $employee->id . ' )';
-                        $btn .= '<a id="btnResetAccess' . $employee->id . '" onclick="' . $fnCall . '"  class="btn-reset-access"  data-access="Resetear número de acceso">
-                        <span class="material-icons">refresh</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"  style="display: none;"></span>
-                        </a>';
-                        //!BTN NEW PASSWORD AND VALIDATE 
-                        $fnCall = 'resetPassword(' . $employee->id . ' )';
-                        $btn .= '<a id="btnResetPass' . $employee->id . '" onclick="' . $fnCall . '"  class="btn-validate-password" data-validate="Validación y nueva contraseña">
-                        <span class="material-icons">person</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                        </a>';
-                        //!BTN DENY ACCESS
-                        $fnCall = 'denyAccess(' . $employee->id . ' )';
-                        $btn .= '<a id="btnDenyAccess' . $employee->id . '" onclick="' . $fnCall . '" class="btn-denegate-access" data-denegate="Denegar accesso">
-                        <span class="material-icons">block</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                        </a>';
-                        //!BTN SYNC A3
-                        $fnCall = 'syncA3(' . $employee->id . ' , \'only\')';
-                        $btn .= '<a id="btnSyncA3_' . $employee->id . '" onclick="' . $fnCall . '" class="btn-sincro-a3"  data-sincro="Sincronizar A3">
-                        <span class="material-icons">sync</span>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                        </a>';
+                                    <span class="material-icons">edit</span>
+                                </a>';
+                        $btn .= '<a id="btnResetAccess' . $employee->id . '" onclick="resetAccessApp(' . $employee->id . ')" class="btn-reset-access" data-access="Resetear número de acceso">
+                                    <span class="material-icons">refresh</span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                </a>';
+                        $btn .= '<a id="btnResetPass' . $employee->id . '" onclick="resetPassword(' . $employee->id . ')" class="btn-validate-password" data-validate="Validación y nueva contraseña">
+                                    <span class="material-icons">person</span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                </a>';
+                        $btn .= '<a id="btnDenyAccess' . $employee->id . '" onclick="denyAccess(' . $employee->id . ')" class="btn-denegate-access" data-denegate="Denegar acceso">
+                                    <span class="material-icons">block</span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                </a>';
+                        $btn .= '<a id="btnSyncA3_' . $employee->id . '" onclick="syncA3(' . $employee->id . ', \'only\')" class="btn-sincro-a3" data-sincro="Sincronizar A3">
+                                    <span class="material-icons">sync</span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                                </a>';
+    
                         return $btn;
                     })
                     ->rawColumns(['action', 'options'])
                     ->make(true);
             }
-            return view('admin.employees.index', ['title' => $this->title]);
+    
+            return view('admin.employees.index', ['title' => $this->title,'user' => session()->get('user')]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar empleados, contacte con el administrador');
         }
     }
+    
 
     //! PENDING OF VALIDATION
     public function indexPending(Request $request)

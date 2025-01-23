@@ -11,14 +11,16 @@
                     <h4 class="card-title">Empleados</h4>
                 </div>
                 <div class="row col-lg-12">
-                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
+                    <div class="col-md-11 header-logo" style=""></div>
                     <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
-                        <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
-                                sync
-                            </span> </a> 
-                        <button id="btnSubmitLoadA3" type="submit" class="btn-sincro-all" style="display: none">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        </button>
+                        @if ($user->rol_id == 1)
+                            <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
+                                    sync
+                                </span> </a>
+                            <button id="btnSubmitLoadA3" type="submit" class="btn-sincro-all" style="display: none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -43,6 +45,8 @@
     <script type="text/javascript">
         var table
         $(function() {
+            var user = @json($user);
+            console.log(user);
 
             $(".nav-item").each(function() {
                 $(this).removeClass("active");

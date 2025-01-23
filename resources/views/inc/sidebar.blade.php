@@ -59,13 +59,6 @@
                                     <span class="sidebar-normal"> Roles </span>
                                 </a>
                             </li>
-                            <li id="adminUser" class="nav-item ">
-                                <a class="nav-link" href="{{ route('employees.index') }}">
-                                    <i class="material-icons">engineering</i>
-                                    <span class="sidebar-normal"> Empleados </span>
-                                </a>
-                            </li>
-
 
                             <li id="adminCentre" class="nav-item ">
                                 <a class="nav-link" href="{{ route('centres.index') }}">
@@ -77,12 +70,6 @@
                                 <a class="nav-link" href="{{ route('services.index') }}">
                                     <i class="material-icons">medical_services</i>
                                     <span class="sidebar-normal"> Servicios </span>
-                                </a>
-                            </li>
-                            <li id="adminServiceIncentive" class="nav-item ">
-                                <a class="nav-link" href="{{ route('services.incentives') }}">
-                                    <i class="material-icons">local_atm</i>
-                                    <span class="sidebar-normal"> Tarifas & Incentivos </span>
                                 </a>
                             </li>
                     </div>
@@ -99,6 +86,12 @@
                 </a>
                 <div class="collapse" id="pagesTracking" style="">
                     <ul class="nav">
+                        <li id="adminUser" class="nav-item ">
+                            <a class="nav-link" href="{{ route('employees.index') }}">
+                                <i class="material-icons">engineering</i>
+                                <span class="sidebar-normal"> Empleados </span>
+                            </a>
+                        </li>
                         <li id="adminServiceIncentive" class="nav-item ">
                             <a class="nav-link" href="{{ route('services.incentives') }}">
                                 <i class="material-icons">local_atm</i>
