@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="" style="display:flex;justify-content:flex-end;">
-                        <button id="btnClear" class="btn-refresh" onclick="resetSelectors()">Limpiar Formulario <span
+                        <button id="btnClear" class="btn-refresh" onclick="resetSelectors()">Refrescar <span
                                 id="icon-refresh" class="material-icons">refresh</span></button>
                         <form action="{{ route('export.all-services') }}" method="GET">
                             @csrf

@@ -23,9 +23,22 @@
                                     <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
                                         data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98"
                                         onchange="getServiceIncentives()">
+                                        @if ($user->rol_id != 1)
                                         @foreach ($centres as $centre)
-                                            <option value="{{ $centre->id }}">{{ $centre->name }}</option>
+                                            @if ($centre->id == $user->centre_id)
+                                                <option class="text-uppercase" value="{{ $centre->id }}"
+                                                    selected>
+                                                    {{ $centre->name }}
+                                                </option>
+                                            @endif
                                         @endforeach
+                                    @else
+                                        @foreach ($centres as $centre)
+                                            <option class="text-uppercase" value="{{ $centre->id }}">
+                                                {{ $centre->name }}
+                                            </option>
+                                        @endforeach
+                                    @endif
                                     </select>
                                 </div>
                             </div>

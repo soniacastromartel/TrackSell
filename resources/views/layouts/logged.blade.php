@@ -24,6 +24,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material-lite.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/font-google-material-icons.css') }}" />
     {{-- <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css"/> --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery-ui-1.12.1/jquery-ui.css') }}" />
@@ -56,7 +57,7 @@
 
         {{-- @endauth --}}
         <div class="main-panel">
-            
+
             @yield('content')
 
             <script type="text/javascript" src="{{ asset('js/charts-loader.js') }}"></script>
@@ -129,6 +130,38 @@
 
                 $(document).ajaxStop(function() {
                     Swal.close();
+                });
+
+                document.addEventListener("DOMContentLoaded", () => {
+                    // Función para inicializar interruptores
+                    function initializeToggleButton(buttonId) {
+                        const toggleButton = document.getElementById(buttonId);
+
+                        if (!toggleButton) return;
+
+                        // Estado inicial
+                        let isActive = false;
+
+                        // Asignar evento click
+                        toggleButton.addEventListener("click", () => {
+                            isActive = !isActive; // Cambiar estado
+                            if (isActive) {
+                                toggleButton.textContent = "Desactivar"; // Cambiar texto
+                                toggleButton.classList.remove("btn-inactive"); // Quitar clase inactiva
+                                toggleButton.classList.add("btn-active"); // Agregar clase activa
+                            } else {
+                                toggleButton.textContent = "Activar"; // Cambiar texto
+                                toggleButton.classList.remove("btn-active"); // Quitar clase activa
+                                toggleButton.classList.add("btn-inactive"); // Agregar clase inactiva
+                            }
+                        });
+
+                        // Inicializar estilo
+                        toggleButton.classList.add("btn-inactive");
+                    }
+
+                    // Inicializar el interruptor
+                    initializeToggleButton("toggleButton");
                 });
             </script>
 

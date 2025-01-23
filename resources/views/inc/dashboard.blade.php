@@ -17,8 +17,8 @@
                             @csrf
                             @method('POST')
 
-                            <div class="row bg-white form-group">
-                                <div class="select-wrapper">
+                            <div class="">
+                                <div class="select-wrapper row interspace">
                                     <div id="monthYearPickerContainer" class="interspace">
                                         <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
                                         <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
@@ -59,7 +59,7 @@
                                 </div>
 
                                 <div class="row interspace">
-                                    <button id="btnClear" class="btn-refresh"><strong>Limpiar Formulario</strong>
+                                    <button id="btnClear" class="btn-refresh"><strong>Refrescar</strong>
                                         <span id=icon-refresh class="material-icons">refresh</span>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                                             style="display: none;"></span>
@@ -124,7 +124,7 @@
 
                 <button id="btnSubmit" type="submit" class="btn-export">
                     Exportar
-                    <span id=icon-export class="material-icons">file_download</span>
+                    <span id=icon-export class="material-symbols-outlined">file_download</span>
                 </button>
 
                 <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
@@ -220,14 +220,9 @@
     }
 
     .form-group {
-        display: flex;
+        /* display: flex;
         justify-content: space-evenly;
-        width: 100%;
-    }
-
-    .bg-white {
-        justify-content: space-evenly;
-        margin: 0 auto;
+        width: 100%; */
     }
 
     .row {

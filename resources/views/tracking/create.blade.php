@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="card " style="margin-top: 120px">
                     <div class="card-header card-header-danger">
-                        <h4 class="card-title">Nuevo seguimiento</h4>
+                        <h4 class="card-title">Nuevo Seguimiento</h4>
                     </div>
                     <div class="card-body ">
                         <form id="createTracking" action="{{ route('tracking.store') }}" method="POST">

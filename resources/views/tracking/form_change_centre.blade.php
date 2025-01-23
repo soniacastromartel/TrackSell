@@ -64,12 +64,12 @@
 
     <div class="btn-container-box">
 
-        <button id="btnClear" href="#" class="btn-refresh">Limpiar Formulario
+        <button id="btnClear" href="#" class="btn-refresh">Refrescar
             <span id=icon-refresh class="material-icons">refresh</span>
         </button>
 
         <button id="btnSubmit" type="button" class="btn-send">
-            <span id=icon-send class="material-icons">publish</span>{{ __('Registrar cambio') }}</button>
+            <span id=icon-send class="material-symbols-outlined">tab_new_right</span>{{ __('Registrar cambio') }}</button>
         <button id="btnSubmitLoad" type="button" class="btn btn-fill btn-success" style="display: none">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>

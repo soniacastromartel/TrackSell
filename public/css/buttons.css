@@ -6,11 +6,6 @@
   min-height: 420px;
 }
 
-.row {
-  justify-content: center;
-  margin: 0;
-}
-
 .date-informes-container,
 .date-solicitud-container,
 .date-services-container {
@@ -26,21 +21,19 @@
   align-items: center;
 }
 
-
 .form-date {
   position: relative !important;
   background-color: var(--info) !important;
   color: #fff;
   font-size: larger;
   font-weight: bolder;
-  width: 230px;
+  width: 200px;
   height: 45px;
   margin: 20px;
   display: flex;
   border: none;
   border-radius: 50px;
   justify-content: center;
-  /* padding-left: 20px; */
 }
 
 .icon-container {
@@ -67,7 +60,6 @@ button:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   /* Espacio entre el ícono y el input */
   position: relative;
   height: 45px;
@@ -80,12 +72,12 @@ button:focus {
 #monthYearPicker,
 #yearPicker,
 #yearTargetPicker {
-  padding-left: 80px;
+  padding-left: 50px;
   background-color: var(--info) !important;
   color: #fff;
   font-size: larger;
   font-weight: bolder;
-  width: 230px;
+  width: 130px;
   height: 45px;
   margin: 20px;
   display: flex;
@@ -220,6 +212,17 @@ button:focus {
   opacity: 1;
 }
 
+/* Estilo de botón activado */
+.btn-active {
+  background-color: green;
+  color: white;
+}
+
+/* Estilo de botón desactivado */
+.btn-inactive {
+  background-color: red;
+  color: white;
+}
 
 /* ICONS */
 #icon-export,
@@ -259,7 +262,7 @@ button:focus {
 
 /* General Button SelectPicker */
 .bootstrap-select .btn {
-  width: 230px;
+  width: 200px;
   height: 45px;
   margin: 0;
   /* Elimina centrado individual */
@@ -473,7 +476,7 @@ button:focus {
   border: none;
   border-radius: 50px;
   color: white;
-  width: 230px;
+  width: 200px;
   height: 45px;
 }
 
@@ -520,7 +523,7 @@ button:focus {
 }
 
 .btn-refresh {
-  padding-left: 60px !important;
+  /* padding-left: 60px !important; */
   background-color: var(--orange) !important;
 }
 
@@ -552,8 +555,9 @@ button:focus {
 }
 
 .btn-watch {
-  padding-left: 60px !important;
+  /* padding-left: 60px !important; */
   background-color: var(--light-grey) !important;
+  
 }
 
 .btn-watch:hover {

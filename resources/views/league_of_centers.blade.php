@@ -31,6 +31,9 @@
                                     <input type="checkbox" name="year_date" id="yearly" value="anual"> Anual <br /> --}}
                                     <div class="form-group col-md-3">
                                         <div class="dropdown bootstrap-select">
+                                            <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                manage_history
+                                            </span>
                                             <select class="selectpicker" name="datepickerType" id="datepickerType"
                                                 data-size="7" data-style="btn btn-red-icot btn-round"
                                                 title=" Mensual / Anual" tabindex="-98">
@@ -41,6 +44,9 @@
 
                                         <div class="form-group  centre_picker">
                                             <div class="dropdown bootstrap-select">
+                                                <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                    manage_history
+                                                </span>
                                                 <select class="selectpicker" name="centre_id" id="centre_id_picker"
                                                     data-size="7" data-style="btn btn-red-icot btn-round"
                                                     title=" Seleccione Centro" tabindex="-98">
@@ -70,7 +76,7 @@
                                     <div class="col-lg-5" style="display:flex;flex-direction:column;align-items:flex-end";>
 
                                         <button id="btnSubmitExport" type="submit" class="btn-export">
-                                            <span id="icon-export" class="material-icons">
+                                            <span id="icon-export" class="material-symbols-outlined">
                                                 file_download
                                             </span> {{ __('Exportar') }}
                                         </button>
@@ -80,8 +86,8 @@
                                         </button>
 
                                         <button id="btnClear" href="#" class="btn-refresh">
-                                            <span id="icon-refresh" class="material-icons">refresh
-                                            </span> {{ __('Limpiar Formulario') }}
+                                            <span id="icon-refresh" class="material-symbols-outlined">refresh
+                                            </span> {{ __('Refrescar') }}
                                         </button>
 
                                     </div>
@@ -601,9 +607,9 @@
 
                                 const topThree = [1, 2, 3];
                                 const defaultBubbleSize =
-                                15; // Tamaño estándar de la burbuja
+                                    15; // Tamaño estándar de la burbuja
                                 const extraBubbleSize =
-                                3; // Incremento para la burbuja del primer lugar
+                                    3; // Incremento para la burbuja del primer lugar
 
                                 chart.data.datasets.forEach((dataset, i) => {
                                     const meta = chart.getDatasetMeta(i);
@@ -615,7 +621,7 @@
                                             undefined && value !== 0 &&
                                             index < 3) {
                                             const isFirstPlace = index ===
-                                            0; // Verifica si es el primer lugar
+                                                0; // Verifica si es el primer lugar
                                             const bubbleSize =
                                                 isFirstPlace ?
                                                 defaultBubbleSize +
@@ -650,7 +656,7 @@
                                                 value, false, barValues,
                                                 isFirstPlace, true,
                                                 index + 1
-                                                ); // Color dinámico para la burbuja
+                                            ); // Color dinámico para la burbuja
                                             ctx.fill();
                                             ctx.closePath();
 

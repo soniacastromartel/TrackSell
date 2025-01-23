@@ -647,7 +647,7 @@ pre code {
 
 .row {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 
 }
 

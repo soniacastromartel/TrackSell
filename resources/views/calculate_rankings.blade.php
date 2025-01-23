@@ -64,7 +64,7 @@
                                         <button id="btnClear" href="#" class="btn btn-fill btn-warning"><span class="material-icons">
                             clear_all
                             </span>
-                                            {{ __('Limpiar formulario') }}
+                                            {{ __('Refrescar') }}
                                         </button>
                                         <button id="btnSubmit" type="submit"
                                             class="btn btn-fill btn-default"><span class="material-icons">

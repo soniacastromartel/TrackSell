@@ -131,7 +131,7 @@
                                     <button id="btnClear" href="#" class="btn btn-fill btn-warning">
                                     <span class="material-icons mr-1">
                             clear_all
-                            </span>     {{ __('Limpiar formulario') }}
+                            </span>     {{ __('Refrescar') }}
                                     </button>
                                     <button id="btnSubmit" type="submit" class="btn btn-dark-black"><span class="material-icons">
                             file_download

@@ -11,12 +11,11 @@
                     <h4 class="card-title">Centros</h4>
                 </div>
                 <div class="row col-lg-12">
-                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
+                    <div class="col-md-10 header-logo" style="margin-top:70px;"></div>
                     <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
                         @if ($user->rol_id == 1)
                             <div class="row col-md-12 mb-3 ">
-                                <div class="col-md-8">
-                                </div>
+                                
                                 <div class="col-md-4 text-right">
                                     <a href="{{ route('centres.create') }}" id="btnNewCenter" class="header-btn-add">
                                         <span id="icon-select" class="material-symbols-outlined">

@@ -705,10 +705,10 @@
   }
   
   .row {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
     margin-right: -15px;
-    margin-left: -15px;
+    margin-left: -15px; */
   }
   
   .no-gutters {
@@ -27087,7 +27087,7 @@ div.dataTables_wrapper div.dataTables_processing::before {
   }
   
   .bootstrap-select[class*="col-"] .dropdown-toggle {
-    width: 100%;
+    width: 200px;
   }
   
   .bootstrap-select .dropdown-menu {

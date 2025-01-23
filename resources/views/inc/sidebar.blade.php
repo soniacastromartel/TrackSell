@@ -99,6 +99,12 @@
                 </a>
                 <div class="collapse" id="pagesTracking" style="">
                     <ul class="nav">
+                        <li id="adminServiceIncentive" class="nav-item ">
+                            <a class="nav-link" href="{{ route('services.incentives') }}">
+                                <i class="material-icons">local_atm</i>
+                                <span class="sidebar-normal"> Tarifas & Incentivos </span>
+                            </a>
+                        </li>
                         <li id="trackingStarted" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.index') }}">
                                 <i class="material-icons">shopping_cart</i>
@@ -163,12 +169,12 @@
                                     <span class="sidebar-normal"> Dinámica de Servicios </span>
                                 </a>
                             </li>
-                        <li id="trackingValidateFinal" class="nav-item ">
-                            <a class="nav-link" href="{{ route('tracking.index_validation_final') }}">
-                                <i class="material-icons">groups</i>
-                                <span class="sidebar-normal"> Validar RRHH </span>
-                            </a>
-                        </li>
+                            <li id="trackingValidateFinal" class="nav-item ">
+                                <a class="nav-link" href="{{ route('tracking.index_validation_final') }}">
+                                    <i class="material-icons">groups</i>
+                                    <span class="sidebar-normal"> Validar RRHH </span>
+                                </a>
+                            </li>
                         @endif
 
                     </ul>
@@ -202,6 +208,7 @@
         background-color: var(--white-icot);
         padding: 13px;
     }
+
     #userData {
         font-weight: 900;
     }

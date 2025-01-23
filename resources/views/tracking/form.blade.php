@@ -63,7 +63,7 @@
                 domain_add
             </span>
             <select class="selectpicker" name="centre_employee_id" id="centre_employee_id" data-size="7"
-                data-style="btn btn-red-icot btn-round" title="* Seleccione Centro" tabindex="-98">
+                data-style="btn btn-red-icot btn-round" title="C. Prescriptor" tabindex="-98">
 
                 @foreach ($centres as $centre)
                     <option value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_employee_id) selected="selected" @endif>
@@ -80,7 +80,7 @@
                 domain
             </span>
             <select class="selectpicker" name="centre_id" id="centre_id" data-size="7"
-                data-style="btn btn-red-icot btn-round" title="* Seleccione Centro" tabindex="-98">
+                data-style="btn btn-red-icot btn-round" title="C. Realizador" tabindex="-98">
 
                 @foreach ($centres as $centre)
                     <option value="{{ $centre->id }}" @if (isset($tracking) && $centre->id == $tracking->centre_id) selected="selected" @endif>
@@ -97,7 +97,7 @@
                 engineering
             </span>
             <select class="selectpicker" name="employee_id" id="employee_id" data-size="7"
-                data-style="btn btn-red-icot btn-round" title=" Seleccione Empleado" tabindex="-98">
+                data-style="btn btn-red-icot btn-round" title=" Empleado" tabindex="-98">
 
                 @foreach ($employees as $employee)
                     <option value="{{ $employee->id }}" data-tokens="{{ $employee->name }}"
@@ -158,7 +158,7 @@
 </div>
 <div id="containerBtns">
     <div class="float-left">
-        <button id="btnClear" class="btn-refresh">Limpiar Formulario<span id=icon-refresh
+        <button id="btnClear" class="btn-refresh">Refrescar<span id=icon-refresh
                 class="material-icons">refresh</span>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                 style="display: none;"></span>

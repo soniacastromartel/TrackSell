@@ -23,7 +23,7 @@
                         <button id="btnClear" href="#" class="btn-refresh">
                         <span id="icon-refresh" class="material-icons">
                             refresh
-                            </span>   {{ __('Limpiar formulario') }}
+                            </span>   {{ __('Refrescar') }}
                         </button>
                     </div>
                 </div>

@@ -138,7 +138,7 @@
                                     <!-- Botones -->
                                     <div id="btn-container-box" class="btn-container-box">
                                         <button id="btnClear" class="btn-refresh">
-                                            Limpiar Formulario
+                                            Refrescar
                                             <span id="icon-refresh" class="material-icons">refresh</span>
                                         </button>
                                         <button id="btnSubmit" type="submit" class="btn-export">

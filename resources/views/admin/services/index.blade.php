@@ -15,8 +15,7 @@
                     <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
                         @if ($user->rol_id == 1)
                             <div class="row col-md-12 mb-3 ">
-                                <div class="col-md-8">
-                                </div>
+                                
                                 <div class="col-md-4 text-right">
                                     <a href="{{ route('services.create') }}" id="btnNewCenter" class="header-btn-add">
                                         <span id="icon-select" class="material-symbols-outlined">

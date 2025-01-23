@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="card-body">
+            <div class="">
                 <form id="importTargetForm" method="POST">
                     @csrf
                     @method('POST')
@@ -94,7 +94,8 @@
                                             @if ($user->rol_id == 1)
                                                 <div class="interspace">
                                                     <button id="btnImportTargets" class="file-upload btn-import">
-                                                        <span id="icon-import" class="material-icons">upload</span>Importar
+                                                        <span id="icon-import"
+                                                            class="material-symbols-outlined">upload</span>Importar
                                                         Objetivos
                                                         <input type="file" name="targetInputFile" id="targetInputFile"
                                                             class="upload" />
@@ -102,7 +103,8 @@
                                                 </div>
                                                 <div class="interspace">
                                                     <button id="btnEditTargets" class="file-upload btn-import">
-                                                        <span id="icon-import" class="material-icons">edit</span>Editar
+                                                        <span id="icon-import"
+                                                            class="material-symbols-outlined">edit</span>Editar
                                                         Objetivos
                                                         <input type="file" name="editTargetsFile" id="editTargetsFile"
                                                             class="upload" />
@@ -117,7 +119,7 @@
                                             <div class="interspace">
                                                 <button id="btnImportSales" class="file-upload btn-import">
                                                     <span id="icon-import"
-                                                        class="material-icons">upload</span>{{ __('Importar Venta Privada') }}
+                                                        class="material-symbols-outlined">upload</span>{{ __('Importar Venta Privada') }}
                                                     <input type="file" name="targetInputSalesFile"
                                                         id="targetInputSalesFile" class="upload" />
                                                 </button>
@@ -129,7 +131,7 @@
                                             <div class="interspace">
                                                 <button id="btnTracingTargets" class="file-upload btn-import">
                                                     <span id="icon-export"
-                                                        class="material-icons">download</span>{{ __('Descargar Seguimiento') }}
+                                                        class="material-symbols-outlined">download</span>{{ __('Descargar Seguimiento') }}
                                                 </button>
                                                 <button id="btnTracingTargetsLoad" class="file-upload btn-import"
                                                     style="display: none">
@@ -148,7 +150,7 @@
                                         <h5 class="card-title">Incentivos</h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row d-flex justify-content-center" style="padding-top:30px;">
+                                        <div class="row d-flex justify-content-left" style="padding-top:30px;">
                                             <div id="monthYearPickerContainer">
                                                 <span id="icon-date"
                                                     class="material-symbols-outlined">calendar_month</span>
@@ -157,113 +159,68 @@
                                                 <input type="hidden" name="monthYear" id="monthYear" />
 
                                             </div>
-                                            <div class="row d-flex justify-content-center align-items-center"
-                                                style="gap: 20px;">
-                                                <div class="select-wrapper">
-                                                    <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                        business
-                                                    </span>
-                                                    <select class="selectpicker" name="centre_id" id="centre_id"
-                                                        data-size="7" data-style="btn btn-red-icot btn-round"
-                                                        title="Seleccione Centro">
-                                                        @if ($user->rol_id != 1)
-                                                            @foreach ($centres as $centre)
-                                                                @if ($centre->id == $user->centre_id)
-                                                                    <option value="{{ $centre->id }}" selected>
-                                                                        {{ $centre->name }}</option>
-                                                                @endif
-                                                            @endforeach
-                                                        @else
-                                                            @foreach ($centres as $centre)
-                                                                <option value="{{ $centre->id }}">{{ $centre->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                    <input type="hidden" name="centre" id="centre" />
-                                                </div>
-
-                                                <div class="select-wrapper">
-                                                    <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                        engineering
-                                                    </span>
-                                                    <select class="selectpicker" name="employee_id" id="employee_id"
-                                                        data-size="7" data-style="btn btn-red-icot btn-round"
-                                                        title="Seleccione Empleado">
-                                                        <option>SIN SELECCION</option>
-                                                        @if ($user->rol_id != 1)
-                                                            @foreach ($employees as $employee)
-                                                                @if ($employee->centre_id == $user->centre_id)
-                                                                    <option value="{{ $employee->id }}">
-                                                                        {{ $employee->name }}</option>
-                                                                @endif
-                                                            @endforeach
-                                                        @else
-                                                            @foreach ($employees as $employee)
-                                                                <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        @endif
-                                                    </select>
-                                                    <input type="hidden" name="employee" id="employee" />
-                                                </div>
+                                            {{-- <div class="row d-flex justify-content-center align-items-center" style="gap: 20px;"> --}}
+                                            <div class="select-wrapper">
+                                                <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                    business
+                                                </span>
+                                                <select class="selectpicker" name="centre_id" id="centre_id"
+                                                    data-size="7" data-style="btn btn-red-icot btn-round"
+                                                    title="Centro">
+                                                    @if ($user->rol_id != 1)
+                                                        @foreach ($centres as $centre)
+                                                            @if ($centre->id == $user->centre_id)
+                                                                <option value="{{ $centre->id }}" selected>
+                                                                    {{ $centre->name }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($centres as $centre)
+                                                            <option value="{{ $centre->id }}">{{ $centre->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                                <input type="hidden" name="centre" id="centre" />
                                             </div>
 
-
+                                            <div class="select-wrapper">
+                                                <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                    engineering
+                                                </span>
+                                                <select class="selectpicker" name="employee_id" id="employee_id"
+                                                    data-size="7" data-style="btn btn-red-icot btn-round"
+                                                    title="Empleado">
+                                                    <option>SIN SELECCION</option>
+                                                    @if ($user->rol_id != 1)
+                                                        @foreach ($employees as $employee)
+                                                            @if ($employee->centre_id == $user->centre_id)
+                                                                <option value="{{ $employee->id }}">
+                                                                    {{ $employee->name }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($employees as $employee)
+                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                                <input type="hidden" name="employee" id="employee" />
+                                            </div>
                                         </div>
-                                        <hr class="mt-4">
 
-                                        <div class="" style="display: flex; justify-content:center;">
-
-                                            <button id="btnIncentivesPreview" class="btn-watch">
-                                                <span id="icon-watch"
-                                                    class="material-icons">visibility</span>{{ __('Ver Incentivos') }}
-                                            </button>
-
-                                            <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                            </button>
-
-                                            <button id="btnSummaryPreview" class="btn-watch">
-                                                <span id="icon-watch"
-                                                    class="material-icons">visibility</span>{{ __('Ver Resumen') }}
-                                            </button>
-
-                                            <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                            </button>
-
-                                            @if ($user->rol_id != 1)
-                                                <button id="btnTargetsPreview" class="btn-watch">
-                                                @else
-                                                    <button id="btnTargetsPreview" class="btn-watch">
-                                            @endif
-                                            <span id="icon-watch"
-                                                class="material-icons">visibility</span>{{ __('Ver Objetivos') }}
-                                            </button>
-                                            <button id="btnTargetsLoad" type="submit" class="file-upload btn-watch"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-
-                                            </button>
-
-                                        </div>
-                                        <hr class="mt-4">
-
-                                        <div class="row" style="padding:10px; display:flex; justify-content:center; ">
+                                        <div class="row"
+                                            style="padding: 10px; display: flex; justify-content: center; gap: 10px; margin-top: 120px;">
                                             <button id="btnClear" href="#" class="btn-refresh">
                                                 <span id="icon-refresh"
-                                                    class="material-icons">refresh</span>{{ __('Limpiar formulario') }}
+                                                    class="material-symbols-outlined">refresh</span>{{ __('Refrescar') }}
                                             </button>
 
                                             <button id="btnSubmit" type="submit" class="btn-export">
                                                 Exportar
-                                                <span id=icon-export class="material-icons">file_download</span>
+                                                <span id="icon-export"
+                                                    class="material-symbols-outlined">file_download</span>
                                             </button>
 
                                             <button id="btnSubmitLoad" type="submit" class="btn-export"
@@ -272,11 +229,56 @@
                                                     aria-hidden="true"></span> Obteniendo Datos...
                                             </button>
                                         </div>
+
                                     </div>
+                                    <hr class="mt-4">
+
+                                    <div class="row"
+                                        style="display: flex; margin-top: 30px; margin-bottom: 30px;justify-content:space-evenly;align-items:center; ">
+
+                                        <button id="btnIncentivesPreview" class="btn-watch">
+                                            <span id="icon-watch"
+                                                class="material-symbols-outlined">visibility</span>{{ __('Incentivos') }}
+                                        </button>
+
+                                        <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch"
+                                            style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                        </button>
+
+                                        <button id="btnSummaryPreview" class="btn-watch">
+                                            <span id="icon-watch"
+                                                class="material-symbols-outlined">visibility</span>{{ __('Resumen') }}
+                                        </button>
+
+                                        <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch"
+                                            style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                        </button>
+
+                                        @if ($user->rol_id != 1)
+                                            <button id="btnTargetsPreview" class="btn-watch">
+                                            @else
+                                                <button id="btnTargetsPreview" class="btn-watch">
+                                        @endif
+                                        <span id="icon-watch"
+                                            class="material-symbols-outlined">visibility</span>{{ __('Objetivos') }}
+                                        </button>
+                                        <button id="btnTargetsLoad" type="submit" class="file-upload btn-watch"
+                                            style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+
+                                        </button>
+
+                                    </div>
+
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
             </div>
             </form>
@@ -366,43 +368,53 @@
             </div>
         </div>
 
-        {{-- <div class="row" id="summaryData">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title" id="title-summary">RESUMEN</h4>
-                    </div>
-                    <div class="card-header-table">
-                        <table class="table-striped table-bordered summary-datatable col-lg-12 table">
-                            <thead class="table-header">
-                                <tr>
-                                    <th>Centro</th>
-                                    <th>Suma Incentivo</th>
-                                    <th>Suma Bonus</th>
-                                    <th>Suma Ingreso</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-
     </div>
 
     <style>
+        .col-lg-8 {
+            display: flex;
+            flex-direction: column;
+            /* Ensure children are stacked vertically */
+        }
+
+        .card {
+            flex-grow: 1;
+            /* Make the card take up all available space */
+            height: 100%;
+            /* Ensure the height is 100% of its container */
+        }
+
+        .card-body {
+            /* display: flex; */
+            flex-direction: column;
+            /* Stack children vertically */
+            justify-content: space-between;
+            /* Optional: Ensure even distribution */
+            height: 100%;
+            /* Ensure it stretches to fill the parent card */
+            gap: 20px;
+            /* Adjust spacing between elements */
+        }
+
+        .card-body>.row,
+        .card-body>div {
+            flex-grow: 1;
+            /* Make child elements occupy equal space */
+            display: flex;
+            /* Ensure flex layout for internal alignment if needed */
+            /* flex-direction: column; */
+            /* Stack inner elements if required */
+            justify-content: space-between;
+            /* Center contents vertically */
+            align-items: center;
+            /* Center contents horizontally */
+        }
+
         .content {
             background-image: url(/assets/img/background_continue.png) !important;
             background-position: center center !important;
             background-size: 1000px;
             height: 250vh !important;
-        }
-
-        .btn-watch {
-            padding-left: 60px !important;
-            background-color: var(--light-grey);
         }
 
         #icon-watch {
@@ -436,6 +448,7 @@
         var table;
 
         $(function() {
+
             var user = @json($user);
             console.log(user);
 
@@ -454,6 +467,7 @@
                 $('#btnTargetsPreview').removeAttr('disabled');
 
             });
+
 
             // date pickers
             var date = new Date();
@@ -478,6 +492,11 @@
                 .on('focus', function() {
                     $('#buttonContainer').addClass('active');
                 });
+
+                drawTable('.incentives-datatable');
+                $('#targetsData').hide();
+                $('#summaryData').hide();
+                $('#incentivesData').show();
 
             /**
              * Importar Venta Privada
@@ -785,9 +804,9 @@
                         }
                     },
                     error: function(xhr) {
-                            console.log(xhr);
-                            const response = JSON.parse(xhr.responseText);
-                            showAlert("error", response || 'An unexpected error occurred.');
+                        console.log(xhr);
+                        const response = JSON.parse(xhr.responseText);
+                        showAlert("error", response || 'An unexpected error occurred.');
                     },
                     complete: function() {
                         showToast("info", "Archivo Descargado");
