@@ -4,20 +4,18 @@
 <head>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    {{-- <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script> --}}
+    <script src="{{ asset('js/formChangeDetection.js') }}"></script>
     <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-material-design.min.js') }}"></script>
     <script src="{{ asset('js/material-dashboard.min.js') }}"></script>
     <script src="{{ asset('js/MonthPicker.min.js') }}"></script>
-
-    {{-- <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script> --}}
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
+    {{-- stylesheets --}}
     <link rel="shortcut icon" href="{{ asset('assets/img/LogoICOT.png') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet"
@@ -26,7 +24,6 @@
     <link rel="stylesheet" href="{{ asset('css/material-lite.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/font-google-material-icons.css') }}" />
-    {{-- <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css"/> --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery-ui-1.12.1/jquery-ui.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/MonthPicker.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.dataTables.min.css') }}" />
@@ -34,22 +31,14 @@
 
 
     <link rel="stylesheet" href="{{ asset('css/yearpicker.css') }}">
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-    <!-- <script src="/path/to/cdn/jquery.slim.min.js"></script> -->
     <script src="{{ asset('js/yearpicker.js') }}" async></script>
     <!-- <script src="{{ asset('js/jquery.min.js') }}" async></script> -->
-
-
-
-
 
     <title>{{ config('app.name') }}</title>
 </head>
 
 <body>
     <div class="wrapper ">
-
         {{-- @auth --}}
         @include('inc.sidebar')
         @include('common.alert')
@@ -61,14 +50,11 @@
             @yield('content')
 
             <script type="text/javascript" src="{{ asset('js/charts-loader.js') }}"></script>
-            {{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> --}}
-
             <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
             <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap-selectpicker.js') }}"></script>
             <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
             <script src="{{ asset('js/moment.min.js') }}"></script>
-
 
             <script type="text/javascript">
                 $('div.alert').delay(2000).slideUp(300);
@@ -127,72 +113,8 @@
                     }, 5000);
                 });
 
-                $(document).ready(function() {
-                    function setupFormChangeDetection(formSelector, buttonSelector, modalSelector) {
-                        let initialFormState = {};
-                        $(modalSelector).on('show.bs.modal', function() {
-                            initialFormState = getFormValues(formSelector);
-                            $(buttonSelector).prop('disabled', true);
-                        });
-                        $(formSelector + ' input').on('input', function() {
-                            toggleSaveButton(formSelector, buttonSelector);
-                        });
-
-                        function getFormValues(form) {
-                            let values = {};
-                            $(form + ' input').each(function() {
-                                values[$(this).attr('name')] = $(this).val();
-                            });
-                            return values;
-                        }
-
-                        function toggleSaveButton(form, button) {
-                            let currentValues = getFormValues(form);
-                            let hasChanges = Object.keys(initialFormState).some(key => initialFormState[key] !==
-                                currentValues[key]);
-                            $(button).prop('disabled', !hasChanges);
-                        }
-                    }
-                    // Llamar a la función para cada formulario/modal que necesite esta funcionalidad
-                    setupFormChangeDetection('#editIncentiveForm', '#saveIncentiveBtn', '#editIncentiveModal');
-                });
-
-
-                document.addEventListener("DOMContentLoaded", () => {
-                    // Función para inicializar interruptores
-                    function initializeToggleButton(buttonId) {
-                        const toggleButton = document.getElementById(buttonId);
-
-                        if (!toggleButton) return;
-
-                        // Estado inicial
-                        let isActive = false;
-
-                        // Asignar evento click
-                        toggleButton.addEventListener("click", () => {
-                            isActive = !isActive; // Cambiar estado
-                            if (isActive) {
-                                toggleButton.textContent = "Desactivar"; // Cambiar texto
-                                toggleButton.classList.remove("btn-inactive"); // Quitar clase inactiva
-                                toggleButton.classList.add("btn-active"); // Agregar clase activa
-                            } else {
-                                toggleButton.textContent = "Activar"; // Cambiar texto
-                                toggleButton.classList.remove("btn-active"); // Quitar clase activa
-                                toggleButton.classList.add("btn-inactive"); // Agregar clase inactiva
-                            }
-                        });
-
-                        // Inicializar estilo
-                        toggleButton.classList.add("btn-inactive");
-                    }
-
-                    // Inicializar el interruptor
-                    initializeToggleButton("toggleButton");
-                });
             </script>
 
-            {{-- <script src="{{asset('js/bootstrap-material-design.min.js')}}"></script> --}}
-            {{-- <script src="{{asset('js/material-dashboard.min.js')}}"></script> --}}
         </div>
     </div>
 

@@ -41786,10 +41786,13 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _formChangeDetection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formChangeDetection */ "./resources/js/formChangeDetection.js");
+/* harmony import */ var _formChangeDetection__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_formChangeDetection__WEBPACK_IMPORTED_MODULE_1__);
 
 window.Swal = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a;
 global.$ = global.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
@@ -41840,6 +41843,41 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/formChangeDetection.js":
+/*!*********************************************!*\
+  !*** ./resources/js/formChangeDetection.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// public/js/formChangeDetection.js
+window.setupFormChangeDetection = function (formSelector, buttonSelector, modalSelector) {
+  var initialFormState = {};
+  $(modalSelector).on('show.bs.modal', function () {
+    initialFormState = getFormValues(formSelector);
+    $(buttonSelector).prop('disabled', true);
+  });
+  $(formSelector + ' input').on('input', function () {
+    toggleSaveButton(formSelector, buttonSelector);
+  });
+  function getFormValues(form) {
+    var values = {};
+    $(form + ' input').each(function () {
+      values[$(this).attr('name')] = $(this).val();
+    });
+    return values;
+  }
+  function toggleSaveButton(form, button) {
+    var currentValues = getFormValues(form);
+    var hasChanges = Object.keys(initialFormState).some(function (key) {
+      return initialFormState[key] !== currentValues[key];
+    });
+    $(button).prop('disabled', !hasChanges);
+  }
+};
 
 /***/ }),
 

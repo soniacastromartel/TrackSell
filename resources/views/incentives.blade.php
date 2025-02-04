@@ -166,6 +166,8 @@
             }
         </style>
         <script type="text/javascript">
+            
+
             function confirmRequest(state, id) {
                 confirmedRequest().then((result) => {
                     if (result.isConfirmed) {
@@ -216,11 +218,15 @@
             });
 
             $(function() {
+                $(document).ready(function() {
+                setupFormChangeDetection('#editIncentiveForm', '#saveIncentiveBtn', '#editIncentiveModal');
+            });
                 $(".nav-item").each(function() {
                     $(this).removeClass("active");
                 });
                 $('#pagesConfig').addClass('show');
-                $('#adminServiceIncentive').addClass('active')
+                $('#adminServiceIncentive').addClass('active');
+
 
                 $(document).on('click', '.btn-edit', function() {
                     console.log($(this).data());
