@@ -127,10 +127,36 @@
                     }, 5000);
                 });
 
+                $(document).ready(function() {
+                    function setupFormChangeDetection(formSelector, buttonSelector, modalSelector) {
+                        let initialFormState = {};
+                        $(modalSelector).on('show.bs.modal', function() {
+                            initialFormState = getFormValues(formSelector);
+                            $(buttonSelector).prop('disabled', true);
+                        });
+                        $(formSelector + ' input').on('input', function() {
+                            toggleSaveButton(formSelector, buttonSelector);
+                        });
 
-                // $(document).ajaxStop(function() {
-                //     Swal.close();
-                // });
+                        function getFormValues(form) {
+                            let values = {};
+                            $(form + ' input').each(function() {
+                                values[$(this).attr('name')] = $(this).val();
+                            });
+                            return values;
+                        }
+
+                        function toggleSaveButton(form, button) {
+                            let currentValues = getFormValues(form);
+                            let hasChanges = Object.keys(initialFormState).some(key => initialFormState[key] !==
+                                currentValues[key]);
+                            $(button).prop('disabled', !hasChanges);
+                        }
+                    }
+                    // Llamar a la función para cada formulario/modal que necesite esta funcionalidad
+                    setupFormChangeDetection('#editIncentiveForm', '#saveIncentiveBtn', '#editIncentiveModal');
+                });
+
 
                 document.addEventListener("DOMContentLoaded", () => {
                     // Función para inicializar interruptores

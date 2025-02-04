@@ -163,7 +163,6 @@
         <style>
             .highlight-row {
                 color: green !important;
-                transition: background-color 1s ease-in-out;
             }
         </style>
         <script type="text/javascript">
