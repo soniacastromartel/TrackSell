@@ -37,12 +37,6 @@
                                 </h5>
                                 <hr>
                             @endif
-                            {{-- <h5 class="card-title font-size-18">- <strong>Importar Venta Privada</strong>, puede
-                                descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                    href="{{ asset('assets/excel/plantilla_importar_venta_privada_centros.xls') }}"><strong>aquí</strong> <span
-                                    class="material-icons" style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
-                            </h5>
-                            <hr> --}}
                             <h5 class="card-title font-size-18">- <strong>Incentivos: </strong>Indicar en formulario centro
                                 / empleado / fecha
                                 según se requiera y hacer click en botón <span
@@ -493,10 +487,10 @@
                     $('#buttonContainer').addClass('active');
                 });
 
-                drawTable('.incentives-datatable');
-                $('#targetsData').hide();
-                $('#summaryData').hide();
-                $('#incentivesData').show();
+            drawTable('.incentives-datatable');
+            $('#targetsData').hide();
+            $('#summaryData').hide();
+            $('#incentivesData').show();
 
             /**
              * Importar Venta Privada

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-
 class Centre extends Model
 {
     protected $table = 'centres'; // Set the table name
@@ -22,8 +21,22 @@ class Centre extends Model
         'island',
         'alias_img',
         'image',
-        'cancellation_date'
+        'cancellation_date',
+        'parent_id' 
     ];
+
+    /** 
+     * Relationships
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Centre::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Centre::class, 'parent_id');
+    }
 
     /**
      * Recoge todos los centros activos
@@ -34,8 +47,9 @@ class Centre extends Model
             ->orderBy('name')
             ->get();
     }
+
     /**
-     * Recoge todos los centros activo ordenador por campos preconfigurados
+     * Recoge todos los centros activos ordenados por campos preconfigurados
      */
     public function scopeGetCentresActiveByRaw($query, $rawFields)
     {
@@ -45,12 +59,22 @@ class Centre extends Model
     }
 
     /**
-     * Recoge los centros SIN HCT
+     * Recoge los centros SIN HCT (Excluye HCT y sus departamentos)
      */
     public function scopeGetCentersWithoutHCT($query)
     {
+        // Get all child centers of HCT
+        $hct = self::where('name', 'HOSPITAL TELDE')->first();
+
+        if ($hct) {
+            $excludedIds = self::where('parent_id', $hct->id)->pluck('id')->toArray();
+            $excludedIds[] = $hct->id; // Also exclude HCT itself
+        } else {
+            $excludedIds = [env('ID_CENTRE_HCT')];
+        }
+
         return $query->whereNull('cancellation_date')
-            ->where('id', '!=', env('ID_CENTRE_HCT'))
+            ->whereNotIn('id', $excludedIds)
             ->orderBy('name')
             ->get();
     }
@@ -60,33 +84,21 @@ class Centre extends Model
      */
     public function scopeGetCentreByField($query, $field)
     {
-        if (!is_numeric($field)) {
-            return $query
-                ->whereNull('cancellation_date')
-                ->where('name', $field)->get();
-        } else {
-            return $query
-                ->whereNull('cancellation_date')
-                ->where('id', $field)->get();
-        }
+        return $query->whereNull('cancellation_date')
+            ->where(is_numeric($field) ? 'id' : 'name', $field)
+            ->get();
     }
 
     /**
-     * Busca un centro por el nombre o id recibido
+     * Get the name of a center by ID or Name
      */
     public function scopeGetCentreName($query, $centre)
     {
-        if (!is_numeric($centre)) {
-            $centre = $query
-                ->whereNull('cancellation_date')
-                ->where('name', $centre)->first();
-        } else {
-            $centre = $query
-                ->whereNull('cancellation_date')
-                ->where('id', $centre)->first();
-        }
+        $centre = $query->whereNull('cancellation_date')
+            ->where(is_numeric($centre) ? 'id' : 'name', $centre)
+            ->first();
 
-        return !empty($centre) ? $centre->name : null;
+        return $centre ? $centre->name : null;
     }
 
     /**
@@ -107,9 +119,9 @@ class Centre extends Model
      */
     public function scopeGetCentreByNameLike($query, $name)
     {
-        return $query
-            ->whereNull('cancellation_date')
-            ->where('name', 'like', '%' . $name . '%')->get();
+        return $query->whereNull('cancellation_date')
+            ->where('name', 'like', '%' . $name . '%')
+            ->get();
     }
 
     /**
@@ -117,27 +129,34 @@ class Centre extends Model
      */
     public function scopeGetCentreIdByNameLike($query, $name)
     {
-        $centreId = $query
-            ->whereNull('cancellation_date')
-            ->where('name', 'like', '%' . $name . '%')->value('id');
-        Log::info('centreId: ', [
-
-        ]);
-        return $centreId;
+        return $query->whereNull('cancellation_date')
+            ->where('name', 'like', '%' . $name . '%')
+            ->value('id');
     }
-
-
 
     /**
      * Devuelve el email de un centro por su ID
      */
     public function scopeGetEmailByCenterId($query, $centerId)
     {
-        $centre = $query
-            ->whereNull('cancellation_date')
-            ->where('id', $centerId)->first();
-
-        return $centre ? $centre->email : null;
+        return $query->whereNull('cancellation_date')
+            ->where('id', $centerId)
+            ->value('email');
     }
 
+    /**
+     * Get all centres including their child departments
+     */
+    public function scopeGetAllCentersWithChildren($query)
+    {
+        return $query->with('children')->whereNull('cancellation_date')->get();
+    }
+
+    /**
+     * Check if a center has child departments
+     */
+    public function hasChildren()
+    {
+        return $this->children()->exists();
+    }
 }

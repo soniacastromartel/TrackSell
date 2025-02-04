@@ -5,20 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service;
 use App\Centre;
-use App\Charts\CentreServicesGraph;
-use App\Exports\AllDinamicServicesExport;
 use App\Exports\DinamicServicesExport;
 use DataTables;
 use DB;
-use Auth;
-
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ServicesIncentivesExport;
-use App\ServicePrice;
-use App\Tracking;
-use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Log;
-use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class ServiceController extends Controller
 {
@@ -302,126 +294,9 @@ class ServiceController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the services with incentives
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function incentives(Request $request)
-    {
-        //
-        try {
-
-            if ($request->ajax()) {
-
-                $params = $request->all();
-                $services  = Service::select(
-                    'services.id as id',
-                    'centres.name as centre',
-                    'services.name',
-                    'service_prices.id as serviceprice_id',
-                    'service_prices.price as price',
-                    'service_prices.service_price_direct_incentive as incentive_direct',
-                    'service_prices.service_price_incentive1 as incentive_obj1',
-                    'service_prices.service_price_incentive2 as incentive_obj2',
-                    'service_prices.service_price_super_incentive1 as bonus_obj1',
-                    'service_prices.service_price_super_incentive2 as bonus_obj2',
-                    'service_prices.cancellation_date'
-                )
-                    ->distinct()
-                    ->join('service_prices', 'service_prices.service_id', '=', 'services.id')
-                    ->join('centres', 'centres.id', '=', 'service_prices.centre_id')
-                    ->where(function ($q) use ($params) {
-
-                        if (!empty($params['centre'])) {
-                            $q->where('centres.id', $params['centre']);
-                        }
-
-                        if (!empty($params['service'])) {
-                            $q->where('services.id', $params['service']);
-                        }
-                    })
-                    ->whereNull('service_prices.cancellation_date');
-
-                return DataTables::of($services)
-                    ->addIndexColumn()
-                    ->filter(function ($instance) use ($request) {
-
-                        if (!empty($request->get('search'))) {
-                            $instance->where(function ($w) use ($request) {
-                                $search = $request->get('search');
-                                $r = $w->orWhere('services.name', 'LIKE', "%$search%")
-                                    ->orWhere('centres.name', 'LIKE', "%$search%");
-                            });
-                        }
-                    })
-                    ->addColumn('action', function ($service) {
-                        $btn = '';
-                        $user = session()->get('user');
-                        if (empty($service->cancellation_date) && $user->rol_id == 1) {
-                            // $fnCall = 'destroyIncentive('.$service->serviceprice_id.' )';
-                            $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btn-delete"><span class="material-icons">
-                        delete</span></a>';
-                        }
-                        return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-            }
-
-            $centres = Centre::getCentresActive();
-            $services = Service::select(
-                'services.id',
-                'services.name'
-            )
-                ->distinct('services.name')
-                ->orderBy('services.name')->get();
-            return view('admin.services.incentives', [
-                'title'      => 'Incentivos - Servicios', 'centres'  => $centres, 'services' => $services, 'user'     => session()->get('user')
-            ]);
-        } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar servicios, contacte con el administrador');
-        }
-    }
-
-    /**
-     * Dar de baja servicio con su incentivo
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroyIncentive(Request $request)
-    {
-        try {
-            $params = $request->all();
-            $servicePrice = DB::table('service_prices')->where('id', $params['serviceprice_id']);
-            if (!empty($servicePrice)) {
-                $servicePrice->update([
-                    'cancellation_date'      => date('Y-m-d H:i:s', strtotime('-1 days')), 'user_cancellation_date' => session()->get('user')->id
-                ]);
-
-
-                session()->flash('success', 'Se ha dado de baja servicio incentivado');
-                return response()->json([
-                    'success' => true, 'url'    => null, 'mensaje' => 'Se ha dado de baja servicio incentivado'
-                ], 200);
-            } else {
-                session()->flash('error', 'Error al dar de baja servicio incentivado');
-                return response()->json([
-                    'success' => false, 'url'    => null, 'mensaje' => 'Error'
-                ], 400);
-            }
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json([
-                'success' => 'false',
-                'errors'  => $e->getMessage(),
-            ], 400);
-        }
-    }
-
     public function exportServicesIncentivesActives()
     {
         try {
-
             $exportData = DB::table('export_services')->get();
             ob_end_clean();
             ob_start();

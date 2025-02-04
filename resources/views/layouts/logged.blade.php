@@ -128,9 +128,9 @@
                 });
 
 
-                $(document).ajaxStop(function() {
-                    Swal.close();
-                });
+                // $(document).ajaxStop(function() {
+                //     Swal.close();
+                // });
 
                 document.addEventListener("DOMContentLoaded", () => {
                     // Función para inicializar interruptores

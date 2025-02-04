@@ -9,6 +9,7 @@ use App\Http\Controllers\A3CenterSaraController;
 use App\Http\Controllers\ChartController;
 use App\Service;
 use Illuminate\Support\Arr;
+use App\Http\Controllers\IncentivesController;
 
 Route::get('/', function () {
     return redirect('login');
@@ -36,19 +37,23 @@ Route::middleware(['check-permission'])->group(function () {
     Route::get('/admin/centres/destroy/{id}', 'CentreController@destroy')->name('centres.destroy');
     //! Services
     Route::get('/admin/services', 'ServiceController@index')->name('services.index');
-    Route::any('/admin/incentives', 'ServiceController@incentives')->name('services.incentives');
     Route::get('/admin/services/create', 'ServiceController@create')->name('services.create');
     Route::post('/admin/services', 'ServiceController@store')->name('services.store');
     Route::get('/admin/services/edit/{id}', 'ServiceController@edit')->name('services.edit');
     Route::put('/admin/services/update/{id}', 'ServiceController@update')->name('services.update');
     Route::get('/admin/services/destroy/{id}', 'ServiceController@destroy')->name('services.destroy');
-    Route::post('/admin/services/destroyIncentive', 'ServiceController@destroyIncentive')->name('services.destroyIncentive');
     Route::get('/admin/services/exportServices', 'ServiceController@exportServicesIncentivesActives')->name('services.exportServicesIncentivesActives');
     Route::get('/calculateServices', 'ServiceController@calculateServices')->name('services.calculateServices');
     Route::post('/getSalesServices', 'ServiceController@getSalesServices')->name('services.getSalesServices');
     Route::get('/calculateServices', 'ServiceController@showAllServicesAndByCentre')->name('calculateServices');
     //?Exportar dinámica de servicios
     Route::get('/export/services', 'ServiceController@exportDinamicServices')->name('export.all-services');
+
+    //!Incentives
+    Route::any('/incentives', [IncentivesController::class, 'index'])->name('incentives.index');
+    Route::post('/incentives/edit', 'IncentivesController@updateIncentive')->name('incentives.edit');
+    Route::post('/incentives/destroyIncentive', 'IncentivesController@destroyIncentive')->name('incentives.destroy');
+
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');
     Route::get('/tracking/create', 'TrackingController@create')->name('tracking.create');

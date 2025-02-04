@@ -17,7 +17,7 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             
             $table->increments('id')->unsigned();
-            $table->string('objectguid')->nullable(); // Added here.
+            $table->string('objectguid')->nullable();
             $table->string('name')->unique();
             $table->dateTime('cancellation_date')->nullable();
             $table->string('username')->unique();

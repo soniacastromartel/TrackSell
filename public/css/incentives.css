@@ -1,12 +1,11 @@
-
 .content {
     background-image: url(/assets/img/background_continue.png) !important;
     background-position: center center !important;
     background-size: 1000px;
     height: 500vh !important;
-  
-  }
-  
+
+}
+
 
 
 .incentive-logo {
@@ -14,11 +13,16 @@
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: right;
-    min-width: 200px; 
-    min-height: 100px; 
+    min-width: 200px;
+    min-height: 100px;
 }
 
 
+.highlight-row {
+    background-color: #d4edda !important;
+    /* Verde claro */
+    transition: background-color 1s ease-in-out;
+}
 
 
 .ui-datepicker-calendar {
