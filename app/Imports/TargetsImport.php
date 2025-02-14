@@ -16,7 +16,6 @@ class TargetsImport implements WithMultipleSheets
 
     public function __construct($centres, $year, $isEdit, $filePath)
     {
-
         $this->centres = $centres;
         $this->year = $year;
         $this->isEdit = $isEdit;

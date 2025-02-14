@@ -28,7 +28,7 @@
     <div class="picker-container">
         <div class="select-wrapper">
             <!-- Icon -->
-            <span class="icon-select material-symbols-outlined">move_item</span>
+            <span class="icon-select material-symbols-outlined">moved_location</span>
             <select class="selectpicker" name="centre_origin_id" id="centre_origin_id" data-size="7"
                 data-style="btn btn-red-icot" title="Centro Origen" tabindex="-98">
                 @foreach ($centres as $centre)
@@ -38,7 +38,7 @@
             </select>
         </div>
         <div class="select-wrapper">
-            <span class="icon-select material-symbols-outlined">login</span>
+            <span class="icon-select material-symbols-outlined">where_to_vote</span>
             <select class="selectpicker" name="centre_destination_id" id="centre_destination_id" data-size="7"
                 data-style="btn btn-red-icot" title="Centro Destino" tabindex="-98">
                 @foreach ($centres as $centre)
@@ -69,7 +69,7 @@
         </button>
 
         <button id="btnSubmit" type="button" class="btn-send">
-            <span id=icon-send class="material-symbols-outlined">tab_new_right</span>{{ __('Registrar cambio') }}</button>
+            <span id=icon-send class="material-symbols-outlined">move_location</span>{{ __('Registrar cambio') }}</button>
         <button id="btnSubmitLoad" type="button" class="btn btn-fill btn-success" style="display: none">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>

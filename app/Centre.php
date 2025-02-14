@@ -22,7 +22,7 @@ class Centre extends Model
         'alias_img',
         'image',
         'cancellation_date',
-        'parent_id' 
+        'parent_id'
     ];
 
     /** 
@@ -37,6 +37,43 @@ class Centre extends Model
     {
         return $this->hasMany(Centre::class, 'parent_id');
     }
+
+    // En el modelo Centre
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'service_prices')
+            ->using(ServicePrice::class)
+            ->withPivot([
+                'price',
+                'service_price_direct_incentive',
+                'service_price_incentive1',
+                'service_price_incentive2',
+                'service_price_super_incentive1',
+                'service_price_super_incentive2',
+                'cancellation_date',
+                'user_cancellation_date'
+            ]);
+    }
+
+    //gets service ids for a centre
+    public static function getServiceIdsForACentre($centre_id)
+    {
+        return DB::table('service_centres')
+            ->where('centre_id', $centre_id)
+            ->pluck('service_id'); 
+    }
+
+
+    //gets service objects for a centre
+    public static function getServicesForACentre($centre_id)
+    {
+        $serviceIds = DB::table('service_centres')
+            ->where('centre_id', $centre_id)
+            ->pluck('service_id');
+
+        return Service::whereIn('id', $serviceIds)->get(); // Retorna los objetos Service
+    }
+
 
     /**
      * Recoge todos los centros activos

@@ -3,10 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use App\ServiceCentre;
 use DB;
 
-class ServicePrice extends Model
+class ServicePrice extends Pivot
 {
+    protected $table = 'service_prices';
+
     protected $fillable = [
         'id',
         'price',
@@ -35,6 +39,30 @@ class ServicePrice extends Model
     {
         return $this->hasMany(self::class, 'service_id', 'service_id')
             ->where('id', '!=', $this->id);
+    }
+
+    public static function createServicePrice(array $data)
+    {
+        try {
+            $servicePrice = self::create([
+                'price' => $data['price'],
+                'service_id' => $data['service_id'],
+                'centre_id' => $data['centre_id'],
+                'service_price_direct_incentive' => $data['service_price_direct_incentive'],
+                'service_price_incentive1' => $data['service_price_incentive1'],
+                'service_price_incentive2' => $data['service_price_incentive2'],
+                'service_price_super_incentive1' => $data['service_price_super_incentive1'],
+                'service_price_super_incentive2' => $data['service_price_super_incentive2'],
+            ]);
+            ServiceCentre::firstOrCreate([
+                'service_id' => $data['service_id'],
+                'centre_id' => $data['centre_id']
+            ]);
+            return $servicePrice;
+        } catch (\Exception $e) {
+            \Log::error('Error al crear ServicePrice: ' . $e->getMessage());
+            return null;
+        }
     }
 
     //! SCOPES
@@ -71,13 +99,38 @@ class ServicePrice extends Model
         return is_null($this->cancellation_date);
     }
 
-    public function cancelPrice($userId = null)
+    /**
+     * Cancels a service_price and cancel its corresponding service_centre
+     * @param mixed $userId
+     * @return static
+     */
+    public function cancelServicePrice($userId = null)
     {
-        $this->cancellation_date = now();
-        $this->user_cancellation_date = $userId;
-        $this->save();
+        $this->update([
+            'cancellation_date' => now(),
+            'user_cancellation_date' => $userId
+        ]);
+            ServiceCentre::where('service_id', $this->service_id)
+            ->where('centre_id', $this->centre_id)
+            ->delete();
+    
+        return $this;
     }
-
+    
+    /**
+     * Soft delete all active ServicePrice records before an import.
+     * Calls cancelServicePrice on each record.
+     * Returns the list of modified records.
+     */
+    public static function softDeleteAllActiveIncentives($userId)
+    {
+        $services = self::whereNull('cancellation_date')->get(); 
+        foreach ($services as $service) {
+            $service->cancelServicePrice($userId);
+        }
+        return $services; 
+    }
+    
     public function getTotalIncentive()
     {
         return $this->service_price_direct_incentive +
@@ -88,34 +141,23 @@ class ServicePrice extends Model
     }
 
     /**
-     * Soft delete de todos los registros activos antes de la importación
+     *Massive import of incentives from Excell, deleting all incentives before.
      */
-    public static function softDeleteAllActiveIncentives($userId)
+    public static function importIncentives(array $rows, $userId)
     {
-        return self::whereNull('cancellation_date')
-            ->update([
-                'cancellation_date' => now(),
-                'user_cancellation_date' => $userId
-            ]);
-    }
-
-    /**
-     * Importación masiva de incentivos desde un array de datos con borrado lógico antes de importar
-     */
-    public static function importIncentives(array $data, $userId)
-    {
-        DB::transaction(function () use ($data, $userId) {
+        DB::transaction(function () use ($rows, $userId) {
             self::softDeleteAllActiveIncentives($userId);
-            foreach ($data as $row) {
+
+            foreach ($rows as $row) {
                 self::create([
-                    'price' => $row['price'],
-                    'service_id' => $row['service_id'],
-                    'centre_id' => $row['centre_id'],
-                    'service_price_direct_incentive' => $row['direct_incentive'],
-                    'service_price_incentive1' => $row['incentive1'],
-                    'service_price_incentive2' => $row['incentive2'],
-                    'service_price_super_incentive1' => $row['super_incentive1'],
-                    'service_price_super_incentive2' => $row['super_incentive2'],
+                    'service_id' => $row['serviceId'],
+                    'centre_id' => $row['centreId'],
+                    'price' => $row['precio'],
+                    'service_price_direct_incentive' => $row['incentivo directo'],
+                    'service_price_incentive1' => $row['incentivo individual obj1'],
+                    'service_price_incentive2' => $row['incentivo individual obj2'],
+                    'service_price_super_incentive1' => $row['bonus supervisor obj1'],
+                    'service_price_super_incentive2' => $row['bonus supervisor obj2'],
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
@@ -141,7 +183,6 @@ class ServicePrice extends Model
             'service_price_super_incentive2' => $data['super_incentive2'] ?? $servicePrice->service_price_super_incentive2,
             'updated_at' => now(),
         ]);
-
         return $servicePrice;
     }
 }

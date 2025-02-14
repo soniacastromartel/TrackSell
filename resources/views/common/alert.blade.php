@@ -57,6 +57,7 @@
         });
     }
 
+
     function showWelcomeToast(message) {
         const Toast = Swal.mixin({
             toast: true,
@@ -108,6 +109,57 @@
         });
     }
 
+    function confirmAdvice($title, $message) {
+        return Swal.fire({
+            title: $title,
+            text: $message,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#bc012e',
+            confirmButtonText: 'Continuar',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'btn btn-primary btn-lg mr-2',
+                cancelButton: 'btn btn-danger btn-lg',
+                loader: 'custom-loader',
+            },
+            loaderHtml: '<div class="spinner-border text-primary"></div>',
+            preConfirm: () => {
+                Swal.showLoading();
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve(true);
+                    }, 3000);
+                });
+            }
+        });
+
+    }
+
+    async function confirmWithSelect(title, list) {
+        const {
+            value: item
+        } = await Swal.fire({
+            title: title,
+            input: 'select',
+            inputOptions: list,
+            inputPlaceholder: "Selecciona un centro",
+            showCancelButton: true,
+            inputValidator: (value) => {
+                return !value ? 'Debe seleccionar uno' : null;
+            },
+            confirmButtonText: 'Continuar',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                confirmButton: 'btn btn-primary btn-lg mr-2',
+                cancelButton: 'btn btn-danger btn-lg'
+            }
+        });
+
+        return item || null;
+    }
+
     async function confirmWithInput() {
         const {
             value: reason,
@@ -128,5 +180,32 @@
 
         });
         return isConfirmed ? reason : null;
+    }
+
+    async function showDateAlert(isPresent = false) {
+        const {
+            value: date
+        } = await Swal.fire({
+            title: "Seleccione una fecha",
+            input: "date",
+            inputValidator: (value) => {
+                if (!value) {
+                    return "Debe seleccionar una fecha";
+                }
+                if (isPresent) {
+                    const today = new Date().toISOString().split("T")[0];
+                    if (value < today) {
+                        return "La fecha no puede ser anterior a hoy";
+                    }
+                }
+
+            },
+            didOpen: () => {
+                const today = new Date().toISOString().split("T")[0];
+                Swal.getInput().min = today;
+            }
+        });
+
+        return date || null;
     }
 </script>

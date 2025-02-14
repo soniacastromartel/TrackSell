@@ -94,7 +94,7 @@
                         </li>
                         <li id="adminServiceIncentive" class="nav-item ">
                             <a class="nav-link" href="{{ route('incentives.index') }}">
-                                <i class="material-icons">local_atm</i>
+                                <i class="material-icons">paid</i>
                                 <span class="sidebar-normal"> Tarifas & Incentivos </span>
                             </a>
                         </li>
@@ -115,7 +115,7 @@
                         <li id="requestChange" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.requestChange') }}">
                                 <i class="material-symbols-outlined">
-                                    transfer_within_a_station
+                                    move_location
                                 </i> <span class="sidebar-normal"> Cambio de Centro </span>
                             </a>
                         </li>

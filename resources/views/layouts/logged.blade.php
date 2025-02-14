@@ -4,7 +4,7 @@
 <head>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/formChangeDetection.js') }}"></script>
+    {{-- <script src="{{ asset('js/formChangeDetection.js') }}"></script> --}}
     <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-material-design.min.js') }}"></script>
@@ -51,6 +51,7 @@
 
             <script type="text/javascript" src="{{ asset('js/charts-loader.js') }}"></script>
             <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
             <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap-selectpicker.js') }}"></script>
             <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
@@ -112,7 +113,6 @@
                         Swal.close();
                     }, 5000);
                 });
-
             </script>
 
         </div>

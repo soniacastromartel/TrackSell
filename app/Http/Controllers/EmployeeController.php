@@ -95,22 +95,22 @@ class EmployeeController extends DefaultLoginController
     
                         // Botones de acción para otros roles
                         $btn = '<a href="employees/edit/' . $employee->id . '" class="btn-edit" data-editar="Editar">
-                                    <span class="material-icons">edit</span>
+                                    <span class="material-symbols-outlined">edit</span>
                                 </a>';
                         $btn .= '<a id="btnResetAccess' . $employee->id . '" onclick="resetAccessApp(' . $employee->id . ')" class="btn-reset-access" data-access="Resetear número de acceso">
-                                    <span class="material-icons">refresh</span>
+                                    <span class="material-symbols-outlined">refresh</span>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                 </a>';
                         $btn .= '<a id="btnResetPass' . $employee->id . '" onclick="resetPassword(' . $employee->id . ')" class="btn-validate-password" data-validate="Validación y nueva contraseña">
-                                    <span class="material-icons">person</span>
+                                    <span class="material-symbols-outlined">person</span>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                 </a>';
                         $btn .= '<a id="btnDenyAccess' . $employee->id . '" onclick="denyAccess(' . $employee->id . ')" class="btn-denegate-access" data-denegate="Denegar acceso">
-                                    <span class="material-icons">block</span>
+                                    <span class="material-symbols-outlined">block</span>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                 </a>';
                         $btn .= '<a id="btnSyncA3_' . $employee->id . '" onclick="syncA3(' . $employee->id . ', \'only\')" class="btn-sincro-a3" data-sincro="Sincronizar A3">
-                                    <span class="material-icons">sync</span>
+                                    <span class="material-symbols-outlined">sync</span>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                 </a>';
     

@@ -96,14 +96,14 @@
                                                     </button>
                                                 </div>
                                                 <div class="interspace">
-                                                    <button id="btnEditTargets" class="file-upload btn-import">
-                                                        <span id="icon-import"
+                                                    <button id="btnEditTargets" class="file-upload btn-edit">
+                                                        <span id="icon-edit"
                                                             class="material-symbols-outlined">edit</span>Editar
                                                         Objetivos
                                                         <input type="file" name="editTargetsFile" id="editTargetsFile"
                                                             class="upload" />
                                                     </button>
-                                                    <button id="btnEditTargetsLoad" class="file-upload btn-import"
+                                                    <button id="btnEditTargetsLoad" class="file-upload btn-edit"
                                                         style="display: none">
                                                         <span id="spinner" class="spinner-border spinner-border-sm"
                                                             role="status" aria-hidden="true"></span> Editar Objetivos
@@ -123,7 +123,7 @@
                                                 <span class="m-3"></span>
                                             @endif
                                             <div class="interspace">
-                                                <button id="btnTracingTargets" class="file-upload btn-import">
+                                                <button id="btnTracingTargets" class="file-upload btn-export">
                                                     <span id="icon-export"
                                                         class="material-symbols-outlined">download</span>{{ __('Descargar Seguimiento') }}
                                                 </button>

@@ -36,10 +36,7 @@
   justify-content: center;
 }
 
-.icon-container {
-  position: relative;
-  display: flex;
-}
+
 
 button:focus {
   outline: none;
@@ -93,20 +90,6 @@ button:focus {
 #yearPicker:hover {
   box-shadow: 8px 8px 15px rgba(23, 94, 187, 0.63);
 }
-
-/* #yearPicker {
-  background-color: var(--info) !important;
-  width: 230px;
-  height: 45px;
-  margin: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  border: none;
-  border-radius: 50px;
-  padding-left: 20px;
-} */
 
 /*CARD HEADER*/
 
@@ -225,40 +208,26 @@ button:focus {
 }
 
 /* ICONS */
+.icon-container {
+  position: relative;
+  display: flex;
+}
+
 #icon-export,
 #icon-import,
 #icon-watch {
   position: absolute;
   left: 0;
   background-color: white;
-  color: var(--gray-dark);
+  color: var(--secondary);
   border-radius: 50%;
   width: 40px;
   height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--gray-dark);
+  border: 1px solid var(--secondary);
 }
-
-/* .material-symbols-outlined {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 25px;
-  background-color: white;
-  color: var(--red-icot) !important;
-  border-radius: 50%;
-  pointer-events: none;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  border: 1px solid var(--red-icot);
-} */
 
 /* General Button SelectPicker */
 .bootstrap-select .btn {
@@ -267,7 +236,7 @@ button:focus {
   margin: 0;
   /* Elimina centrado individual */
   border: none !important;
-  background-color: var(--red-icot);
+  background-color: var(--primary);
   border-radius: 50px;
   color: white;
   text-align: right;
@@ -306,7 +275,7 @@ button:focus {
   /* Tamaño del ícono */
   background-color: white;
   /* Fondo del ícono */
-  color: var(--red-icot);
+  color: var(--primary);
   border-radius: 50%;
   /* Ícono circular */
   pointer-events: none;
@@ -318,14 +287,15 @@ button:focus {
   justify-content: center;
   z-index: 2;
   /* Se coloca sobre el botón */
-  border: 1px solid var(--red-icot);
+  border: 1px solid var(--primary);
 }
 
 /* Common styles for all icons */
 #icon-refresh,
 #icon-search,
 #icon-calculate,
-#icon-pay {
+#icon-pay,
+#icon-edit {
   position: absolute;
   left: 0;
   background-color: white;
@@ -338,24 +308,30 @@ button:focus {
 }
 
 /* Unique styles for each icon */
-#icon-refresh {
+ #icon-export {
   color: var(--orange);
   border: 1px solid var(--orange);
 }
 
 #icon-search {
-  color: var(--green);
-  border: 1px solid var(--green);
+  color: var(--success);
+  border: 1px solid var(--success);
 }
 
-#icon-calculate {
-  color: var(--primary);
+#icon-calculate, #icon-edit {
+  color:var(--primary);
   border: 1px solid var(--primary);
 }
 
-#icon-pay {
+#icon-pay{
   color: var(--success);
   border: 1px solid var(--success);
+}
+
+#icon-refresh{
+  color:var(--teal);
+  border: 1px solid var(--teal);
+
 }
 
 #icon-send {
@@ -373,16 +349,6 @@ button:focus {
   border: 1px solid var(--green);
   cursor: pointer;
 }
-
-/* #icon-date {
-  font-size: 25px; 
-  color: var(--red-icot);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 50%;
-} */
-
 
 #icon-date {
   position: absolute;
@@ -435,6 +401,43 @@ button:focus {
   cursor: pointer;
 }
 
+.icon-button {
+  width: 40px;  /* Ajusta el tamaño del círculo */
+  height: 40px;
+  display:inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Hace que el botón sea circular */
+  border: none;
+  cursor: pointer;
+  font-size: 24px; /* Tamaño del icono */
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.icon-button span {
+  color: white; /* Color del icono */
+}
+
+/* Estilos personalizados para cada botón */
+.close-btn {
+  background-color: #dc3545; /* Rojo */
+}
+
+.close-btn:hover {
+  background-color: #c82333;
+  transform: scale(1.1);
+}
+
+.save-btn {
+  background-color: #28a745; /* Verde */
+}
+
+.save-btn:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+}
+
+
 /* BUTTONS */
 
 #btnClear,
@@ -444,6 +447,8 @@ button:focus {
 #btnSubmitLoad,
 #btnSubmitFindLoad,
 #btnImportTargets,
+#btnDownloadTemplate,
+#btnAddIncentive,
 #btnImportIncentives,
 #btnEditIncentives,
 #targetInputFileLoad,
@@ -467,7 +472,8 @@ button:focus {
 #btnSummaryPreview,
 #btnSummaryLoad,
 #btnTargetsPreview,
-#btnTargetsLoad {
+#btnTargetsLoad,
+#btnImportLoad {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -526,26 +532,38 @@ button:focus {
 
 .btn-refresh {
   /* padding-left: 60px !important; */
-  background-color: var(--orange) !important;
+  background-color: var(--teal) !important;
+  font-weight: bolder;
 }
 
 .btn-refresh:hover {
-  box-shadow: 8px 8px 15px rgba(245, 118, 0, 0.63);
+  box-shadow: 8px 8px 15px rgba(0, 245, 233, 0.63);
 }
 
 .btn-export {
   padding-left: 60px !important;
-  background-color: var(--gray-dark);
+  background-color: #fd7e14;
+  font-weight: bolder;
 }
 
 .btn-import {
   padding-left: 60px !important;
-  background-color: var(--gray-dark);
+  background-color: var(--secondary);
+  font-weight: bolder;
 }
 
 .file-upload btn-import {
   padding-left: 60px !important;
-  background-color: var(--gray-dark);
+  background-color: var(--secondary);
+  font-weight: bolder;
+
+}
+
+.file-upload btn-edit {
+  padding-left: 60px !important;
+  background-color: var(--primary);
+  font-weight: bolder;
+
 }
 
 .btn-export:hover {
@@ -573,7 +591,8 @@ button:focus {
 
 .btn-send {
   padding-left: 60px !important;
-  background-color: var(--green);
+  background-color: var(--success);
+  font-weight: bolder;
 }
 
 .btn-search:hover {
@@ -646,7 +665,7 @@ button:focus {
 
 .header-btn-add {
   position: relative;
-  background-color: var(--red-icot);
+  background-color: var(--success);
   border: none;
   color: white;
   cursor: pointer;
@@ -735,7 +754,7 @@ button:focus {
 
 .btn-edit {
   position: relative;
-  background-color: orange;
+  background-color: #3490dc;
   border: none;
   color: white;
   cursor: pointer;
@@ -748,6 +767,7 @@ button:focus {
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
+  font-weight: bolder;
 }
 
 .btn-edit::after {
@@ -765,7 +785,7 @@ button:focus {
 
 .btn-edit:hover {
   background-color: white;
-  color: orange;
+  color:#3490dc;
 }
 
 .btn-edit:hover::after {
@@ -773,11 +793,51 @@ button:focus {
   opacity: 1;
 }
 
-/* BTN RESET */
+/* BTN SEARCH */
+.btn-see {
+  position: relative;
+  background-color: #6c757d;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
 
+.btn-see::after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-see:hover {
+  background-color: white;
+  color: #6c757d;
+}
+
+.btn-see:hover::after {
+  visibility: visible;
+  opacity: 1;
+} 
+
+/* BTN RESET */
 .btn-reset-access {
   position: relative;
-  background-color: green;
+  background-color:var(--secondary);
   border: none;
   color: white;
   cursor: pointer;
@@ -811,7 +871,7 @@ button:focus {
 
 .btn-reset-access:hover {
   background-color: white;
-  color: green;
+  color: var(--secondary);
 }
 
 .btn-reset-access:hover::after {
@@ -823,7 +883,7 @@ button:focus {
 
 .btn-validate-password {
   position: relative;
-  background-color: blue;
+  background-color:var(--success);
   border: none;
   color: white;
   cursor: pointer;
@@ -857,7 +917,7 @@ button:focus {
 
 .btn-validate-password:hover {
   background-color: white;
-  color: blue;
+  color:var(--success);
 }
 
 .btn-validate-password:hover::after {
@@ -1055,7 +1115,7 @@ button:focus {
 
 .btn-save {
   position: relative;
-  background-color: green;
+  background-color: #6459dd;
   border: none;
   color: white;
   cursor: pointer;
@@ -1085,7 +1145,7 @@ button:focus {
 
 .btn-save:hover {
   background-color: white;
-  color: green;
+  color: #6459dd;
 }
 
 .btn-save:hover::after {
@@ -1167,7 +1227,7 @@ button:focus {
 
 .btn-save:hover {
   background-color: white;
-  color: green;
+  color: #198d49;
 }
 
 .btn-save:hover::after {

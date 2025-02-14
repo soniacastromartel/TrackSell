@@ -32,8 +32,42 @@ class Service extends Model
         return $this->hasMany(Tracking::class);
     }
 
-    //!FUNCIÓN DINÁMICA DE SERVICIOS
+    // En el modelo Service
+    public function centres()
+    {
+        return $this->belongsToMany(Centre::class, 'service_prices')
+            ->using(ServicePrice::class)
+            ->withPivot([
+                'price',
+                'service_price_direct_incentive',
+                'service_price_incentive1',
+                'service_price_incentive2',
+                'service_price_super_incentive1',
+                'service_price_super_incentive2',
+                'cancellation_date',
+                'user_cancellation_date'
+            ]);
+    }
 
+    //get centre ids for services
+    public static function getCentreIdsForAService($service_id)
+    {
+        return DB::table('service_centres')
+            ->where('service_id', $service_id)
+            ->pluck('centre_id'); 
+    }
+
+    //get centres for services
+    public static function getCentersForAService($service_id)
+    {
+        $centreIds = DB::table('service_centres')
+            ->where('service_id', $service_id)
+            ->pluck('centre_id');
+    
+        return Centre::whereIn('id', $centreIds)->get(); // Retorna los objetos Centre
+    }
+
+    //!FUNCIÓN DINÁMICA DE SERVICIOS
     public function scopeGetCountAllServices($query, $serviceId = null, $centreId = null, $startDate = null, $endDate = null)
     {
         $query->join('trackings', 'services.id', '=', 'trackings.service_id')

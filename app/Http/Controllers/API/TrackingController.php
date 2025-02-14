@@ -195,7 +195,6 @@ class TrackingController extends BaseController {
                 ->whereNull('service_categories.cancellation_date')
                 ->where('service_categories.id', $collection['service'][0]['category_id'])
                 ->get();
-    
             $collection['patient_name'] = $trackingSearch['patient_name'];
             $collection['employee_id'] = $trackingSearch['employee_id'];
             $collection['quantity'] = $trackingSearch['quantity'];
