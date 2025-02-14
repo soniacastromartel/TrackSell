@@ -197,8 +197,6 @@ class IncentivesController extends Controller
         }
     }
 
-
-
     public function updateIncentive(Request $request)
     {
         $data = $request->validate([
@@ -349,6 +347,24 @@ class IncentivesController extends Controller
             ], 400);
         }
     }
+
+    public function showCenters(Request $request)
+    {
+        $serviceName = $request->query('name', ''); // Tomamos el nombre del servicio desde GET
+        if (!$serviceName) {
+            return response()->json(['error' => 'No se proporcionó el nombre del servicio'], 400);
+        }
+        $serviceId = Service::findServiceIdByColumn('name', $serviceName);
+        $centreIds = ServicePrice::getCentreIdsByServiceId($serviceId);
+
+        if (empty($centreIds)) {
+            return response()->json(['error' => 'No hay Centros para el servicio: ' . $serviceName], 404);
+        }
+        $centreNames = Centre::whereIn('id', $centreIds)->pluck('name')->toArray();
+
+        return response()->json(['centres' => $centreNames]);
+    }
+
 
 
 

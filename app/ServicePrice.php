@@ -35,6 +35,13 @@ class ServicePrice extends Pivot
         return $this->belongsTo(Service::class);
     }
 
+    public static function getCentreIdsByServiceId($serviceId)
+    {
+        return self::where('service_id', $serviceId)
+            ->pluck('centre_id')
+            ->toArray();
+    }
+
     public function previousPrices()
     {
         return $this->hasMany(self::class, 'service_id', 'service_id')
@@ -110,13 +117,13 @@ class ServicePrice extends Pivot
             'cancellation_date' => now(),
             'user_cancellation_date' => $userId
         ]);
-            ServiceCentre::where('service_id', $this->service_id)
+        ServiceCentre::where('service_id', $this->service_id)
             ->where('centre_id', $this->centre_id)
             ->delete();
-    
+
         return $this;
     }
-    
+
     /**
      * Soft delete all active ServicePrice records before an import.
      * Calls cancelServicePrice on each record.
@@ -124,13 +131,13 @@ class ServicePrice extends Pivot
      */
     public static function softDeleteAllActiveIncentives($userId)
     {
-        $services = self::whereNull('cancellation_date')->get(); 
+        $services = self::whereNull('cancellation_date')->get();
         foreach ($services as $service) {
             $service->cancelServicePrice($userId);
         }
-        return $services; 
+        return $services;
     }
-    
+
     public function getTotalIncentive()
     {
         return $this->service_price_direct_incentive +

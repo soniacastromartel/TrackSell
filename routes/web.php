@@ -55,6 +55,8 @@ Route::middleware(['check-permission'])->group(function () {
     Route::post('/incentives/create', 'IncentivesController@createIncentive')->name('incentives.create');
     Route::post('/incentives/destroyIncentive', 'IncentivesController@destroyIncentive')->name('incentives.destroy');
     Route::post('/incentives/import', 'IncentivesController@import')->name('incentives.import');
+    Route::get('/service/centres', [IncentivesController::class, 'showCenters'])->name('service.centres');
+
 
     //! Tracking 
     Route::any('/tracking/index', 'TrackingController@index')->name('tracking.index');

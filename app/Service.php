@@ -54,7 +54,17 @@ class Service extends Model
     {
         return DB::table('service_centres')
             ->where('service_id', $service_id)
-            ->pluck('centre_id'); 
+            ->pluck('centre_id');
+    }
+    //get centre names for services
+    public static function getCentreNamesForAService($service_id)
+    {
+        $centreIds = DB::table('service_centres')
+            ->where('service_id', $service_id)
+            ->pluck('centre_id');
+        $centreNames = Centre::whereIn('id', $centreIds)->pluck('name');
+        return $centreNames;
+
     }
 
     //get centres for services
@@ -63,7 +73,7 @@ class Service extends Model
         $centreIds = DB::table('service_centres')
             ->where('service_id', $service_id)
             ->pluck('centre_id');
-    
+
         return Centre::whereIn('id', $centreIds)->get(); // Retorna los objetos Centre
     }
 
