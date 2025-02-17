@@ -111,7 +111,7 @@
                     });
                     setTimeout(function() {
                         Swal.close();
-                    }, 5000);
+                    }, 8000);
                 });
             </script>
 

@@ -208,4 +208,30 @@
 
         return date || null;
     }
+
+    function showListAlert(title, listItems, emptyMessage = "No hay elementos disponibles.") {
+        if (!listItems || listItems.length === 0) {
+            Swal.fire({
+                title: "Información",
+                text: emptyMessage,
+                icon: "warning",
+                confirmButtonText: "OK"
+            });
+            return;
+        }
+        const itemList = listItems.map(item => `<li>${item}</li>`).join('');
+        Swal.fire({
+            title: title,
+            html: `<ul style="text-align:left; padding-left: 20px; font-size: 16px;">${itemList}</ul>`,
+            icon: "info",
+            confirmButtonText: "OK",
+            width: '50%',
+            customClass: {
+                popup: 'swal-wide'
+            },
+            allowOutsideClick: false, 
+            allowEscapeKey: false, 
+        });
+    }
+
 </script>

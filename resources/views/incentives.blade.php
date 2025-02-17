@@ -499,55 +499,17 @@
                     method: 'GET',
                     data: {
                         name: serviceName
-                    }, 
+                    },
                     success: function(response) {
-                        if (response.centres.length === 0) {
-                            Swal.fire({
-                                title: "Sin Centros",
-                                text: `No hay centros disponibles para ${serviceName}.`,
-                                icon: "warning",
-                                confirmButtonText: "OK"
-                            });
-                            return;
-                        }
-                        const centreList = response.centres.map(centre => `<li>${centre}</li>`)
-                            .join('');
-
-                        Swal.fire({
-                            title: `Centros para ${serviceName}`,
-                            html: `<ul style="text-align:left; padding-left: 20px;">${centreList}</ul>`,
-                            icon: "info",
-                            confirmButtonText: "OK",
-                            width: '50%',
-                            customClass: {
-                                popup: 'swal-wide'
-                            }
-                        });
+                        showListAlert(`Centros para ${serviceName}`, response.centres,
+                            `No hay centros disponibles para ${serviceName}.`);
                     },
                     error: function() {
-                        Swal.fire({
-                            title: "Error",
-                            text: `No se pudieron cargar los centros para ${serviceName}.`,
-                            icon: "error",
-                            confirmButtonText: "OK"
-                        });
+                       showListAlert();
                     }
                 });
             });
 
-            // $(document).on('click', '#btn-repeat', function() {
-            //     const serviceId = $(this).data('id');
-            //     const serviceName = $(this).data('name');
-            //     const servicePrice = $(this).data('price');
-            //     const incentiveDirect = $(this).data('direct-incentive');
-            //     const incentiveObj1 = $(this).data('obj1');
-            //     const incentiveObj2 = $(this).data('obj2');
-            //     const bonusObj1 = $(this).data('bonus1');
-            //     const bonusObj2 = $(this).data('bonus2');
-            //     const serviceData = $(this).data();
-            //     $('#saveIncentiveBtn').data('id', serviceId);
-            //     confirmAddToCentre(serviceData);
-            // });
 
             $(document).on('click', '#btn-repeat', function() {
                 var serviceData = {
