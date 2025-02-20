@@ -1,10 +1,5 @@
 @extends('layouts.logged')
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
-<link rel="stylesheet" href="{{ asset('css/material.css') }}">
-<link rel="stylesheet" href="{{ asset('css/logged.css') }}">
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{{-- @extends('layouts.logged') --}}
 
 @section('content')
 
@@ -25,7 +20,7 @@
                             <form id="serviceForm" action="{{ route('calculateServices') }}" method="GET">
 
 
-                                <input type="hidden" name="centre_id" value="{{ $centre_id }}">
+                                <input type="hidden" name="centre_id" value="{{ $centre_id }}">  
                                 <input type="hidden" name="service_id" value="{{ $service_id }}">
 
                                 <label class="label align-self-center" for="dateFrom" style="padding: 10px">Fecha desde
@@ -34,7 +29,7 @@
                                 <div id="monthYearPickerContainer" style="margin-bottom:15px;">
                                     <input type="date" class="form-date" id="start_date" name="start_date"
                                         value="{{ request('start_date') }}" onchange="this.form.submit()">
-                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                                    <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
                                 </div>
                                 </input>
 
@@ -43,7 +38,7 @@
                                 <div id="monthYearPickerContainer" style="margin-bottom:15px;">
                                     <input type="date" class="form-date" id="end_date" name="end_date"
                                         value="{{ request('end_date') }}" onchange="this.form.submit()">
-                                    <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                                    <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
                                 </div>
                                 </input>
 
@@ -53,7 +48,7 @@
 
                         <div class="container ml-6" style="width: 300px">
 
-                            <h3>Centro</h3>
+                            <h4>Centro</h4>
 
                             <form action="{{ route('calculateServices') }}" method="GET">
                                 <div class="select-wrapper">
@@ -74,11 +69,11 @@
                             </form>
 
 
-                            <h3>Servicios</h3>
+                            <h4>Servicios</h4>
 
                             <form id="centreForm" action="{{ route('calculateServices') }}" method="GET">
                                 <div class="select-wrapper">
-                                    <span class="icon-select material-icons">medical_services</span>
+                                    <span class="icon-select material-symbols-outlined">medical_services</span>
                                     <input type="hidden" name="centre_id" value="{{ $centre_id }}">
                                     <select class="selectpicker" data-style="btn btn-red-icot btn-round" id="service_id"
                                         name="service_id" onchange="this.form.submit()">
@@ -97,8 +92,8 @@
                     </div>
 
                     <div class="" style="display:flex;justify-content:flex-end;">
-                        <button id="btnClear" class="btn-refresh" onclick="resetSelectors()">Refrescar <span
-                                id="icon-refresh" class="material-icons">refresh</span></button>
+                        <button id="btnClear" class="btn-refresh" onclick="resetSelectors()">REFRESCAR <span
+                                id="icon-refresh" class="material-symbols-outlined">refresh</span></button>
                         <form action="{{ route('export.all-services') }}" method="GET">
                             @csrf
                             <input type="hidden" name="service_id" value="{{ $service_id ?? '' }}">
@@ -106,8 +101,8 @@
                             <input type="hidden" name="start_date" id="start_date"
                                 value="{{ request('start_date') }}">
                             <input type="hidden" name="end_date" id="end_date" value="{{ request('end_date') }}">
-                            <button id="btnSubmit" type="submit" class="btn-export">Exportar <span id="icon-export"
-                                    class="material-icons">file_download</span></button>
+                            <button id="btnSubmit" type="submit" class="btn-export">EXPORTAR <span id="icon-export"
+                                    class="material-symbols-outlined">file_download</span></button>
                             <button id="btnSubmitLoad" type="submit" style="display: none;">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
@@ -661,6 +656,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        $(".nav-item").each(function() {
+                $(this).removeClass("active");
+            });
+            $('#pagesReport').addClass('show');
+            $('#calculateService').addClass('active');
+
         const chartConfigs = [{
                 id: 'chartCentre',
                 labels: '@json($labelsCentre)',

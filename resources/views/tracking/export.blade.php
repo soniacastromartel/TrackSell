@@ -135,10 +135,10 @@
                                     </button>
                                     <button id="btnSubmit" type="submit" class="btn btn-dark-black"><span class="material-icons">
                             file_download
-                            </span> {{ __('Exportar') }}</button>
+                            </span> {{ __('EXPORTAR') }}</button>
                                     <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black" style="display: none">
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                        {{ __('Exportando datos...') }}
+                                        {{ __('CARGANDO...') }}
                                     </button>
                                 </div>
                             </div>

@@ -16,8 +16,8 @@
                         <h4 class="card-title">Tarifas & Incentivos</h4>
                     </div>
                     <div class="card-body">
-                        <div class="row col-md-12 mb-4 ">
-                            <div class="row col-lg-8 ">
+                        <div class="row col-md-12 mb-4 " style="margin-top:30px;">
+                            <div class="row col-lg-12 ">
                                 <div class="form-group ">
                                     <div class="select-wrapper">
                                         <span id="icon-select" class="icon-select material-symbols-outlined">
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                     <div class="select-wrapper">
                                         <span id="icon-select" class="icon-select material-symbols-outlined">
                                             medical_services </span>
@@ -58,16 +58,18 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-2" >
+                                    <button id="btnClearRefresh" href="#" class="btn-refresh-circle">
+                                        <span class="material-symbols-outlined">
+                                            refresh
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="form-group col-md-4" style="display:flex;justify-content:end;align-items:center;">
-                                <button id="btnClearRefresh" href="#" class="btn-refresh-circle">
-                                    <span class="material-icons">
-                                        refresh
-                                    </span>
-                                </button>
-                            </div>
                         </div>
+                        <hr>
+
                         @if ($user->rol_id == 1)
                             <div class="row col-md-12 mb-4 ">
                                 <div class="row col-lg-8 ">
@@ -76,7 +78,7 @@
                                             <!-- Botón visible que el usuario clickea -->
                                             <button id="btnImportIncentives" class="file-upload btn-import">
                                                 <span id="icon-import"
-                                                    class="material-symbols-outlined">upload_file</span>Importar
+                                                    class="material-symbols-outlined">upload_file</span>IMPORTAR
                                                 <!-- Input de archivo oculto -->
                                             </button>
                                             <button id="btnImportLoad" class="file-upload btn-import" style="display: none">
@@ -91,7 +93,7 @@
                                         <div class="select-wrapper" style="margin-left: 35px;">
                                             <button id="btnAddIncentive" type="button" class="btn-send">
                                                 <span id="icon-send" class="material-symbols-outlined">add_card
-                                                </span>Nuevo
+                                                </span>CREAR
 
                                             </button>
                                         </div>
@@ -107,7 +109,7 @@
                                                 puede
                                                 descargar la plantilla* <a style="color:var(--red-icot)"
                                                     href="{{ asset('assets/excel/plantilla_importar_incentivos.xls') }}"><strong>aquí</strong>
-                                                    <span class="material-icons"
+                                                    <span class="material-symbols-outlined"
                                                         style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
                                             </h5>
                                         </div>
@@ -215,16 +217,15 @@
     </style>
     <script type="text/javascript">
         let centres = @json($centres).reduce((obj, centre) => {
-            obj[centre.name] = centre.name; // Convierte el array en un objeto con { 'Centro A': 'Centro A' }
+            obj[centre.name] = centre.name; 
             return obj;
         }, {});
-        console.log(centres);
         $(document).ready(function() {
             getServiceIncentives();
 
             $('#editIncentiveModal form').validate({
-                errorClass: 'error-message', // Clase CSS personalizada
-                errorElement: 'span', // Elemento HTML para los mensajes de error
+                errorClass: 'error-message',
+                errorElement: 'span', 
                 rules: {
                     price: {
                         required: true,
@@ -430,7 +431,7 @@
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
-            $('#pagesConfig').addClass('show');
+            $('#pagesTracking').addClass('show');
             $('#adminServiceIncentive').addClass('active');
 
             function setModalValues({

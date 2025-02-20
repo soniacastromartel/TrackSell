@@ -6,15 +6,20 @@
 
 }
 
-
-
-.incentive-logo {
-    background-image: url(/assets/img/logoPreciosIncentivos.png);
+.incentive-logo,
+.calculator-logo {
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: right;
-    min-width: 200px;
-    min-height: 100px;
+    min-height: 280px;
+}
+
+.incentive-logo{
+    background-image: url(/assets/img/banners/5.jpg);
+}
+
+.calculator-logo {
+    background-image: url(/assets/img/banners/3.jpg);
 }
 
 

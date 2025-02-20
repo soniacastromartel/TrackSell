@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card " style="margin-top:120px">
+                    <div class="card card-banner " style="margin-top:120px">
 
                         <div class="card-header card-header-danger">
 
@@ -17,7 +17,7 @@
 
                         </div>
 
-                        <div class="card-body ">
+                        <div class="card-body col-lg-10 " style="margin-left: 30px;">
                             <form id="createRequestChangeCentre" action="{{ route('tracking.saveRequest') }}"
                                 method="POST">
                                 @csrf
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top:50px;">
                 <div class="col-md-12">
                     <div class="card ">
                         <div class="card-header card-header-danger">
@@ -56,7 +56,15 @@
         </div>
     </div>
 
-
+    <style>
+        .card-banner {
+            background-image: url(/assets/img/banners/2.jpg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position-x: right;
+            /* max-height: 420px; */
+        }
+    </style>
     <script type="text/javascript">
         setDate();
 

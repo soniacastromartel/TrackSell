@@ -1037,7 +1037,7 @@ class TrackingController extends Controller
                 ->addColumn('action', function ($track) {
                     $btn = '';
                     // $fnCall = 'destroy(\'' . $track->id . '\')';
-                    $btn .= '<a onclick="confirmRequest(0,' . $track->id . ')" class="btn-delete"><span class="material-icons">
+                    $btn .= '<a onclick="confirmRequest(0,' . $track->id . ')" class="btn-delete"><span class="material-symbols-outlined">
                     delete</span></a>';
                     return $btn;
                 })
@@ -1664,7 +1664,7 @@ class TrackingController extends Controller
 
             return DataTables::of($requests)
                 ->addColumn('action', function ($request) {
-                    $btn = '<a onClick="confirm(0,' . $request->id . ')" class="btn btn-red-icot a-btn-slide-text btn-sm  btn-round" > <span class="material-icons mr-1">delete</span>Cancelar</a>';
+                    $btn = '<a onClick="confirm(0,' . $request->id . ')" class="btn-delete" > <span class="material-symbols-outlined">delete</span></a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])

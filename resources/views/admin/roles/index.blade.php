@@ -11,10 +11,12 @@
                     <h4 class="card-title">Roles</h4>
                 </div>
                 <div class="row col-lg-12">
-                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
+                    <div class="col-md-11 header-logo" style="margin-top:70px;">
+                        <a href="{{ route('roles.create') }}" id="btnNewRole" class="header-btn-add"><span id="icon-send"
+                                class="material-icons">add_moderator</span><strong>NUEVO ROL</strong> </a>
+                    </div>
                     <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
-                        <a href="{{ route('roles.create') }}" id="btnNewCenter" class="header-btn-add"><span
-                                class="material-icons">add_moderator</span></a>
+
                     </div>
                 </div>
             </div>

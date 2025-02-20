@@ -232,13 +232,6 @@
     </div>
 
     <style>
-        #lbl {
-            color: black;
-            font-weight: 600;
-            font-family: 'Helvetica', 'Arial', sans-serif;
-            font-size: 12px;
-        }
-
         td {
             font-weight: bold;
             /* text-align: center; */

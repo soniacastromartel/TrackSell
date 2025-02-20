@@ -15,13 +15,13 @@
         <div class="container-fluid" style="margin-top:120px">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header card-header-info card-header-text">
+                    <div class="card card-banner">
+                        <div class="card-header card-header-info card-header-text ">
                             <div class="card-text" style="border-radius: 50px">
                                 <h4 class="card-title">Liga de Centros</h4>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="margin-top:30px;">
                             <form id="leagueForm" method="POST">
                                 @csrf
                                 @method('POST')
@@ -29,7 +29,7 @@
                                     {{-- <input type="checkbox" name="month_date" id="monthly" value="mensual" checked> Mensual
                                     <br />
                                     <input type="checkbox" name="year_date" id="yearly" value="anual"> Anual <br /> --}}
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-3" style="margin-top: 42px;">
                                         <div class="dropdown bootstrap-select">
                                             <span id="icon-select" class="icon-select material-symbols-outlined">
                                                 manage_history
@@ -42,10 +42,10 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group  centre_picker">
+                                        <div class="form-group  centre_picker" style="margin-top: 20px;">
                                             <div class="dropdown bootstrap-select">
                                                 <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                    manage_history
+                                                    business
                                                 </span>
                                                 <select class="selectpicker" name="centre_id" id="centre_id_picker"
                                                     data-size="7" data-style="btn btn-red-icot btn-round"
@@ -58,27 +58,29 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-3 picker-container">
                                     <div id="monthYearPickerContainer">
                                         <div class="input-group date mt-2">
                                             <input id="monthYearPicker" class='form-control' type="text"
                                                 placeholder="yyyy/mm" />
-                                            <span id="icon-date" class="material-symbols-outlined">calendar_month</span>
+                                            <span id="icon-date"
+                                                class="icon-select material-symbols-outlined">calendar_month</span>
                                             <input type="hidden" name="monthYear" id="monthYear" />
                                         </div>
                                     </div>
                                     <div id="yearPickerContainer">
                                         <div class="input-group date mt-2">
                                             <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
-                                            <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+                                            <span id="icon-date" class="icon-select material-symbols-outlined">
+                                                calendar_month</span>
                                         </div>
                                     </div>
-
-                                    <div class="col-lg-5" style="display:flex;flex-direction:column;align-items:flex-end";>
-
+                                </div>
+                                    <div class="col-md-3 picker-container" style="";>
                                         <button id="btnSubmitExport" type="submit" class="btn-export">
                                             <span id="icon-export" class="material-symbols-outlined">
                                                 file_download
-                                            </span> {{ __('Exportar') }}
+                                            </span> {{ __('EXPORTAR') }}
                                         </button>
                                         <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status"
@@ -87,7 +89,7 @@
 
                                         <button id="btnClear" href="#" class="btn-refresh">
                                             <span id="icon-refresh" class="material-symbols-outlined">refresh
-                                            </span> {{ __('Refrescar') }}
+                                            </span> {{ __('REFRESCAR') }}
                                         </button>
 
                                     </div>
@@ -104,6 +106,7 @@
                     {{-- charts --}}
                     <div class="card mt-4" id="leagueChart">
                         <div class="chart-container">
+                            <h4 style="margin-left: 15px;">Liga de <strong>CENTROS</strong></h4>
                             <div>
                                 <canvas id="chartLeague"></canvas>
                             </div>
@@ -167,7 +170,7 @@
             text-align: center;
             font-weight: bold;
             font-size: xx-large;
-            font-family: monospace;
+            font-family: "Nunito", sans-serif;
             color: white !important;
             border-radius: 50px !important;
             background-color: var(--red-icot);
@@ -182,6 +185,14 @@
             width: unset;
 
         }
+
+        .card-banner {
+            background-image: url(/assets/img/banners/2.jpg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position-x: right;
+            min-height: 340px;
+        }
     </style>
 
     <script type="text/javascript">
@@ -190,7 +201,7 @@
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
-            $('#pagesReport').addClass('show');
+            $('#pagesTracking').addClass('show');
             $('#centerLeague').addClass('active');
 
             var date = new Date();

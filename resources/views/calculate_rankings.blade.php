@@ -61,20 +61,20 @@
 
                                     </div>
                                     <div class="col-md-3">
-                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning"><span class="material-icons">
+                                        <button id="btnClear" href="#" class="btn btn-fill btn-warning"><span class="material-symbols-outlined">
                             clear_all
                             </span>
-                                            {{ __('Refrescar') }}
+                                            {{ __('REFRESCAR') }}
                                         </button>
                                         <button id="btnSubmit" type="submit"
-                                            class="btn btn-fill btn-default"><span class="material-icons">
+                                            class="btn btn-fill btn-default"><span class="material-symbols-outlined">
                             file_download
-                            </span>  Exportar</button>
+                            </span>  EXPORTAR</button>
                                         <button id="btnSubmitLoad" type="submit" class="btn btn-dark-black"
                                             style="display: none">
                                             <span class="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true"></span>
-                                            {{ __('Obteniendo datos...') }}
+                                            {{ __('CARGANDO...') }}
                                         </button>
                                     </div>
                                 </div>

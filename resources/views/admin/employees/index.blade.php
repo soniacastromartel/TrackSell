@@ -3,6 +3,7 @@
     @include('inc.navbar')
 
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/employees.css') }}">
 
     <div class="content">
         <div class="container-fluid">
@@ -11,12 +12,15 @@
                     <h4 class="card-title">Empleados</h4>
                 </div>
                 <div class="row col-lg-12">
-                    <div class="col-md-11 header-logo" style=""></div>
-                    <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
+                    <div class="col-md-1header-logo" style=""></div>
+                    <div class=" col-md-11" style="display:flex;justify-content:start;margin-top:100px; ">
                         @if ($user->rol_id == 1)
-                            <a id="btnSyncA3" class="btn-sincro-all"><span class="material-icons">
+                           
+
+                            <a id="btnSyncA3" class="btn-sincro-all btn-export"><span class="material-symbols-outlined" id="icon-sync">
                                     sync
-                                </span> </a>
+                                </span> SINCRONIZAR A3 </a>
+
                             <button id="btnSubmitLoadA3" type="submit" class="btn-sincro-all" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
@@ -51,7 +55,7 @@
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
-            $('#pagesConfig').addClass('show');
+            $('#pagesTracking').addClass('show');
             $('#adminUser').addClass('active');
 
             table = $('.employees-datatable').DataTable({
@@ -332,65 +336,3 @@
         }
     </script>
 @endsection
-
-<style>
-    .header-logo {
-        background-image: url(/assets/img/staff.jpg);
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position-x: right;
-        min-width: 200px;
-        min-height: 70px;
-    }
-
-    .content {
-        background-image: url(/assets/img/background_continue.png) !important;
-        background-position: center center !important;
-        background-size: 1000px;
-        height: 220vh !important;
-
-    }
-
-    td.upper {
-        text-transform: lowercase;
-    }
-
-    .user-updated-pass:hover::after,
-    .user-updated-acc:hover::after,
-    .user-bloqued:hover::after {
-        content: attr(data-tooltip);
-        /* Inserta el texto del tooltip */
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity 0.2s, visibility 0.2s;
-        background-color: black;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 4px;
-        font-size: 12px;
-    }
-
-    .user-updated-pass:hover::after,
-    .user-updated-acc:hover::after,
-    .user-bloqued:hover::after {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    /* ROW RED FOR BLOQUED USER */
-
-    .user-bloqued {
-        color: red;
-    }
-
-    /* ROW GREEN FOR UPDATED USER */
-    .user-updated-acc,
-    .user-updated-pass {
-        color: green;
-    }
-</style>

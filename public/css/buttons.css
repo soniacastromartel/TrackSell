@@ -3,22 +3,7 @@
 .service-container {
   display: flex;
   flex-direction: row;
-  min-height: 420px;
-}
-
-.date-informes-container,
-.date-solicitud-container,
-.date-services-container {
-  /* margin-left: 80px; */
-  padding-top: 50px;
-  background-image: url(/assets/img/calendarImage.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  min-width: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* min-height: 420px; */
 }
 
 .form-date {
@@ -34,9 +19,9 @@
   border: none;
   border-radius: 50px;
   justify-content: center;
+  padding-left: 20px;
+  align-items: center;
 }
-
-
 
 button:focus {
   outline: none;
@@ -48,7 +33,8 @@ button:focus {
 }
 
 #buttonContainer.active {
-  margin-top: 50px; /* Ajusta según sea necesario */
+  margin-top: 50px;
+  /* Ajusta según sea necesario */
   transition: margin 0.3s ease;
 }
 
@@ -60,21 +46,25 @@ button:focus {
   /* Espacio entre el ícono y el input */
   position: relative;
   height: 45px;
+  margin-bottom: 15px;
+
 }
 
 .interspace {
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 #monthYearPicker,
 #yearPicker,
 #yearTargetPicker {
+  align-items: center;
+  justify-content: center;
   padding-left: 50px;
   background-color: var(--info) !important;
   color: #fff;
   font-size: larger;
   font-weight: bolder;
-  width: 130px;
+  width: 200px;
   height: 45px;
   margin: 20px;
   display: flex;
@@ -211,21 +201,13 @@ button:focus {
 .icon-container {
   position: relative;
   display: flex;
+  justify-content: center;
+  width: 230px;
 }
 
-#icon-export,
 #icon-import,
 #icon-watch {
-  position: absolute;
-  left: 0;
-  background-color: white;
   color: var(--secondary);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--secondary);
 }
 
@@ -267,26 +249,19 @@ button:focus {
 .icon-select {
   position: absolute;
   left: 15px;
-  /* Posición fija desde el borde izquierdo */
   top: 50%;
-  /* Centrado vertical */
   transform: translateY(-50%);
   font-size: 25px;
-  /* Tamaño del ícono */
   background-color: white;
-  /* Fondo del ícono */
   color: var(--primary);
   border-radius: 50%;
-  /* Ícono circular */
   pointer-events: none;
-  /* No interfiere con clics */
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
-  /* Se coloca sobre el botón */
   border: 1px solid var(--primary);
 }
 
@@ -295,7 +270,16 @@ button:focus {
 #icon-search,
 #icon-calculate,
 #icon-pay,
-#icon-edit {
+#icon-edit,
+#icon-sync,
+#icon-send,
+#icon-date,
+#icon-date-left,
+#icon-button,
+#icon-deshacer,
+#icon-export,
+#icon-import,
+#icon-watch {
   position: absolute;
   left: 0;
   background-color: white;
@@ -305,141 +289,69 @@ button:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 /* Unique styles for each icon */
- #icon-export {
+#icon-export {
   color: var(--orange);
   border: 1px solid var(--orange);
 }
 
-#icon-search {
+#icon-search,
+#icon-pay {
   color: var(--success);
   border: 1px solid var(--success);
 }
 
-#icon-calculate, #icon-edit {
-  color:var(--primary);
+#icon-calculate,
+#icon-edit {
+  color: var(--primary);
   border: 1px solid var(--primary);
 }
 
-#icon-pay{
-  color: var(--success);
-  border: 1px solid var(--success);
-}
-
-#icon-refresh{
-  color:var(--teal);
+#icon-refresh,
+#icon-sync {
+  color: var(--teal);
   border: 1px solid var(--teal);
 
 }
 
 #icon-send {
-  position: absolute;
-  left: 0;
-  top: calc(50% - 20px);
-  background-color: white !important;
   color: var(--green) !important;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--green);
-  cursor: pointer;
 }
 
 #icon-date {
-  position: absolute;
-  left: 25px;
+  left: 20px;
   top: 50%;
-  transform: translateY(-50%);
-  font-size: 25px;
-  background-color: white !important;
-  color: var(--info) !important;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 2;
   border: 1px solid var(--info);
-  cursor: pointer;
 }
 
 #icon-date-left {
-  position: absolute;
   left: 10px;
   top: calc(50% - 20px);
-  background-color: white !important;
   color: var(--info) !important;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--info);
-  cursor: pointer;
 }
 
 #icon-deshacer {
-  position: absolute;
-  left: 0px;
   top: calc(50% - 20px);
   background-color: white !important;
   color: var(--red-icot) !important;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--red-icot);
-  cursor: pointer;
 }
 
 .icon-button {
-  width: 40px;  /* Ajusta el tamaño del círculo */
-  height: 40px;
-  display:inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%; /* Hace que el botón sea circular */
-  border: none;
-  cursor: pointer;
-  font-size: 24px; /* Tamaño del icono */
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .icon-button span {
-  color: white; /* Color del icono */
+  color: white;
 }
-
-/* Estilos personalizados para cada botón */
-.close-btn {
-  background-color: #dc3545; /* Rojo */
-}
-
-.close-btn:hover {
-  background-color: #c82333;
-  transform: scale(1.1);
-}
-
-.save-btn {
-  background-color: #28a745; /* Verde */
-}
-
-.save-btn:hover {
-  background-color: #218838;
-  transform: scale(1.1);
-}
-
 
 /* BUTTONS */
-
 #btnClear,
 #btnSubmit,
 #btnSell,
@@ -447,6 +359,7 @@ button:focus {
 #btnSubmitLoad,
 #btnSubmitFindLoad,
 #btnImportTargets,
+#btnSyncA3,
 #btnDownloadTemplate,
 #btnAddIncentive,
 #btnImportIncentives,
@@ -473,12 +386,15 @@ button:focus {
 #btnSummaryLoad,
 #btnTargetsPreview,
 #btnTargetsLoad,
-#btnImportLoad {
+#btnImportLoad,
+#btnNewRole,
+#btnNewCenter,
+#btnNewService {
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: 12px !important;
   position: relative;
   margin: 10px;
   border: none;
@@ -486,13 +402,13 @@ button:focus {
   color: white;
   width: 200px;
   height: 45px;
+  font-weight: bold;
 }
 
 /* Ensure the spinner replaces the icon */
 #btnEditTargetsLoad .spinner-border {
   position: absolute;
   left: 10px;
-  /* Adjust based on your layout */
   top: 50%;
   transform: translateY(-50%);
 }
@@ -501,7 +417,6 @@ button:focus {
   position: relative;
   text-align: left;
   padding-left: 30px;
-  /* Space for the spinner */
 }
 
 .file-upload.btn-import {
@@ -541,7 +456,7 @@ button:focus {
 }
 
 .btn-export {
-  padding-left: 60px !important;
+  /* padding-left: 60px !important; */
   background-color: #fd7e14;
   font-weight: bolder;
 }
@@ -552,18 +467,20 @@ button:focus {
   font-weight: bolder;
 }
 
+.btn-watch {
+  font-weight: bolder;
+}
+
 .file-upload btn-import {
   padding-left: 60px !important;
   background-color: var(--secondary);
   font-weight: bolder;
-
 }
 
 .file-upload btn-edit {
   padding-left: 60px !important;
   background-color: var(--primary);
   font-weight: bolder;
-
 }
 
 .btn-export:hover {
@@ -577,7 +494,6 @@ button:focus {
 .btn-watch {
   /* padding-left: 60px !important; */
   background-color: var(--light-grey) !important;
-  
 }
 
 .btn-watch:hover {
@@ -590,7 +506,7 @@ button:focus {
 }
 
 .btn-send {
-  padding-left: 60px !important;
+  padding-left: 50px !important;
   background-color: var(--success);
   font-weight: bolder;
 }
@@ -630,11 +546,25 @@ button:focus {
   box-shadow: 8px 8px 15px rgba(8, 189, 83, 0.63);
 }
 
-.icon-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 230px;
+/* Estilos personalizados para cada botón */
+.close-btn {
+  background-color: #dc3545;
+  /* Rojo */
+}
+
+.close-btn:hover {
+  background-color: #c82333;
+  transform: scale(1.1);
+}
+
+.save-btn {
+  background-color: #28a745;
+  /* Verde */
+}
+
+.save-btn:hover {
+  background-color: #218838;
+  transform: scale(1.1);
 }
 
 .btn-export-container {
@@ -644,10 +574,9 @@ button:focus {
   z-index: 20;
 }
 
-
-.btn-add {
+/* Base Button Styles */
+.circle-btn {
   position: relative;
-  background-color: var(--red-icot);
   border: none;
   color: white;
   cursor: pointer;
@@ -659,68 +588,30 @@ button:focus {
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 80px;
-  margin: 20px;
+  margin-top: 20px;
+}
+
+/* Variants */
+.btn-add, .circle-btn-add, .service-btn-add {
+  background-color: var(--red-icot);
 }
 
 .header-btn-add {
-  position: relative;
   background-color: var(--success);
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-}
-
-.circle-btn-add {
-  position: relative;
-  background-color: var(--red-icot);
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  /* box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); */
-  margin-top: 20px;
 }
 
 .service-btn-add {
-  position: relative;
-  background-color: var(--red-icot);
-  border: none;
   color: white !important;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 80px;
   margin-top: 120px;
 }
 
-/* ADD BUTTON */
+.btn-add { 
+  margin: 20px; 
+  margin-top: 80px; 
+}
 
-.btn-add::after,
-.service-btn-add::after,
-.service-btn-add::after,
-.header-btn-add::after {
+/* Tooltip Effect */
+.circle-btn::after {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -736,22 +627,18 @@ button:focus {
   font-size: 12px;
 }
 
-.btn-add:hover,
-.service-btn-add:hover,
-.header-btn-add:hover {
+/* Hover Effects */
+.circle-btn:hover, .header-btn-add:hover {
   background-color: white;
-  color: var(--red-icot);
+  color: green;
 }
 
-.btn-add::after,
-.service-btn-add::after,
-.header-btn-add:hover::after {
+.circle-btn:hover::after, .header-btn-add:hover::after {
   visibility: visible;
   opacity: 1;
 }
 
 /* EDIT BUTTON */
-
 .btn-edit {
   position: relative;
   background-color: #3490dc;
@@ -785,7 +672,7 @@ button:focus {
 
 .btn-edit:hover {
   background-color: white;
-  color:#3490dc;
+  color: #3490dc;
 }
 
 .btn-edit:hover::after {
@@ -832,12 +719,12 @@ button:focus {
 .btn-see:hover::after {
   visibility: visible;
   opacity: 1;
-} 
+}
 
 /* BTN RESET */
 .btn-reset-access {
   position: relative;
-  background-color:var(--secondary);
+  background-color: var(--secondary);
   border: none;
   color: white;
   cursor: pointer;
@@ -880,10 +767,9 @@ button:focus {
 }
 
 /* BUTTON VALIDATE-PASSWORD */
-
 .btn-validate-password {
   position: relative;
-  background-color:var(--success);
+  background-color: var(--success);
   border: none;
   color: white;
   cursor: pointer;
@@ -917,7 +803,7 @@ button:focus {
 
 .btn-validate-password:hover {
   background-color: white;
-  color:var(--success);
+  color: var(--success);
 }
 
 .btn-validate-password:hover::after {
@@ -926,7 +812,6 @@ button:focus {
 }
 
 /* BUTTON DENEGATE ACCESS */
-
 .btn-denegate-access {
   position: relative;
   background-color: red;
@@ -972,7 +857,6 @@ button:focus {
 }
 
 /* BUTTON SINCRO A3 */
-
 .btn-sincro-a3 {
   position: relative;
   background-color: teal;
@@ -1018,18 +902,9 @@ button:focus {
 }
 
 /* BUTTON SINCRO ALL A3 */
-
-#btnSyncA3 {
-  font-weight: 900;
-  font-size: large;
-  background-color: #eeeeee;
-  color: var(--red-icot);
-  margin-top: 120px;
-}
-
 .btn-sincro-all {
   position: relative;
-  background-color: var(--red-icot) !important;
+  background-color: teal;
   border: none;
   color: white !important;
   cursor: pointer;
@@ -1041,7 +916,7 @@ button:focus {
   align-items: center;
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 80px;
+  margin-bottom: 20px;
 }
 
 .btn-sincro-all::after {
@@ -1060,7 +935,7 @@ button:focus {
 
 .btn-sincro-all:hover {
   background-color: white !important;
-  color: var(--red-icot) !important;
+  color:teal;
 }
 
 .btn-sincro-all:hover::after {
@@ -1069,7 +944,6 @@ button:focus {
 }
 
 /* BTN DELETE */
-
 .btn-delete {
   position: relative;
   background-color: red;
@@ -1111,8 +985,6 @@ button:focus {
 }
 
 /*BUTTON SAVE & RETURN */
-
-
 .btn-save {
   position: relative;
   background-color: #6459dd;
@@ -1194,7 +1066,6 @@ button:focus {
 }
 
 /*BUTTON SAVE AND RETURN */
-
 .btn-save {
   position: relative;
   background-color: green;
@@ -1275,10 +1146,10 @@ button:focus {
   opacity: 1;
 }
 
-
 /* Responsividad */
 /*MEDIA QUERIES*/
 @media (max-width: 768px) {
+
   #btnContainer,
   .bg-white,
   .filter-option {
@@ -1294,6 +1165,7 @@ button:focus {
 }
 
 @media (max-width: 480px) {
+
   #btnContainer,
   .bg-white,
   .filter-option {
@@ -1307,7 +1179,9 @@ button:focus {
     left: 1.5vw;
   }
 }
+
 @media (max-width: 360px) {
+
   #btnContainer,
   .bg-white,
   .filter-option {
@@ -1335,6 +1209,61 @@ button:focus {
   .material-symbols-outlined,
   .material-icons {
     left: 1.5vw;
+  }
+
+  .date-picker-btn {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .date-picker-btn i {
+    font-size: 18px;
+  }
+
+  .date-picker-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  }
+
+  .selected-date-text {
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  /* General Button SelectPicker */
+  .bootstrap-select .btn {
+    width: 200px;
+    height: 45px;
+    margin: 0;
+    border: none !important;
+    background-color: var(--primary);
+    border-radius: 50px;
+    color: white;
+    text-align: right;
+    padding-left: 60px;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  /* Select Wrapper */
+  .select-wrapper {
+    position: relative;
+    width: auto;
+    margin: 10px;
+    display: flex;
+    align-items: center;
   }
 
 }

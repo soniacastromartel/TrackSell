@@ -183,31 +183,55 @@
     }
 
     async function showDateAlert(isPresent = false) {
-        const {
-            value: date
-        } = await Swal.fire({
-            title: "Seleccione una fecha",
-            input: "date",
-            inputValidator: (value) => {
-                if (!value) {
-                    return "Debe seleccionar una fecha";
-                }
-                if (isPresent) {
-                    const today = new Date().toISOString().split("T")[0];
-                    if (value < today) {
-                        return "La fecha no puede ser anterior a hoy";
-                    }
-                }
-
-            },
-            didOpen: () => {
+    const { value: date } = await Swal.fire({
+        title: "📅 Seleccione una fecha",
+        html: `
+            <div style="font-size: 18px; color: #555;">
+                Por favor, elija una fecha ${isPresent ? "a partir de hoy" : "en cualquier momento"}:
+            </div>
+            <input type="date" id="custom-date-input" class="swal2-input" style="margin-top: 10px; width: 80%;">
+        `,
+        showCancelButton: true,
+        confirmButtonText: "Seleccionar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        width: "400px",
+        customClass: {
+            popup: "swal2-popup-custom"
+        },
+        didOpen: () => {
+            const input = document.getElementById("custom-date-input");
+            if (isPresent) {
                 const today = new Date().toISOString().split("T")[0];
-                Swal.getInput().min = today;
+                input.min = today; // Aplica la restricción solo si isPresent es true
             }
-        });
 
-        return date || null;
-    }
+            Swal.getConfirmButton().addEventListener("click", () => {
+                Swal.close();
+            });
+        },
+        preConfirm: () => {
+            const selectedDate = document.getElementById("custom-date-input").value;
+            if (!selectedDate) {
+                Swal.showValidationMessage("Debe seleccionar una fecha");
+                return false;
+            }
+            if (isPresent) {
+                const today = new Date().toISOString().split("T")[0];
+                if (selectedDate < today) {
+                    Swal.showValidationMessage("La fecha no puede ser anterior a hoy");
+                    return false;
+                }
+            }
+            return selectedDate;
+        }
+    });
+
+    return date || null;
+}
+
+
 
     function showListAlert(title, listItems, emptyMessage = "No hay elementos disponibles.") {
         if (!listItems || listItems.length === 0) {
@@ -229,9 +253,8 @@
             customClass: {
                 popup: 'swal-wide'
             },
-            allowOutsideClick: false, 
-            allowEscapeKey: false, 
+            allowOutsideClick: false,
+            allowEscapeKey: false,
         });
     }
-
 </script>

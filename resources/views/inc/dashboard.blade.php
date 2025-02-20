@@ -17,11 +17,14 @@
                             @csrf
                             @method('POST')
 
-                            <div class="">
+
+
+                            <div class="" style="min-height: 478px;">
                                 <div class="select-wrapper row interspace">
                                     <div id="monthYearPickerContainer" class="interspace">
                                         <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
-                                        <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
+                                        <span id="icon-date" class="icon-select material-symbols-outlined">
+                                            calendar_month</span>
                                         <input type="hidden" name="monthYear" id="monthYear" />
                                     </div>
 
@@ -59,28 +62,29 @@
                                 </div>
 
                                 <div class="row interspace">
-                                    <button id="btnClear" class="btn-refresh"><strong>Refrescar</strong>
+                                    <button id="btnClear" class="btn-refresh"><strong>REFRESCAR</strong>
                                         <span id=icon-refresh class="material-icons">refresh</span>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
                                             style="display: none;"></span>
                                     </button>
                                 </div>
-
-                            </div>
-                            <div class="btn-radio-container">
-                                <div class="form-check">
-                                    <label class="form-check-label" id="selected-label">
-                                        <input id="monthly" class="form-check-input" type="radio" name="optradio"
-                                            value="1" checked>Mensual
-                                        <span class="circle"><span class="check"></span></span>
-                                    </label>
-                                    <label class="form-check-label">
-                                        <input id="annual" class="form-check-input" type="radio" name="optradio"
-                                            value="2">Anual
-                                        <span class="circle"><span class="check"></span></span>
-                                    </label>
+                                <hr>
+                                <div class="btn-radio-container">
+                                    <div class="form-check">
+                                        <label class="form-check-label" id="selected-label">
+                                            <input id="monthly" class="form-check-input" type="radio"
+                                                name="optradio" value="1" checked>Mensual
+                                            <span class="circle"><span class="check"></span></span>
+                                        </label>
+                                        <label class="form-check-label">
+                                            <input id="annual" class="form-check-input" type="radio"
+                                                name="optradio" value="2">Anual
+                                            <span class="circle"><span class="check"></span></span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
+
                     </div>
                 </div>
 
@@ -93,7 +97,7 @@
                     <div class="card-body ">
 
                         <div id='vp_ok' class="card-header">
-                            <h4 class="card-title">Venta cruzada</h4>
+                            <h4>Venta <strong>Cruzada</strong> </h4>
                         </div>
 
                         <div>
@@ -101,7 +105,7 @@
                         </div>
 
                         <div id='vp_ok' class="card-header">
-                            <h4 class="card-title">Venta privada</h4>
+                            <h4>Venta <strong>Privada</strong> </h4>
                         </div>
 
                         <div>
@@ -123,7 +127,7 @@
             <div style="margin-right: 85px;margin-top: 15px;">
 
                 <button id="btnSubmit" type="submit" class="btn-export">
-                    Exportar
+                    EXPORTAR
                     <span id=icon-export class="material-symbols-outlined">file_download</span>
                 </button>
 
@@ -183,6 +187,8 @@
     </div>
 </div>
 <style>
+ 
+
     table.dataTable.dataTable_width_auto {
         width: 100%;
     }
@@ -219,12 +225,6 @@
         overflow: hidden;
     }
 
-    .form-group {
-        /* display: flex;
-        justify-content: space-evenly;
-        width: 100%; */
-    }
-
     .row {
         justify-content: center;
     }
@@ -238,24 +238,8 @@
 
     }
 
-    .employee-info {
-        /* padding-left: 15px; */
-        /* margin-top: 50px; */
-        /* min-height: 5000px; */
-    }
-
     .employee-info span {
         color: var(--red-icot);
-    }
-
-    #typeRanking {
-        margin-bottom: 0px;
-        margin-right: 10px;
-        margin-left: 100px;
-        display: inline-block;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        font-weight: 700;
-        color: black;
     }
 
     #formRadio {
@@ -339,7 +323,7 @@
         margin-right: 10px;
         margin-left: 100px;
         display: inline-block;
-        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        font-family: "Nunito", sans-serif;
         font-weight: 700;
         color: black;
     }
@@ -365,6 +349,37 @@
         justify-content: center;
         text-align: center;
     }
+
+    .date-picker-btn {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .date-picker-btn i {
+        font-size: 18px;
+    }
+
+    .date-picker-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+    }
+
+    .selected-date-text {
+        font-size: 18px;
+        color: #333;
+        margin-top: 10px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -384,6 +399,17 @@
             $(".form-check-label").removeAttr('id');
             $(this).parent().attr('id', 'selected-label');
         });
+
+        /**
+         * Botón Seleccionar Fecha 
+         */
+        // $("#btnSelectDate").on('click', async function(e) {
+        //     const fecha = await showDateAlert(false);
+        //     if (fecha) {
+        //         document.getElementById("btnSelectDate").innerText =
+        //             `📅 Fecha seleccionada: ${fecha}`;
+        //     }
+        // });
 
         /**
          * Botón exportar 
@@ -737,7 +763,7 @@
                             d.centre = $('#centre_id option:selected').val(),
                             d.type = idDataTable == '.sales-month-datatable' ? 'monthly' : 'anual'
                     },
-                   
+
                     error: function(xhr, status, error) {
                         console.log('error', error);
                     }

@@ -149,7 +149,7 @@ class EmployeeController extends DefaultLoginController
                     ->addIndexColumn()
                     ->addColumn('action', function ($pending) {
                         $btn = '';
-                        $btn = '<a data-toggle="modal" data-email="' . $pending->email . '" data-username="' . $pending->username . '" data-a3_nombre="' . $pending->Nombre_Completo . '"  data-pdi_nombre="' . $pending->name . '" title="Validar empleado" class="btn btn-success btnConfirmValidate" href="#modal-validate"> <span class="material-icons mr-1">check</span>Validar</a>';
+                        $btn = '<a data-toggle="modal" data-email="' . $pending->email . '" data-username="' . $pending->username . '" data-a3_nombre="' . $pending->Nombre_Completo . '"  data-pdi_nombre="' . $pending->name . '" title="Validar empleado" class="btn btn-success btnConfirmValidate" href="#modal-validate"> <span class="material-symbols-outlined mr-1">check</span>Validar</a>';
                         return $btn;
                     })
                     ->rawColumns(['action'])

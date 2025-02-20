@@ -1,31 +1,29 @@
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
 <!-- tracking/form_change_centre.blade.php -->
 <input type="hidden" name="form_type" value="change_centre">
 <div class=" solicitud-container">
 
-    <div class="date-solicitud-container">
-
-        <label for="name" class="label" style="margin-top:15px;">Fecha inicio</label>
+    <div class="date-solicitud-container col-md-3">
+        <label for="name" class="label" style="">Fecha inicio</label>
         <div class="icon-container">
             <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01"class="form-date">
-            <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+            <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
         </div>
         </input>
 
         <label for="name" class="label" style="">Fecha fin</label>
         <div class="icon-container">
             <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-date">
-            <span id="icon-date" class="material-symbols-outlined"> calendar_month</span>
+            <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
         </div>
         </input>
     </div>
 
 
-    <div class="picker-container">
+    <div class="picker-container col-md-4">
         <div class="select-wrapper">
             <!-- Icon -->
             <span class="icon-select material-symbols-outlined">moved_location</span>
@@ -62,23 +60,23 @@
         </div>
     </div>
 
-    <div class="btn-container-box">
+    <div class="btn-container-box col-md-3">
 
-        <button id="btnClear" href="#" class="btn-refresh">Refrescar
+        <button id="btnClear" href="#" class="btn-refresh">REFRESCAR
             <span id=icon-refresh class="material-icons">refresh</span>
         </button>
 
         <button id="btnSubmit" type="button" class="btn-send">
-            <span id=icon-send class="material-symbols-outlined">move_location</span>{{ __('Registrar cambio') }}</button>
+            <span id=icon-send class="material-symbols-outlined">move_location</span>{{ __('REGISTRAR CAMBIO') }}</button>
         <button id="btnSubmitLoad" type="button" class="btn btn-fill btn-success" style="display: none">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
-        <div class="btn-back-container">
+        {{-- <div class="btn-back-container">
             <button id="btnBack" href="/config" class="btn-return">
                 <span class="material-icons">arrow_back</span>
             </button>
 
-        </div>
+        </div> --}}
     </div>
 
 </div>
@@ -127,7 +125,6 @@
         });
     });
 
-
     function clearForms() {
         setDate();
         $('#centre_origin_id').selectpicker('val', '');
@@ -136,7 +133,6 @@
         $('#date_from').val('');
         $('#date_to').val('');
     }
-
 
     function setDate() {
         var date = new Date();

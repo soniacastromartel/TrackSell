@@ -103,14 +103,6 @@
 </div>
 
 <style>
-    #lbl {
-        color: black;
-        font-weight: 600;
-        font-family: 'Helvetica', 'Arial', sans-serif;
-        margin-top: 25px;
-        font-size: 12px;
-    }
-
     .upload-box {
         background: var(--white);
         outline: none;

@@ -10,13 +10,11 @@
         <div class="container-fluid">
             <div class="row ">
                 <div class="col-lg-12 mb-5" style="margin-top: 120px">
-                    <div class="card " style="min-height: 200px">
+                    <div class="card card-banner ">
                         <div class="card-header card-header-danger">
                             <h4 class="card-title">Borrar seguimiento</h4>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <img src="/assets/img/deleteServices.png" width="300">
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -43,6 +41,18 @@
 
 
     <style>
+        .myclass {
+            text-transform: capitalize;
+        }
+
+        .card-banner {
+            background-image: url(/assets/img/banners/1.jpg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position-x: right;
+            min-height: 320px;
+        }
+
         .col-md-12 {
             padding: 0;
         }
@@ -60,7 +70,7 @@
     <script type="text/javascript">
         function confirmRequest(state, id) {
             confirmWithInput().then((result) => {
-                    destroy(id,result);
+                destroy(id, result);
             });
         }
 
@@ -92,10 +102,20 @@
                         }
                     },
                     columnDefs: [{
-                        targets: [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8],
-                        visible: true,
-                        className: 'dt-body-center'
-                    }],
+                            targets: [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8],
+                            visible: true,
+                            className: 'dt-body-center'
+                        },
+                        {
+                            targets: 3,
+                            className: 'myclass',
+                            render: function(data, type, row) {
+                                return data.toLowerCase().replace(/\b\w/g, function(char) {
+                                    return char.toUpperCase();
+                                });
+                            }
+                        }
+                    ],
                     columns: [{
                             data: 'centre',
                             name: 'centre'
@@ -149,7 +169,7 @@
                             $(input).appendTo($(column.footer()).empty())
                                 .on('change', function() {
                                     var val = $.fn.dataTable.util.escapeRegex($(this)
-                                .val());
+                                        .val());
                                     column
                                         .search(val ? '^' + val + '$' : '', true, false)
                                         .draw();
@@ -160,7 +180,7 @@
             }
         });
 
-        function destroy(id,reason) {
+        function destroy(id, reason) {
             trackingId = id;
             var params = {
                 reason: reason,

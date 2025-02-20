@@ -11,18 +11,13 @@
                     <h4 class="card-title">Servicios</h4>
                 </div>
                 <div class="row col-lg-12">
-                    <div class="col-md-11 header-logo" style="margin-top:70px;"></div>
+                    <div class="col-md-11 header-logo" style="margin-top:70px;">
+                        <a href="{{ route('services.create') }}" id="btnNewService" class="header-btn-add">
+                            <span id="icon-send" class="material-symbols-outlined">
+                                assignment_add                                    </span><strong>NUEVO SERVICIO</strong></a>
+                    </div>
                     <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
-                        @if ($user->rol_id == 1)
-                            <div class="row col-md-12 mb-3 ">
-                                
-                                <div class="col-md-4 text-right">
-                                    <a href="{{ route('services.create') }}" id="btnNewCenter" class="header-btn-add">
-                                        <span id="icon-select" class="material-symbols-outlined">
-                                            assignment_add                                    </span></a>
-                                </div>
-                            </div>
-                        @endif
+                       
                     </div>
                 </div>
             </div>

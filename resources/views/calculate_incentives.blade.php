@@ -10,37 +10,48 @@
 
     <div class="content" style="padding-top: 120px">
         <div class="container-fluid">
+            <div class="col-lg-12">
+                <div class="card calculator-logo" style="margin-left: 12px;">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Calculadora de Incentivos</h4>
+                    </div>
+                    <div class="card-body">
+                        
+                    </div>
+                </div>
+            </div>
+            
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="card card-info mb-4 ml-4 mt-0 p-0";>
                         <div class="card-header">
-                            <i class="material-icons" style="color: var(--red-icot)">info</i>
+                            <i class="material-symbols-outlined" style="color: var(--red-icot)">info</i>
                             <span class="font-size-18"
                                 style="vertical-align:super; font-weight:bold; color: var(--red-icot);">Instrucciones</span>
                         </div>
                         <div class="card-body" id="cardBody">
                             @if ($user->rol_id == 1)
-                                <h5 class="card-title font-size-18">- <strong>Importar Objetivos</strong>, puede
+                                <h5>> <strong>Importar Objetivos</strong>, puede
                                     descargar la plantilla* desde <a style="color:var(--red-icot)"
                                         href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong>
-                                        <span class="material-icons"
+                                        <span class="material-symbols-outlined"
                                             style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
                                 </h5>
                                 <hr>
-                                <h5 class="card-title font-size-18">- <strong>Editar Objetivos</strong>, puede
+                                <h5> > <strong>Editar Objetivos</strong>, puede
                                     descargar la plantilla* desde <a style="color:var(--red-icot)"
                                         href="{{ asset('assets/excel/plantilla_editar_objetivos.xls') }}"><strong>aquí</strong>
-                                        <span class="material-icons"
+                                        <span class="material-symbols-outlined"
                                             style="vertical-align: middle;margin: 5px;">download_for_offline</span>
                                     </a>
 
                                 </h5>
                                 <hr>
                             @endif
-                            <h5 class="card-title font-size-18">- <strong>Incentivos: </strong>Indicar en formulario centro
+                            <h5>> <strong>Incentivos: </strong>Indicar en formulario centro
                                 / empleado / fecha
                                 según se requiera y hacer click en botón <span
-                                    style="color:var(--red-icot);font-weight: bolder;"> <span class="material-icons"
+                                    style="color:var(--red-icot);font-weight: bolder;"> <span class="material-symbols-outlined"
                                         style="vertical-align: middle;margin: 5px;">download_for_offline</span>
                                     Exportar</span>
                                 <h5>
@@ -89,8 +100,7 @@
                                                 <div class="interspace">
                                                     <button id="btnImportTargets" class="file-upload btn-import">
                                                         <span id="icon-import"
-                                                            class="material-symbols-outlined">upload</span>Importar
-                                                        Objetivos
+                                                            class="material-symbols-outlined">upload</span>IMPORTAR OBJETIVOS
                                                         <input type="file" name="targetInputFile" id="targetInputFile"
                                                             class="upload" />
                                                     </button>
@@ -98,22 +108,21 @@
                                                 <div class="interspace">
                                                     <button id="btnEditTargets" class="file-upload btn-edit">
                                                         <span id="icon-edit"
-                                                            class="material-symbols-outlined">edit</span>Editar
-                                                        Objetivos
+                                                            class="material-symbols-outlined">edit</span>EDITAR OBJETIVOS
                                                         <input type="file" name="editTargetsFile" id="editTargetsFile"
                                                             class="upload" />
                                                     </button>
                                                     <button id="btnEditTargetsLoad" class="file-upload btn-edit"
                                                         style="display: none">
                                                         <span id="spinner" class="spinner-border spinner-border-sm"
-                                                            role="status" aria-hidden="true"></span> Editar Objetivos
+                                                            role="status" aria-hidden="true"></span> CARGANDO...
                                                     </button>
                                                 </div>
                                             @endif
                                             <div class="interspace">
                                                 <button id="btnImportSales" class="file-upload btn-import">
                                                     <span id="icon-import"
-                                                        class="material-symbols-outlined">upload</span>{{ __('Importar Venta Privada') }}
+                                                        class="material-symbols-outlined">upload</span>{{ __('IMPORTAR VENTA PRIVADA') }}
                                                     <input type="file" name="targetInputSalesFile"
                                                         id="targetInputSalesFile" class="upload" />
                                                 </button>
@@ -125,12 +134,12 @@
                                             <div class="interspace">
                                                 <button id="btnTracingTargets" class="file-upload btn-export">
                                                     <span id="icon-export"
-                                                        class="material-symbols-outlined">download</span>{{ __('Descargar Seguimiento') }}
+                                                        class="material-symbols-outlined">download</span>{{ __('DESCARGAR SEGUIMIENTO') }}
                                                 </button>
                                                 <button id="btnTracingTargetsLoad" class="file-upload btn-import"
                                                     style="display: none">
                                                     <span class="spinner-border spinner-border-sm" role="status"
-                                                        aria-hidden="true"></span> Obteniendo Datos...
+                                                        aria-hidden="true"></span> CARGANDO...
                                                 </button>
                                             </div>
                                         </div>
@@ -147,7 +156,7 @@
                                         <div class="row d-flex justify-content-left" style="padding-top:30px;">
                                             <div id="monthYearPickerContainer">
                                                 <span id="icon-date"
-                                                    class="material-symbols-outlined">calendar_month</span>
+                                                    class="icon-select material-symbols-outlined">calendar_month</span>
                                                 <input id="monthYearPicker" class="form-control" type="text"
                                                     placeholder="yyyy/mm" />
                                                 <input type="hidden" name="monthYear" id="monthYear" />
@@ -208,11 +217,11 @@
                                             style="padding: 10px; display: flex; justify-content: center; gap: 10px; margin-top: 120px;">
                                             <button id="btnClear" href="#" class="btn-refresh">
                                                 <span id="icon-refresh"
-                                                    class="material-symbols-outlined">refresh</span>{{ __('Refrescar') }}
+                                                    class="material-symbols-outlined">refresh</span>{{ __('REFRESCAR') }}
                                             </button>
 
                                             <button id="btnSubmit" type="submit" class="btn-export">
-                                                Exportar
+                                                EXPORTAR
                                                 <span id="icon-export"
                                                     class="material-symbols-outlined">file_download</span>
                                             </button>
@@ -220,7 +229,7 @@
                                             <button id="btnSubmitLoad" type="submit" class="btn-export"
                                                 style="display: none">
                                                 <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span> Obteniendo Datos...
+                                                    aria-hidden="true"></span> CARGANDO...
                                             </button>
                                         </div>
 
@@ -232,7 +241,7 @@
 
                                         <button id="btnIncentivesPreview" class="btn-watch">
                                             <span id="icon-watch"
-                                                class="material-symbols-outlined">visibility</span>{{ __('Incentivos') }}
+                                                class="material-symbols-outlined">visibility</span>{{ __('INCENTIVOS') }}
                                         </button>
 
                                         <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch"
@@ -243,7 +252,7 @@
 
                                         <button id="btnSummaryPreview" class="btn-watch">
                                             <span id="icon-watch"
-                                                class="material-symbols-outlined">visibility</span>{{ __('Resumen') }}
+                                                class="material-symbols-outlined">visibility</span>{{ __('RESUMEN') }}
                                         </button>
 
                                         <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch"
@@ -258,7 +267,7 @@
                                                 <button id="btnTargetsPreview" class="btn-watch">
                                         @endif
                                         <span id="icon-watch"
-                                            class="material-symbols-outlined">visibility</span>{{ __('Objetivos') }}
+                                            class="material-symbols-outlined">visibility</span>{{ __('OBJETIVOS') }}
                                         </button>
                                         <button id="btnTargetsLoad" type="submit" class="file-upload btn-watch"
                                             style="display: none">
@@ -431,7 +440,7 @@
             text-align: center;
             font-weight: bold;
             font-size: xx-large;
-            font-family: monospace;
+            font-family:  "Nunito", sans-serif;
             color: white !important;
             border-radius: 50px !important;
             background-color: var(--red-icot);
@@ -555,13 +564,11 @@
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("Error al Importar:", textStatus, errorThrown);
                             showAlert('error', `Error en la solicitud: ${textStatus}`);
                         }
                     });
                     return response;
                 } catch (error) {
-                    console.error("Error al Importar:", error);
                     throw new Error(error.statusText || "Error en la solicitud");
                 }
             }
@@ -741,7 +748,6 @@
                         });
                         return response;
                     } catch (error) {
-                        console.error("Error al Importar:", error);
                         throw new Error(error.statusText || "Error en la solicitud");
                     } finally {
                         $(buttonToHide).show();

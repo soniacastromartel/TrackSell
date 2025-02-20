@@ -134,7 +134,7 @@
     }
 
     ::-webkit-file-upload-button {
-        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-family:  "Nunito", sans-serif;
         color: var(--white);
         background: var(--red-icot);
         padding: 8px 23px;
@@ -159,7 +159,7 @@
 
     summary {
         padding: 1em;
-        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-family:  "Nunito", sans-serif;
         font-size: 12px;
         /* background-color: var(--light-grey); */
         /* border: 2px solid var(--red-icot); */
@@ -173,14 +173,6 @@
         list-style-type: none;
     }
 
-    #lbl {
-        color: black;
-        font-weight: 600;
-        font-family: 'Helvetica', 'Arial', sans-serif;
-        margin-top: 25px;
-        font-size: 12px;
-    }
-
     ul.demo {
         list-style-type: circle;
         margin: 0;
@@ -188,7 +180,7 @@
         text-align: left !important;
         font-size: 12px;
         font-weight: 600;
-        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-family:  "Nunito", sans-serif;
 
     }
 

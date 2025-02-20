@@ -68,10 +68,10 @@ class ServiceController extends Controller
                     ->addColumn('action', function ($service) {
                         $btn = '';
                         if (empty($service->cancellation_date)) {
-                            $btn = '<a href="services/edit/' . $service->id . '" class="btn-edit"><span class="material-icons">
+                            $btn = '<a href="services/edit/' . $service->id . '" class="btn-edit"><span class="material-symbols-outlined">
                             edit
                             </span></a>';
-                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn-delete"><span class="material-icons">
+                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn-delete"><span class="material-symbols-outlined">
                             delete
                             </span></a>';
                         }

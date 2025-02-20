@@ -113,7 +113,7 @@
   #modal-title{
     font-weight: 900;
     color: black;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: "Nunito", sans-serif;
   }
 
   td{

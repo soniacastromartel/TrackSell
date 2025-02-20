@@ -20,7 +20,7 @@
                 business
             </span>
             <select class="selectpicker" name="level_id" id="level_id" data-size="7"
-                data-style="btn btn-red-icot btn-round" title="* Seleccione Nivel de Acceso" tabindex="-98">
+                data-style="btn btn-red-icot btn-round" title="NIVEL DE ACCESO" tabindex="-98">
                 @foreach ($roles as $roleOption)
                     <option value="{{ $roleOption->id }}"
                         {{ isset($role) && $role->level_id == $roleOption->id ? 'selected' : '' }}>
@@ -54,11 +54,4 @@
         font-weight: bold;
     }
 
-    #lbl {
-        color: black;
-        /* font-weight: 800; */
-        font-family: 'Helvetica', 'Arial', sans-serif;
-        margin-top: 25px;
-        font-size: 12px;
-    }
 </style>

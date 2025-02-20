@@ -46,10 +46,10 @@ class RoleController extends Controller
                         $btn = '';
                         $fnCall = 'destroy(\'' . $role->id . '\')';
 
-                        $btn .= '<a href="roles/edit/'.$role->id.'"class="btn-edit" style=""><span class="material-icons">
+                        $btn .= '<a href="roles/edit/'.$role->id.'"class="btn-edit" style=""><span class="material-symbols-outlined">
                         edit</span></a>';
 
-                        $btn .= '<a onclick="confirmRequest(0,' . $role->id . ')" class="btn-delete"><span class="material-icons">
+                        $btn .= '<a onclick="confirmRequest(0,' . $role->id . ')" class="btn-delete"><span class="material-symbols-outlined">
                         delete</span></a>';
                         
                         return $btn;

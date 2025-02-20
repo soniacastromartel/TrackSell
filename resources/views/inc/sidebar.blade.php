@@ -5,7 +5,7 @@
         <ul class="nav">
             <li id="userInfo" class="nav-item ">
                 <a class="nav-link collapsed" data-toggle="collapse" href="#profileEmployee" aria-expanded="false">
-                    <i class="material-icons">person</i>
+                    <i class="material-symbols-outlined">person</i>
                     <p style="font-weight: bold"> {{ session()->get('user')->username }}
                         <b class="caret"></b>
                     </p>
@@ -14,7 +14,7 @@
                     <ul class="nav">
                         <li id="menuProfile" class="nav-item ">
                             <a class="nav-link" href="{{ route('profile') }}">
-                                <i class="material-icons">account_box</i>
+                                <i class="material-symbols-outlined">account_box</i>
                                 <span class="sidebar-normal"> Mis datos </span>
                             </a>
                         </li>
@@ -22,7 +22,7 @@
                             <a class="nav-link" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">
-                                <i class="material-icons"> exit_to_app</i>
+                                <i class="material-symbols-outlined"> exit_to_app</i>
                                 <span class="sidebar-normal"> Cerrar sesión </span>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -37,7 +37,7 @@
 
             <li class="nav-item active" id="menuHome">
                 <a class="nav-link"href="{{ route('home') }}">
-                    <i class="material-icons">home</i>
+                    <i class="material-symbols-outlined">home</i>
                     <p style="font-weight: bold"> Home </p>
                 </a>
             </li>
@@ -46,7 +46,7 @@
                 <li id="menuConfig" class="nav-item ">
 
                     <a class="nav-link collapsed" data-toggle="collapse" href="#pagesConfig" aria-expanded="false">
-                        <i class="material-icons">admin_panel_settings</i>
+                        <i class="material-symbols-outlined">admin_panel_settings</i>
                         <p style="font-weight: bold"> Administración
                             <b class="caret"></b>
                         </p>
@@ -55,20 +55,20 @@
                         <ul class="nav">
                             <li id="adminRole" class="nav-item ">
                                 <a class="nav-link" href="{{ route('roles.index') }}">
-                                    <i class="material-icons">gpp_good</i>
+                                    <i class="material-symbols-outlined">gpp_good</i>
                                     <span class="sidebar-normal"> Roles </span>
                                 </a>
                             </li>
 
                             <li id="adminCentre" class="nav-item ">
                                 <a class="nav-link" href="{{ route('centres.index') }}">
-                                    <i class="material-icons">business</i>
+                                    <i class="material-symbols-outlined">business</i>
                                     <span class="sidebar-normal"> Centros </span>
                                 </a>
                             </li>
                             <li id="adminService" class="nav-item ">
                                 <a class="nav-link" href="{{ route('services.index') }}">
-                                    <i class="material-icons">medical_services</i>
+                                    <i class="material-symbols-outlined">medical_services</i>
                                     <span class="sidebar-normal"> Servicios </span>
                                 </a>
                             </li>
@@ -79,7 +79,7 @@
             {{-- Panel Supervisor --}}
             <li class="nav-item ">
                 <a class="nav-link collapsed" data-toggle="collapse" href="#pagesTracking" aria-expanded="false">
-                    <i class="material-icons">manage_accounts</i>
+                    <i class="material-symbols-outlined">manage_accounts</i>
                     <p style="font-weight: bold"> Supervisión
                         <b class="caret"></b>
                     </p>
@@ -88,26 +88,26 @@
                     <ul class="nav">
                         <li id="adminUser" class="nav-item ">
                             <a class="nav-link" href="{{ route('employees.index') }}">
-                                <i class="material-icons">engineering</i>
+                                <i class="material-symbols-outlined">engineering</i>
                                 <span class="sidebar-normal"> Empleados </span>
                             </a>
                         </li>
                         <li id="adminServiceIncentive" class="nav-item ">
                             <a class="nav-link" href="{{ route('incentives.index') }}">
-                                <i class="material-icons">paid</i>
+                                <i class="material-symbols-outlined">paid</i>
                                 <span class="sidebar-normal"> Tarifas & Incentivos </span>
                             </a>
                         </li>
                         <li id="trackingStarted" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.index') }}">
-                                <i class="material-icons">shopping_cart</i>
+                                <i class="material-symbols-outlined">shopping_cart</i>
                                 <span class="sidebar-normal"> Registro de Ventas </span>
                             </a>
                         </li>
 
                         <li id="centerLeague" class="nav-item">
                             <a class="nav-link" href="{{ route('centerLeague') }}">
-                                <i class="material-icons">emoji_events</i>
+                                <i class="material-symbols-outlined">emoji_events</i>
                                 <span class="sidebar-normal"> Liga de Centros </span>
                             </a>
                         </li>
@@ -122,14 +122,14 @@
 
                         <li id="trackingRemove" class="nav-item ">
                             <a class="nav-link" href="{{ route('tracking.deleteForm') }}">
-                                <i class="material-icons">delete</i>
+                                <i class="material-symbols-outlined">delete</i>
                                 <span class="sidebar-normal"> Borrar seguimiento </span>
                             </a>
                         </li>
 
                         <li id="supervisorNotificationsIndex" class="nav-item">
                             <a class="nav-link" href="{{ route('notifications.index') }}">
-                                <i class="material-icons">mail</i>
+                                <i class="material-symbols-outlined">mail</i>
                                 <span class="sidebar-normal"> Notificaciones </span>
                             </a>
                         </li>
@@ -140,7 +140,7 @@
             {{-- Panel Informes --}}
             <li class="nav-item">
                 <a class="nav-link collapsed" data-toggle="collapse" href="#pagesReport" aria-expanded="false">
-                    <i class="material-icons">description</i>
+                    <i class="material-symbols-outlined">description</i>
                     <p style="font-weight: bold"> Informes
                         <b class="caret"></b>
                     </p>
@@ -150,7 +150,7 @@
                     <ul class="nav">
                         <li id="calculateIncentives" class="nav-item">
                             <a class="nav-link" href="{{ route('calculateIncentive') }}">
-                                <i class="material-icons">calculate</i>
+                                <i class="material-symbols-outlined">calculate</i>
                                 <span class="sidebar-normal"> Calculadora de Incentivos </span>
                             </a>
                         </li>
@@ -158,14 +158,30 @@
                         @if (session()->get('user')->rol_id == 1 || session()->get('user')->rol_id == 4)
                             <li id="calculateService" class="nav-item">
                                 <a class="nav-link" href="{{ route('calculateServices') }}">
-                                    <i class="material-icons">track_changes</i>
+                                    <i class="material-symbols-outlined">track_changes</i>
                                     <span class="sidebar-normal"> Dinámica de Servicios </span>
                                 </a>
                             </li>
+                        @endif
+
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-toggle="collapse" href="#pagesRRHH" aria-expanded="false">
+                    <i class="material-symbols-outlined">groups</i>
+                    <p style="font-weight: bold"> RRHH
+                        <b class="caret"></b>
+                    </p>
+                </a>
+
+                <div class="collapse" id="pagesRRHH">
+                    <ul class="nav"> 
+                        @if (session()->get('user')->rol_id == 1 || session()->get('user')->rol_id == 4)
                             <li id="trackingValidateFinal" class="nav-item ">
                                 <a class="nav-link" href="{{ route('tracking.index_validation_final') }}">
-                                    <i class="material-icons">groups</i>
-                                    <span class="sidebar-normal"> Validar RRHH </span>
+                                    <i class="material-symbols-outlined">approval_delegation</i>
+                                    <span class="sidebar-normal"> Validar Incentivos </span>
                                 </a>
                             </li>
                         @endif
