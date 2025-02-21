@@ -211,6 +211,18 @@ button:focus {
   border: 1px solid var(--secondary);
 }
 
+.icon-info {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+
+.custom-icon {
+  font-size: 28px;
+  color: darkgray;
+  margin-right: 10px;
+}
+
 /* General Button SelectPicker */
 .bootstrap-select .btn {
   width: 200px;

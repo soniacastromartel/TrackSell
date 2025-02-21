@@ -4,159 +4,142 @@
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
-    @include('common.alert')
 
     <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-
-
-    <div id="alertErrorTrackingDate" class="alert alert-danger" role="alert" style="display: none">
-    </div>
-    <div id="alertTrackingDate" class="alert alert-success" role="alert" style="display: none">
-    </div>
 
     <div class="content" style="padding-top: 120px">
         <div class="container-fluid">
             <form id="finalValidationForm" method="POST">
                 @csrf
                 @method('POST')
-                <div class="row">
-                    <div class="col-lg-11 p-0">
-                            <div class="card card-info mt-120 ml-4">
-                                <div class="card-header">
-                                    <i class="material-symbols-outlined" style="color: var(--red-icot);">info</i>
-                                    <span
-                                        style="font-size:16px; vertical-align:super; font-weight:bold; color: var(--red-icot)">FUNCIONAMIENTO</span>
-                                </div>
-                                <div class="card-body mb-3 py-0">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <h5><span class="material-symbols-outlined">calculate</span> Calcular</h5>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <h5> <strong>=></strong> Seleccionar mes /
-                                                año para primera carga de datos</h5>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <h5 ><span class="material-symbols-outlined">payments</span> Pagar todos</h5>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <h5>=> Acción de pagar
-                                                todos los del mes seleccionado </h5>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <h5><span class="material-symbols-outlined">export_notes</span> Exportar</h5>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <h5>=> Coge los que están
-                                                pagados en día actual</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <div class="card">
+                {{-- Card 2 --}}
+                <div class="card card-banner ">
                     <div class="card-header card-header-danger">
                         <h4 class="card-title">Validar RRHH</h4>
                     </div>
-                    <div class="container-fluid">
-                        <div class="row justify-content-lg-between m-4">
-                            <div class="row flex-column">
-                                <div id="monthYearPickerContainer" style="margin-bottom:15px;">
-                                    <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
-                                    <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
-                                    <input type="hidden" name="monthYear" id="monthYear" />
+                    <div class="card-body">
+                        <div class="row">
+                            {{-- Left Side - col-lg-10 --}}
+                            <div class="col-lg-8">
+                                <div class="informes-container">
+                                    <div class="date-informes-container">
+                                        <label class="col-form-label-lg" for="dateFrom">Fecha</label>
+                                        <div id="monthYearPickerContainer" style="margin-bottom:15px;">
+                                            <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
+                                            <span id="icon-date" class="icon-select material-symbols-outlined">
+                                                calendar_month
+                                            </span>
+                                            <input type="hidden" name="monthYear" id="monthYear" />
+                                        </div>
+
+                                        <button id="btnClear" href="#" class="btn-refresh" style="margin-top:30px;">
+                                            <span id="icon-refresh" class="material-symbols-outlined">refresh</span>
+                                            {{ __('RECARGAR') }}
+                                        </button>
+                                    </div>
+
+                                    <div id="picker-btn-container" class="picker-btn-container">
+                                        <div id="picker-container" class="picker-container">
+                                            <label class="col-form-label-md" for="actions" style="">1.- CARGA DE
+                                                DATOS
+                                            </label>
+                                            <button id="btnCalculate" type="button" class="btn-calculate">
+                                                <span id="icon-calculate" class="material-symbols-outlined">calculate</span>
+                                                {{ __('CALCULAR') }}
+                                            </button>
+                                            <button id="btnCalculateLoad" type="button" class="btn-calculate"
+                                                style="display: none">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+                                            <label class="col-form-label-md" for="dateFrom" style="margin-top:30px;">2.
+                                                SELECCIÓN DE SOCIEDAD</label>
+                                            <div class="select-wrapper">
+                                                <span id="icon-select" class="icon-select material-symbols-outlined">
+                                                    business
+                                                </span>
+                                                <select class="selectpicker" name="business_id" id="business_id"
+                                                    data-size="7" data-style="btn btn-red-icot" title="Empresa"
+                                                    tabindex="-98">
+                                                    <option value="">SIN CODIGO </option>
+                                                    @foreach ($a3business as $a3business)
+                                                        <option value="{{ $a3business->code_business }}">
+                                                            {{ $a3business->code_business . '-' . $a3business->name_business }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <label class="col-form-label-md" for="dateFrom" style="margin-top:30px;">3.
+                                                PAGAR TODOS</label>
+                                            <button id="btnValidate" type="button" class="btn-pay-all">
+                                                <span id="icon-pay" class="material-symbols-outlined">paid</span>
+                                                {{ __('PAGAR') }}
+                                            </button>
+                                            <button id="btnValidateLoad" type="submit" class="btn btn-success"
+                                                style="display: none;margin-top:30px;">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+                                            <label class="col-form-label-lg" for="dateFrom"
+                                                style="margin-top:30px;display:none">3. DESHACER PAGAR</label>
+                                            <button id="btnUnvalidate" type="button" class="btn-deshacer-pagar"
+                                                style="margin-top:30px;">
+                                                <span id="icon-deshacer" class="material-symbols-outlined">undo</span>
+                                                {{ __('DESHACER') }}
+                                            </button>
+                                            <button id="btnUnvalidateLoad" type="submit" class="btn btn-red-icot"
+                                                style="display: none;margin-top:30px;">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+
+                                            <label class="col-form-label-md" for="dateFrom" style="margin-top:30px;">4.
+                                                EXPORTAR DOCUMENTO *</label>
+                                            <button id="btnExport" type="button" class="btn-export"
+                                                style="margin-top:30px;">
+                                                <span id="icon-export"
+                                                    class="material-symbols-outlined">file_download</span>
+                                                {{ __('EXPORTAR') }}
+                                            </button>
+                                            <button id="btnExportLoad" type="submit" class="btn-export"
+                                                style="display: none;margin-top:30px;">
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </button>
+                                            <P>* Se exportan los que se han pagado hoy</P>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="select-wrapper">
-                                    <span id="icon-select" class="icon-select material-symbols-outlined"> business</span>
-                                    <select class="selectpicker" name="business_id" id="business_id" data-size="7"
-                                        data-style="btn btn-red-icot" title="Empresa" tabindex="-98">
-                                        <option value="">SIN CODIGO </option>
-                                        @foreach ($a3business as $a3business)
-                                            <option value="{{ $a3business->code_business }}">
-                                                {{ $a3business->code_business . '-' . $a3business->name_business }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row flex-column">
-                                <button id="btnCalculate" type="button" class="btn-calculate">
-                                    <span id="icon-calculate"
-                                        class="material-symbols-outlined">calculate</span>{{ __('CALCULAR') }}</button>
-                                <button id="btnCalculateLoad" type="button" class="btn-calculate" style="display: none">
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                </button>
-
-                            </div>
-
-
-                            <div class="row flex-column">
-
-                                <button id="btnValidate" type="button" class="btn-pay-all">
-                                    <span id="icon-pay" class="material-symbols-outlined">paid</span>{{ __('PAGAR TODOS') }}</button>
-                                <button id="btnValidateLoad" type="submit" class="btn btn-success" style="display: none">
-                                    <span class="spinner-border spinner-border-sm" role="status"
-                                        aria-hidden="true"></span>
-                                </button>
-                                <button id="btnUnvalidate" type="button" class="btn-deshacer-pagar">
-                                    <span id="icon-deshacer"
-                                        class="material-symbols-outlined">undo</span>{{ __('DESHACER') }}</button>
-                                <button id="btnUnvalidateLoad" type="submit" class="btn btn-red-icot"
-                                    style="display: none">
-                                    <span class="spinner-border spinner-border-sm" role="status"
-                                        aria-hidden="true"></span>
-                                </button>
-                                <button id="btnClear" href="#" class="btn-refresh">
-                                    <span id="icon-refresh" class="material-symbols-outlined">refresh</span>
-                                    {{ __('REFRESCAR') }}
-                                </button>
-                                <button id="btnExport" type="button" class="btn-export">
-                                    <span id="icon-export"
-                                        class="material-symbols-outlined">file_download</span>{{ __('EXPORTAR') }}</button>
-
-                                <button id="btnExportLoad" type="submit" class="btn-export" style="display: none">
-                                    <span class="spinner-border spinner-border-sm" role="status"
-                                        aria-hidden="true"></span>
-                                </button>
                             </div>
 
                         </div>
                     </div>
                 </div>
-            </form>
-            <table class="table-striped table-bordered tracking-validation-datatable table" style="width:100%;">
-                <thead class="table-header">
-                    <tr>
-                        <th>C.Empresa</th>
-                        <th>C.Empleado</th>
-                        <th>NIF</th>
-                        <th>Centro</th>
-                        <th>Empleado</th>
-                        <th>Fecha Baja</th>
-                        <th>Total Ingreso</th>
-                        <th>Pagado</th>
-                    </tr>
-                </thead>
-                {{-- <tbody>
-                </tbody> --}}
-            </table>
         </div>
-    </div>
 
+        {{-- Table --}}
+        <table class="table-striped table-bordered tracking-validation-datatable table" style="width:100%;">
+            <thead class="table-header">
+                <tr>
+                    <th>C.Empresa</th>
+                    <th>C.Empleado</th>
+                    <th>NIF</th>
+                    <th>Centro</th>
+                    <th>Empleado</th>
+                    <th>Fecha Baja</th>
+                    <th>Total Ingreso</th>
+                    <th>Pagado</th>
+                </tr>
+            </thead>
+        </table>
+        </form>
+    </div>
+    </div>
     <script type="text/javascript">
         var table;
         $(function() {
-            $('#business_id').change(function() {
-                getEmployeeIncentives();
-            });
-
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
@@ -209,46 +192,10 @@
                 ShowIcon: false
             });
 
-            function getEmployeeIncentives() {
-                if ($.fn.dataTable.isDataTable('.tracking-validation-datatable')) {
-                    $('.tracking-validation-datatable').DataTable().ajax.reload();
-                }
-
-                table = $('.tracking-validation-datatable').DataTable({
-                    responsive: true,
-                    ordering: false,
-                    processing: true,
-                    serverSide: true,
-                    language: {
-                        "url": "{{ asset('dataTables/Spanish.json') }}"
-                    },
-                    ajax: {
-                        url: '{{ route('tracking.index_validation_final') }}',
-                        type: "POST",
-                        data: function(d) {
-                            d.monthYear = $('#monthYearPicker').val(),
-                                d._token = "{{ csrf_token() }}",
-                                d.search = $('input[type="search"]').val()
-                            d.codbusiness = $("#business_id option:selected").val()
-                        },
-                        dataSrc: function(json) {
-                            $('#btnSubmit').show();
-                            $('#btnSubmitLoad').hide();
-                            return json.data;
-                        }
-                    },
-                    columns: columnsFilled,
-                    search: {
-                        "regex": true,
-                        "smart": true
-                    },
-                    initComplete: function() {
-                        this.api().columns().every(function() {
-                            var column = this;
-                        });
-                    }
-                });
-            }
+            //ACCION SELECCIONAR EMPRESA
+            $('#business_id').change(function() {
+                getEmployeeIncentives(columnsFilled);
+            });
 
             // Accion PAGAR TODOS
             $("#btnValidate").on('click', function(e) {
@@ -259,7 +206,6 @@
                 params["monthYear"] = $('#monthYearPicker').val();
                 params["cod_business"] = $("#business_id option:selected").val();
                 params["business"] = $("#business_id option:selected").text();
-
                 if (table == undefined) {
                     showAlert('info', 'No hay Datos Seleccionados');
                     return;
@@ -271,7 +217,6 @@
                 }
                 $('#btnValidateLoad').show();
                 $('#btnValidate').hide();
-
                 $.ajax({
                     url: "{{ route('tracking.validateTrackings') }}",
                     type: 'post',
@@ -364,7 +309,7 @@
                         showAlert('success', 'Datos Calculados');
                         $('#btnCalculate').show();
                         $('#btnCalculateLoad').hide();
-                        getEmployeeIncentives();
+                        getEmployeeIncentives(columnsFilled);
                     },
                     error: function(xhr, status, error) {
                         showAlert('error', error);
@@ -391,30 +336,73 @@
                 $('#btnSubmitLoad').show();
                 $('#btnSubmitLoad').prop('disabled', true);
                 $('#monthYear').val($("#monthYearPicker").val());
-                getEmployeeIncentives();
+                getEmployeeIncentives(columnsFilled);
             });
 
             // Accion EXPORTAR
             $("#btnExport").on('click', function(e) {
-                exportData();
+                exportData(columnsFilled);
                 $('#btnExport').hide();
                 $('#btnExportLoad').show();
+                $("#btnValidate").show();
+                // $("#btnUnvalidate").hide();
                 $('#btnExportLoad').prop('disabled', true);
             });
-
-            function clearForms() {
-                var textMonthYear = setDate(date);
-                $('#monthYearPicker').val(textMonthYear);
-                $('select#business_id').val('');
-                $('select#business_id').selectpicker("refresh");
-                $('.tracking-validation-datatable').DataTable().ajax.reload();
-            }
 
             $("#btnClear").on('click', function(e) {
                 e.preventDefault();
                 clearForms();
             });
         });
+
+        function getEmployeeIncentives(columnsFilled) {
+            if ($.fn.dataTable.isDataTable('.tracking-validation-datatable')) {
+                $('.tracking-validation-datatable').DataTable().ajax.reload();
+            }
+            table = $('.tracking-validation-datatable').DataTable({
+                responsive: true,
+                ordering: false,
+                processing: true,
+                serverSide: true,
+                language: {
+                    "url": "{{ asset('dataTables/Spanish.json') }}"
+                },
+                ajax: {
+                    url: '{{ route('tracking.index_validation_final') }}',
+                    type: "POST",
+                    data: function(d) {
+                        d.monthYear = $('#monthYearPicker').val(),
+                            d._token = "{{ csrf_token() }}",
+                            d.search = $('input[type="search"]').val()
+                        d.codbusiness = $("#business_id option:selected").val()
+                    },
+                    dataSrc: function(json) {
+                        $('#btnSubmit').show();
+                        $('#btnSubmitLoad').hide();
+                        return json.data;
+                    }
+                },
+                columns: columnsFilled,
+                search: {
+                    "regex": true,
+                    "smart": true
+                },
+                initComplete: function() {
+                    this.api().columns().every(function() {
+                        var column = this;
+                    });
+                }
+            });
+        }
+
+        function clearForms() {
+            var date = new Date();
+            var textMonthYear = setDate(date);
+            $('#monthYearPicker').val(textMonthYear);
+            $('select#business_id').val('');
+            $('select#business_id').selectpicker("refresh");
+            $('.tracking-validation-datatable').DataTable().ajax.reload();
+        }
 
         /**
          * FUNCION PAGAR INDIVIDUAL
@@ -466,7 +454,7 @@
         /*
          *Función para EXPORTAR los datos
          */
-        function exportData() {
+        function exportData(columnsFilled) {
             params = {};
             params["monthYear"] = $('#monthYearPicker').val();
             params["cod_business"] = $("#business_id option:selected").val();
@@ -505,6 +493,9 @@
                 showAlert('info', 'Realizado Correctamente')
                 $('#btnExport').show();
                 $('#btnExportLoad').hide();
+                setTimeout(function() {
+                    location.reload();
+                }, 1500);
             });
         }
 
@@ -517,4 +508,62 @@
             return fecha;
         }
     </script>
+    <style>
+        .card-banner {
+            background-image: url(/assets/img/banners/6.jpg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position-x: right;
+            min-height: 320px;
+            min-width: fit-content;
+        }
+
+        /* Mejora del diseño general */
+        .custom-card {
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            background: rgb(241, 240, 240);
+            padding: 15px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        /* Estilo de la cabecera */
+        .custom-card-header {
+            background: var(--red-icot);
+            color: whitesmoke;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 8px 8px 0 0;
+            padding: 12px;
+        }
+
+        /* Espaciado del cuerpo */
+        .custom-body {
+            padding: 20px;
+        }
+
+        /* Ítems de la lista */
+        .custom-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            transition: 0.3s ease-in-out;
+        }
+
+        /* Hover para mejor interactividad */
+        .custom-item:hover {
+            background: #eef2ff;
+            transform: scale(1.02);
+        }
+
+        p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
 @endsection

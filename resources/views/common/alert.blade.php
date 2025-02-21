@@ -30,14 +30,34 @@
     var time = 4000;
 
     function showAlert(type, message) {
-        Swal.fire({
-            title: type === 'success' ? '¡Perfecto!' : '¡Error!',
-            text: message,
-            icon: type,
-            timer: time,
-            showConfirmButton: false
-        });
+    let title;
+    
+    switch (type) {
+        case 'success':
+            title = '¡Perfecto!';
+            break;
+        case 'error':
+            title = '¡Error!';
+            break;
+        case 'info':
+            title = 'Aviso';
+            break;
+        case 'warning':
+            title = 'Atención';
+            break;
+        default:
+            title = 'Notificación';
     }
+
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: type,
+        timer: time,
+        showConfirmButton: false
+    });
+}
+
 
     function showToast(icon, message) {
         const notification = Swal.mixin({

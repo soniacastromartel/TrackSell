@@ -15,6 +15,7 @@
                 </div>
                 <div class="card-body">
                     <div class="col-lg-4">
+                        <label for="date" class="col-form-label-lg" style="margin-left:50px;margin-top:30px;">Fecha</label>
                         <div class="picker-container">
                             <div class="input-group date">
                                 <input id="monthYearPicker" class='form-control' type="text" placeholder="yyyy/mm" />

@@ -7,61 +7,68 @@
 
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
     <div class="content" style="padding-top: 120px">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <div class="card calculator-logo" style="margin-left: 12px;">
-                    <div class="card-header card-header-danger">
-                        <h4 class="card-title">Calculadora de Incentivos</h4>
+                <div class="card calculator-logo shadow-lg">
+                    <div class="card-header card-header-danger d-flex align-items-center">
+                        <h4 class="card-title flex-grow-1 m-0">Calculadora de Incentivos</h4>
                     </div>
                     <div class="card-body">
-                        
+                        <div class="row">
+                            <!-- Columna de 10 con el contenido -->
+                            <div class="col-lg-10">
+                                <div class="info-section p-3">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="material-symbols-outlined text-danger" style="font-size: 24px;">info</i>
+                                        <span class="font-weight-bold text-danger ml-2" style="font-size: 18px;">Instrucciones</span>
+                                    </div>
+                                    
+                                    @if ($user->rol_id == 1)
+                                    <div class="instruction">
+                                        <h5>
+                                            <strong>Importar Objetivos</strong>: Puede descargar la plantilla* desde 
+                                            <a class="text-danger font-weight-bold" href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}">
+                                                aquí <i class="material-symbols-outlined align-middle">download_for_offline</i>
+                                            </a>
+                                        </h5>
+                                        <hr>
+                                        <h5>
+                                            <strong>Editar Objetivos</strong>: Puede descargar la plantilla* desde 
+                                            <a class="text-danger font-weight-bold" href="{{ asset('assets/excel/plantilla_editar_objetivos.xls') }}">
+                                                aquí <i class="material-symbols-outlined align-middle">download_for_offline</i>
+                                            </a>
+                                        </h5>
+                                        <hr>
+                                    </div>
+                                    @endif
+                                    
+                                    <div class="instruction">
+                                        <h5>
+                                            <strong>Incentivos</strong>: Indicar en formulario centro / empleado / fecha según se requiera y hacer click en el botón 
+                                            <span class="text-danger font-weight-bold">
+                                                <i class="material-symbols-outlined align-middle">download_for_offline</i>
+                                                Exportar
+                                            </span>
+                                        </h5>
+                                    </div>
+            
+                                    <h5 class="text-right text-muted" style="font-size:14px;">
+                                        * Tenga en cuenta que el fichero a importar debe tener extensión .xls
+                                    </h5>
+                                </div>
+                            </div>
+            
+                            <!-- Columna vacía de 2 para dar espacio -->
+                            <div class="col-lg-2"></div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card card-info mb-4 ml-4 mt-0 p-0";>
-                        <div class="card-header">
-                            <i class="material-symbols-outlined" style="color: var(--red-icot)">info</i>
-                            <span class="font-size-18"
-                                style="vertical-align:super; font-weight:bold; color: var(--red-icot);">Instrucciones</span>
-                        </div>
-                        <div class="card-body" id="cardBody">
-                            @if ($user->rol_id == 1)
-                                <h5>> <strong>Importar Objetivos</strong>, puede
-                                    descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                        href="{{ asset('assets/excel/plantilla_importar_objetivos_centros.xls') }}"><strong>aquí</strong>
-                                        <span class="material-symbols-outlined"
-                                            style="vertical-align: middle;margin: 5px;">download_for_offline</span></a>
-                                </h5>
-                                <hr>
-                                <h5> > <strong>Editar Objetivos</strong>, puede
-                                    descargar la plantilla* desde <a style="color:var(--red-icot)"
-                                        href="{{ asset('assets/excel/plantilla_editar_objetivos.xls') }}"><strong>aquí</strong>
-                                        <span class="material-symbols-outlined"
-                                            style="vertical-align: middle;margin: 5px;">download_for_offline</span>
-                                    </a>
-
-                                </h5>
-                                <hr>
-                            @endif
-                            <h5>> <strong>Incentivos: </strong>Indicar en formulario centro
-                                / empleado / fecha
-                                según se requiera y hacer click en botón <span
-                                    style="color:var(--red-icot);font-weight: bolder;"> <span class="material-symbols-outlined"
-                                        style="vertical-align: middle;margin: 5px;">download_for_offline</span>
-                                    Exportar</span>
-                                <h5>
-                                    <h5 class="text-right" style="color:grey;font-size:14px;">* Tenga en cuenta que el
-                                        fichero a importar debe
-                                        tener extensión .xls</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
             <div class="">
                 <form id="importTargetForm" method="POST">
@@ -76,8 +83,10 @@
                                     </div>
 
                                     <div class="card-body">
+
                                         <div class="row d-flex justify-content-center" style="padding-top:30px;">
                                             <div class="select-wrapper">
+
                                                 <div id="yearPickerContainer">
                                                     {{-- <div id="yearPicker"> --}}
                                                     <span id="icon-date" class="icon-select material-symbols-outlined">
@@ -100,7 +109,8 @@
                                                 <div class="interspace">
                                                     <button id="btnImportTargets" class="file-upload btn-import">
                                                         <span id="icon-import"
-                                                            class="material-symbols-outlined">upload</span>IMPORTAR OBJETIVOS
+                                                            class="material-symbols-outlined">upload</span>IMPORTAR
+                                                        OBJETIVOS
                                                         <input type="file" name="targetInputFile" id="targetInputFile"
                                                             class="upload" />
                                                     </button>
@@ -153,129 +163,148 @@
                                         <h5 class="card-title">Incentivos</h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row d-flex justify-content-left" style="padding-top:30px;">
-                                            <div id="monthYearPickerContainer">
-                                                <span id="icon-date"
-                                                    class="icon-select material-symbols-outlined">calendar_month</span>
-                                                <input id="monthYearPicker" class="form-control" type="text"
-                                                    placeholder="yyyy/mm" />
-                                                <input type="hidden" name="monthYear" id="monthYear" />
+                                        <div class="col-md-12">
+                                            {{-- <div class="row d-flex justify-content-left" style="padding-top:30px;"> --}}
+                                            <div class="informes-container">
+                                                <div class="date-informes-container">
+                                                    <label for="date" class="col-form-label-lg"
+                                                        style="">Fecha</label>
+                                                    <div class="select-wrapper">
+                                                        <div id="monthYearPickerContainer" style="margin-top:23px;">
+                                                            <span id="icon-date"
+                                                                class="icon-select material-symbols-outlined">calendar_month</span>
+                                                            <input id="monthYearPicker" class="form-control"
+                                                                type="text" placeholder="yyyy/mm" />
+                                                            <input type="hidden" name="monthYear" id="monthYear" />
 
-                                            </div>
-                                            {{-- <div class="row d-flex justify-content-center align-items-center" style="gap: 20px;"> --}}
-                                            <div class="select-wrapper">
-                                                <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                    business
-                                                </span>
-                                                <select class="selectpicker" name="centre_id" id="centre_id"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round"
-                                                    title="Centro">
-                                                    @if ($user->rol_id != 1)
-                                                        @foreach ($centres as $centre)
-                                                            @if ($centre->id == $user->centre_id)
-                                                                <option value="{{ $centre->id }}" selected>
-                                                                    {{ $centre->name }}</option>
+                                                        </div>
+                                                    </div>
+                                                    {{-- <div class="row d-flex justify-content-center align-items-center" style="gap: 20px;"> --}}
+                                                    <label for="centre" class="col-form-label-lg">Centro</label>
+
+                                                    <div class="select-wrapper">
+                                                        <span id="icon-select"
+                                                            class="icon-select material-symbols-outlined">
+                                                            business
+                                                        </span>
+                                                        <select class="selectpicker" name="centre_id" id="centre_id"
+                                                            data-size="7" data-style="btn btn-red-icot btn-round"
+                                                            title="Centro">
+                                                            @if ($user->rol_id != 1)
+                                                                @foreach ($centres as $centre)
+                                                                    @if ($centre->id == $user->centre_id)
+                                                                        <option value="{{ $centre->id }}" selected>
+                                                                            {{ $centre->name }}</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @else
+                                                                @foreach ($centres as $centre)
+                                                                    <option value="{{ $centre->id }}">
+                                                                        {{ $centre->name }}
+                                                                    </option>
+                                                                @endforeach
                                                             @endif
-                                                        @endforeach
-                                                    @else
-                                                        @foreach ($centres as $centre)
-                                                            <option value="{{ $centre->id }}">{{ $centre->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <input type="hidden" name="centre" id="centre" />
-                                            </div>
+                                                        </select>
+                                                        <input type="hidden" name="centre" id="centre" />
+                                                    </div>
+                                                    <label for="service" class="col-form-label-lg">Servicio</label>
 
-                                            <div class="select-wrapper">
-                                                <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                    engineering
-                                                </span>
-                                                <select class="selectpicker" name="employee_id" id="employee_id"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round"
-                                                    title="Empleado">
-                                                    <option>SIN SELECCION</option>
-                                                    @if ($user->rol_id != 1)
-                                                        @foreach ($employees as $employee)
-                                                            @if ($employee->centre_id == $user->centre_id)
-                                                                <option value="{{ $employee->id }}">
-                                                                    {{ $employee->name }}</option>
+                                                    <div class="select-wrapper">
+                                                        <span id="icon-select"
+                                                            class="icon-select material-symbols-outlined">
+                                                            engineering
+                                                        </span>
+                                                        <select class="selectpicker" name="employee_id" id="employee_id"
+                                                            data-size="7" data-style="btn btn-red-icot btn-round"
+                                                            title="Empleado">
+                                                            <option>SIN SELECCION</option>
+                                                            @if ($user->rol_id != 1)
+                                                                @foreach ($employees as $employee)
+                                                                    @if ($employee->centre_id == $user->centre_id)
+                                                                        <option value="{{ $employee->id }}">
+                                                                            {{ $employee->name }}</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @else
+                                                                @foreach ($employees as $employee)
+                                                                    <option value="{{ $employee->id }}">
+                                                                        {{ $employee->name }}
+                                                                    </option>
+                                                                @endforeach
                                                             @endif
-                                                        @endforeach
-                                                    @else
-                                                        @foreach ($employees as $employee)
-                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                                <input type="hidden" name="employee" id="employee" />
+                                                        </select>
+                                                        <input type="hidden" name="employee" id="employee" />
+                                                    </div>
+                                                </div>
+
+
+                                                {{-- </div> --}}
+                                                <div id="picker-btn-container" class="picker-btn-container">
+                                                    <div id="picker-container" class="picker-container">
+                                                        <label for="date" class="col-form-label-lg"
+                                                        style="">Ver</label>
+                                                        <button id="btnIncentivesPreview" class="btn-watch"  style="margin-top:40px;">
+                                                            <span id="icon-watch"
+                                                                class="material-symbols-outlined">visibility</span>{{ __('INCENTIVOS') }}
+                                                        </button>
+
+                                                        <button id="btnIncentivesLoad" type="submit"
+                                                            class="file-upload btn-watch" style="display: none;margin-top:45px;">
+                                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                                aria-hidden="true"></span>
+                                                        </button>
+
+                                                        <button id="btnSummaryPreview" class="btn-watch" style="margin-top:45px;">
+                                                            <span id="icon-watch"
+                                                                class="material-symbols-outlined">visibility</span>{{ __('RESUMEN') }}
+                                                        </button>
+
+                                                        <button id="btnSummaryLoad" type="submit"
+                                                            class="file-upload btn-watch" style="display: none;margin-top:45px;">
+                                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                                aria-hidden="true"></span>
+                                                        </button>
+
+                                                        @if ($user->rol_id != 1)
+                                                            <button id="btnTargetsPreview" class="btn-watch" style="margin-top:45px;">
+                                                            @else
+                                                                <button id="btnTargetsPreview" class="btn-watch" style="margin-top:45px;">
+                                                        @endif
+                                                        <span id="icon-watch"
+                                                            class="material-symbols-outlined">visibility</span>{{ __('OBJETIVOS') }}
+                                                        </button>
+                                                        <button id="btnTargetsLoad" type="submit"
+                                                            class="file-upload btn-watch" style="display: none;margin-top:45px;">
+                                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                                aria-hidden="true"></span>
+
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="btn-container-box"
+                                                    style="padding: 10px; display: flex; justify-content: center; gap: 10px; margin-top: 120px;">
+                                                    <button id="btnClear" href="#" class="btn-refresh">
+                                                        <span id="icon-refresh"
+                                                            class="material-symbols-outlined">refresh</span>{{ __('REFRESCAR') }}
+                                                    </button>
+
+                                                    <button id="btnSubmit" type="submit" class="btn-export">
+                                                        EXPORTAR
+                                                        <span id="icon-export"
+                                                            class="material-symbols-outlined">file_download</span>
+                                                    </button>
+
+                                                    <button id="btnSubmitLoad" type="submit" class="btn-export"
+                                                        style="display: none">
+                                                        <span class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span> CARGANDO...
+                                                    </button>
+                                                </div>
                                             </div>
+
                                         </div>
-
-                                        <div class="row"
-                                            style="padding: 10px; display: flex; justify-content: center; gap: 10px; margin-top: 120px;">
-                                            <button id="btnClear" href="#" class="btn-refresh">
-                                                <span id="icon-refresh"
-                                                    class="material-symbols-outlined">refresh</span>{{ __('REFRESCAR') }}
-                                            </button>
-
-                                            <button id="btnSubmit" type="submit" class="btn-export">
-                                                EXPORTAR
-                                                <span id="icon-export"
-                                                    class="material-symbols-outlined">file_download</span>
-                                            </button>
-
-                                            <button id="btnSubmitLoad" type="submit" class="btn-export"
-                                                style="display: none">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span> CARGANDO...
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    <hr class="mt-4">
-
-                                    <div class="row"
-                                        style="display: flex; margin-top: 30px; margin-bottom: 30px;justify-content:space-evenly;align-items:center; ">
-
-                                        <button id="btnIncentivesPreview" class="btn-watch">
-                                            <span id="icon-watch"
-                                                class="material-symbols-outlined">visibility</span>{{ __('INCENTIVOS') }}
-                                        </button>
-
-                                        <button id="btnIncentivesLoad" type="submit" class="file-upload btn-watch"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
-
-                                        <button id="btnSummaryPreview" class="btn-watch">
-                                            <span id="icon-watch"
-                                                class="material-symbols-outlined">visibility</span>{{ __('RESUMEN') }}
-                                        </button>
-
-                                        <button id="btnSummaryLoad" type="submit" class="file-upload btn-watch"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
-
-                                        @if ($user->rol_id != 1)
-                                            <button id="btnTargetsPreview" class="btn-watch">
-                                            @else
-                                                <button id="btnTargetsPreview" class="btn-watch">
-                                        @endif
-                                        <span id="icon-watch"
-                                            class="material-symbols-outlined">visibility</span>{{ __('OBJETIVOS') }}
-                                        </button>
-                                        <button id="btnTargetsLoad" type="submit" class="file-upload btn-watch"
-                                            style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-
-                                        </button>
-
                                     </div>
 
                                 </div>
@@ -440,7 +469,7 @@
             text-align: center;
             font-weight: bold;
             font-size: xx-large;
-            font-family:  "Nunito", sans-serif;
+            font-family: "Nunito", sans-serif;
             color: white !important;
             border-radius: 50px !important;
             background-color: var(--red-icot);

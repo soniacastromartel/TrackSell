@@ -30,6 +30,8 @@
                                     <br />
                                     <input type="checkbox" name="year_date" id="yearly" value="anual"> Anual <br /> --}}
                                     <div class="form-group col-md-3" style="margin-top: 42px;">
+                                        <label class="col-form-label-lg">Período</label>
+
                                         <div class="dropdown bootstrap-select">
                                             <span id="icon-select" class="icon-select material-symbols-outlined">
                                                 manage_history
@@ -43,6 +45,7 @@
                                         </div>
 
                                         <div class="form-group  centre_picker" style="margin-top: 20px;">
+                                            <label class="col-form-label-lg">Centro</label>
                                             <div class="dropdown bootstrap-select">
                                                 <span id="icon-select" class="icon-select material-symbols-outlined">
                                                     business
@@ -59,6 +62,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 picker-container">
+                                        <label class="col-form-label-lg">Fecha</label>
                                     <div id="monthYearPickerContainer">
                                         <div class="input-group date mt-2">
                                             <input id="monthYearPicker" class='form-control' type="text"

@@ -7,14 +7,14 @@
 <div class=" solicitud-container">
 
     <div class="date-solicitud-container col-md-3">
-        <label for="name" class="label" style="">Fecha inicio</label>
+        <label for="name" class="col-form-label-lg" style="">Fecha inicio</label>
         <div class="icon-container">
             <input type="date" id="date_from" name="date_from" max="3000-12-31" min="1000-01-01"class="form-date">
             <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
         </div>
         </input>
 
-        <label for="name" class="label" style="">Fecha fin</label>
+        <label for="name" class="col-form-label-lg" style="">Fecha fin</label>
         <div class="icon-container">
             <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01" class="form-date">
             <span id="icon-date" class="icon-select material-symbols-outlined"> calendar_month</span>
@@ -24,6 +24,8 @@
 
 
     <div class="picker-container col-md-4">
+        <label for="source" class="col-form-label-lg" style="">Centro Origen</label>
+
         <div class="select-wrapper">
             <!-- Icon -->
             <span class="icon-select material-symbols-outlined">moved_location</span>
@@ -35,6 +37,8 @@
                 @endforeach
             </select>
         </div>
+        <label for="target" class="col-form-label-lg" style="">Centro Destino</label>
+
         <div class="select-wrapper">
             <span class="icon-select material-symbols-outlined">where_to_vote</span>
             <select class="selectpicker" name="centre_destination_id" id="centre_destination_id" data-size="7"
@@ -45,6 +49,8 @@
                 @endforeach
             </select>
         </div>
+        <label for="worker" class="col-form-label-lg" style="">Trabajador</label>
+
         <div class="select-wrapper">
             <span class="icon-select material-symbols-outlined">engineering</span>
             <select class="selectpicker pl-0" name="employee_id" id="employee_id" data-size="7"

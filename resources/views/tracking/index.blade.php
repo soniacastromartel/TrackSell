@@ -22,7 +22,7 @@
 
                                     <div class="date-informes-container">
 
-                                        <label class="label" for="dateFrom" style="margin-top:20px;">Fecha desde </label>
+                                        <label class="col-form-label-lg" for="dateFrom" style="">Fecha desde </label>
                                         <div class="select-wrapper row interspace">
                                             <div id="monthYearPickerContainer" class="interspace">
 
@@ -34,7 +34,7 @@
                                         </div>
                                         </input>
 
-                                        <label class="label" for="dateTo" style="">Fecha hasta </label>
+                                        <label class="col-form-label-lg" for="dateTo" style="">Fecha hasta </label>
                                         <div class="icon-container">
                                             <input type="date" id="date_to" name="date_to" max="3000-12-31"
                                                 min="1000-01-01" class="form-date">
@@ -48,6 +48,7 @@
                                     <div id="picker-btn-container" class="picker-btn-container">
                                         <div id="picker-container" class="picker-container">
                                             <!-- Centro Selector -->
+                                            <label class="col-form-label-lg" for="dateTo" style="">Centro</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">business</span>
@@ -74,6 +75,7 @@
                                             </div>
 
                                             <!-- Empleado Selector -->
+                                            <label class="col-form-label-lg" for="dateTo" style="">Trabajador</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">engineering</span>
@@ -98,6 +100,7 @@
                                             </div>
 
                                             <!-- Servicio Selector -->
+                                            <label class="col-form-label-lg" for="dateTo" style="">Servicio</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">medical_services</span>
@@ -112,6 +115,7 @@
                                             </div>
 
                                             <!-- Paciente Selector -->
+                                            <label class="col-form-label-lg" for="dateTo" style="">Paciente</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">personal_injury</span>
@@ -127,6 +131,7 @@
                                             </div>
 
                                             <!-- Estado Selector -->
+                                            <label class="col-form-label-lg" for="dateTo" style="">Estado</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">list_alt_check</span>
@@ -198,7 +203,7 @@
 
     <style>
         .card-banner {
-            background-image: url(/assets/img/banners/3.jpg);
+            background-image: url(/assets/img/banners/4.jpg);
             background-repeat: no-repeat;
             background-size: contain;
             background-position-x: right;
@@ -528,6 +533,5 @@
             });
         });
     </script>
-
 
 @endsection

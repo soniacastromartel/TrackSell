@@ -18,10 +18,11 @@
                             @method('POST')
 
 
+                            <div class="" style="min-height: 490px;">
+                                <label class="col-form-label-lg" for="dateTo" style="margin-top:40px;margin-left:30px;">Fecha</label>
 
-                            <div class="" style="min-height: 478px;">
-                                <div class="select-wrapper row interspace">
-                                    <div id="monthYearPickerContainer" class="interspace">
+                                <div class="select-wrapper row">
+                                    <div id="monthYearPickerContainer" class="">
                                         <input id="monthYearPicker" type="text" placeholder="yyyy/mm">
                                         <span id="icon-date" class="icon-select material-symbols-outlined">
                                             calendar_month</span>
@@ -36,9 +37,10 @@
                                     </div>
                                 </div>
 
-
+                                <label class="col-form-label-lg" for="dateTo" style="margin-top:30px;margin-left:30px;">Centro</label>
                                 <div class="row interspace">
                                     <div class="select-wrapper">
+
                                         <span id="icon-select" class="icon-select material-symbols-outlined">
                                             business
                                         </span>
@@ -187,8 +189,6 @@
     </div>
 </div>
 <style>
- 
-
     table.dataTable.dataTable_width_auto {
         width: 100%;
     }

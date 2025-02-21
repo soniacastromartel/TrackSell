@@ -19,6 +19,7 @@
                         <div class="row col-md-12 mb-4 " style="margin-top:30px;">
                             <div class="row col-lg-12 ">
                                 <div class="form-group ">
+                                    <label class="col-form-label-lg">CENTRO</label>
                                     <div class="select-wrapper">
                                         <span id="icon-select" class="icon-select material-symbols-outlined">
                                             business
@@ -46,6 +47,8 @@
                                 </div>
 
                                 <div class="form-group col-md-3">
+                                    <label class="col-form-label-lg">SERVICIO</label>
+
                                     <div class="select-wrapper">
                                         <span id="icon-select" class="icon-select material-symbols-outlined">
                                             medical_services </span>
@@ -58,7 +61,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-2" >
+                                <div class="form-group col-md-2" style="margin-top:62px;" >
                                     <button id="btnClearRefresh" href="#" class="btn-refresh-circle">
                                         <span class="material-symbols-outlined">
                                             refresh
@@ -68,7 +71,7 @@
                             </div>
 
                         </div>
-                        <hr>
+                        <hr style="max-width: 600px;">
 
                         @if ($user->rol_id == 1)
                             <div class="row col-md-12 mb-4 ">
@@ -105,7 +108,7 @@
                                 <div class="row col-lg-8 ">
                                     <div class="form-group">
                                         <div class="select-wrapper">
-                                            <h5 class="card-title font-size-18">- <strong>Importar Incentivos</strong>,
+                                            <h5>- <strong>Importar Incentivos</strong>,
                                                 puede
                                                 descargar la plantilla* <a style="color:var(--red-icot)"
                                                     href="{{ asset('assets/excel/plantilla_importar_incentivos.xls') }}"><strong>aquí</strong>

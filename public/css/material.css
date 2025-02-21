@@ -2009,8 +2009,17 @@ select.form-control:focus::-ms-value {
 .col-form-label-lg {
   padding-top: calc(0.5625rem + 1px);
   padding-bottom: calc(0.5625rem + 1px);
-  font-size: 1.25rem;
-  line-height: 1.5;
+  font-size: 1.5rem;
+  line-height: 2px;
+  font-weight: 500;
+}
+
+.col-form-label-md {
+  padding-top: calc(0.4625rem + 1px);
+  padding-bottom: calc(0.4625rem + 1px);
+  font-size: 1.2rem;
+  line-height: 1.8px;
+  font-weight: 600;
 }
 
 .col-form-label-sm {
