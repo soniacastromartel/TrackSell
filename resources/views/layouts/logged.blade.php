@@ -109,9 +109,14 @@
                             Swal.showLoading();
                         },
                     });
-                    setTimeout(function() {
-                        Swal.close();
-                    }, 8000);
+                });
+
+                $(document).ajaxStop(function() {
+                    if (Swal.isVisible() && Swal.getTitle().textContent === 'Cargando...') {
+                        setTimeout(function() {
+                            Swal.close();
+                        }, 8000);
+                    }
                 });
             </script>
 

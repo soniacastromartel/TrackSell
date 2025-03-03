@@ -38,6 +38,7 @@ class ServicePrice extends Pivot
     public static function getCentreIdsByServiceId($serviceId)
     {
         return self::where('service_id', $serviceId)
+            ->whereNull('cancellation_date')
             ->pluck('centre_id')
             ->toArray();
     }
@@ -111,18 +112,34 @@ class ServicePrice extends Pivot
      * @param mixed $userId
      * @return static
      */
-    public function cancelServicePrice($userId = null)
+    public function scopeCancelServicePrice($query, $servicePriceId, $userId = null)
     {
-        $this->update([
-            'cancellation_date' => now(),
-            'user_cancellation_date' => $userId
-        ]);
-        ServiceCentre::where('service_id', $this->service_id)
-            ->where('centre_id', $this->centre_id)
-            ->delete();
+        $servicePrice = ServicePrice::find($servicePriceId);
+        if ($servicePrice) {
+            $servicePrice->update([
+                'cancellation_date' => now(),
+                'user_cancellation_date' => $userId
+            ]);
+            ServiceCentre::where('service_id', $servicePrice->service_id)
+                ->where('centre_id', $servicePrice->centre_id)
+                ->delete();
+        }
 
         return $this;
     }
+
+    public static function cancelAllServicePrices($serviceId, $userId = null)
+    {
+        ServicePrice::where('service_id', $serviceId)->update([
+            'cancellation_date' => now(),
+            'user_cancellation_date' => $userId
+        ]);
+
+        ServiceCentre::where('service_id', $serviceId)->delete();
+        return true;
+    }
+
+
 
     /**
      * Soft delete all active ServicePrice records before an import.

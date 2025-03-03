@@ -145,7 +145,8 @@ class IncentivesController extends Controller
         $params = $request->validate([
             'price' => 'required|numeric|min:0',
             'service_name' => 'required|string',
-            'centre_name' => 'required|string',
+            'centre_name' => 'required|array|min:1',  // Cambiar para aceptar un array de centros
+            'centre_name.*' => 'required|string',  // Validar cada centro dentro del array
             'service_price_direct_incentive' => 'required|numeric|min:0',
             'service_price_incentive1' => 'required|numeric|min:0',
             'service_price_incentive2' => 'required|numeric|min:0',
@@ -155,43 +156,48 @@ class IncentivesController extends Controller
 
         try {
             $service_id = Service::findServiceIdByColumn('name', $request->service_name);
-            $centre_id = Centre::getCentreIdByNameLike($params['centre_name']);
 
-            // Verificar si ya existe un incentivo con el mismo service_id y centre_id
-            $existingIncentive = ServicePrice::where('service_id', $service_id)
-                ->where('centre_id', $centre_id)
-                ->first();
+            // Recorrer los centros seleccionados
+            foreach ($params['centre_name'] as $centre_name) {
+                $centre_id = Centre::getCentreIdByNameLike($centre_name);
 
-            if ($existingIncentive) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'El incentivo ya existe para este servicio y centro.',
-                ], 400);
+                // Verificar si ya existe un incentivo con el mismo service_id y centre_id
+                $existingIncentive = ServicePrice::where('service_id', $service_id)
+                    ->where('centre_id', $centre_id)
+                    ->whereNull('cancellation_date')
+                    ->first();
+
+                if ($existingIncentive) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => "El incentivo ya existe para el servicio '{$request->service_name}' y el centro '{$centre_name}'.",
+                    ], 400);
+                }
+
+                // Crear un nuevo incentivo para este centro
+                $data = [
+                    'price' => $params['price'],
+                    'service_price_direct_incentive' => $params['service_price_direct_incentive'],
+                    'service_price_incentive1' => $params['service_price_incentive1'],
+                    'service_price_incentive2' => $params['service_price_incentive2'],
+                    'service_price_super_incentive1' => $params['service_price_super_incentive1'],
+                    'service_price_super_incentive2' => $params['service_price_super_incentive2'],
+                    'service_id' => $service_id,
+                    'centre_id' => $centre_id,
+                ];
+
+                ServicePrice::create($data);
             }
-
-            // Crear un nuevo incentivo
-            $data = [
-                'price' => $params['price'],
-                'service_price_direct_incentive' => $params['service_price_direct_incentive'],
-                'service_price_incentive1' => $params['service_price_incentive1'],
-                'service_price_incentive2' => $params['service_price_incentive2'],
-                'service_price_super_incentive1' => $params['service_price_super_incentive1'],
-                'service_price_super_incentive2' => $params['service_price_super_incentive2'],
-                'service_id' => $service_id,
-                'centre_id' => $centre_id,
-            ];
-
-            $incentive = ServicePrice::create($data);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Incentivo creado correctamente.',
-                'data' => $incentive,
+                'message' => 'Incentivos creados correctamente.',
             ], 201);
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al crear el incentivo.',
+                'message' => 'Error al crear los incentivos.',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -245,30 +251,37 @@ class IncentivesController extends Controller
     {
         try {
             $params = $request->all();
-            $servicePrice = ServicePrice::where('id', $params['serviceprice_id']);
-            if (!empty($servicePrice)) {
-                ServicePrice::cancelServicePrice(session()->get('user')->id);
-                session()->flash('success', 'Se ha dado de baja servicio incentivado');
+    
+            // Obtener el ServicePrice utilizando el ID pasado
+            $servicePrice = ServicePrice::where('id', $params['serviceprice_id'])->first();
+    
+            if ($servicePrice) {
+                $serviceId = $servicePrice->service_id;
+                // Cancelar el ServicePrice actual
+                ServicePrice::cancelAllServicePrices($serviceId, session()->get('user')->id);
+    
+                session()->flash('success', 'Se ha dado de baja el servicio incentivado');
                 return response()->json([
                     'success' => true,
                     'url' => null,
-                    'message' => 'Se ha dado de baja servicio incentivado'
+                    'message' => 'Se ha dado de baja el servicio incentivado'
                 ], 200);
             } else {
-                session()->flash('error', 'Error al dar de baja servicio incentivado');
+                session()->flash('error', 'Servicio incentivado no encontrado');
                 return response()->json([
                     'success' => false,
                     'url' => null,
-                    'message' => 'Error'
+                    'message' => 'Servicio incentivado no encontrado'
                 ], 400);
             }
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
-                'success' => 'false',
+                'success' => false,
                 'errors' => $e->getMessage(),
             ], 400);
         }
     }
+    
 
     /**
      * handles incentives import
@@ -350,7 +363,7 @@ class IncentivesController extends Controller
 
     public function showCenters(Request $request)
     {
-        $serviceName = $request->query('name', ''); // Tomamos el nombre del servicio desde GET
+        $serviceName = $request->query('name', ''); 
         if (!$serviceName) {
             return response()->json(['error' => 'No se proporcionó el nombre del servicio'], 400);
         }

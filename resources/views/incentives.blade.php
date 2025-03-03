@@ -61,7 +61,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-2" style="margin-top:62px;" >
+                                <div class="form-group col-md-2" style="margin-top:62px;">
                                     <button id="btnClearRefresh" href="#" class="btn-refresh-circle">
                                         <span class="material-symbols-outlined">
                                             refresh
@@ -167,8 +167,32 @@
                             <input type="string" class="form-control" id="name" name="name">
                         </div>
                         <div class="mb-3">
-                            <label for="centre" class="form-label" style="display: none;">Centro</label>
-                            <input type="string" class="form-control" id="centre" name="centre">
+
+                            <label for="centre" class="form-label">Centro</label>
+                            <div class="select-wrapper">
+                                <span id="icon-select" class="icon-select material-symbols-outlined">
+                                    business
+                                </span>
+                                <select multiple class="selectpicker" id="centre" name="centre[]" data-size="7"
+                                    data-style="btn btn-red-icot btn-round" title="Centro" tabindex="-98">
+                                    @if ($user->rol_id != 1)
+                                        @foreach ($centres as $centre)
+                                            @if ($centre->id == $user->centre_id)
+                                                <option class="text-uppercase" value="{{ $centre->name }}" selected>
+                                                    {{ $centre->name }}
+                                                </option>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        @foreach ($centres as $centre)
+                                            <option class="text-uppercase" value="{{ $centre->name }}">
+                                                {{ $centre->name }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+
                         </div>
                         <div class="mb-3">
                             <label for="price" class="form-label">Precio</label>
@@ -220,7 +244,7 @@
     </style>
     <script type="text/javascript">
         let centres = @json($centres).reduce((obj, centre) => {
-            obj[centre.name] = centre.name; 
+            obj[centre.name] = centre.name;
             return obj;
         }, {});
         $(document).ready(function() {
@@ -228,7 +252,7 @@
 
             $('#editIncentiveModal form').validate({
                 errorClass: 'error-message',
-                errorElement: 'span', 
+                errorElement: 'span',
                 rules: {
                     price: {
                         required: true,
@@ -320,6 +344,33 @@
             });
         }
 
+        function destroyIncentive(id) {
+            params = {};
+            params["_token"] = "{{ csrf_token() }}";
+            params["serviceprice_id"] = id;
+            $.ajax({
+                url: "{{ route('incentives.destroy') }}",
+                type: 'post',
+                data: params,
+                success: function(response, textStatus, jqXHR) {
+                    if (textStatus === 'success') {
+                        table.ajax.reload();
+                        showAlert('success', 'Incentivo Eliminado Correctamente');
+                    }
+                },
+                complete: function() {
+                    table.ajax.reload();
+                },
+                error: function(xhr, status, error) {
+                    var response = JSON.parse(xhr.responseText);
+                    showAlert('error', response);
+                }
+
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                showAlert('error', errorThrown || 'error cargando servicios');
+            });
+        }
+
         function downloadTemplate() {
             const link = document.createElement('a');
             link.href = asset('assets/excel/plantilla_importar_incentivos.xls');
@@ -334,10 +385,6 @@
             data: 'service',
             name: 'name'
         });
-        // columnsFilled.push({
-        //     data: 'centre',
-        //     name: 'centre'
-        // });
         columnsFilled.push({
             data: 'price',
             name: 'price'
@@ -426,7 +473,6 @@
         }
 
         $(function() {
-
             $(document).ready(function() {
 
                 setupFormChangeDetection('#editIncentiveForm', '#saveIncentiveBtn', '#editIncentiveModal');
@@ -504,12 +550,25 @@
                     data: {
                         name: serviceName
                     },
+                    beforeSend: function() {
+                        // Deshabilitamos el evento global temporalmente
+                        $(document).off('ajaxStop');
+                    },
                     success: function(response) {
-                        showListAlert(`Centros para ${serviceName}`, response.centres,
-                            `No hay centros disponibles para ${serviceName}.`);
+                        showListAlert(
+                            `Centros para ${serviceName}`,
+                            response.centres,
+                            `No hay centros disponibles para ${serviceName}.`
+                        );
                     },
                     error: function() {
-                       showListAlert();
+                        showListAlert("Error", [], "Hubo un problema al obtener los centros.");
+                    },
+                    complete: function() {
+                        // Rehabilitamos el evento global solo después de que el usuario cierre el alerta
+                        // $(document).on('ajaxStop', function() {
+                        //     Swal.close();
+                        // });
                     }
                 });
             });
@@ -527,11 +586,8 @@
                     service_price_super_incentive2: $(this).data('bonus2'),
 
                 }
-                // const serviceData = $(this).data();
-                // $('#saveIncentiveBtn').data('id', serviceId);
                 confirmAddToCentre(serviceData);
             });
-
 
             $('#btnAddIncentive').on('click', function() {
                 $('#editIncentiveModal').find('form')[0].reset();
@@ -551,7 +607,6 @@
             });
 
             // TODO botones amostrar y ocultar
-
             document.getElementById('btnImportIncentives').addEventListener('click', function(event) {
                 event.preventDefault();
                 confirmAdvice('Confirmación',
@@ -573,6 +628,7 @@
             });
 
             function saveIncentive(data, actionType) {
+                console.log(data);
                 let url = actionType === 'edit' ? '/incentives/edit' : '/incentives/create';
                 let method = 'POST';
 
@@ -600,14 +656,12 @@
                 });
             }
 
-
             function confirmAddToCentre(data) {
-                confirmWithSelect('Añadir a Centro', centres).then((centre) => {
+                confirmWithMultiSelect('Añadir a Centro', centres).then((centre) => {
                     console.log(data, centre);
                     if (centre) {
                         data._token = '{{ csrf_token() }}';
                         data.centre_name = centre;
-
                         saveIncentive(data, 'create');
                     } else {
                         console.log("Selección cancelada");
@@ -629,13 +683,13 @@
                         service_price_incentive1: $('#incentive_obj1').val(),
                         service_price_incentive2: $('#incentive_obj2').val(),
                         service_price_super_incentive1: $('#bonus_obj1').val(),
-                        service_price_super_incentive2: $('#bonus_obj2').val()
+                        service_price_super_incentive2: $('#bonus_obj2').val(),
                     };
 
                     if (actionType === 'edit') {
                         data.service_id = serviceId;
                     } else {
-                        data.centre_name = $('#centre').val();
+                        data.centre_name = $('#centre').val() || [];
                     }
 
                     saveIncentive(data, actionType);
@@ -643,70 +697,6 @@
                     showAlert('error', 'Por favor, complete todos los campos requeridos.');
                 }
             });
-
-
-            // $('#saveIncentiveBtn').on('click', function() {
-            //     // Verificar si el formulario es válido
-            //     if ($('#editIncentiveModal form').valid()) {
-            //         var actionType = $('#editIncentiveModal').find('form').attr('data-action-type');
-            //         var serviceId = actionType === 'edit' ? $(this).data('id') : null;
-
-            //         var price = $('#price').val();
-            //         var incentiveDirect = $('#incentive_direct').val();
-            //         var incentiveObj1 = $('#incentive_obj1').val();
-            //         var incentiveObj2 = $('#incentive_obj2').val();
-            //         var bonusObj1 = $('#bonus_obj1').val();
-            //         var bonusObj2 = $('#bonus_obj2').val();
-            //         var name = $('#name').val();
-            //         var centreName = $('#centre').val();
-
-            //         var url = actionType === 'edit' ? '/incentives/edit' : '/incentives/create';
-            //         var method = actionType === 'edit' ? 'POST' : 'POST';
-
-            //         var data = {
-            //             _token: '{{ csrf_token() }}',
-            //             price: price,
-            //             service_name: name,
-            //             service_price_direct_incentive: incentiveDirect,
-            //             service_price_incentive1: incentiveObj1,
-            //             service_price_incentive2: incentiveObj2,
-            //             service_price_super_incentive1: bonusObj1,
-            //             service_price_super_incentive2: bonusObj2
-            //         };
-
-            //         if (actionType === 'edit') {
-            //             data.service_id = serviceId;
-            //         } else {
-            //             data.centre_name = centreName;
-            //         }
-
-            //         $.ajax({
-            //             url: url,
-            //             method: method,
-            //             data: data,
-            //             success: function(response) {
-            //                 console.log(response);
-            //                 showAlert('success', response.message || (actionType === 'edit' ?
-            //                     'Incentivo Actualizado Correctamente' :
-            //                     'Incentivo Creado Correctamente'));
-            //                 $('#editIncentiveModal').modal('hide');
-            //                 var table = $('.services-datatable').DataTable();
-            //                 table.ajax.reload();
-            //             },
-            //             complete: function() {
-            //                 var table = $('.services-datatable').DataTable();
-            //                 table.ajax.reload();
-            //             },
-            //             error: function(error) {
-            //                 showAlert('error', error.responseJSON.message || 'Incentivo No ' + (
-            //                         actionType === 'edit' ? 'Actualizado' : 'Creado') +
-            //                     ' Correctamente');
-            //             }
-            //         });
-            //     } else {
-            //         showAlert('error', 'Por favor, complete todos los campos requeridos.');
-            //     }
-            // });
 
             function clearForms() {
                 $('select#centre_id').val('');
@@ -721,7 +711,6 @@
                 e.preventDefault();
                 clearForms();
             });
-
 
             $("#incentiveInputFile").on('change', function() {
                 handleFileChange("{{ route('incentives.import') }}");
@@ -781,33 +770,6 @@
 
 
 
-
-            function destroyIncentive(id) {
-                params = {};
-                params["_token"] = "{{ csrf_token() }}";
-                params["serviceprice_id"] = id;
-                $.ajax({
-                    url: "{{ route('incentives.destroy') }}",
-                    type: 'post',
-                    data: params,
-                    success: function(response, textStatus, jqXHR) {
-                        if (textStatus === 'success') {
-                            showAlert('success', 'Incentivo Eliminado Correctamente');
-                            table.ajax.reload();
-                        }
-                    },
-                    complete: function() {
-                        table.ajax.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        var response = JSON.parse(xhr.responseText);
-                        showAlert('error', response);
-                    }
-
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    alert('Error cargando servicios');
-                });
-            }
         });
     </script>
 @endsection
