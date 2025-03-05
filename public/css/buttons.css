@@ -102,7 +102,7 @@ button:focus {
 
 /*BUTTONS CIRCLE*/
 
-.btn-search-circle {
+.btn-search-circle, #saveIncentiveBtn {
   position: relative;
   background-color: green;
   border: none;
@@ -278,6 +278,7 @@ button:focus {
 }
 
 /* Common styles for all icons */
+#icon-cancel,
 #icon-refresh,
 #icon-search,
 #icon-calculate,
@@ -332,6 +333,11 @@ button:focus {
 #icon-send {
   color: var(--green) !important;
   border: 1px solid var(--green);
+}
+
+#icon-cancel {
+  color: red !important;
+  border: 1px solid red;
 }
 
 #icon-date {
@@ -401,7 +407,8 @@ button:focus {
 #btnImportLoad,
 #btnNewRole,
 #btnNewCenter,
-#btnNewService {
+#btnNewService
+ {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -520,6 +527,12 @@ button:focus {
 .btn-send {
   padding-left: 50px !important;
   background-color: var(--success);
+  font-weight: bolder;
+}
+
+.btn-cancel {
+  padding-left: 50px !important;
+  background-color: red;
   font-weight: bolder;
 }
 

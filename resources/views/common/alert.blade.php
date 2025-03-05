@@ -180,15 +180,14 @@
     }
 
     async function confirmWithMultiSelect(title, list) {
+        const optionsArray = Array.isArray(list) ? list : Object.values(list);
         const {
             value: selectedItems
         } = await Swal.fire({
             title: title,
             html: `
-            <select multiple id="swal-multi-select"  class="select-picker" style="width:100%; height:150px;">
-                ${Object.entries(list)
-                  .map(([key, value]) => `<option value="${key}">${value}</option>`)
-                  .join('')}
+            <select multiple id="swal-multi-select" class="select-picker" style="width:100%; height:150px;" name="centre[]">
+                ${optionsArray.map(item => `<option value="${item}">${item}</option>`).join('')}
             </select>
         `,
             showCancelButton: true,
@@ -209,6 +208,7 @@
 
         return selectedItems || null;
     }
+
 
 
     async function confirmWithInput() {

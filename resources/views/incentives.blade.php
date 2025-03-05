@@ -155,7 +155,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editIncentiveModalLabel">Editar Incentivo</h5>
-                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal"
+                    <button type="button" id="close" class="btn-close close-modal" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -223,14 +223,54 @@
                 <div class="modal-footer">
                     <div class="row mt-4 text-right">
                         <div class="col-12">
-                            <button type="button" id="closeModal" class="icon-button close-btn" data-bs-dismiss="modal"
-                                style="margin-right: 10px;" title="Cancelar">
-                                <span class="material-symbols-outlined">arrow_back</span>
+                            <button type="" id="closeModal" class="btn-delete close-modal" data-bs-dismiss="modal"
+                                 title="Cancelar">
+                                <span class="material-symbols-outlined" >arrow_back</span>
                             </button>
-                            <button id="saveIncentiveBtn" type="submit" class="btn-save" title="Guardar">
+                            <button id="saveIncentiveBtn" type="submit" class="btn-search-circle" title="Guardar">
                                 <span class="material-symbols-outlined">save</span>
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Asignar Incentivo a Centro -->
+    <div class="modal fade" id="assignIncentiveModal" tabindex="-1" aria-labelledby="assignIncentiveModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- modal-lg para hacerlo más ancho -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignIncentiveModalLabel">Asignar Incentivo a Centro</h5>
+                    <button id="closeModalAssign" type="button" class="btn-close close-assign-modal" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-between"> <!-- Estilo horizontal -->
+                    <div class="w-75">
+                        <label for="centresSelect" class="form-label col-form-label-md">CENTROS</label>
+                        <div class="select-wrapper">
+                            <span id="icon-select" class="icon-select material-symbols-outlined">
+                                business
+                            </span>
+                            <select multiple class="selectpicker" id="centresSelect" name="centre[]" data-size="5"
+                                data-style="btn btn-red-icot btn-round" title="Selecciona">
+                                @foreach ($centres as $centre)
+                                    <option class="text-uppercase" value="{{ $centre->name }}">{{ $centre->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                    </div>
+                    <div>
+                        <button id="btnCancel" type="" class="btn-delete close-assign-modal" data-bs-dismiss="modal">
+                            <span id="" class="material-symbols-outlined">arrow_back</span> 
+                        </button>
+                        <button id="assignIncentiveBtn" type="" class="btn-search-circle">
+                            <span class="material-symbols-outlined">check_circle</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -249,7 +289,6 @@
         }, {});
         $(document).ready(function() {
             getServiceIncentives();
-
             $('#editIncentiveModal form').validate({
                 errorClass: 'error-message',
                 errorElement: 'span',
@@ -525,7 +564,6 @@
                 const incentiveObj2 = $(this).data('obj2');
                 const bonusObj1 = $(this).data('bonus1');
                 const bonusObj2 = $(this).data('bonus2');
-
                 setModalValues({
                     name: serviceName,
                     centre: centreName,
@@ -543,7 +581,6 @@
 
             $(document).on('click', '.btn-see', function() {
                 const serviceName = $(this).data('name');
-
                 $.ajax({
                     url: `/service/centres`,
                     method: 'GET',
@@ -551,7 +588,6 @@
                         name: serviceName
                     },
                     beforeSend: function() {
-                        // Deshabilitamos el evento global temporalmente
                         $(document).off('ajaxStop');
                     },
                     success: function(response) {
@@ -565,14 +601,10 @@
                         showListAlert("Error", [], "Hubo un problema al obtener los centros.");
                     },
                     complete: function() {
-                        // Rehabilitamos el evento global solo después de que el usuario cierre el alerta
-                        // $(document).on('ajaxStop', function() {
-                        //     Swal.close();
-                        // });
+
                     }
                 });
             });
-
 
             $(document).on('click', '#btn-repeat', function() {
                 var serviceData = {
@@ -584,10 +616,40 @@
                     service_price_incentive2: $(this).data('obj2'),
                     service_price_super_incentive1: $(this).data('bonus1'),
                     service_price_super_incentive2: $(this).data('bonus2'),
+                };
 
+                console.log('btn-repeat clicked');
+                $('#assignIncentiveModal').modal('show');
+                $('#assignIncentiveBtn').data('serviceData', serviceData);
+            });
+
+            $(document).on('click', '#assignIncentiveBtn', function() {
+                var serviceData = $(this).data('serviceData');
+                if (!serviceData) {
+                    console.error("No hay datos disponibles para guardar el incentivo.");
+                    return;
                 }
+                var selectedCentres = $('#centresSelect').val();
+                if (!selectedCentres || selectedCentres.length === 0) {
+                    console.warn("No se ha seleccionado ningún centro.");
+                    return;
+                }
+                serviceData.centres = selectedCentres;
+                console.log('assignIncentiveBtn clicked', serviceData);
                 confirmAddToCentre(serviceData);
             });
+
+            function confirmAddToCentre(data) {
+                console.log("Confirmando asignación:", data);
+                if (data.centres && data.centres.length > 0) {
+                    data.centre_name = data.centres;
+                    data._token = $('meta[name="csrf-token"]').attr(
+                        'content');
+                    saveIncentive(data, 'create');
+                } else {
+                    console.log("Selección cancelada");
+                }
+            }
 
             $('#btnAddIncentive').on('click', function() {
                 $('#editIncentiveModal').find('form')[0].reset();
@@ -618,14 +680,14 @@
                         }
                     });
             });
-
-            $('#closeModal').on('click', function() {
+            $('.close-modal').on('click', function() {
                 $('#editIncentiveModal').modal('hide');
             });
 
-            $('#close').on('click', function() {
-                $('#editIncentiveModal').modal('hide');
+            $('.close-assign-modal').on('click', function() {
+                $('#assignIncentiveModal').modal('hide');
             });
+
 
             function saveIncentive(data, actionType) {
                 console.log(data);
@@ -654,20 +716,6 @@
                             (actionType === 'edit' ? 'Actualizado' : 'Creado') + ' Correctamente');
                     }
                 });
-            }
-
-            function confirmAddToCentre(data) {
-                confirmWithMultiSelect('Añadir a Centro', centres).then((centre) => {
-                    console.log(data, centre);
-                    if (centre) {
-                        data._token = '{{ csrf_token() }}';
-                        data.centre_name = centre;
-                        saveIncentive(data, 'create');
-                    } else {
-                        console.log("Selección cancelada");
-                    }
-                });
-
             }
 
             $('#saveIncentiveBtn').on('click', function() {
