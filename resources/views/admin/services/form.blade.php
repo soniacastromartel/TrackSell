@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label class="label" for="centre_id">Centro <span class="obligatory">*</span></label>
                     <select name="centre_id" id="centre_id" class="selectpicker" data-style="btn btn-red-icot btn-round"
-                        title="Seleccione un Centro" tabindex="-98">
+                        title="Seleccione Centro" tabindex="-98">
                         @foreach ($centres as $centre)
                             <option value="{{ $centre->id }}">{{ $centre->name }}</option>
                         @endforeach
@@ -58,7 +58,7 @@
                     <label class="label" for="category">Categoría <span class="obligatory">*</span></label>
                     <select class="selectpicker text-center" name="category" id="category" class="text-center"
                         data-size="6" data-style="btn btn-red-icot btn-round"
-                        title="* Seleccione Categoría de servicio" tabindex="-98">
+                        title="Seleccione Categoría" tabindex="-98">
                         @if (isset($categories))
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}"
@@ -88,10 +88,10 @@
 </div>
 <div class="row mt-4 text-right">
     <div class="col-12">
-        <button id="btnSubmitSave" type="submit" class="btn-save">
+        <button id="btnSubmit" type="submit" class="btn-save">
             <span class="material-icons">save</span>
         </button>
-        <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none">
+        <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
             <span class="spinner-border spinner-border-sm" role="status"></span>
         </button>
         <button id="btnBack" href="/config" class="btn-return">

@@ -1,7 +1,6 @@
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
-
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/services.css') }}">
     <div class="content">
@@ -12,12 +11,12 @@
                 </div>
                 <div class="row col-lg-12">
                     <div class="col-md-11 header-logo" style="margin-top:70px;">
-                        <a href="{{ route('services.create') }}" id="btnNewService" class="header-btn-add">
+                        <a href="{{ route('services.create') }}" id="btnAdd" class="header-btn-add">
                             <span id="icon-send" class="material-symbols-outlined">
-                                assignment_add                                    </span><strong>NUEVO SERVICIO</strong></a>
+                                assignment_add </span><strong>NUEVO SERVICIO</strong></a>
                     </div>
                     <div class=" col-md-1" style="display:flex;justify-content:end;margin-top:100px; ">
-                       
+
                     </div>
                 </div>
             </div>
@@ -124,7 +123,7 @@
             params["id"] = id;
 
             $.ajax({
-           url:  'services/destroy/' + params['id'],
+                url: 'services/destroy/' + params['id'],
                 type: 'get',
                 data: params,
                 success: function(response) {
@@ -162,5 +161,4 @@
             });
         }
     </script>
-    
 @endsection

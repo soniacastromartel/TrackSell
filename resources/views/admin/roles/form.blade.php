@@ -33,11 +33,11 @@
 
 <div class="row mt-2" style="margin-left: 30px;">
     <div class="col text-right">
-        <button id="btnSubmitSave" type="submit" class="btn-save">
+        <button id="btnSubmit" type="submit" class="btn-save">
             <span class="material-icons mr-1">save </span>
         </button>
 
-        <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none">
+        <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 
         </button>

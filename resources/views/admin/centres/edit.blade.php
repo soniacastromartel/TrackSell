@@ -3,9 +3,7 @@
 @section('content')
 @include('inc.navbar')
 @include('common.alert')
-
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-
 <div class="content">
     <div class="container-fluid" style="margin-top:50px">
         <div class="row">
@@ -35,10 +33,10 @@
         $('#pagesConfig').addClass('show');
         $('#adminCentre').addClass('active')
 
-        $("#btnSubmitSave").on('click', function(){
-            $('#btnSubmitSave').hide();
-            $('#btnSubmitLoadSave').show();
-            $('#btnSubmitLoadSave').prop('disabled', true);
+        $("#btnSubmit").on('click', function(){
+            $('#btnSubmit').hide();
+            $('#btnSubmitLoad').show();
+            $('#btnSubmitLoad').prop('disabled', true);
             $("#editCentre").submit();
         });
         $("#btnBack").on('click', function(){

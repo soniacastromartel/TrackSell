@@ -84,10 +84,10 @@
 
 <div class="row mt-4 text-right">
     <div class="col-12">
-        <button id="btnSubmitSave" type="submit" class="btn-save">
+        <button id="btnSubmit" type="submit" class="btn-save">
             <span class="material-icons">save</span>
         </button>
-        <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none">
+        <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none">
             <span class="spinner-border spinner-border-sm" role="status"></span>
         </button>
         <button id="btnBack" href="/config" class="btn-return">

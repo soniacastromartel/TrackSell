@@ -4,7 +4,6 @@
     @include('common.alert')
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
-
     <div class="content" style="display:flex; justify-content:center">
 
         <div class="card" style="width:40%; margin-top:100px;">
@@ -73,10 +72,10 @@
                         </div>
                         <div class="row md-3 text-right">
                             <div class="col-md-12">
-                                <button id="btnSubmitSave" type="submit" class="btn-save">
+                                <button id="btnSubmit" type="submit" class="btn-save">
                                     <span class="material-icons">save</span>
                                 </button>
-                                <button id="btnSubmitLoadSave" type="submit" class="btn-save" style="display: none"Save>
+                                <button id="btnSubmitLoad" type="submit" class="btn-save" style="display: none"Save>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </button>
                                 <button id="btnBack" href="/config" class="btn-return">
@@ -103,10 +102,10 @@
             $('#menuProfile').addClass('active');
 
 
-            $("#btnSubmitSave").on('click', function() {
-                $('#btnSubmitSave').hide();
-                $('#btnSubmitLoadSave').show();
-                $('#btnSubmitLoadSave').prop('disabled', true);
+            $("#btnSubmit").on('click', function() {
+                $('#btnSubmit').hide();
+                $('#btnSubmitLoad').show();
+                $('#btnSubmitLoad').prop('disabled', true);
                 $("#editEmployee").submit(function() {
                     $('<input />').attr('type', 'hidden')
                         .attr('id', 'rol_id_hidden')

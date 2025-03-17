@@ -3,8 +3,8 @@
     @include('inc.navbar')
 
 
-    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
     <div class="content">
         <div class="container-fluid">
@@ -79,7 +79,7 @@
                                     <div class="form-group">
                                         <div class="select-wrapper" style="margin-left: 20px;">
                                             <!-- Botón visible que el usuario clickea -->
-                                            <button id="btnImportIncentives" class="file-upload btn-import">
+                                            <button id="btnImport" class="file-upload btn-import">
                                                 <span id="icon-import"
                                                     class="material-symbols-outlined">upload_file</span>IMPORTAR
                                                 <!-- Input de archivo oculto -->
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="select-wrapper" style="margin-left: 35px;">
-                                            <button id="btnAddIncentive" type="button" class="btn-send">
+                                            <button id="btnAdd" type="button" class="btn-send">
                                                 <span id="icon-send" class="material-symbols-outlined">add_card
                                                 </span>CREAR
 
@@ -223,9 +223,9 @@
                 <div class="modal-footer">
                     <div class="row mt-4 text-right">
                         <div class="col-12">
-                            <button type="" id="closeModal" class="btn-delete close-modal" data-bs-dismiss="modal"
-                                 title="Cancelar">
-                                <span class="material-symbols-outlined" >arrow_back</span>
+                            <button type="" id="closeModal" class="btn-delete close-modal"
+                                data-bs-dismiss="modal" title="Cancelar">
+                                <span class="material-symbols-outlined">arrow_back</span>
                             </button>
                             <button id="saveIncentiveBtn" type="submit" class="btn-search-circle" title="Guardar">
                                 <span class="material-symbols-outlined">save</span>
@@ -243,9 +243,9 @@
         <div class="modal-dialog modal-lg"> <!-- modal-lg para hacerlo más ancho -->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="assignIncentiveModalLabel">Asignar Incentivo a Centro</h5>
-                    <button id="closeModalAssign" type="button" class="btn-close close-assign-modal" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <h5 class="modal-title" id="assignIncentiveModalLabel">Asignar Servicio a Centro</h5>
+                    <button id="closeModalAssign" type="button" class="btn-close close-assign-modal"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex align-items-center justify-content-between"> <!-- Estilo horizontal -->
                     <div class="w-75">
@@ -265,8 +265,9 @@
 
                     </div>
                     <div>
-                        <button id="btnCancel" type="" class="btn-delete close-assign-modal" data-bs-dismiss="modal">
-                            <span id="" class="material-symbols-outlined">arrow_back</span> 
+                        <button id="btnCancel" type="" class="btn-delete close-assign-modal"
+                            data-bs-dismiss="modal">
+                            <span id="" class="material-symbols-outlined">arrow_back</span>
                         </button>
                         <button id="assignIncentiveBtn" type="" class="btn-search-circle">
                             <span class="material-symbols-outlined">check_circle</span>
@@ -651,7 +652,7 @@
                 }
             }
 
-            $('#btnAddIncentive').on('click', function() {
+            $('#btnAdd').on('click', function() {
                 $('#editIncentiveModal').find('form')[0].reset();
                 setModalValues({
                     name: '',
@@ -669,7 +670,7 @@
             });
 
             // TODO botones amostrar y ocultar
-            document.getElementById('btnImportIncentives').addEventListener('click', function(event) {
+            document.getElementById('btnImport').addEventListener('click', function(event) {
                 event.preventDefault();
                 confirmAdvice('Confirmación',
                         'Tenga en cuenta que esta operación elimina los incentivos anteriores¿Continuar?')
@@ -682,12 +683,19 @@
             });
             $('.close-modal').on('click', function() {
                 $('#editIncentiveModal').modal('hide');
+                resetCentreSelect('#editIncentiveModal');
             });
 
             $('.close-assign-modal').on('click', function() {
                 $('#assignIncentiveModal').modal('hide');
+                resetCentreSelect('#assignIncentiveModal');
             });
 
+            function resetCentreSelect(modalId) {
+                $(modalId).on('hidden.bs.modal', function() {
+                    $(modalId).find('select#centre, select#centresSelect').val([]).selectpicker('refresh');
+                });
+            }
 
             function saveIncentive(data, actionType) {
                 console.log(data);
@@ -765,7 +773,7 @@
             });
 
             async function handleFileChange(formAction) {
-                $('#btnImportIncentives').hide();
+                $('#btnImport').hide();
                 $('#btnImportLoad').show();
                 var table = $('.services-datatable').DataTable();
                 event.preventDefault();
@@ -783,13 +791,13 @@
                         success: function(response) {
                             setTimeout(() => showAlert('success', response
                                 .message || 'Cargado Correctamente'), 8000);
-                            $('#btnImportIncentives').show();
+                            $('#btnImport').show();
                             $('#btnImportLoad').hide();
                             table.ajax.reload();
 
                         },
                         complete: function() {
-                            $('#btnImportIncentives').show();
+                            $('#btnImport').show();
                             $('#btnImportLoad').hide();
                             table.ajax.reload();
 
@@ -800,7 +808,7 @@
                                     'Ha habido un error en la importación'),
                                 8000);
 
-                            $('#btnImportIncentives').show();
+                            $('#btnImport').show();
                             $('#btnImportLoad').hide();
 
                         }
@@ -810,7 +818,7 @@
                     console.error("Error al Importar:", error);
                     throw new Error(error.statusText || "Error en la solicitud");
                 } finally {
-                    $('#btnImportIncentives').show();
+                    $('#btnImport').show();
                     $('#btnImportLoad').hide();
                     $('#incentivesForm')[0].reset();
                 }

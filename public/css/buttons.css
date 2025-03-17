@@ -228,33 +228,23 @@ button:focus {
   width: 200px;
   height: 45px;
   margin: 0;
-  /* Elimina centrado individual */
   border: none !important;
   background-color: var(--primary);
   border-radius: 50px;
   color: white;
   text-align: right;
-  /* Asegura alineación derecha del texto */
-  padding-left: 60px;
-  /* Deja espacio suficiente para el ícono */
-  position: relative;
-  /* Base para posicionar el ícono dentro */
-  box-sizing: border-box;
-  /* Padding incluido en el ancho total */
+  padding-left: 60px; 
+  position: relative; 
+  box-sizing: border-box; 
 }
 
 /* Select Wrapper */
 .select-wrapper {
-  position: relative;
-  /* Ícono se posiciona relativo a este contenedor */
-  width: auto;
-  /* Cambia a auto para que ocupe solo lo necesario */
-  margin: 10px;
-  /* Añade espaciado entre elementos */
+  position: relative; 
+  width: auto; 
+  margin: 10px; 
   display: flex;
-  /* Flex para garantizar alineación del ícono */
-  align-items: center;
-  /* Centra verticalmente */
+  align-items: center; 
 }
 
 /* Ícono del Select */
@@ -379,7 +369,7 @@ button:focus {
 #btnImportTargets,
 #btnSyncA3,
 #btnDownloadTemplate,
-#btnAddIncentive,
+#btnAdd,
 #btnImportIncentives,
 #btnEditIncentives,
 #targetInputFileLoad,
@@ -409,6 +399,51 @@ button:focus {
 #btnNewCenter,
 #btnNewService
  {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 12px !important;
+  position: relative;
+  margin: 10px;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  width: 200px;
+  height: 45px;
+  font-weight: bold;
+}
+
+/* BUTTONS - Comunes */
+/* BUTTONS */
+#btnAdd,
+#btnCalculate,
+#btnCalculateLoad,
+#btnDelete,
+#btnEdit,
+#btnEditLoad,
+#btnExport,
+#btnExportLoad,
+#btnImport,
+#btnImportLoad,
+#btnPreview,
+#btnIncentivesLoad,
+#btnIncentivesPreview,
+#btnSubmit,
+#btnSubmitLoad,
+#btnSyncA3,
+#btnTargetsLoad,
+#btnTargetsPreview,
+#btnTracingTargets,
+#btnUnvalidate,
+#btnUnvalidateLoad,
+#btnValidate,
+#btnValidateLoad,
+#btnSummaryLoad,
+#btnSummaryPreview,
+#btnDownloadTemplate,
+#btnClear,
+#targetInputFileLoad {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1267,28 +1302,6 @@ button:focus {
     margin-top: 10px;
   }
 
-  /* General Button SelectPicker */
-  .bootstrap-select .btn {
-    width: 200px;
-    height: 45px;
-    margin: 0;
-    border: none !important;
-    background-color: var(--primary);
-    border-radius: 50px;
-    color: white;
-    text-align: right;
-    padding-left: 60px;
-    position: relative;
-    box-sizing: border-box;
-  }
 
-  /* Select Wrapper */
-  .select-wrapper {
-    position: relative;
-    width: auto;
-    margin: 10px;
-    display: flex;
-    align-items: center;
-  }
 
 }

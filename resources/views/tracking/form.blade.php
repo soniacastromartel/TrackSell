@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/buttons.scss') }}">
 
 
 
@@ -165,9 +165,9 @@
         </button>
     </div>
     <div class="float-right">
-        <button id="btnSubmitSave" type="button" class="btn-save"> <span class="material-icons">save
+        <button id="btnSubmit" type="button" class="btn-save"> <span class="material-icons">save
             </span></button>
-        <button id="btnSubmitLoadSave" type="button" class="btn-save" style="display: none">
+        <button id="btnSubmitLoad" type="button" class="btn-save" style="display: none">
             <span class="material-icons">save</span>
         </button>
 
@@ -192,8 +192,8 @@
 <script type="text/javascript">
     $(function() {
 
-        $("#btnSubmitSave").on('click', function(e) {
-            $('#btnSubmitSave').hide()
+        $("#btnSubmit").on('click', function(e) {
+            $('#btnSubmit').hide()
             if (action == 'create') {
                 checkFecha();
             } else {
@@ -241,8 +241,8 @@
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
                     alert(response.errors);
-                    $('#btnSubmitLoadSave').hide();
-                    $('#btnSubmitSave').show();
+                    $('#btnSubmitLoad').hide();
+                    $('#btnSubmit').show();
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -319,16 +319,16 @@
                     if (data.result == "ok") {
                         var service_name = $('#service_id option:selected').text();
                         $('#service_name').val(service_name);
-                        $('#btnSubmitLoadSave').show();
-                        $('#btnSubmitLoadSave').prop('disabled', true);
+                        $('#btnSubmitLoad').show();
+                        $('#btnSubmitLoad').prop('disabled', true);
                         if (action == 'create') {
                             $('form#createTracking').submit();
                         } else {
                             $('form#editTracking').submit();
                         }
                     } else {
-                        $('#btnSubmitLoadSave').hide();
-                        $('#btnSubmitSave').show();
+                        $('#btnSubmitLoad').hide();
+                        $('#btnSubmit').show();
 
                     }
 

@@ -7,6 +7,8 @@ use DB;
 
 class Role extends Model
 {
+
+    protected $table = 'roles';
     //
     protected $fillable = [
         'id',
@@ -17,11 +19,18 @@ class Role extends Model
     ];
 
 
-    public function scopeGetRolesActive(){
+    public function scopeGetRolesActive()
+    {
 
-        $roles = DB::table('roles')
-                    ->whereNull('cancellation_date')
-                    ->orderBy('name')->get();
+        $roles = self::whereNull('cancellation_date')
+            ->orderBy('name')->get();
         return $roles;
     }
+
+    public function scopeGetRoleById($query, $id)
+    {
+        return $query->where('id', $id)->first();
+
+    }
+    
 }

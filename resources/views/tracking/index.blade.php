@@ -2,8 +2,8 @@
 @section('content')
     @include('inc.navbar')
 
-    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
 
     <div class="content">
         <div class="container-fluid">
@@ -25,7 +25,6 @@
                                         <label class="col-form-label-lg" for="dateFrom" style="">Fecha desde </label>
                                         <div class="select-wrapper row interspace">
                                             <div id="monthYearPickerContainer" class="interspace">
-
                                                 <input type="date" id="date_from" name="date_from" max="3000-12-31"
                                                     min="1000-01-01"class="form-date">
                                                 <span id="icon-date" class="icon-select material-symbols-outlined">
@@ -75,7 +74,8 @@
                                             </div>
 
                                             <!-- Empleado Selector -->
-                                            <label class="col-form-label-lg" for="dateTo" style="">Trabajador</label>
+                                            <label class="col-form-label-lg" for="dateTo"
+                                                style="">Trabajador</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">engineering</span>
@@ -115,12 +115,14 @@
                                             </div>
 
                                             <!-- Paciente Selector -->
-                                            <label class="col-form-label-lg" for="dateTo" style="">Paciente</label>
+                                            <label class="col-form-label-lg" for="dateTo"
+                                                style="">Paciente</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">personal_injury</span>
                                                 <select class="selectpicker" name="patient_name" id="patient_name"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round" title="Paciente">
+                                                    data-size="7" data-style="btn btn-red-icot btn-round"
+                                                    title="Paciente">
                                                     <option>SIN SELECCION</option>
                                                     @foreach ($patients as $patient)
                                                         <option value="{{ $patient->patient_name }}">
@@ -163,7 +165,7 @@
                                                 <span class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                             </button>
-                                            <button id="btnSell" type="button" class="btn-send"
+                                            <button id="btnAdd" type="button" class="btn-send"
                                                 onclick="navigateToCreateTracking()">
                                                 NUEVA <span id="icon-send" class="material-symbols-outlined">
                                                     add_shopping_cart
@@ -266,16 +268,17 @@
             });
             $('#pagesTracking').addClass('show');
             $('#trackingStarted').addClass('active');
-            $('#centre_id, #employee_id, #service_id, #patient_name, #state_id').on('change', function() {
-                getTrackingData();
-            });
+            $('#centre_id, #employee_id, #service_id, #patient_name, #state_id, #date_from, #date_to').on('change',
+                function() {
+                    getTrackingData();
+                });
             var state = "{{ collect(request()->segments())->last() }}";
             state = state.split("_")[1];
 
             var tableHtml = '';
 
             tableHtml = '<tr><th>Centro Prescriptor</th></tr>';
-            getTrackingData();
+            initializeTrackingDataWithoutSearch();
 
             function clearForms() {
                 setDate();
@@ -297,14 +300,11 @@
 
             }
 
-
             $("#btnClear").on('click', function(e) {
-
                 e.preventDefault();
                 clearForms();
             });
         });
-
 
         //FIXME este método no se está usando al parecer
         function updateDateTracking(state, trackingId, back) {
@@ -328,8 +328,6 @@
                     $('#alertErrorTrackingDate').text(response.mensaje);
                     $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                     $('#btnSubmitLoad').hide();
-                    $('#btnSubmitFindLoad').hide();
-                    $('#btnSubmitFind').show();
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -369,6 +367,85 @@
             document.getElementById("date_to").value = dateTo;
         }
 
+        function initializeTrackingDataWithoutSearch() {
+            if ($.fn.dataTable.isDataTable('.tracking-datatable')) {
+                table = $('.tracking-datatable').DataTable();
+            } else {
+                table = $('.tracking-datatable').DataTable({
+                    order: [6, "desc"],
+                    processing: true,
+                    serverSide: true,
+                    language: {
+                        "url": "{{ asset('dataTables/Spanish.json') }}"
+                    },
+                    ajax: {
+                        url: '{{ route('tracking.index') }}',
+                        type: "POST",
+                        data: function(d) {
+                            d._token = "{{ csrf_token() }}";
+                            d.centre_id = $('#centre_id option:selected').val();
+                            d.employee = $('#employee_id option:selected').text();
+                            d.patient = $('#patient_name option:selected').val();
+                            d.service = $('#service_id option:selected').text();
+                            d.state = $('#state_id option:selected').text();
+                            d.dateFrom = $('#date_from').val()?.replaceAll('-', '/') || null;
+                            d.dateTo = $('#date_to').val()?.replaceAll('-', '/') || null;
+                            d.search = ''; 
+                        },
+                        dataSrc: function(json) {
+                            $('#btnSubmit').show();
+                            $('#btnSubmitLoad').hide();
+                            return json.data;
+                        }
+                    },
+                    columns: columnsFilled,
+                    columnDefs: [{
+                            targets: 3,
+                            className: 'myclass',
+                            render: function(data, type, row) {
+                                return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
+                            }
+                        },
+                        {
+                            width: "10%",
+                            targets: 0
+                        },
+                        {
+                            width: "15%",
+                            targets: [1, 3, 4]
+                        },
+                        {
+                            width: "5%",
+                            targets: [2, 5]
+                        },
+                        {
+                            width: "10%",
+                            targets: 7
+                        },
+                        {
+                            targets: -1,
+                            width: '30%'
+                        },
+                        {
+                            targets: '_all',
+                            className: 'dt-body-center'
+                        }
+                    ],
+                    search: {
+                        "regex": true,
+                        "smart": true
+                    },
+                    initComplete: function() {
+                        this.api().columns().every(function() {
+                            var column = this;
+                        });
+                    }
+                });
+            }
+            table.columns.adjust().draw();
+        }
+
+
         function getTrackingData() {
             if ($.fn.dataTable.isDataTable('.tracking-datatable')) {
                 table = $('.tracking-datatable').DataTable();
@@ -384,60 +461,40 @@
                         url: '{{ route('tracking.index') }}',
                         type: "POST",
                         data: function(d) {
-                            d._token = "{{ csrf_token() }}",
-                                d.centre_id = $('#centre_id option:selected').val(),
-                                d.employee = $('#employee_id option:selected').text(),
-                                d.patient = $('#patient_name option:selected').val(),
-                                d.service = $('#service_id option:selected').text(),
-                                d.state = $('#state_id option:selected').text(),
-                                date1 = $('#date_from').val().replaceAll('-', '/');
-                            date2 = $('#date_to').val().replaceAll('-', '/');
-                            d.dateFrom = (date1),
-                                d.dateTo = (date2),
-                                d.search = $('input[type="search"]').val()
+                            d._token = "{{ csrf_token() }}";
+                            d.centre_id = $('#centre_id option:selected').val();
+                            d.employee = $('#employee_id option:selected').text();
+                            d.patient = $('#patient_name option:selected').val();
+                            d.service = $('#service_id option:selected').text();
+                            d.state = $('#state_id option:selected').text();
+                            d.dateFrom = $('#date_from').val()?.replaceAll('-', '/') || null;
+                            d.dateTo = $('#date_to').val()?.replaceAll('-', '/') || null;
+
+                            // Obtener valor de búsqueda
+                            let searchValue = $('input[type="search"]').val()?.trim() || "";
+
+                            // Si tiene menos de 3 caracteres, no lo enviamos
+                            if (searchValue.length < 3) {
+                                searchValue = ''; // No enviar búsqueda
+                            }
+                            d.search = searchValue;
                         },
                         dataSrc: function(json) {
                             $('#btnSubmitFind').show();
                             $('#btnSubmit').show();
                             $('#btnSubmitLoad').hide();
                             $('#btnSubmitFindLoad').hide();
-
                             return json.data;
                         }
                     },
-                    // autoWidth:true,
                     columns: columnsFilled,
                     columnDefs: [{
                             targets: 3,
                             className: 'myclass',
                             render: function(data, type, row) {
-                                d = data.split('')[0].toUpperCase() + data.slice(1)
-                                var d = data.toLowerCase();
-                                return d;
+                                return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
                             }
-
                         },
-                        // {
-                        //     targets:  8,
-                        //     // data: "cancellation_date",
-                        //     type: "date",
-                        //     render: function(data, type, row) {
-
-                        //         if (data != null) {
-                        //             var datetime = moment(data, 'YYYY-M-D');
-                        //             var displayString = moment(datetime).format('D-M-YYYY');
-
-                        //             if (type === 'display' || type === 'filter') {
-                        //                 return displayString;
-                        //             } else {
-                        //                 return datetime; // for sorting
-                        //             }
-                        //         } else {
-                        //             return null;
-                        //         }
-
-                        //     }
-                        // },
                         {
                             width: "10%",
                             targets: 0
@@ -448,12 +505,7 @@
                         },
                         {
                             width: "5%",
-                            targets: 2
-                        },
-
-                        {
-                            width: "5%",
-                            targets: 5
+                            targets: [2, 5]
                         },
                         {
                             width: "10%",
@@ -465,9 +517,8 @@
                         },
                         {
                             targets: '_all',
-                            className: 'dt-body-center',
+                            className: 'dt-body-center'
                         }
-
                     ],
                     search: {
                         "regex": true,

@@ -1,9 +1,7 @@
 @extends('layouts.logged')
 @section('content')
 @include('inc.navbar')
-
 <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
-
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -37,7 +35,7 @@
         $('#pagesConfig').addClass('show');
         $('#adminService').addClass('active')
 
-        $("#btnSubmitSave").on('click', function(){
+        $("#btnSubmit").on('click', function(){
             $("#createService").submit();
         });
         $("#btnBack").on('click', function(){

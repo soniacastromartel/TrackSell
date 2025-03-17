@@ -5,7 +5,6 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
@@ -107,7 +106,7 @@
                                         @endif --}}
                                             @if ($user->rol_id == 1)
                                                 <div class="interspace">
-                                                    <button id="btnImportTargets" class="file-upload btn-import">
+                                                    <button id="btnImport" class="file-upload btn-import">
                                                         <span id="icon-import"
                                                             class="material-symbols-outlined">upload</span>IMPORTAR
                                                         OBJETIVOS
@@ -116,13 +115,13 @@
                                                     </button>
                                                 </div>
                                                 <div class="interspace">
-                                                    <button id="btnEditTargets" class="file-upload btn-edit">
+                                                    <button id="btnEdit" class="file-upload btn-edit">
                                                         <span id="icon-edit"
                                                             class="material-symbols-outlined">edit</span>EDITAR OBJETIVOS
                                                         <input type="file" name="editTargetsFile" id="editTargetsFile"
                                                             class="upload" />
                                                     </button>
-                                                    <button id="btnEditTargetsLoad" class="file-upload btn-edit"
+                                                    <button id="btnEditLoad" class="file-upload btn-edit"
                                                         style="display: none">
                                                         <span id="spinner" class="spinner-border spinner-border-sm"
                                                             role="status" aria-hidden="true"></span> CARGANDO...
@@ -130,7 +129,7 @@
                                                 </div>
                                             @endif
                                             <div class="interspace">
-                                                <button id="btnImportSales" class="file-upload btn-import">
+                                                <button id="btnImport" class="file-upload btn-import">
                                                     <span id="icon-import"
                                                         class="material-symbols-outlined">upload</span>{{ __('IMPORTAR VENTA PRIVADA') }}
                                                     <input type="file" name="targetInputSalesFile"
@@ -533,7 +532,7 @@
             /**
              * Importar Venta Privada
              */
-            $("#btnImportSales").on("click", function(e) {
+            $("#btnImport").on("click", function(e) {
                 e.preventDefault();
                 Swal.fire({
                     title: "Importa Tu Venta Privada",
@@ -790,9 +789,9 @@
                 });
             }
 
-            handleFileChange("#targetInputFile", "{{ route('target.import') }}", '#btnImportTargets',
+            handleFileChange("#targetInputFile", "{{ route('target.import') }}", '#btnImport',
                 "#yearTargetPicker");
-            handleFileChange("#editTargetsFile", "{{ route('target.import') }}", '#btnEditTargets',
+            handleFileChange("#editTargetsFile", "{{ route('target.import') }}", '#btnEdit',
                 "#yearTargetPicker");
 
             /**

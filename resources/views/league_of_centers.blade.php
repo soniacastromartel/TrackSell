@@ -25,145 +25,153 @@
                             <form id="leagueForm" method="POST">
                                 @csrf
                                 @method('POST')
-                                <div class="row">
-                                    {{-- <input type="checkbox" name="month_date" id="monthly" value="mensual" checked> Mensual
-                                    <br />
-                                    <input type="checkbox" name="year_date" id="yearly" value="anual"> Anual <br /> --}}
-                                    <div class="form-group col-md-3" style="margin-top: 42px;">
+                                <div class="row d-flex align-items-start">
+                                    <!-- Período -->
+                                    <div class="col-md-3 period-container">
                                         <label class="col-form-label-lg">Período</label>
-
                                         <div class="dropdown bootstrap-select">
-                                            <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                manage_history
-                                            </span>
+                                            <span class="icon-select material-symbols-outlined">manage_history</span>
                                             <select class="selectpicker" name="datepickerType" id="datepickerType"
                                                 data-size="7" data-style="btn btn-red-icot btn-round"
-                                                title=" Mensual / Anual" tabindex="-98">
+                                                title=" Mensual / Anual">
                                                 <option value="1" selected>Mensual</option>
                                                 <option value="2">Anual</option>
                                             </select>
                                         </div>
+                                    </div>
 
-                                        <div class="form-group  centre_picker" style="margin-top: 20px;">
-                                            <label class="col-form-label-lg">Centro</label>
-                                            <div class="dropdown bootstrap-select">
-                                                <span id="icon-select" class="icon-select material-symbols-outlined">
-                                                    business
-                                                </span>
-                                                <select class="selectpicker" name="centre_id" id="centre_id_picker"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round"
-                                                    title=" Seleccione Centro" tabindex="-98">
-                                                    @foreach ($centres as $centre)
-                                                        <option value="{{ $centre->id }}">{{ $centre->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <input type="hidden" name="centre" id="centre" />
+                                    <!-- Fecha -->
+                                    <div class="col-md-3 fecha-container">
+                                        <label class="col-form-label-lg">Fecha</label>
+                                        <div id="monthYearPickerContainer">
+                                            <div class="date-picker-wrapper">
+                                                <input id="monthYearPicker" type="text" placeholder="yyyy/mm" />
+                                                <span class="icon-select material-symbols-outlined">calendar_month</span>
+                                                <input type="hidden" name="monthYear" id="monthYear" />
+                                            </div>
+                                        </div>
+                                        <div id="yearPickerContainer">
+                                            <div class="date-picker-wrapper">
+                                                <input id="yearPicker" type="text" placeholder="yyyy" />
+                                                <span class="icon-select material-symbols-outlined">calendar_month</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 picker-container">
-                                        <label class="col-form-label-lg">Fecha</label>
-                                    <div id="monthYearPickerContainer">
-                                        <div class="input-group date mt-2">
-                                            <input id="monthYearPicker" class='form-control' type="text"
-                                                placeholder="yyyy/mm" />
-                                            <span id="icon-date"
-                                                class="icon-select material-symbols-outlined">calendar_month</span>
-                                            <input type="hidden" name="monthYear" id="monthYear" />
-                                        </div>
-                                    </div>
-                                    <div id="yearPickerContainer">
-                                        <div class="input-group date mt-2">
-                                            <input id="yearPicker" class='form-control' type="text" placeholder="yyyy" />
-                                            <span id="icon-date" class="icon-select material-symbols-outlined">
-                                                calendar_month</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div class="col-md-3 picker-container" style="";>
-                                        <button id="btnSubmitExport" type="submit" class="btn-export">
-                                            <span id="icon-export" class="material-symbols-outlined">
-                                                file_download
-                                            </span> {{ __('EXPORTAR') }}
-                                        </button>
-                                        <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                        </button>
+                                {{-- </div> --}}
 
-                                        <button id="btnClear" href="#" class="btn-refresh">
-                                            <span id="icon-refresh" class="material-symbols-outlined">refresh
-                                            </span> {{ __('REFRESCAR') }}
-                                        </button>
+                                <div class="col-md-3 picker-container" style="";>
+                                    <button id="btnSubmit" type="submit" class="btn-export">
+                                        <span id="icon-export" class="material-symbols-outlined">
+                                            file_download
+                                        </span> {{ __('EXPORTAR') }}
+                                    </button>
+                                    <button id="btnSubmitLoad" type="submit" class="btn-export" style="display: none">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                    </button>
 
-                                    </div>
+                                    <button id="btnClear" href="#" class="btn-refresh">
+                                        <span id="icon-refresh" class="material-symbols-outlined">refresh
+                                        </span> {{ __('REFRESCAR') }}
+                                    </button>
 
                                 </div>
 
+                        </div>
 
-                            </form>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <label id="centreName"></label>
-                    </div>
-                    {{-- charts --}}
-                    <div class="card mt-4" id="leagueChart">
-                        <div class="chart-container">
-                            <h4 style="margin-left: 15px;">Liga de <strong>CENTROS</strong></h4>
-                            <div>
-                                <canvas id="chartLeague"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mt-4" id="centreChart">
-                        <div class="chart-container">
-                            <div>
-                                <canvas id="chartCentreLeague"></canvas>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="" id="leagueDatatable" style="margin-top: 150px;">
-                        <div class="card-header-table" style="display: none;">
-
-                            <table id="league-month-datatable"
-                                class="table table-striped table-bordered league-month-datatable col-lg-12">
-                                <thead class="table-header">
-                                    <tr>
-                                        <th name="position">Posición</th>
-                                        <th name="centre">Centro</th>
-                                        <th name="points">Puntos</th>
-                                        <th name="average" id="average">Coeficiente de Venta</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="bodyContent">
-                                </tbody>
-                            </table>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <label id="centreName"></label>
+                </div>
+                {{-- charts --}}
+                <div class="card mt-4" id="leagueChart">
+                    <div class="chart-container">
+                        <h4 style="margin-left: 15px;">Liga de <strong>CENTROS</strong></h4>
+                        <div>
+                            <canvas id="chartLeague"></canvas>
                         </div>
                     </div>
-                    <div class="" id="centerLeagueDatatable">
-                        <div class="card-header-table" style="display: none;">
-
-                            <table id="league-centre-datatable"
-                                class="table table-striped table-bordered league-centre-datatable col-lg-12">
-                                <thead class="table-header">
-                                    <tr>
-                                        <th name="month">Mes</th>
-                                        <th name="points">Puntos Recibidos</th>
-                                        <th name="cv">Coeficiente de Venta</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                </div>
+                <div class="card mt-4" id="centreChart">
+                    <div class="chart-container">
+                        <div>
+                            <canvas id="chartCentreLeague"></canvas>
                         </div>
+                    </div>
+                </div>
+
+                <div class="" id="leagueDatatable" style="margin-top: 150px;">
+                    <div class="card-header-table" style="display: none;">
+
+                        <table id="league-month-datatable"
+                            class="table table-striped table-bordered league-month-datatable col-lg-12">
+                            <thead class="table-header">
+                                <tr>
+                                    <th name="position">Posición</th>
+                                    <th name="centre">Centro</th>
+                                    <th name="points">Puntos</th>
+                                    <th name="average" id="average">Coeficiente de Venta</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyContent">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="" id="centerLeagueDatatable">
+                    <div class="card-header-table" style="display: none;">
+
+                        <table id="league-centre-datatable"
+                            class="table table-striped table-bordered league-centre-datatable col-lg-12">
+                            <thead class="table-header">
+                                <tr>
+                                    <th name="month">Mes</th>
+                                    <th name="points">Puntos Recibidos</th>
+                                    <th name="cv">Coeficiente de Venta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
     <style>
+        .row {
+            display: flex;
+            justify-content: start;
+            /* Alinea los elementos al inicio */
+            gap: 20px;
+            /* Espaciado entre Período y Fecha */
+        }
+
+        .period-container,
+        .fecha-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* Espaciado entre label y select/input */
+        }
+
+        .date-picker-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .date-picker-wrapper input {
+            width: 100%;
+            padding: 10px;
+            padding-right: 35px;
+            /* Espacio para el icono */
+            border-radius: 5px;
+        }
+
         button.ui-datepicker-trigger {
             border: none !important;
         }
@@ -838,10 +846,10 @@
             /**
              * Botón exportar
              */
-            $("#btnSubmitExport").on('click', function(e) {
+            $("#btnSubmit").on('click', function(e) {
                 e.preventDefault();
                 $("#leagueForm").attr('action', '{{ route('league.exportLeague') }}');
-                $('#btnSubmitExport').hide();
+                $('#btnSubmit').hide();
                 $('#btnSubmitLoad').show();
                 $('#btnSubmitLoad').prop('disabled', true);
                 $('#centre').val($("#centre_id_picker option:selected").text());
@@ -899,7 +907,7 @@
                     success: function(data, textStatus, jqXHR) {
                         if (textStatus === 'success') {
                             $('#btnSubmitLoad').hide();
-                            $('#btnSubmitExport').show();
+                            $('#btnSubmit').show();
 
                             var link = document.createElement('a'),
                                 filename = 'league.xls';
@@ -912,7 +920,7 @@
                         var response = JSON.parse(xhr.responseText);
                         showAlert('error', response);
                         $('#btnSubmitLoad').hide();
-                        $('#btnSubmitExport').show();
+                        $('#btnSubmit').show();
                     }
                 });
             });

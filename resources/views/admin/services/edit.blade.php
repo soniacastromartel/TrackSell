@@ -31,7 +31,7 @@
         $('#pagesConfig').addClass('show');
         $('#adminService').addClass('active')
         
-        $("#btnSubmitSave").on('click', function(){
+        $("#btnSubmit").on('click', function(){
             $("#editService").submit();
         });
         $("#btnBack").on('click', function(){

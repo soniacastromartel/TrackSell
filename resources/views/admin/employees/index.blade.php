@@ -1,7 +1,6 @@
 @extends('layouts.logged')
 @section('content')
     @include('inc.navbar')
-
     <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/employees.css') }}">
 
@@ -21,7 +20,7 @@
                                     sync
                                 </span> SINCRONIZAR A3 </a>
 
-                            <button id="btnSubmitLoadA3" type="submit" class="btn-sincro-all" style="display: none">
+                            <button id="btnSubmitLoad" type="submit" class="btn-sincro-all" style="display: none">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
                         @endif
@@ -298,7 +297,7 @@
             params["type"] = type;
             if (employeeId == null) {
                 $('#btnSyncA3').hide();
-                $('#btnSubmitLoadA3').show();
+                $('#btnSubmitLoad').show();
 
             } else {
                 $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
@@ -315,7 +314,7 @@
                             $('#btnSyncA3_' + employeeId + ' .material-icons').show();
                             $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
                         } else {
-                            $('#btnSubmitLoadA3').hide();
+                            $('#btnSubmitLoad').hide();
                             $('#btnSyncA3').show();
                         }
                         showToast('success', response.mensaje);

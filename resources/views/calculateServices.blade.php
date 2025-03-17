@@ -4,8 +4,6 @@
 @section('content')
     @include('inc.navbar')
 
-
-    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
 

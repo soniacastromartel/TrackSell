@@ -153,20 +153,29 @@ class RoleController extends Controller
      */
     public function destroy(Request $request)
     {
-        try{
+        try {
+            $request->validate([
+                'id' => 'required',
+            ]);
             $params = $request->all();
-            $id=$params['id'];
+            $id = $params['id'];
             $role = Role::findOrFail($id);
-
-            $role->delete();
-
+            $role->update(['cancellation_date' => now()]);
             return response()->json([
-                'success' => true,  'mensaje' => 'Rol eliminado correctamente'
+                'success' => true,
+                'mensaje' => 'Rol eliminado correctamente',
             ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->action('RoleController@index')->with('error', 'Ha ocurrido un error al eliminar rol, contacte con el administrador');
+            return response()->json([
+                'success' => false,
+                'mensaje' => 'Ha ocurrido un error al eliminar el rol, contacte con el administrador.',
+            ], 500); // 500 es un error de servidor interno
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'mensaje' => 'Ocurrió un error inesperado.',
+            ], 500);
         }
-
-
     }
+
 }

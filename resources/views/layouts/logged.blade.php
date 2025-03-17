@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <!-- Scripts -->
@@ -98,19 +98,26 @@
                 };
             </script>
 
-            <!-- SweetAlert Loader -->
+            {{-- <!-- SweetAlert Loader -->
             <script>
+                var isSearchRequest = false; // Flag para controlar si se está haciendo una solicitud de búsqueda
+
+                // Mostrar el loader cuando se inicie una solicitud AJAX
                 $(document).ajaxStart(function() {
-                    Swal.fire({
-                        title: 'Cargando...',
-                        html: 'Por favor, espere...',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        },
-                    });
+                    // Solo mostrar el loader si es una solicitud de datos válida (no la de búsqueda en el DataTable)
+                    if (!isSearchRequest) {
+                        Swal.fire({
+                            title: 'Cargando...',
+                            html: 'Por favor, espere...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+                    }
                 });
 
+                // Cerrar el loader cuando se detenga la solicitud AJAX
                 $(document).ajaxStop(function() {
                     if (Swal.isVisible() && Swal.getTitle().textContent === 'Cargando...') {
                         setTimeout(function() {
@@ -118,7 +125,21 @@
                         }, 8000);
                     }
                 });
-            </script>
+
+                // Manejar el cambio en el input de búsqueda
+                $('input[type="search"]').on('input', function() {
+                    var searchValue = $(this).val().trim();
+
+                    // Solo mostrar la búsqueda en el DataTable si tiene más de 2 caracteres
+                    if (searchValue.length >= 3) {
+                        isSearchRequest = true; // Indicar que es una solicitud de búsqueda
+                    } else {
+                        isSearchRequest = false; // Desactivar la búsqueda
+                    }
+                });
+                
+            </script> --}}
+
 
         </div>
     </div>
