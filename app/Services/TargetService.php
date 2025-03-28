@@ -646,23 +646,30 @@ class TargetService
         return $isActive;
     }
 
-    /**
-     * Function to update Private Sales from form on 'Calcuradora de Incentivos - Venta Privada'
-     * @param mixed $amount
-     * @param mixed $centre
-     * @param mixed $date
-     * @return mixed|\Illuminate\Http\JsonResponse
-     */
-    public function updatePrivateSales($amount, $centre, $date)
+    public function updatePrivateSales($amount, $centre, $date, $isSum = false)
     {
         try {
             $dateObject = new \DateTime($date);
             $year = $dateObject->format('Y');
             $month = $dateObject->format('m');
+
+            if ($isSum) {
+                $existingTarget = Target::where([
+                    'year' => $year,
+                    'month' => $month,
+                    'centre_id' => $centre
+                ])->first();
+
+                $currentAmount = $existingTarget ? floatval($existingTarget->vd) : 0;
+                $amount += $currentAmount; 
+            }
+
             $updateData = [
                 'vd' => floatval($amount),
             ];
+
             $updatedTarget = Target::updateTarget($year, $month, $centre, $updateData);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Objetivo actualizado correctamente.',

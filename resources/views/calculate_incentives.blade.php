@@ -5,6 +5,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+    <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/incentives.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/tracking.css') }}">
 
@@ -106,7 +107,7 @@
                                         @endif --}}
                                             @if ($user->rol_id == 1)
                                                 <div class="interspace">
-                                                    <button id="btnImport" class="file-upload btn-import">
+                                                    <button id="btnImportTargets" class="file-upload btn-import">
                                                         <span id="icon-import"
                                                             class="material-symbols-outlined">upload</span>IMPORTAR
                                                         OBJETIVOS
@@ -115,13 +116,13 @@
                                                     </button>
                                                 </div>
                                                 <div class="interspace">
-                                                    <button id="btnEdit" class="file-upload btn-edit">
+                                                    <button id="btnEditTargets" class="file-upload btn-edit">
                                                         <span id="icon-edit"
                                                             class="material-symbols-outlined">edit</span>EDITAR OBJETIVOS
                                                         <input type="file" name="editTargetsFile" id="editTargetsFile"
                                                             class="upload" />
                                                     </button>
-                                                    <button id="btnEditLoad" class="file-upload btn-edit"
+                                                    <button id="btnEditTargetsLoad" class="file-upload btn-edit"
                                                         style="display: none">
                                                         <span id="spinner" class="spinner-border spinner-border-sm"
                                                             role="status" aria-hidden="true"></span> CARGANDO...
@@ -129,7 +130,7 @@
                                                 </div>
                                             @endif
                                             <div class="interspace">
-                                                <button id="btnImport" class="file-upload btn-import">
+                                                <button id="btnImportSales" class="file-upload btn-import">
                                                     <span id="icon-import"
                                                         class="material-symbols-outlined">upload</span>{{ __('IMPORTAR VENTA PRIVADA') }}
                                                     <input type="file" name="targetInputSalesFile"
@@ -532,7 +533,8 @@
             /**
              * Importar Venta Privada
              */
-            $("#btnImport").on("click", function(e) {
+            $("#btnImportSales").on("click", function(e) {
+                console.log(user);
                 e.preventDefault();
                 Swal.fire({
                     title: "Importa Tu Venta Privada",
@@ -550,7 +552,7 @@
                         const day = today.getDate();
                         // Validate day range (20th to 24th)
                         if (day < 20 || day > 24) {
-                            return "Aún no puedes importar tu venta privada";
+                            // return "Aún no puedes importar tu venta privada";
                         }
                         // Validate input: ensure it's a number and not empty
                         if (!value || isNaN(value) || parseFloat(value) <= 0) {
@@ -789,9 +791,9 @@
                 });
             }
 
-            handleFileChange("#targetInputFile", "{{ route('target.import') }}", '#btnImport',
+            handleFileChange("#targetInputFile", "{{ route('target.import') }}", '#btnImportTargets',
                 "#yearTargetPicker");
-            handleFileChange("#editTargetsFile", "{{ route('target.import') }}", '#btnEdit',
+            handleFileChange("#editTargetsFile", "{{ route('target.import') }}", '#btnEditTargets',
                 "#yearTargetPicker");
 
             /**

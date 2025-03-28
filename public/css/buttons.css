@@ -247,13 +247,12 @@ button:focus {
   align-items: center; 
 }
 
-/* Ícono del Select */
 .icon-select {
   position: absolute;
-  left: 15px;
+  left: 0; /* Alineado con los otros íconos */
   top: 50%;
   transform: translateY(-50%);
-  font-size: 25px;
+  font-size: 20px; /* Reduce un poco si se sale del círculo */
   background-color: white;
   color: var(--primary);
   border-radius: 50%;
@@ -266,6 +265,20 @@ button:focus {
   z-index: 2;
   border: 1px solid var(--primary);
 }
+
+#icon-select {
+  position: absolute;
+  left: 15px;
+  background-color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
 
 /* Common styles for all icons */
 #icon-cancel,

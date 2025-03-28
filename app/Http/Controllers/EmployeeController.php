@@ -26,6 +26,11 @@ use Illuminate\Auth\Events\Validated;
 
 class EmployeeController extends DefaultLoginController
 {
+
+    protected $user;
+    protected $title;
+    protected $copycauEmail;
+
     public function __construct()
     {
         $this->title = 'Empleados';
@@ -41,7 +46,7 @@ class EmployeeController extends DefaultLoginController
             if (!in_array($this->user->rol_id, [1, 3])) {
                 return redirect(RouteServiceProvider::HOME)->with('error', 'Zona restringida');
             }
-    
+
             if ($request->ajax()) {
                 $employees = Employee::select(
                     'employees.id',
@@ -62,17 +67,17 @@ class EmployeeController extends DefaultLoginController
                     })
                     ->join('roles', 'roles.id', '=', 'rol_id')
                     ->leftJoin('centres', 'centres.id', '=', 'centre_id');
-    
+
                 // Filtrar por centro si el usuario tiene rol 3
                 if ($this->user->rol_id == 3) {
                     $employees->where('employees.centre_id', $this->user->centre_id);
                 }
-    
+
                 $employees = $employees
                     ->orderBy('employees.updated_at', 'desc')
                     ->orderByRaw('CASE WHEN employees.count_access = 3 THEN 0 ELSE 1 END')
                     ->orderBy('employees.name', 'asc');
-    
+
                 return Datatables::of($employees)
                     ->addIndexColumn()
                     ->filter(function ($instance) use ($request) {
@@ -92,7 +97,7 @@ class EmployeeController extends DefaultLoginController
                         if (session()->get('user')->rol_id == 3) {
                             return '';
                         }
-    
+
                         // Botones de acción para otros roles
                         $btn = '<a href="employees/edit/' . $employee->id . '" class="btn-edit" data-editar="Editar">
                                     <span class="material-symbols-outlined">edit</span>
@@ -113,19 +118,19 @@ class EmployeeController extends DefaultLoginController
                                     <span class="material-symbols-outlined">sync</span>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
                                 </a>';
-    
+
                         return $btn;
                     })
                     ->rawColumns(['action', 'options'])
                     ->make(true);
             }
-    
-            return view('admin.employees.index', ['title' => $this->title,'user' => session()->get('user')]);
+
+            return view('admin.employees.index', ['title' => $this->title, 'user' => session()->get('user')]);
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar empleados, contacte con el administrador');
         }
     }
-    
+
 
     //! PENDING OF VALIDATION
     public function indexPending(Request $request)
@@ -394,7 +399,7 @@ class EmployeeController extends DefaultLoginController
                     $employee->save();
 
                 }
-               
+
 
                 return response()->json([
                     'success' => $success,
@@ -531,33 +536,33 @@ class EmployeeController extends DefaultLoginController
     }
 
 
-   
+
     public function syncJobCategories()
-{
-    // Obtener todas las categorías con sus job_category_id correspondientes
-    $categoryJobCategories = DB::table('category_job_category')->get()->mapWithKeys(function ($item) {
-        return [strtolower(trim(preg_replace('/\s+/', ' ', $item->category_name))) => $item->job_category_id];
-    });
+    {
+        // Obtener todas las categorías con sus job_category_id correspondientes
+        $categoryJobCategories = DB::table('category_job_category')->get()->mapWithKeys(function ($item) {
+            return [strtolower(trim(preg_replace('/\s+/', ' ', $item->category_name))) => $item->job_category_id];
+        });
 
-    // Recorrer todos los empleados en bloques para evitar problemas de memoria
-    Employee::chunk(100, function ($employees) use ($categoryJobCategories) {
-        foreach ($employees as $employee) {
-            if (!empty($employee->category)) {
-                $normalizedCategory = strtolower(trim(preg_replace('/\s+/', ' ', $employee->category)));
-                // Buscar el job_category_id correspondiente en category_job_category
-                if (isset($categoryJobCategories[$normalizedCategory])) {
-                    $employee->update(['job_category_id' => $categoryJobCategories[$normalizedCategory]]);
-                    Log::info("Updated employee ID {$employee->id} with job_category_id {$categoryJobCategories[$normalizedCategory]} for category {$employee->category}");
+        // Recorrer todos los empleados en bloques para evitar problemas de memoria
+        Employee::chunk(100, function ($employees) use ($categoryJobCategories) {
+            foreach ($employees as $employee) {
+                if (!empty($employee->category)) {
+                    $normalizedCategory = strtolower(trim(preg_replace('/\s+/', ' ', $employee->category)));
+                    // Buscar el job_category_id correspondiente en category_job_category
+                    if (isset($categoryJobCategories[$normalizedCategory])) {
+                        $employee->update(['job_category_id' => $categoryJobCategories[$normalizedCategory]]);
+                        Log::info("Updated employee ID {$employee->id} with job_category_id {$categoryJobCategories[$normalizedCategory]} for category {$employee->category}");
+                    } else {
+                        Log::warning("No matching category found for employee ID {$employee->id} with category '{$employee->category}' (normalized to '{$normalizedCategory}')");
+                    }
                 } else {
-                    Log::warning("No matching category found for employee ID {$employee->id} with category '{$employee->category}' (normalized to '{$normalizedCategory}')");
+                    Log::warning("Employee ID {$employee->id} has an empty category field.");
                 }
-            } else {
-                Log::warning("Employee ID {$employee->id} has an empty category field.");
             }
-        }
-    });
+        });
 
-    return redirect()->back()->with('success', 'Categorías de empleados sincronizadas correctamente.');
-}
+        return redirect()->back()->with('success', 'Categorías de empleados sincronizadas correctamente.');
+    }
 
 }

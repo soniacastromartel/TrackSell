@@ -38,6 +38,23 @@ class Centre extends Model
         return $this->hasMany(Centre::class, 'parent_id');
     }
 
+    public function departments()
+    {
+        return $this->hasMany(Department::class, 'centre_id');
+    }
+
+    // Get all centres and departments that act as centres
+    public function scopeGetAllCentresWithDepartments($query)
+    {
+        $departmentsAsCentres = config('centres_as_departments');
+
+        return $query->whereNull('cancellation_date')
+            ->orWhereIn('id', $departmentsAsCentres)
+            ->with('departments')
+            ->get();
+    }
+
+
     // En el modelo Centre
     public function services()
     {
@@ -60,7 +77,7 @@ class Centre extends Model
     {
         return DB::table('service_centres')
             ->where('centre_id', $centre_id)
-            ->pluck('service_id'); 
+            ->pluck('service_id');
     }
 
 

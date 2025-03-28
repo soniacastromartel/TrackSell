@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Services\TargetService;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Illuminate\Support\Facades\Log;
+use App\Department;
 use DataTables;
 use Exception;
 
@@ -56,7 +57,7 @@ class TargetController extends Controller
         );
     }
 
-   /**
+    /**
      * Importar Objetivos
      */
     private function importData($request, $isEdit = null)
@@ -66,52 +67,53 @@ class TargetController extends Controller
             $storageFileName = $isEdit ? 'example_target_edit.xls' : 'example_target_input.xls';
             $filePath = base_path('storage') . '/' . $storageFileName;
 
-            // Validate the file
+            // Validar el archivo
             $validator = Validator::make($request->all(), [
                 $fileName => 'max:2048|mimes:xls',
             ]);
 
             if ($validator->fails()) {
                 Log::error("Validator has failed");
-                throw new Exception('Error, superado tamaño de fichero o formato no excel');
+                throw new Exception(config('messages.errors.file_size_or_format'));
             }
 
-            // Get centers if not editing
+            // Obtener los centros si no es edición
             $centres = $isEdit ? [] : Centre::getCentresActive();
-            $year = isset($request->yearTarget) ? $request->yearTarget : date('Y');
+            $year = $request->yearTarget ?? date('Y');
 
             if ($request->hasFile($fileName)) {
-                // Move the file to the storage path with the correct name
+                // Mover el archivo a la ruta de almacenamiento con el nombre correcto
                 $request->file($fileName)->move(storage_path(), $storageFileName);
                 try {
                     Excel::import(new TargetsImport($centres, $year, $isEdit, $filePath), $filePath);
                 } finally {
                     if (file_exists($filePath)) {
-                        unlink($filePath); // Elimina el archivo para asegurarte de que no quede bloqueado
+                        unlink($filePath); // Eliminar archivo después de la importación
                     }
                 }
-        
-                // Delete the file after import
+
+                // Eliminar el archivo del almacenamiento
                 Storage::delete($storageFileName);
+            } else {
+                throw new Exception(config('messages.errors.file_not_selected'));
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'mensaje' => $e->getMessage()
+                'mensaje' => str_replace(':message', $e->getMessage(), config('messages.errors.import_failed'))
             ], 400);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'mensaje' => $e->getMessage()
+                'mensaje' => str_replace(':message', $e->getMessage(), config('messages.errors.import_failed'))
             ], 400);
         } catch (SheetNotFoundException $e) {
             return response()->json([
                 'success' => false,
-                'mensaje' => $e->getMessage()
+                'mensaje' => str_replace(':message', $e->getMessage(), config('messages.errors.import_failed'))
             ], 400);
         }
     }
-
 
     /**
      * Funcion que se encarga de importar todos los objetivos - Todos los centros
@@ -123,18 +125,23 @@ class TargetController extends Controller
             if ($request->hasFile('targetInputFile') || $request->hasFile('editTargetsFile')) {
                 $isEdit = $request->hasFile('editTargetsFile');
                 $this->importData($request, $isEdit);
-                $message = $isEdit ? '¡Editados objetivos!' : '¡Importados objetivos!';
+
+                $message = $isEdit
+                    ? __('messages.success.targets_edited')
+                    : __('messages.success.targets_imported');
+
                 return redirect('calculateIncentive')->with([
                     'title' => 'Calculadora de incentivos',
                     'success' => $message,
                 ]);
-            } else {
-                return redirect('calculateIncentive')->with('error', 'Error! No se seleccionó ningún archivo.');
             }
+
+            return redirect('calculateIncentive')->with('error', __('messages.errors.file_not_selected'));
+
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            return redirect('calculateIncentive')->with('error', 'Error de formato de fichero a importar');
+            return redirect('calculateIncentive')->with('error', __('messages.errors.file_format'));
         } catch (Exception $e) {
-            return redirect('calculateIncentive')->with('error', $e->getMessage());
+            return redirect('calculateIncentive')->with('error', __('messages.errors.import_failed', ['message' => $e->getMessage()]));
         }
     }
 
@@ -143,57 +150,37 @@ class TargetController extends Controller
     {
         try {
             $this->user = session()->get('user');
+            $userId = $this->user['id'];
             $centreId = $this->user['centre_id'];
-
-            // Check if centreId is null or empty
-            if (empty($centreId) || $centreId == null) {
-                return redirect()->back()->with('error', 'El ID del centro es obligatorio.');
-            }
-
             $validator = Validator::make($request->all(), [
-                'privateSales' => 'required|numeric', // Ensure it's not empty and is a number
+                'privateSales' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
-                return redirect()->back()->with('error', 'El campo de cantidad es obligatorio y debe ser un número.');
+                return redirect()->back()->with('error', __('messages.errors.validation'));
+            }
+            $amount = (float) $request->privateSales;
+            $currentDate = $request->has('date') ? $request->date : now()->format('Y-m-d');
+            if ($centreId == env('ID_CENTRE_HCT')) {
+                $department = Department::where('supervisor_id', $userId)->first();
+                if ($department) {
+                    $centreId = $department->centre_id;
+                } else {
+                    return redirect()->back()->with('error', __('messages.errors.department_not_found'));
+                }
+                $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
+                $this->targetService->updatePrivateSales($amount, env('ID_CENTRE_HCT'), $currentDate, true);
+            } else {
+                $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
             }
 
-            $amount = is_float($request->privateSales) ? $request->privateSales : (float) $request->privateSales;
-            $currentDate = $request->has('date') ? $request->date : now()->format('Y-m-d');
-
-            return $this->targetService->updatePrivateSales($amount, $centreId, $currentDate);
+            return response()->json(['success' => true, 'message' => __('messages.success.target_updated')]);
 
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Error durante la importación: ' . $e->getMessage());
+            return redirect()->back()->with('error', __('messages.errors.import_failed', ['message' => $e->getMessage()]));
         }
     }
 
-    /** Funcion que se encarga de importar valores de venta privada - Incluido por supervisores */
-    public function importSales(Request $request)
-    {
-        try {
-            if ($request->hasFile('targetInputSalesFile')) {
-                $this->importData($request, true);
-                return redirect('calculateIncentive')->with(
-                    [
-                        'title' => 'Calculadora de incentivos',
-                        'success' => 'Importada Venta Privada!'
-                    ]
-                );
-            } else {
-                return redirect('calculateIncentive')->with('error', 'Error!');
-            }
-        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            return redirect('calculateIncentive')->with('error', 'Error de formato de fichero a importar');
-        } catch (\Exception $e) {
-            return redirect('calculateIncentive')->with('error', $e->getMessage());
-        }
-    }
-
-    /** 
-     * Función que obtiene los datos de los incentivos/Calculadora de Incentivos
-     * @param Request $request
-     */
     public function calculateIncentives(Request $request)
     {
         try {
@@ -204,17 +191,17 @@ class TargetController extends Controller
                 $centres = Centre::getCentresActive();
             }
             $params['centre'] = $centres;
-
+    
             $targetService = new TargetService();
             $exportData = $targetService->getExportTarget($params);
             return collect($exportData);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => 'false',
-                'errors' => $e->getMessage(),
+                'errors' => __('messages.errors.incentive_calculation_failed', ['message' => $e->getMessage()]),
             ], 400);
         }
-    }
+    }    
 
     /**
      * Función que exporta los Incentivos/Calculadora de Incentivos
@@ -560,7 +547,7 @@ class TargetController extends Controller
             if ($params['type'] == 'only') {
                 $centres = Centre::getCentreByField($params['centreId']);
             } else {
-                $rawField= "FIELD(island, '" . implode('\',\'', $orderIslands) . "' )";
+                $rawField = "FIELD(island, '" . implode('\',\'', $orderIslands) . "' )";
                 $centres = Centre::getCentresActiveByRaw($rawField);
 
             }
