@@ -215,6 +215,8 @@
     </style>
 
     <script type="text/javascript">
+        $user = session() - > get('user');
+
         function navigateToCreateTracking() {
             window.location.href = "{{ route('tracking.create') }}";
         }
@@ -390,7 +392,7 @@
                             d.state = $('#state_id option:selected').text();
                             d.dateFrom = $('#date_from').val()?.replaceAll('-', '/') || null;
                             d.dateTo = $('#date_to').val()?.replaceAll('-', '/') || null;
-                            d.search = ''; 
+                            d.search = '';
                         },
                         dataSrc: function(json) {
                             $('#btnSubmit').show();

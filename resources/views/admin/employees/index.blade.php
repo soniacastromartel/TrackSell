@@ -48,9 +48,6 @@
     <script type="text/javascript">
         var table
         $(function() {
-            var user = @json($user);
-            console.log(user);
-
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
@@ -158,7 +155,6 @@
                         $(row).attr('data-tooltip', tooltipMessage);
                     }
                 },
-
                 search: {
                     "regex": true,
                     "smart": true,
@@ -178,12 +174,10 @@
                     });
                 }
             });
-
             $("#btnSyncA3").on('click', function() {
                 syncA3(null, 'full');
             });
         });
-
 
         function resetAccessApp(employeeId, back) {
             $('#btnResetAccess' + employeeId + ' .material-icons').hide();
@@ -322,13 +316,14 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    var response = JSON.parse(xhr.responseText);
-                    showToast('error', response);
-                    window.location = response.url;
+                    var response = xhr.responseJSON.message;
+                    console.log(response);
+                    showAlert('error', response);
+                    // window.location = response.url;
                 }
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                showToast('error', jqXHR.responseText);
+                showAlert('error', jqXHR.responseJSON.message);
                 $('#btnSyncA3_' + employeeId + ' .material-icons').show();
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
             });

@@ -34,6 +34,7 @@ Route::get('/promotions', 'API\PromotionsController@getPromotions');
 Route::get('/employee_categories', 'API\EmployeeController@getJobCategories');
 Route::get('/getCenters', 'API\CentreController@getCenters');
 Route::get('/getCentersByService/{id}', 'API\CentreController@getCentersByService');
+Route::get('/getDepartments', 'API\CentreController@getDepartments');
 
 
 /* CONTROL/RESETEO DE ACCESOS */
