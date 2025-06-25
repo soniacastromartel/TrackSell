@@ -45,7 +45,8 @@ class Tracking extends Model
         'paid_user_id',
         'state',
         'state_date',
-        'discount'
+        'discount',
+        'department'
     ];
 
     //!RELATIONS
@@ -62,8 +63,6 @@ class Tracking extends Model
     {
         return $this->belongsTo(Employee::class);
     }
-
-
 
     public function scopeGetPatients()
     {
@@ -161,6 +160,50 @@ class Tracking extends Model
             ->get();
         return $query;
     }
+
+    /**
+     * Gets and counts trancking by department
+     *
+     * @param mixed $startDate
+     * @param mixed $endDate
+     * @return Tracking[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public static function getTrackingGroupByDepartments($startDate = null, $endDate = null)
+    {
+        $query = self::select('department', DB::raw('count(*) as total'))
+            ->whereNull('cancellation_date')
+            ->groupBy('department')
+            ->orderBy('department');
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('started_date', [$startDate, $endDate]);
+        }
+
+        return $query->get();
+    }
+
+    /**
+     * Gets and counts trancking by centre, including centre_name and total
+     * @param mixed $startDate
+     * @param mixed $endDate
+     * @return Tracking[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public static function getTrackingGroupByCenters($startDate = null, $endDate = null)
+    {
+        $query = self::select('centres.id as centre_id', 'centres.name as centre_name', DB::raw('count(*) as total'))
+            ->join('centres', 'centres.id', '=', 'trackings.centre_id')
+            ->whereNull('trackings.cancellation_date')
+            ->groupBy('centres.id', 'centres.name')
+            ->orderBy('centres.name');
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('trackings.started_date', [$startDate, $endDate]);
+        }
+
+        return $query->get();
+    }
+
+
 
     public function scopeCheckDate($query, $trackingDate)
     {

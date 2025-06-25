@@ -14,6 +14,7 @@ class CentreController extends BaseController{
         try{
             $centers = Centre::select('id', 'name','image')
                                 ->whereNull('cancellation_date')
+                                ->whereNull('parent_id')
                                 ->orderBy('name')->get();
 
             return $this->sendResponse($centers, '');

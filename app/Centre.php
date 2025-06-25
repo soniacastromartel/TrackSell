@@ -213,4 +213,16 @@ class Centre extends Model
     {
         return $this->children()->exists();
     }
+
+    /**
+ * Devuelve los centros activos que no son departamentos (es decir, parent_id es NULL)
+ */
+public function scopeGetActiveCentersWithoutDepartments($query)
+{
+    return $query->whereNull('cancellation_date')
+        ->whereNull('parent_id') // No es un hijo (no es un departamento)
+        ->orderBy('name')
+        ->get();
+}
+
 }

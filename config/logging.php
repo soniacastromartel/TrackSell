@@ -116,6 +116,7 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/api.log'),
             'level' => 'debug',
+            
         ],
         'app' => [
             'driver' => 'single',

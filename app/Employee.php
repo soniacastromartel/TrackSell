@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\Services\CenterService;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use DB;
@@ -12,192 +13,145 @@ use Illuminate\Support\Facades\Hash;
 class Employee extends Authenticatable
 {
     use Notifiable, HasApiTokens;
-    //use Notifiable;
-    //protected $primaryKey = 'id';
-    // protected $guarded = ['login'];
-    protected $hidden = [
-        'password', 'remember_token'
-    ];
+
+    protected $hidden = ['password', 'remember_token'];
+
     protected $fillable = [
-        'name'
-        , 'username'
-        , 'username_temp'
-        , 'cancellation_date'
-        , 'password'
-        , 'centre_id'
-        , 'rol_id'
-        , 'validated'
-        , 'pending_password'
-        , 'username_temp'
-        , 'dni'
-        , 'phone'
-        , 'mobile_phone'
-        , 'email'
-        , 'category'
-        , 'user_cancellation_date'
-        , 'centro_a3'
-        , 'baja_a3'
-        , 'cod_employee'
-        , 'cod_business'
-        , 'nombre_a3'
-        , 'force_centre_id'
-        , 'updateRequest'
-        , 'excludeRanking'
-        , 'unlockRequest'
-        , 'img'
-        , 'job_category_id'
+        'name',
+        'username',
+        'username_temp',
+        'cancellation_date',
+        'password',
+        'centre_id',
+        'rol_id',
+        'validated',
+        'pending_password',
+        'dni',
+        'phone',
+        'mobile_phone',
+        'email',
+        'category',
+        'user_cancellation_date',
+        'centro_a3',
+        'baja_a3',
+        'cod_employee',
+        'cod_business',
+        'nombre_a3',
+        'force_centre_id',
+        'updateRequest',
+        'excludeRanking',
+        'unlockRequest',
+        'img',
+        'job_category_id'
     ];
 
-    //ldap AUTHENTICATABLE
-    // public static function usePasswordStrategy(callable $strategy)
-    // {
-    //     static::$passwordStrategy = $strategy;
-    // }
-    // public function setPasswordAttribute($password)
-    // {
-    //     if ( $password !== null & $password !== "" )
-    //     {
-    //         $this->attributes['password'] = Crypt::encryptString($password); 
-    //     }
-    // }
-
-    // public function getPasswordAttribute($password)
-    // {
-    //     if (!empty($password)) {
-    //         return Crypt::decryptString($password);
-    //         //return $password; 
-    //     }
-    // }
-
-    public function scopeGetPrescriptorCenter()
+    // Relación con Centre
+    public function centre()
     {
+        return $this->belongsTo(Centre::class);
+    }
 
-        $employee = $this->toArray();
-        $centres = [];
+    // Relación con Role
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'rol_id');
+    }
 
-        $principalCentre = Centre::where(['id' => $employee['centre_id']])->first();
-        if (empty($principalCentre)) {
-            return $centres;
+    // Password hashing (mejor que encriptar)
+    public function setPasswordAttribute($password)
+    {
+        if (!empty($password)) {
+            $this->attributes['password'] = Hash::make($password);
         }
-        $centres[] = [
-            'centre'             => $principalCentre->label, 'centre_id'        => $principalCentre->id, 'centre_address'   => $principalCentre->address, 'centre_phone'     => $principalCentre->phone, 'centre_email'     => $principalCentre->email, 'timetable'        => $principalCentre->timetable, 'island'           => $principalCentre->island, 'image'            => env('BASE_API_URL') . $principalCentre->image, 'principal'        => true
-        ];
-
-        /** Centros de Tenerife -- CodEmpresa = 19 */
-        if (!empty($principalCentre) && $principalCentre->island == 'TENERIFE') {
-            $tfeCentres = Centre::where(['island' => 'TENERIFE'])
-                ->whereNull('cancellation_date')
-                ->get();
-            foreach ($tfeCentres as $c) {
-                if ($c->id != $principalCentre->id) {
-                    $centres[] = [
-                        'centre'           => $c->label, 'centre_id'        => $c->id, 'centre_address'   => $c->address, 'centre_phone'     => $c->phone, 'centre_email'     => $c->email, 'timetable'        => $c->timetable, 'island'           => $c->island, 'image'            => env('BASE_API_URL') . $c->image, 'principal'        => false
-                    ];
-                }
-            }
-        } else if ($principalCentre->id == env('ID_CENTRE_ICOT')  || $principalCentre->id == env('ID_CENTRE_PARQUE_LANZAROTE') || $principalCentre->id == env('ID_CENTRE_PARQUE_FUERTEVENTURA')) {
-
-            /** Centro ICOT - Policlinico --- Puede vender desde otros centros de Gran Canaria*/
-            $lpaCentres = Centre::where(['island' => 'GRAN CANARIA'])
-                ->where('name', 'not like', "%HOSPITAL%")
-                ->whereNull('cancellation_date')
-                ->get();
-            foreach ($lpaCentres as $c) {
-                if ($c->id != $principalCentre->id) {
-                    $centres[] = [
-                        'centre'           => $c->label, 'centre_id'        => $c->id, 'centre_address'   => $c->address, 'centre_phone'     => $c->phone, 'centre_email'     => $c->email, 'timetable'        => $c->timetable, 'island'           => $c->island, 'image'            => $c->image, 'principal'        => false
-                    ];
-                }
-            }
-        }
-        return $centres;
     }
 
     public function getAuthPassword()
     {
         return $this->password;
-        //Uncomment to cypher in aes 256 
-        //return Hash::make(Crypt::decryptString($this->password));
     }
 
-    public function scopeGetEmployeesActive()
+    // Método para encontrar empleado por campo
+    public static function findByField(string $field, $value)
     {
+        return self::whereNull('cancellation_date')
+            ->where($field, $value)
+            ->first();
+    }
 
-        $employees = Employee::where(function ($query) {
-            $query->where('cancellation_date', '>', date('Y-m-d'))
+    public function getPrescriptorsCenters()
+    {
+        $service = CenterService::getPrescriptorCenters($this);
+        return $service;
+    }
+
+    // Método para obtener empleados activos
+    public static function getEmployeesActive()
+    {
+        return self::where(function ($query) {
+            $query->where('cancellation_date', '>', now())
                 ->orWhereNull('cancellation_date');
-        })
-            ->orderBy('name')->get();
-        return $employees;
+        })->orderBy('name')->get();
     }
 
-    public function scopeGetSupervisorsActive($query, $centre_id = null)
+    // Método para obtener supervisores activos
+    public static function getActiveSupervisors($centre_id = null)
     {
-
-        $whereFields = "roles.name = 'SUPERVISOR'";
-        if (!empty($centre_id)) {
-            $whereFields .=  " and centres.id = " . $centre_id;
-        }
-        $employees = Employee::select(
-            'employees.id',
-            'employees.name',
-            'employees.username',
-            'centres.name as centre'
-        )
+        $query = self::select('employees.id', 'employees.name', 'employees.username', 'centres.name as centre')
             ->join('roles', 'employees.rol_id', '=', 'roles.id')
             ->join('centres', 'employees.centre_id', '=', 'centres.id')
             ->whereNull('employees.cancellation_date')
-            ->whereRaw($whereFields)
-            ->orderBy('employees.name')->get();
+            ->where('roles.name', 'SUPERVISOR');
 
-        return $employees;
-    }
-
-    /*
-    * Actualizacion de conteo de accesos permitidos
-    */
-    public function scopeUpdatingAccess($query, $employee_id, $count)
-    {
-        $employee = Employee::where(['id' => $employee_id]);
-        $access['count_access'] = $count;
-        $resultado = false;
-        if (!empty($employee)) {
-            $employee->update($access);
-            $resultado = true;
-        }
-        return $resultado;
-    }
-    
-    //TODO -- METODO scopeUpdatingUnlock
-
-    public function scopeUpdatingUnlockRequest($query, $username)
-    {
-        $employee = Employee::where(['username' => $username]);
-        if (!empty($employee)) {
-            $employee->update(['unlockRequest' => 0]);
-            // return $this->sendResponse('', 200);
+        if ($centre_id) {
+            $query->where('centres.id', $centre_id);
         }
 
-        // $user       = $params['username'];
-        // if (!empty($user)) {
-        //     $employee = Employee::whereRaw("BINARY username = ?", [$user])->first();
-        //     if (!empty($employee)) {
-        //         $employee->update(['unlockRequest' => 1]);
-        //         return $this->sendResponse('', 200);
-        //     }
-        // }
+        return $query->orderBy('employees.name')->get();
     }
 
-    /*
-    * Actualizacion de version última de la App usada
-    */
-    public function scopeUpdatingRegistryVersion($query, $username, $version)
+    // Métodos de actualización
+    public static function updateEmployeeByField(string $field, $value, callable $callback): bool
     {
-        $employee = Employee::where(['username' => $username]);
-        $vActual['version'] = $version;
-
-        if (!empty($employee)) {
-            $employee->update($vActual);
+        $employee = self::findByField($field, $value);
+        if (!$employee) {
+            return false;
         }
+
+        $callback($employee);
+
+        return $employee->save();
     }
+
+    public static function updatingAccess(int $employee_id, int $count): bool
+    {
+        return self::updateEmployeeByField('id', $employee_id, function ($employee) use ($count) {
+            $employee->count_access = $count;
+        });
+    }
+
+    public static function updatingUnlockRequest(string $username, int $value = 0): bool
+    {
+        return self::updateEmployeeByField('username', $username, function ($employee) use ($value) {
+            $employee->unlockRequest = $value;
+        });
+    }
+
+    public static function updatingRegistryVersion(string $username, string $version): bool
+    {
+        return self::updateEmployeeByField('username', $username, function ($employee) use ($version) {
+            $employee->version = $version;
+        });
+    }
+
+    public static function findActiveByUsername(string $username): ?self
+    {
+        return self::whereRaw("BINARY username = ?", [$username])
+            ->where(function ($query) {
+                $query->where('cancellation_date', '>', now()->toDateString())
+                    ->orWhereNull('cancellation_date');
+            })
+            ->first();
+    }
+
 }
+

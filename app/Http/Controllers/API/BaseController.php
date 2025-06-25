@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Log;
+
 
 class BaseController
 {
@@ -12,39 +14,49 @@ class BaseController
      */
     public function sendResponse($result, $message)
     {
-    	$response = [
+        Log::channel('api')->info('API Success', [
+            'message' => $message,
+            'timestamp' => now(),
+            'data' => $result
+        ]);
+
+        $response = [
             'success' => true,
-            'data'    => $result,
+            'data' => $result,
             'message' => $message,
         ];
 
-
         return response()->json($response, 200);
     }
-
 
     /**
      * return error response.
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendError($error, $errorMessages = [], $code = 404)
+    public function sendError($error, $errorMessages = [], $code = 400)
     {
-    	$response = [
+        Log::channel('api')->error('API Error', [
+            'message' => $error,
+            'details' => $errorMessages,
+            'status_code' => $code,
+            'timestamp' => now(),
+        ]);
+
+        $response = [
             'success' => false,
             'message' => $error,
         ];
 
-
-        if(!empty($errorMessages)){
+        if (!empty($errorMessages)) {
             $response['data'] = $errorMessages;
         }
-
 
         return response()->json($response, $code);
     }
 
-    
+
+
 
 
 }
