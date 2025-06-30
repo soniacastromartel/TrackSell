@@ -308,7 +308,7 @@ class TrackingController extends BaseController
             $params['employee_id'] = $employee->id;
             $params['state'] = env('STATE_PENDING');
             $params['state_date'] = $params['tracking_date'];
-            $params['department'] = $request->input('department', null);
+            $params['department'] = $request->input('department_id', null);
 
             $tracking_id = Tracking::create($params)->id;
             return $this->sendResponse(['tracking_id' => $tracking_id], 'Seguimiento creado correctamente');

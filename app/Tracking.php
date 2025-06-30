@@ -64,6 +64,11 @@ class Tracking extends Model
         return $this->belongsTo(Employee::class);
     }
 
+     public function department()
+    {
+        return $this->belongsTo(Department::class, 'department');
+    }
+
     public function scopeGetPatients()
     {
 

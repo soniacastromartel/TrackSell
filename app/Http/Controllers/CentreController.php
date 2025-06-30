@@ -26,6 +26,7 @@ class CentreController extends Controller
             if ($request->ajax()) {
                 $centres = DB::table('centres')
                     ->whereNull('cancellation_date')
+                    ->whereNull('parent_id')
                     ->orderBy('name');
 
                 // $centres = Centre::all();
