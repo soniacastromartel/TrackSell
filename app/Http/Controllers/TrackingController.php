@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\FormValidatorRequest;
@@ -242,7 +243,8 @@ class TrackingController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
+            $departments = Department::all();
             $services = Service::orderBy('name')->get();
             $patients = Tracking::getPatients();
             $employees = Employee::getEmployeesActive();
@@ -290,6 +292,7 @@ class TrackingController extends Controller
                 'title' => $title,
                 'mensaje' => '',
                 'centres' => $centres,
+                'departments' => $departments,
                 'states' => $states,
                 'employees' => $employees,
                 'services' => $services,
@@ -311,7 +314,8 @@ class TrackingController extends Controller
     {
         //
         try {
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
+            $departments = Department::all();
             $title = $this->getTitle('started');
 
             $services = Service::getServicesActive();
@@ -323,6 +327,7 @@ class TrackingController extends Controller
             return view('tracking.create', [
                 'title' => $title,
                 'centres' => $centres,
+                'departments' => $departments,
                 'services' => $services,
                 'employees' => $employees,
                 'disabledService' => $disabledService,
@@ -350,7 +355,8 @@ class TrackingController extends Controller
                 'centre_id' => 'required',
                 'centre_employee_id' => 'required',
                 'service_id' => 'required',
-                'tracking_date' => 'before:tomorrow'
+                'tracking_date' => 'before:tomorrow',
+                'department_id' => 'nullable',
             ]);
 
             $params = [];
@@ -359,9 +365,9 @@ class TrackingController extends Controller
             $params['apointment_done'] = 0;
             $params['started_date'] = $params['tracking_date'];
             $params['state_date'] = $params['tracking_date'];
-
-            $service = DB::table('services')->where('name', $params['service_name'])->first();
-            $params['service_id'] = $service->id;
+            $params['department']= $params['department_id'];
+            // $service = DB::table('services')->where('name', $params['service_name'])->first();
+            // $params['service_id'] = $service->id;
 
             if (empty($params['hc']) && empty($params['dni']) && empty($params['phone'])) {
                 throw new \Illuminate\Validation\ValidationException('¡Error!, tipo de identificación vacía');

@@ -1,8 +1,12 @@
 @extends('layouts.logged')
+@section('styles')
+<link rel="stylesheet" href="{{ asset('/css/form.css') }}">
+@endsection
+
 @section('content')
 @include('inc.navbar')
 
-<link rel="stylesheet" href="{{ asset('/css/buttons.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('/css/buttons.css') }}"> --}}
 
 <div class="content">
     <div class="container-fluid">

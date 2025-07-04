@@ -18,6 +18,8 @@
     {{-- stylesheets --}}
     <link rel="shortcut icon" href="{{ asset('assets/img/LogoICOT.png') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="{{ asset('css/material.css') }}">
@@ -35,6 +37,9 @@
     <!-- <script src="{{ asset('js/jquery.min.js') }}" async></script> -->
 
     <title>{{ config('app.name') }}</title>
+
+@yield('styles')
+
 </head>
 
 <body>
