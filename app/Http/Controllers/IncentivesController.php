@@ -72,7 +72,7 @@ class IncentivesController extends Controller
             }
 
             // Obtener datos para la vista
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
             $services = Service::select('services.id', 'services.name')
                 ->distinct()
                 ->orderBy('services.name')
@@ -95,7 +95,7 @@ class IncentivesController extends Controller
     {
         $btn = '';
         if (empty($service->cancellation_date) && $user->rol_id == 1) {
-            $btn .= '<a href="javascript:void(0);" class="btn-edit" title="Editar"
+            $btn .= '<a href="javascript:void(0);" class="btn-edit tooltip-edit" title="Editar"
                      data-id="' . $service->serviceprice_id . '" 
                      data-name="' . $service->service . '" 
                      data-centre="' . $service->centre . '" 
@@ -120,7 +120,7 @@ class IncentivesController extends Controller
                      data-bonus2="' . $service->bonus_obj2 . '">
                      <span class="material-symbols-outlined">home_pin</span>
                  </a>';
-            $btn .= '<a href="javascript:void(0);" id= "btn-repeat" class="btn-search-circle" title="Añadir a Centro"
+            $btn .= '<a href="javascript:void(0);" id= "btn-repeat" class="btn-search-circle tooltip-add" title="Añadir a Centro"
                      data-id="' . $service->serviceprice_id . '" 
                      data-name="' . $service->service . '" 
                      data-centre="' . $service->centre . '" 
@@ -132,7 +132,7 @@ class IncentivesController extends Controller
                      data-bonus2="' . $service->bonus_obj2 . '">
                      <span class="material-symbols-outlined">add_home_work</span>
                  </a>';
-            $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btn-delete" title="Eliminar">
+            $btn .= '<a onclick="confirmRequest(0,' . $service->serviceprice_id . ')"  class="btn-delete tooltip-remove" title="Eliminar">
                      <span class="material-symbols-outlined">delete</span>
                  </a>';
         }

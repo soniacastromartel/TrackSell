@@ -95,7 +95,7 @@ class NotificationController extends BaseController
                     })
                     ->make(true);
             }
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
 
             return view('notifications', [
                 'title' => $title, 'mensaje' => '',  'centres'  => $centres

@@ -55,7 +55,7 @@ class TargetTest extends TestCase
     public function test_tracing_get_target()
     {
         
-        $centres = Centre::getCentresActive(); 
+        $centres = Centre::getActiveCentersWithoutDepartments(); 
         \Log::channel('testing')->debug('Testing TargetService->getTarget Year: ' . $this->currentYear); 
         \Log::channel('testing')->info('Iniciado Test'); 
 
@@ -76,7 +76,7 @@ class TargetTest extends TestCase
      */
     public function test_tracing_state_target()
     {
-        $centres = Centre::getCentresActive(); 
+        $centres = Centre::getActiveCentersWithoutDepartments(); 
         \Log::channel('testing')->debug('Testing TargetService->stateTarget Year: ' . $this->currentYear); 
         $targetService = new TargetService();
         foreach ($centres as $centre) {

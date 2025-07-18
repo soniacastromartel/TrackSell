@@ -163,9 +163,10 @@
                                                         <label class="custom-control-label" for="manual_centre">Centro
                                                             manual</label>
                                                     </div>
-                                                    <div class="select-wrapper">
+                                                    <div class="select-wrapper" style="margin-top: 25px;">
                                                         <span id="icon-select"
-                                                            class="icon-select material-symbols-outlined">
+                                                            class="icon-select material-symbols-outlined"
+                                                            style="margin-top:6px;">
                                                             business
                                                         </span>
                                                         <select class="selectpicker mt-3" name="centre_id" id="centre_id"
@@ -200,27 +201,35 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="row mt-3 mr-3 text-right">
-                                        <div class="col" style="margin-left: 55px;">
-                                            <button id="btnSubmit" type="submit" class="btn-save">
-                                                <span class="material-icons mr-1">save </span>
+                                    <div class="row mt-3">
+                                        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+                                            <button id="btnSubmit" type="submit" class="btn-save tooltip-save">
+                                                <span class="material-symbols-outlined ">save</span>
                                             </button>
 
-                                            <button id="btnSubmitLoad" type="submit" class="btn-save"
-                                                style="display: none">
+                                            <button id="btnSubmitLoad" type="button" class="btn-save"
+                                                style="display: none;">
                                                 <span class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
+                                            </button>
 
+                                            <button id="btnCancel" type="button" class="btn-remove tooltip-remove">
+                                                <span class="material-symbols-outlined">person_remove</span>
                                             </button>
-                                            <button id="btnBack" href="/config" class="btn-return">
-                                                <span class="material-icons">arrow_back</span>
+
+                                            <button id="btnBack" type="button" class="btn-return tooltip-back">
+                                                <span class="material-symbols-outlined">arrow_back</span>
                                             </button>
-                                            <div class="mt-2 mr-3">
-                                                <label id="lbl" class="label"><span class="obligatory">*</span>
-                                                    Estos campos son requeridos</label>
-                                            </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12 text-right mt-2">
+                                            <label id="lbl" class="label">
+                                                <span class="obligatory">*</span> Estos campos son requeridos
+                                            </label>
+                                        </div>
+                                    </div>
+
                                 </form>
                         </div>
                     </div>

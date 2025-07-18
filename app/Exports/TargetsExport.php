@@ -94,7 +94,7 @@ class TargetsExport implements
         $this->printHeader(array_keys($tracking), $event->writer->getSheetByIndex(0));
 
         $this->rows = 9;
-        $centre = $this->filters['centre'] == 'TODOS' ? Centre::getCentresActive() : Centre::where('name', $this->filters['centre'])->get();
+        $centre = $this->filters['centre'] == 'TODOS' ? Centre::getActiveCentersWithoutDepartments() : Centre::where('name', $this->filters['centre'])->get();
 
         $this->printContentFirstSheet($tracking, $centre, $event->writer->getSheetByIndex(0));
     }

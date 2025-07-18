@@ -30,7 +30,7 @@
                                     <div class="col-md-3 period-container">
                                         <label class="col-form-label-lg">Período</label>
                                         <div class="dropdown bootstrap-select">
-                                            <span class="icon-select material-symbols-outlined">manage_history</span>
+                                            <span class="icon-select material-symbols-outlined" style="margin-left: 6px;">manage_history</span>
                                             <select class="selectpicker" name="datepickerType" id="datepickerType"
                                                 data-size="7" data-style="btn btn-red-icot btn-round"
                                                 title=" Mensual / Anual">
@@ -46,7 +46,7 @@
                                         <div id="monthYearPickerContainer">
                                             <div class="date-picker-wrapper">
                                                 <input id="monthYearPicker" type="text" placeholder="yyyy/mm" />
-                                                <span class="icon-select material-symbols-outlined">calendar_month</span>
+                                                <span class="icon-select material-symbols-outlined" style="margin-left: 6px;">calendar_month</span>
                                                 <input type="hidden" name="monthYear" id="monthYear" />
                                             </div>
                                         </div>

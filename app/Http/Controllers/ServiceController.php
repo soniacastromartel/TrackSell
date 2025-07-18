@@ -68,10 +68,10 @@ class ServiceController extends Controller
                     ->addColumn('action', function ($service) {
                         $btn = '';
                         if (empty($service->cancellation_date)) {
-                            $btn = '<a href="services/edit/' . $service->id . '" class="btn-edit"><span class="material-symbols-outlined">
+                            $btn = '<a href="services/edit/' . $service->id . '" class="btn-edit tooltip-edit"><span class="material-symbols-outlined">
                             edit
                             </span></a>';
-                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn-delete"><span class="material-symbols-outlined">
+                            $btn .= '<a onclick="confirmRequest(0,' . $service->id . ')"class="btn-delete tooltip-remove"><span class="material-symbols-outlined">
                             delete
                             </span></a>';
                         }
@@ -95,7 +95,7 @@ class ServiceController extends Controller
     {
         try {
             $categories = DB::table('service_categories')->get();
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
 
             return view('admin.services.create', [
                 'title' => $this->title,
@@ -321,7 +321,7 @@ class ServiceController extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $services = Service::getServicesActiveFilter();
-        $centres = Centre::getCentresActive();
+        $centres = Centre::getActiveCentersWithoutDepartments();
         $selectedCentre = !empty($centreId) ? Centre::find($centreId) : null;
         $selectedService = !empty($serviceId) ? Service::find($serviceId) : null;
         //Todos centros

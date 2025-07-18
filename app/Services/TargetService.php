@@ -128,7 +128,7 @@ class TargetService
     public function getVC($centres, $target)
     {
         $vcTotal = 0;
-        $centres = isset($centres) ? $centres : Centre::getCentresActive();
+        $centres = isset($centres) ? $centres : Centre::getActiveCentersWithoutDepartments();
         foreach ($centres as $centre) {
             if (isset($target[$centre->name])) {
                 foreach ($target[$centre->name] as $i => $targetRow) {

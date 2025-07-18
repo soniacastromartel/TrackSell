@@ -17,7 +17,7 @@
                            
 
                             <a id="btnSyncA3" class="btn-sincro-all btn-export"><span class="material-symbols-outlined" id="icon-sync">
-                                    sync
+                                    manage_accounts
                                 </span> SINCRONIZAR A3 </a>
 
                             <button id="btnSubmitLoad" type="submit" class="btn-sincro-all" style="display: none">
@@ -180,7 +180,7 @@
         });
 
         function resetAccessApp(employeeId, back) {
-            $('#btnResetAccess' + employeeId + ' .material-icons').hide();
+            $('#btnResetAccess' + employeeId + ' .material-symbols').hide();
             $('#btnResetAccess' + employeeId + ' .spinner-border').show();
 
             params = {};
@@ -195,14 +195,14 @@
                     if (textStatus === 'success') {
                         showToast(response.success ? 'success' : 'error', response.mensaje);
                         table.ajax.reload();
-                        $('#btnResetAccess' + employeeId + ' .material-icons').show();
+                        $('#btnResetAccess' + employeeId + ' .material-symbols').show();
                         $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
                     }
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
                     showToast('error', response);
-                    $('#btnResetAccess' + employeeId + ' .material-icons').show();
+                    $('#btnResetAccess' + employeeId + ' .material-symbols').show();
                     $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
                 }
 
@@ -210,13 +210,13 @@
                 console.log(jqXHR.responseText);
                 showToast('error', jqXHR.responseText);
                 alert('Error Reseteando Acceso');
-                $('#btnResetAccess' + employeeId + ' .material-icons').show();
+                $('#btnResetAccess' + employeeId + ' .material-symbols').show();
                 $('#btnResetAccess' + employeeId + ' .spinner-border').hide();
             });
         }
 
         function resetPassword(employeeId, back) {
-            $('#btnResetPass' + employeeId + ' .material-icons').hide();
+            $('#btnResetPass' + employeeId + ' .material-symbols').hide();
             $('#btnResetPass' + employeeId + ' .spinner-border').show();
             params = {};
             params["_token"] = "{{ csrf_token() }}";
@@ -229,14 +229,14 @@
                     if (textStatus === 'success') {
                         showToast(response.success ? 'success' : 'error', response.mensaje);
                         table.ajax.reload();
-                        $('#btnResetPass' + employeeId + ' .material-icons').show();
+                        $('#btnResetPass' + employeeId + ' .material-symbols').show();
                         $('#btnResetPass' + employeeId + ' .spinner-border').hide();
                     }
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
                     showToast('error', response);
-                    $('#btnResetPass' + employeeId + ' .material-icons').show();
+                    $('#btnResetPass' + employeeId + ' .material-symbols').show();
                     $('#btnResetPass' + employeeId + ' .spinner-border').hide();
 
                 }
@@ -244,13 +244,13 @@
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error Reseteando Contraseña');
                 showToast('error', jqXHR.responseText);
-                $('#btnResetPass' + employeeId + ' .material-icons').show();
+                $('#btnResetPass' + employeeId + ' .material-symbols').show();
                 $('#btnResetPass' + employeeId + ' .spinner-border').hide();
             });
         }
 
         function denyAccess(employeeId, back) {
-            $('#btnDenyAccess' + employeeId + ' .material-icons').hide();
+            $('#btnDenyAccess' + employeeId + ' .material-symbols').hide();
             $('#btnDenyAccess' + employeeId + ' .spinner-border').show();
             params = {};
             params["_token"] = "{{ csrf_token() }}";
@@ -263,14 +263,14 @@
                     if (textStatus === 'success') {
                         showToast('error', response.mensaje);
                         table.ajax.reload();
-                        $('#btnDenyAccess' + employeeId + ' .material-icons').show();
+                        $('#btnDenyAccess' + employeeId + ' .material-symbols').show();
                         $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
                     }
                 },
                 error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
                     showToast('error', response);
-                    $('#btnDenyAccess' + employeeId + ' .material-icons').show();
+                    $('#btnDenyAccess' + employeeId + ' .material-symbols').show();
                     $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
                 }
 
@@ -278,7 +278,7 @@
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error Bloqueando Acceso');
                 showToast('error', jqXHR.responseText);
-                $('#btnDenyAccess' + employeeId + ' .material-icons').show();
+                $('#btnDenyAccess' + employeeId + ' .material-symbols').show();
                 $('#btnDenyAccess' + employeeId + ' .spinner-border').hide();
             });
 
@@ -294,7 +294,7 @@
                 $('#btnSubmitLoad').show();
 
             } else {
-                $('#btnSyncA3_' + employeeId + ' .material-icons').hide();
+                $('#btnSyncA3_' + employeeId + ' .material-symbols').hide();
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').show();
             }
             $.ajax({
@@ -305,7 +305,7 @@
                     console.log(response);
                     if (textStatus === 'success') {
                         if (type == 'only') {
-                            $('#btnSyncA3_' + employeeId + ' .material-icons').show();
+                            $('#btnSyncA3_' + employeeId + ' .material-symbols').show();
                             $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
                         } else {
                             $('#btnSubmitLoad').hide();
@@ -324,7 +324,7 @@
 
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 showAlert('error', jqXHR.responseJSON.message);
-                $('#btnSyncA3_' + employeeId + ' .material-icons').show();
+                $('#btnSyncA3_' + employeeId + ' .material-symbols').show();
                 $('#btnSyncA3_' + employeeId + ' .spinner-border').hide();
             });
         }

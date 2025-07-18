@@ -249,37 +249,37 @@ class TrackingController extends Controller
             $patients = Tracking::getPatients();
             $employees = Employee::getEmployeesActive();
             $states = array(
-                (object) 
+                (object)
                 [
                     'nombre' => env('STATE_PENDING'),
                     'texto' => 'pending'
                 ],
-                (object) 
+                (object)
                 [
                     'nombre' => env('STATE_APOINTMENT'),
                     'texto' => 'apointment'
                 ],
-                (object) 
+                (object)
                 [
                     'nombre' => env('STATE_SERVICE'),
                     'texto' => 'service'
                 ],
-                (object) 
+                (object)
                 [
                     'nombre' => env('STATE_INVOICED'),
                     'texto' => 'invoiced'
                 ],
-                (object) 
+                (object)
                 [
                     'nombre' => env('STATE_VALIDATE'),
                     'texto' => 'validation'
                 ],
-                (object) 
+                (object)
                 [
                     'nombre' => env('STATE_PAID'),
                     'texto' => 'paid'
                 ],
-                (object) 
+                (object)
                 [
                     'nombre' => env('STATE_CANCELLED'),
                     'texto' => 'cancellation'
@@ -365,7 +365,7 @@ class TrackingController extends Controller
             $params['apointment_done'] = 0;
             $params['started_date'] = $params['tracking_date'];
             $params['state_date'] = $params['tracking_date'];
-            $params['department']= $params['department_id'];
+            $params['department'] = $params['department_id'];
             // $service = DB::table('services')->where('name', $params['service_name'])->first();
             // $params['service_id'] = $service->id;
 
@@ -405,7 +405,8 @@ class TrackingController extends Controller
         //
         try {
             $tracking = Tracking::find($id);
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
+            $departments = Department::all();
             $services = Service::getServicesActive(null, true);
             $employees = Employee::getEmployeesActive();
             $employee = Employee::find($tracking->employee_id);
@@ -425,6 +426,7 @@ class TrackingController extends Controller
                 'title' => 'Modificar recomendación',
                 'tracking' => $tracking,
                 'centres' => $centres,
+                'departments' => $departments,
                 'services' => $services,
                 'employees' => $employees,
                 'state' => $state,
@@ -443,7 +445,7 @@ class TrackingController extends Controller
      */
     public function update(Request $request, $state, $id)
     {
-        //
+        //form
         try {
             \Log::debug($request->all());
             $validator = Validator::make($request->all(), [
@@ -822,7 +824,7 @@ class TrackingController extends Controller
     public function deleteForm()
     {
         try {
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
             $services = Service::getServicesActive();
             $employees = Employee::getEmployeesActive();
 
@@ -871,7 +873,6 @@ class TrackingController extends Controller
                 }
             }
             if (!empty($params['trackingState'])) {
-                // $fieldNameDate = $params['trackingState'] . '_date';
                 switch ($params['trackingState']) {
                     case 'pending':
                         $fields['state'] = 'Pendiente';
@@ -895,11 +896,8 @@ class TrackingController extends Controller
                         $fields['state'] = 'Cancelado';
                         break;
                     default:
-                        // $fields['state'] = '';
                         break;
                 }
-
-                // $orderByField = $fieldNameDate;
 
                 if ($params['trackingState'] != 'cancellation') {
                     $nullfields[] = 'cancellation_date';
@@ -925,13 +923,6 @@ class TrackingController extends Controller
                 ->whereNull($nullfields)
                 ->whereNotNull($notNullfields)
                 ->whereBetween('state_date', [$params['date_from'], $params['date_to']])
-                // ->orWhereBetween('service_date', [$params['date_from'], $params['date_to']])
-                // ->orWhereBetween('invoiced_date', [$params['date_from'], $params['date_to']])
-                // ->orWhereBetween('validation_date', [$params['date_from'], $params['date_to']])
-                // ->orWhereBetween('paid_date', [$params['date_from'], $params['date_to']])
-                // ->orWhereBetween('cancellation_date', [$params['date_from'], $params['date_to']])
-                // ->whereBetween(array_keys($whereDates)[0], array_values($whereDates)[0])
-                // ->orderBy($orderByField)
                 ->get();
 
             $filters = [
@@ -954,7 +945,7 @@ class TrackingController extends Controller
     public function exportForm()
     {
         try {
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
             $services = Service::orderBy('name')->get();
             $patients = Tracking::getPatients();
             $employees = Employee::getEmployeesActive();
@@ -1043,7 +1034,7 @@ class TrackingController extends Controller
                 ->addColumn('action', function ($track) {
                     $btn = '';
                     // $fnCall = 'destroy(\'' . $track->id . '\')';
-                    $btn .= '<a onclick="confirmRequest(0,' . $track->id . ')" class="btn-delete"><span class="material-symbols-outlined">
+                    $btn .= '<a onclick="confirmRequest(0,' . $track->id . ')" class="btn-delete tooltip-remove"><span class="material-symbols-outlined">
                     delete</span></a>';
                     return $btn;
                 })
@@ -1069,17 +1060,14 @@ class TrackingController extends Controller
     public function refreshServices(Request $request, $centre_id)
     {
         $services = Service::getServicesActive($centre_id, true);
-
         return json_encode(['data' => $services]);
     }
 
     public function refreshDiscount(Request $request, $service_id, $centre_id)
     {
         $discounts = Discount::getDiscountsByService($service_id, $centre_id);
-
         return json_encode(['data' => $discounts]);
     }
-
 
     /** Function to validate correct service with center allowed */
     function checkServiceCentre($params, $state)
@@ -1111,7 +1099,7 @@ class TrackingController extends Controller
     public function getFinalValidationData($request)
     {
         $params = $request->all();
-        $centres = Centre::getCentresActive();
+        $centres = Centre::getActiveCentersWithoutDepartments();
         $targetService = new TargetService();
 
         $year = substr($params['monthYear'], strpos($params['monthYear'], '/') + 1);
@@ -1320,7 +1308,7 @@ class TrackingController extends Controller
 
                             //$trackingDate = date('Y-m-d');
                             //$trackingIds = isset($detailedSale->tracking_ids) ? $detailedSale->tracking_ids : '';
-    
+
                             // $btn .= '<div class="col-md-7" >';
                             // $btn .= '<input style="resize:horizontal; width: 120px;" type="date" id="tracking_date_'. $detailedSale->employee_id . '" name="tracking_date" max="3000-12-31" 
                             // min="1000-01-01" value="' . $trackingDate . '" class="form-control"></input>'; 
@@ -1365,7 +1353,7 @@ class TrackingController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            $centres = Centre::getCentresActive();
+            $centres = Centre::getActiveCentersWithoutDepartments();
             $a3business = A3Centre::select('code_business', 'name_business')->distinct()->get();
             return view('tracking.indexvalidation', [
                 'title' => 'Validar RRHH',
@@ -1590,7 +1578,6 @@ class TrackingController extends Controller
 
     private function updateTrackingIds($trackingIds, $params)
     {
-
         $validateFechas = null;
         foreach ($trackingIds as $tId) {
             if (!empty($tId)) {
@@ -1612,7 +1599,7 @@ class TrackingController extends Controller
 
     public function requestChange(Request $request)
     {
-        $centres = Centre::getCentresActive();
+        $centres = Centre::getActiveCentersWithoutDepartments();
         $employees = Employee::getEmployeesActive();
         return view('tracking.request_change_centre', [
             'title' => 'Solicitudes de cambio',
@@ -1665,17 +1652,14 @@ class TrackingController extends Controller
                         ->orWhere('request_changes.centre_destination_id', $centrUserId);
                 });
             }
-
             $requests = $query->get();
-
             return DataTables::of($requests)
                 ->addColumn('action', function ($request) {
-                    $btn = '<a onClick="confirm(0,' . $request->id . ')" class="btn-delete" > <span class="material-symbols-outlined">delete</span></a>';
+                    $btn = '<a onClick="confirm(0,' . $request->id . ')" class="btn-delete tooltip-remove" > <span class="material-symbols-outlined">delete</span></a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }
@@ -1698,7 +1682,6 @@ class TrackingController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'mensaje' => 'Error general: ' . $e->getMessage()], 500);
-
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to('home')->with('error', 'Ha ocurrido un error al cargar seguimiento, contacte con el administrador');
         }

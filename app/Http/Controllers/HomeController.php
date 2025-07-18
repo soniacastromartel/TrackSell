@@ -48,7 +48,7 @@ class HomeController extends Controller
             ->whereNull('employee_history.cancellation_date')
             ->orderBy('employee_history.created_at', 'desc')
             ->first();
-        $centres = Centre::getCentresActive();
+        $centres = Centre::getActiveCentersWithoutDepartments();
 
         if (empty($employee)) {
             $employee->employee_name = '';

@@ -20,7 +20,7 @@ class RankingController extends Controller
     
     public function index() {
         $title = 'Rankings';
-        $centres = Centre::getCentresActive();
+        $centres = Centre::getActiveCentersWithoutDepartments();
 
         return view('calculate_rankings', ['title'      => $title
                                              ,'centres'   => $centres

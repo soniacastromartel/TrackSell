@@ -47,7 +47,6 @@ button:focus {
   position: relative;
   height: 45px;
   margin-bottom: 15px;
-
 }
 
 .interspace {
@@ -102,7 +101,8 @@ button:focus {
 
 /*BUTTONS CIRCLE*/
 
-.btn-search-circle, #saveIncentiveBtn {
+.btn-search-circle,
+#saveIncentiveBtn {
   position: relative;
   background-color: green;
   border: none;
@@ -216,7 +216,6 @@ button:focus {
   margin-right: 8px;
 }
 
-
 .custom-icon {
   font-size: 28px;
   color: darkgray;
@@ -233,18 +232,18 @@ button:focus {
   border-radius: 50px;
   color: white;
   text-align: right;
-  padding-left: 60px; 
-  position: relative; 
-  box-sizing: border-box; 
+  padding-left: 60px;
+  position: relative;
+  box-sizing: border-box;
 }
 
 /* Select Wrapper */
 .select-wrapper {
-  position: relative; 
-  width: auto; 
-  margin: 10px; 
+  position: relative;
+  width: auto;
+  margin: 10px;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .icon-select {
@@ -278,7 +277,6 @@ button:focus {
   justify-content: center;
   cursor: pointer;
 }
-
 
 /* Common styles for all icons */
 #icon-cancel,
@@ -330,7 +328,6 @@ button:focus {
 #icon-sync {
   color: var(--teal);
   border: 1px solid var(--teal);
-
 }
 
 #icon-send {
@@ -410,8 +407,7 @@ button:focus {
 #btnImportLoad,
 #btnNewRole,
 #btnNewCenter,
-#btnNewService
- {
+#btnNewService {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -665,7 +661,9 @@ button:focus {
 }
 
 /* Variants */
-.btn-add, .circle-btn-add, .service-btn-add {
+.btn-add,
+.circle-btn-add,
+.service-btn-add {
   background-color: var(--red-icot);
 }
 
@@ -678,9 +676,9 @@ button:focus {
   margin-top: 120px;
 }
 
-.btn-add { 
-  margin: 20px; 
-  margin-top: 80px; 
+.btn-add {
+  margin: 20px;
+  margin-top: 80px;
 }
 
 /* Tooltip Effect */
@@ -701,12 +699,14 @@ button:focus {
 }
 
 /* Hover Effects */
-.circle-btn:hover, .header-btn-add:hover {
+.circle-btn:hover,
+.header-btn-add:hover {
   background-color: white;
   color: green;
 }
 
-.circle-btn:hover::after, .header-btn-add:hover::after {
+.circle-btn:hover::after,
+.header-btn-add:hover::after {
   visibility: visible;
   opacity: 1;
 }
@@ -714,8 +714,8 @@ button:focus {
 /* EDIT BUTTON */
 .btn-edit {
   position: relative;
-  background-color: #3490dc;
-  border: none;
+  background-color: orangered;
+  border-color: #ff9800;
   color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -731,6 +731,7 @@ button:focus {
 }
 
 .btn-edit::after {
+  content: attr(data-editar);
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -739,16 +740,69 @@ button:focus {
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s, visibility 0.2s;
+  background-color: #333; /* fondo oscuro */
+  color: white; /* texto blanco */
+  z-index: 10;
+  padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
 }
 
 .btn-edit:hover {
-  background-color: white;
-  color: #3490dc;
+  color: orangered;
+  background-color: #fff;
+  border-color: #cc7a00;
 }
 
 .btn-edit:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*REMOVE BUTTON*/
+.btn-remove {
+  position: relative;
+  background-color: #cc4b4b; /* rojo mate */
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  font-weight: bolder;
+}
+
+.btn-remove::after {
+  content: attr(data-remove);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+  background-color: #333;
+  color: white;
+  z-index: 10;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-remove:hover {
+  background-color: white;
+  color: #cc4b4b;
+  border: 1px solid #b13232;
+}
+
+.btn-remove:hover::after {
   visibility: visible;
   opacity: 1;
 }
@@ -797,7 +851,7 @@ button:focus {
 /* BTN RESET */
 .btn-reset-access {
   position: relative;
-  background-color: var(--secondary);
+  background-color: var(--success);
   border: none;
   color: white;
   cursor: pointer;
@@ -831,7 +885,7 @@ button:focus {
 
 .btn-reset-access:hover {
   background-color: white;
-  color: var(--secondary);
+  color: var(--success);
 }
 
 .btn-reset-access:hover::after {
@@ -842,8 +896,8 @@ button:focus {
 /* BUTTON VALIDATE-PASSWORD */
 .btn-validate-password {
   position: relative;
-  background-color: var(--success);
-  border: none;
+  background-color: #00bcd4;
+  border-color: #00bcd4;
   color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -875,8 +929,9 @@ button:focus {
 }
 
 .btn-validate-password:hover {
-  background-color: white;
-  color: var(--success);
+  color: #009aae;
+  background-color: #fff !important;
+  border-color: #008fa1;
 }
 
 .btn-validate-password:hover::after {
@@ -887,7 +942,7 @@ button:focus {
 /* BUTTON DENEGATE ACCESS */
 .btn-denegate-access {
   position: relative;
-  background-color: red;
+  background-color: #cc4b4b;
   border: none;
   color: white;
   cursor: pointer;
@@ -1008,7 +1063,7 @@ button:focus {
 
 .btn-sincro-all:hover {
   background-color: white !important;
-  color:teal;
+  color: teal;
 }
 
 .btn-sincro-all:hover::after {
@@ -1043,9 +1098,14 @@ button:focus {
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s, visibility 0.2s;
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
+  z-index: 10;
 }
+
 
 .btn-delete:hover {
   background-color: white;
@@ -1058,49 +1118,9 @@ button:focus {
 }
 
 /*BUTTON SAVE & RETURN */
-.btn-save {
-  position: relative;
-  background-color: #6459dd;
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-}
-
-.btn-save::after {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.btn-save:hover {
-  background-color: white;
-  color: #6459dd;
-}
-
-.btn-save:hover::after {
-  visibility: visible;
-  opacity: 1;
-}
-
 .btn-return {
   position: relative;
-  background-color: var(--red-icot);
+  background-color: #6c757d;
   border: none;
   color: white;
   cursor: pointer;
@@ -1116,6 +1136,7 @@ button:focus {
 }
 
 .btn-return::after {
+  content: attr(data-back);
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -1124,18 +1145,43 @@ button:focus {
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s, visibility 0.2s;
+  background-color: #333;
+  color: white;
+  z-index: 10;
+  padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
 }
 
 .btn-return:hover {
   background-color: white;
-  color: var(--red-icot);
+  color: #6c757d;
+  border: 1px solid #5a6268;
 }
 
 .btn-return:hover::after {
   visibility: visible;
   opacity: 1;
+}
+
+.btn-save,
+.btn-remove,
+.btn-return {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-save:hover,
+.btn-remove:hover,
+.btn-return:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-save:active,
+.btn-remove:active,
+.btn-retun:active {
+  transform: translateY(0px) scale(0.96);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
 /*BUTTON SAVE AND RETURN */
@@ -1154,9 +1200,11 @@ button:focus {
   justify-content: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   margin: 10px;
+  flex-shrink: 0;
 }
 
 .btn-save::after {
+  content: attr(data-save);
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -1165,13 +1213,16 @@ button:focus {
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s, visibility 0.2s;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
   border-radius: 4px;
   font-size: 12px;
 }
 
 .btn-save:hover {
   background-color: white;
-  color: #198d49;
+  color: green;
 }
 
 .btn-save:hover::after {
@@ -1179,50 +1230,29 @@ button:focus {
   opacity: 1;
 }
 
-.btn-return {
-  position: relative;
-  background-color: var(--red-icot);
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  margin: 10px;
+/* Tooltips centralizados */
+.tooltip-add::after {
+  content: "Añadir";
+}
+.tooltip-save::after {
+  content: "Guardar";
 }
 
-.btn-return::after {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s;
-  border-radius: 4px;
-  font-size: 12px;
+.tooltip-remove::after {
+  content: "Eliminar";
 }
 
-.btn-return:hover {
-  background-color: white;
-  color: var(--red-icot);
+.tooltip-back::after {
+  content: "Volver";
 }
 
-.btn-return:hover::after {
-  visibility: visible;
-  opacity: 1;
+.tooltip-edit::after {
+  content: "Editar";
 }
 
 /* Responsividad */
 /*MEDIA QUERIES*/
 @media (max-width: 768px) {
-
   #btnContainer,
   .bg-white,
   .filter-option {
@@ -1238,7 +1268,6 @@ button:focus {
 }
 
 @media (max-width: 480px) {
-
   #btnContainer,
   .bg-white,
   .filter-option {
@@ -1254,7 +1283,6 @@ button:focus {
 }
 
 @media (max-width: 360px) {
-
   #btnContainer,
   .bg-white,
   .filter-option {
@@ -1269,8 +1297,7 @@ button:focus {
   }
 }
 
-@media (max-width: 1200PX) {
-
+@media (max-width: 1200px) {
   #btnContainer,
   .bg-white,
   .filter-option {
@@ -1314,7 +1341,4 @@ button:focus {
     color: #333;
     margin-top: 10px;
   }
-
-
-
 }

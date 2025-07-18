@@ -23,7 +23,7 @@ class IncentiveImport implements WithMultipleSheets //OnEachRow ,
 
     public function __construct()
     {
-        $this->centres = Centre::getCentresActive();
+        $this->centres = Centre::getActiveCentersWithoutDepartments();
     }
 
     public function sheets(): array

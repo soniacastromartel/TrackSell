@@ -142,7 +142,7 @@ class RankingsExport implements FromCollection, WithStyles, WithEvents
         $centre = $this->filters['centre'] == 'TODOS' ? null : $this->filters['centre']; 
         $centres = []; 
         if (empty($centre)) {
-            $centres = Centre::getCentresActive(); 
+            $centres = Centre::getActiveCentersWithoutDepartments(); 
         } else {
             $centres = Centre::whereIn('name',[$centre])->get();
         }

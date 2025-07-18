@@ -43,7 +43,7 @@ class TargetController extends Controller
 
 
         $title = 'Calculadora de incentivos';
-        $centres = Centre::getCentresActive();
+        $centres = Centre::getActiveCentersWithoutDepartments();
         $employees = Employee::getEmployeesActive();
 
         return view(
@@ -78,7 +78,7 @@ class TargetController extends Controller
             }
 
             // Obtener los centros si no es edición
-            $centres = $isEdit ? [] : Centre::getCentresActive();
+            $centres = $isEdit ? [] : Centre::getActiveCentersWithoutDepartments();
             $year = $request->yearTarget ?? date('Y');
 
             if ($request->hasFile($fileName)) {
@@ -188,7 +188,7 @@ class TargetController extends Controller
             if (!empty($params['centre'])) {
                 $centres = Centre::where('name', $params['centre'])->get();
             } else {
-                $centres = Centre::getCentresActive();
+                $centres = Centre::getActiveCentersWithoutDepartments();
             }
             $params['centre'] = $centres;
     
@@ -817,7 +817,7 @@ class TargetController extends Controller
         try {
             $targetService = new TargetService();
             $params = $request->all();
-            $centres = $params['centre'] == null ? Centre::getCentresActive() : Centre::where('name', $params['centre'])->get();
+            $centres = $params['centre'] == null ? Centre::getActiveCentersWithoutDepartments() : Centre::where('name', $params['centre'])->get();
             $currentMonth = date('m');
             $year = date('Y');
             if (isset($params['monthYear']) && !empty($params['monthYear'])) {

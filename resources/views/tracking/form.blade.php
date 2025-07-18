@@ -72,11 +72,15 @@
                 <select class="selectpicker" name="department_id" id="department_id" data-size="7"
                     data-style="btn btn-red-icot btn-round" title="Departamento" tabindex="-98">
                     <option value="">Seleccione departamento</option>
-                    @foreach ($departments as $department)
-                        <option value="{{ $department->id }}" @if (isset($tracking) && $tracking->department == $department) selected @endif>
+                    @forelse ($departments ?? [] as $department)
+                        <option value="{{ $department->id }}" @if (isset($tracking) && $tracking->department_id == $department->id) selected @endif>
                             {{ $department->name }}
                         </option>
-                    @endforeach
+                    @empty
+                        <option disabled>No hay departamentos disponibles</option>
+                    @endforelse
+
+
                 </select>
             </div>
         </div>

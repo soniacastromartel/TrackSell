@@ -223,11 +223,11 @@
                 <div class="modal-footer">
                     <div class="row mt-4 text-right">
                         <div class="col-12">
-                            <button type="" id="closeModal" class="btn-delete close-modal"
+                            <button type="" id="closeModal" class="btn-delete close-modal tooltip-back"
                                 data-bs-dismiss="modal" title="Cancelar">
                                 <span class="material-symbols-outlined">arrow_back</span>
                             </button>
-                            <button id="saveIncentiveBtn" type="submit" class="btn-search-circle" title="Guardar">
+                            <button id="saveIncentiveBtn" type="submit" class="btn-search-circle tooltip-save" title="Guardar">
                                 <span class="material-symbols-outlined">save</span>
                             </button>
                         </div>
@@ -265,11 +265,11 @@
 
                     </div>
                     <div>
-                        <button id="btnCancel" type="" class="btn-delete close-assign-modal"
+                        <button id="btnCancel" type="" class="btn-delete close-assign-modal tooltip-back"
                             data-bs-dismiss="modal">
                             <span id="" class="material-symbols-outlined">arrow_back</span>
                         </button>
-                        <button id="assignIncentiveBtn" type="" class="btn-search-circle">
+                        <button id="assignIncentiveBtn" type="" class="btn-search-circle tooltip-save">
                             <span class="material-symbols-outlined">check_circle</span>
                         </button>
                     </div>
