@@ -397,7 +397,6 @@ class EmployeeController extends DefaultLoginController
 
                     $employee->updated_at = now();
                     $employee->save();
-
                 }
 
 
@@ -405,8 +404,6 @@ class EmployeeController extends DefaultLoginController
                     'success' => $success,
                     'mensaje' => $mensaje
                 ], 200);
-
-
             } else {
                 $employee->password = 'abc.1234';
                 $hashedPassword = Hash::make($employee->password);
@@ -438,7 +435,6 @@ class EmployeeController extends DefaultLoginController
                     'mensaje' => $mensaje
                 ], 200);
             }
-
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['success' => false, 'mensaje' => 'Empleado No Encontrado'], 404);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -565,4 +561,13 @@ class EmployeeController extends DefaultLoginController
         return redirect()->back()->with('success', 'Categorías de empleados sincronizadas correctamente.');
     }
 
+
+    public function cancel($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $employee->cancellation_date = now();
+        $employee->save();
+
+        return redirect()->route('employees.index')->with('success', 'Empleado cancelado correctamente.');
+    }
 }

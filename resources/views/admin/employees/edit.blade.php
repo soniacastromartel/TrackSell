@@ -201,36 +201,43 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
-                                        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-                                            <button id="btnSubmit" type="submit" class="btn-save tooltip-save">
-                                                <span class="material-symbols-outlined ">save</span>
-                                            </button>
-
-                                            <button id="btnSubmitLoad" type="button" class="btn-save"
-                                                style="display: none;">
-                                                <span class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                            </button>
-
-                                            <button id="btnCancel" type="button" class="btn-remove tooltip-remove">
-                                                <span class="material-symbols-outlined">person_remove</span>
-                                            </button>
-
-                                            <button id="btnBack" type="button" class="btn-return tooltip-back">
-                                                <span class="material-symbols-outlined">arrow_back</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 text-right mt-2">
-                                            <label id="lbl" class="label">
-                                                <span class="obligatory">*</span> Estos campos son requeridos
-                                            </label>
-                                        </div>
-                                    </div>
-
                                 </form>
+                            </form>
+
+                            <div class="row mt-3">
+                                <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+                                    <button id="btnSubmit" type="submit" class="btn-save tooltip-save">
+                                        <span class="material-symbols-outlined ">save</span>
+                                    </button>
+
+                                    <button id="btnSubmitLoad" type="button" class="btn-save" style="display: none;">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                    </button>
+
+
+                                    <button id="btnCancel" type="button" class="btn-remove tooltip-remove">
+                                        <span class="material-symbols-outlined">person_remove</span>
+                                    </button>
+
+                                    <button id="btnBack" type="button" class="btn-return tooltip-back">
+                                        <span class="material-symbols-outlined">arrow_back</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-right mt-2">
+                                    <label id="lbl" class="label">
+                                        <span class="obligatory">*</span> Estos campos son requeridos
+                                    </label>
+                                </div>
+                            </div>
+                            <form id="cancelEmployeeForm" action="{{ route('employees.cancel', $employee->id) }}"
+                                method="POST" style="display: none;">
+                                @csrf
+                                @method('PUT')
+                            </form>
+
                         </div>
                     </div>
                 </div>
@@ -247,7 +254,6 @@
 
     <script type="text/javascript">
         $(function() {
-
             $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
@@ -263,6 +269,11 @@
             $("#btnBack").on('click', function() {
                 window.location.href = "{{ route('employees.index') }}";
                 return false;
+            });
+            $("#btnCancel").on('click', function() {
+                if (confirm('¿Estás seguro que deseas cancelar este empleado?')) {
+                    $('#cancelEmployeeForm').submit();
+                }
             });
 
             var table = $('.employees-history-datatable').DataTable({

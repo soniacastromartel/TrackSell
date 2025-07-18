@@ -39,8 +39,8 @@
 
                                         <label class="col-form-label-lg" for="dateTo" style="">Fecha hasta </label>
                                         <div class="icon-container">
-                                            <input type="date" id="date_to" name="date_to" max="3000-12-31" min="1000-01-01"
-                                                class="form-date">
+                                            <input type="date" id="date_to" name="date_to" max="3000-12-31"
+                                                min="1000-01-01" class="form-date">
                                             <span id="icon-date" class="icon-select material-symbols-outlined">
                                                 calendar_month</span>
                                         </div>
@@ -60,7 +60,8 @@
                                                     @if ($user->rol_id != 1)
                                                         @foreach ($centres as $centre)
                                                             @if ($centre->id == $user->centre_id)
-                                                                <option class="text-uppercase" value="{{ $centre->id }}" selected>
+                                                                <option class="text-uppercase" value="{{ $centre->id }}"
+                                                                    selected>
                                                                     {{ $centre->name }}
                                                                 </option>
                                                             @endif
@@ -77,7 +78,8 @@
                                             </div>
 
                                             <!-- Empleado Selector -->
-                                            <label class="col-form-label-lg" for="dateTo" style="">Trabajador</label>
+                                            <label class="col-form-label-lg" for="dateTo"
+                                                style="">Trabajador</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">engineering</span>
@@ -106,8 +108,8 @@
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">medical_services</span>
-                                                <select class="selectpicker" name="service_id" id="service_id" data-size="7"
-                                                    data-style="btn btn-red-icot btn-round" title="Servicio">
+                                                <select class="selectpicker" name="service_id" id="service_id"
+                                                    data-size="7" data-style="btn btn-red-icot btn-round" title="Servicio">
                                                     <option>SIN SELECCION</option>
                                                     @foreach ($services as $service)
                                                         <option value="{{ $service->id }}">{{ $service->name }}</option>
@@ -117,12 +119,14 @@
                                             </div>
 
                                             <!-- Paciente Selector -->
-                                            <label class="col-form-label-lg" for="dateTo" style="">Paciente</label>
+                                            <label class="col-form-label-lg" for="dateTo"
+                                                style="">Paciente</label>
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">personal_injury</span>
                                                 <select class="selectpicker" name="patient_name" id="patient_name"
-                                                    data-size="7" data-style="btn btn-red-icot btn-round" title="Paciente">
+                                                    data-size="7" data-style="btn btn-red-icot btn-round"
+                                                    title="Paciente">
                                                     <option>SIN SELECCION</option>
                                                     @foreach ($patients as $patient)
                                                         <option value="{{ $patient->patient_name }}">
@@ -138,8 +142,9 @@
                                             <div class="select-wrapper">
                                                 <span id="icon-select"
                                                     class="icon-select material-symbols-outlined">list_alt_check</span>
-                                                <select class="selectpicker" name="state_id" id="state_id" data-size="7"
-                                                    data-style="btn btn-red-icot btn-round" title="Estado">
+                                                <select class="selectpicker" name="state_id" id="state_id"
+                                                    data-size="7" data-style="btn btn-red-icot btn-round"
+                                                    title="Estado">
                                                     <option>SIN SELECCION</option>
                                                     @foreach ($states as $state)
                                                         <option class="text-uppercase" value="{{ $state->texto }}">
@@ -217,6 +222,7 @@
 
     <script type="text/javascript">
         const user = @json($user);
+
         function navigateToCreateTracking() {
             window.location.href = "{{ route('tracking.create') }}";
         }
@@ -263,15 +269,15 @@
 
         });
 
-        $(function () {
+        $(function() {
             setDate();
-            $(".nav-item").each(function () {
+            $(".nav-item").each(function() {
                 $(this).removeClass("active");
             });
             $('#pagesTracking').addClass('show');
             $('#trackingStarted').addClass('active');
             $('#centre_id, #employee_id, #service_id, #patient_name, #state_id, #date_from, #date_to').on('change',
-                function () {
+                function() {
                     getTrackingData();
                 });
             var state = "{{ collect(request()->segments())->last() }}";
@@ -302,7 +308,7 @@
 
             }
 
-            $("#btnClear").on('click', function (e) {
+            $("#btnClear").on('click', function(e) {
                 e.preventDefault();
                 clearForms();
             });
@@ -315,7 +321,7 @@
             $.ajax({
                 url: 'updateState/' + state + '/' + trackingId + '/' + trackingDate + '/' + back,
                 type: 'get',
-                success: function (response, textStatus, jqXHR) {
+                success: function(response, textStatus, jqXHR) {
                     // if success, HTML response is expected, so replace current
                     table.columns.adjust().draw();
                     return;
@@ -325,14 +331,14 @@
                         window.location = response.url;
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     var response = JSON.parse(xhr.responseText);
                     $('#alertErrorTrackingDate').text(response.mensaje);
                     $('#alertErrorTrackingDate').show().delay(2000).slideUp(300);
                     $('#btnSubmitLoad').hide();
                 }
 
-            }).fail(function (jqXHR, textStatus, errorThrown) {
+            }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error' + jqXHR.responseText);
 
             });
@@ -383,7 +389,7 @@
                     ajax: {
                         url: '{{ route('tracking.index') }}',
                         type: "POST",
-                        data: function (d) {
+                        data: function(d) {
                             d._token = "{{ csrf_token() }}";
                             d.centre_id = $('#centre_id option:selected').val();
                             d.employee = $('#employee_id option:selected').text();
@@ -392,9 +398,9 @@
                             d.state = $('#state_id option:selected').text();
                             d.dateFrom = $('#date_from').val()?.replaceAll('-', '/') || null;
                             d.dateTo = $('#date_to').val()?.replaceAll('-', '/') || null;
-                            d.search = '';
+                            d.search = $('input[type="search"]').val()?.trim() || ""
                         },
-                        dataSrc: function (json) {
+                        dataSrc: function(json) {
                             $('#btnSubmit').show();
                             $('#btnSubmitLoad').hide();
                             return json.data;
@@ -402,43 +408,43 @@
                     },
                     columns: columnsFilled,
                     columnDefs: [{
-                        targets: 3,
-                        className: 'myclass',
-                        render: function (data, type, row) {
-                            return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
+                            targets: 3,
+                            className: 'myclass',
+                            render: function(data, type, row) {
+                                return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
+                            }
+                        },
+                        {
+                            width: "10%",
+                            targets: 0
+                        },
+                        {
+                            width: "15%",
+                            targets: [1, 3, 4]
+                        },
+                        {
+                            width: "5%",
+                            targets: [2, 5]
+                        },
+                        {
+                            width: "10%",
+                            targets: 7
+                        },
+                        {
+                            targets: -1,
+                            width: '30%'
+                        },
+                        {
+                            targets: '_all',
+                            className: 'dt-body-center'
                         }
-                    },
-                    {
-                        width: "10%",
-                        targets: 0
-                    },
-                    {
-                        width: "15%",
-                        targets: [1, 3, 4]
-                    },
-                    {
-                        width: "5%",
-                        targets: [2, 5]
-                    },
-                    {
-                        width: "10%",
-                        targets: 7
-                    },
-                    {
-                        targets: -1,
-                        width: '30%'
-                    },
-                    {
-                        targets: '_all',
-                        className: 'dt-body-center'
-                    }
                     ],
                     search: {
                         "regex": true,
                         "smart": true
                     },
-                    initComplete: function () {
-                        this.api().columns().every(function () {
+                    initComplete: function() {
+                        this.api().columns().every(function() {
                             var column = this;
                         });
                     }
@@ -462,7 +468,7 @@
                     ajax: {
                         url: '{{ route('tracking.index') }}',
                         type: "POST",
-                        data: function (d) {
+                        data: function(d) {
                             d._token = "{{ csrf_token() }}";
                             d.centre_id = $('#centre_id option:selected').val();
                             d.employee = $('#employee_id option:selected').text();
@@ -480,8 +486,9 @@
                                 searchValue = ''; // No enviar búsqueda
                             }
                             d.search = searchValue;
+                            console.log(searchValue);
                         },
-                        dataSrc: function (json) {
+                        dataSrc: function(json) {
                             $('#btnSubmitFind').show();
                             $('#btnSubmit').show();
                             $('#btnSubmitLoad').hide();
@@ -491,43 +498,43 @@
                     },
                     columns: columnsFilled,
                     columnDefs: [{
-                        targets: 3,
-                        className: 'myclass',
-                        render: function (data, type, row) {
-                            return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
+                            targets: 3,
+                            className: 'myclass',
+                            render: function(data, type, row) {
+                                return data.charAt(0).toUpperCase() + data.slice(1).toLowerCase();
+                            }
+                        },
+                        {
+                            width: "10%",
+                            targets: 0
+                        },
+                        {
+                            width: "15%",
+                            targets: [1, 3, 4]
+                        },
+                        {
+                            width: "5%",
+                            targets: [2, 5]
+                        },
+                        {
+                            width: "10%",
+                            targets: 7
+                        },
+                        {
+                            targets: -1,
+                            width: '30%'
+                        },
+                        {
+                            targets: '_all',
+                            className: 'dt-body-center'
                         }
-                    },
-                    {
-                        width: "10%",
-                        targets: 0
-                    },
-                    {
-                        width: "15%",
-                        targets: [1, 3, 4]
-                    },
-                    {
-                        width: "5%",
-                        targets: [2, 5]
-                    },
-                    {
-                        width: "10%",
-                        targets: 7
-                    },
-                    {
-                        targets: -1,
-                        width: '30%'
-                    },
-                    {
-                        targets: '_all',
-                        className: 'dt-body-center'
-                    }
                     ],
                     search: {
                         "regex": true,
                         "smart": true
                     },
-                    initComplete: function () {
-                        this.api().columns().every(function () {
+                    initComplete: function() {
+                        this.api().columns().every(function() {
                             var column = this;
                         });
                     }
@@ -537,7 +544,7 @@
         }
 
         // <!--Export-->
-        $("#btnSubmit").on('click', function (e) {
+        $("#btnSubmit").on('click', function(e) {
             e.preventDefault();
             $('#btnSubmit').hide();
             $('#btnSubmitLoad').show();
@@ -567,7 +574,7 @@
                 xhrFields: {
                     'responseType': 'blob'
                 },
-                success: function (data, textStatus, jqXHR) {
+                success: function(data, textStatus, jqXHR) {
                     // if success, HTML response is expected, so replace current
                     if (textStatus === 'success') {
                         $('#btnSubmitLoad').hide();
@@ -580,7 +587,7 @@
                         link.click();
                     }
                 }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
+            }).fail(function(jqXHR, textStatus, errorThrown) {
                 alert('Error' + jqXHR.responseText)
 
             });
