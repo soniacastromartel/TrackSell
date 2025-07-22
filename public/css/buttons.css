@@ -320,8 +320,8 @@ button:focus {
 
 #icon-calculate,
 #icon-edit {
-  color: var(--primary);
-  border: 1px solid var(--primary);
+  color: orangered;
+  border: 1px solid orange;
 }
 
 #icon-refresh,
@@ -390,7 +390,6 @@ button:focus {
 #btnImportTargets,
 #btnImportTargetsLoad,
 #btnEditTargets,
-/* #btnEditTargetsLoad, */
 #btnImportSales,
 #btnTracingTargets,
 #btnExportLoad,
@@ -423,6 +422,17 @@ button:focus {
   font-weight: bold;
 }
 
+.btnEditTargets {
+    transition: all 0.3s ease;
+}
+
+.btnEditTargets:hover {
+    color: orangered;
+    background-color: white;
+    border: 1px solid orangered;
+}
+
+
 /* BUTTONS - Comunes */
 /* BUTTONS */
 #btnAdd,
@@ -444,6 +454,7 @@ button:focus {
 #btnTargetsLoad,
 #btnTargetsPreview,
 #btnTracingTargets,
+#btnTracingTargetsLoad,
 #btnUnvalidate,
 #btnUnvalidateLoad,
 #btnValidate,
@@ -1248,6 +1259,10 @@ button:focus {
 
 .tooltip-edit::after {
   content: "Editar";
+}
+
+.tooltip-download::after {
+  content: "Descargar";
 }
 
 /* Responsividad */

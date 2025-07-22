@@ -107,7 +107,7 @@
                                         @endif --}}
                                             @if ($user->rol_id == 1)
                                                 <div class="interspace">
-                                                    <button id="btnImportTargets" class="file-upload btn-import">
+                                                    <button id="btnImportTargets" class="file-upload btn-import ">
                                                         <span id="icon-import"
                                                             class="material-symbols-outlined">upload</span>IMPORTAR
                                                         OBJETIVOS
@@ -116,7 +116,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="interspace">
-                                                    <button id="btnEditTargets" class="file-upload btn-edit">
+                                                    <button id="btnEditTargets" class="file-upload btn-edit tooltip-edit">
                                                         <span id="icon-edit"
                                                             class="material-symbols-outlined">edit</span>EDITAR OBJETIVOS
                                                         <input type="file" name="editTargetsFile" id="editTargetsFile"
@@ -142,7 +142,7 @@
                                                 <span class="m-3"></span>
                                             @endif
                                             <div class="interspace">
-                                                <button id="btnTracingTargets" class="file-upload btn-export">
+                                                <button id="btnTracingTargets" class="file-upload btn-export ">
                                                     <span id="icon-export"
                                                         class="material-symbols-outlined">download</span>{{ __('DESCARGAR SEGUIMIENTO') }}
                                                 </button>
